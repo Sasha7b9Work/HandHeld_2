@@ -1,2 +1,2 @@
 @echo on
-start ..\..\generated\Keil\HandHeld.sln
+start ..\..\generated\Keil\HandHeld_2.sln
