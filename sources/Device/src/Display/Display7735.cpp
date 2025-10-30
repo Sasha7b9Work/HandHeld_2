@@ -31,7 +31,7 @@ namespace Display
 
         static int current_part = 0;                            // Эту часть сейчас отрисовываем
 
-        static bool MatchesCRC(uint _crc)
+        bool MatchesCRC(uint _crc)
         {
             return _crc == crc[current_part];
         }

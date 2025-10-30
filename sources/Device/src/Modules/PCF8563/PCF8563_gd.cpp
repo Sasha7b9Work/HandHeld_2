@@ -234,7 +234,7 @@ void PCF8563::SetDateTime(RTCDateTime *DateTime)
 }
 
 
-void PCF8563::CalculateDateTime(uint8 buffer[7], RTCDateTime *DateTime)
+void PCF8563::CalculateDateTime(uint8 buffer[8], RTCDateTime *DateTime)
 {
 	DateTime->Second = bcd2dec((uint8)((buffer[0]) & 0x7F));
 	DateTime->Minute = bcd2dec(buffer[1]);
