@@ -6,6 +6,7 @@ namespace Device
 {
     void Init();
 
-    // Вызывается на приёме очередного бита
     void Update();
+
+    void Update2();
 }

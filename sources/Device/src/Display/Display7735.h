@@ -19,6 +19,8 @@ namespace Display
 
     void Update();
 
+    void Update2();
+
     void PrepareToSleep();
 
     void DrawPowerOff();

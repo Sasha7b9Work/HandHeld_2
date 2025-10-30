@@ -9,6 +9,6 @@ int main()
 
     while (true)
     {
-        Device::Update();
+        Device::Update2();
     }
 }

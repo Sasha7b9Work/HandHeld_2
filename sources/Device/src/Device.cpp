@@ -97,3 +97,9 @@ void Device::Update()
 
     Power::Update();
 }
+
+
+void Device::Update2()
+{
+    Display::Update2();
+}
