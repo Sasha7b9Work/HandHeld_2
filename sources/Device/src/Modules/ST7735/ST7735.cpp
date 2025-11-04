@@ -11,109 +11,119 @@ namespace ST7735
 {
     static bool is_enabled = false;
 
-    static PinOut pinDC(GPIOA, GPIO_PIN_5);       // PA5  15
-    static PinOut pinRES(GPIOA, GPIO_PIN_8);      // PA8  29
-    static PinOut pinBKG(GPIOA, GPIO_PIN_9);      // PA9  30
-    static PinOut pinSCL(GPIOA, GPIO_PIN_4);      // PA4  14
-    static PinOut pinSDA(GPIOA, GPIO_PIN_6);      // PA6  16
+    static PinOut pinDC(GPIOB, GPIO_PIN_11);      // PB11 22
+    static PinOut pinRES(GPIOB, GPIO_PIN_10);     // PB10 21
+    static PinOut pinBKG(GPIOA, GPIO_PIN_4);      // PA4  14
+    static PinOut pinSCL(GPIOA, GPIO_PIN_5);      // PA5  15
+    static PinOut pinSDA(GPIOA, GPIO_PIN_7);      // PA7  17
+    static PinOut pinOn(GPIOB, GPIO_PIN_2);       // PB2  20
+
+#define SDA_TO_LOW GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_7
+#define SDA_TO_HI  GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_7
+
+#define SCL_TO_HI  GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_5
+#define SCL_TO_LOW GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_5
+
+#define ONE_CLOCK   \
+        SCL_TO_HI;  \
+        SCL_TO_LOW
+
 
     static void SendByte(uint8 byte)
     {
         if ((byte & 0x80) == 0)
         {
-            GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_LOW;
         }
         else
         {
-            GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_HI;
         }
-        GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_4;
-        GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_4;
+
+        ONE_CLOCK;
 
         if ((byte & 0x40) == 0)
         {
-            GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_LOW;
         }
         else
         {
-            GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_HI;
         }
-        GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_4;
-        GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_4;
+
+        ONE_CLOCK;
 
         if ((byte & 0x20) == 0)
         {
-            GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_LOW;
         }
         else
         {
-            GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_HI;
         }
-        GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_4;
-        GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_4;
+
+        ONE_CLOCK;
 
         if ((byte & 0x10) == 0)
         {
-            GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_LOW;
         }
         else
         {
-            GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_HI;
         }
-        GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_4;
-        GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_4;
+
+        ONE_CLOCK;
 
         if ((byte & 0x08) == 0)
         {
-            GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_LOW;
         }
         else
         {
-            GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_HI;
         }
-        GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_4;
-        GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_4;
+
+        ONE_CLOCK;
 
         if ((byte & 0x04) == 0)
         {
-            GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_LOW;
         }
         else
         {
-            GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_HI;
         }
-        GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_4;
-        GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_4;
+
+        ONE_CLOCK;
 
         if ((byte & 0x02) == 0)
         {
-            GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_LOW;
         }
         else
         {
-            GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_HI;
         }
-        GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_4;
-        GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_4;
+
+        ONE_CLOCK;
 
         if ((byte & 0x01) == 0)
         {
-            GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_LOW;
         }
         else
         {
-            GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_6;
+            SDA_TO_HI;
         }
-        GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_4;
-        GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_4;
+
+        ONE_CLOCK;
     }
 
 
     static void SendData16(uint16 word)
     {
-        //pinDC.ToHi();
-        //gpio_bit_set(GPIOA, GPIO_PIN_5);
-        GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_5;
+        pinDC.ToHi();
 
         SendByte((uint8)(word >> 8));
         SendByte((uint8)word);
@@ -199,11 +209,14 @@ uint ST7735::TimeEnabled()
 
 void ST7735::Init()
 {
+    pinOn.Init();
     pinDC.Init();
     pinRES.Init();
     pinBKG.Init();
     pinSCL.Init();
     pinSDA.Init();
+
+    pinOn.ToHi();
 
     pinSCL.ToLow();
 
