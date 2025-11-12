@@ -11,12 +11,12 @@ namespace ST7735
 {
     static bool is_enabled = false;
 
-    static PinOut pinDC(GPIOB, GPIO_PIN_11);      // PB11 22
+    static PinOut pinDC_RS(GPIOB, GPIO_PIN_11);   // PB11 22
     static PinOut pinRES(GPIOB, GPIO_PIN_10);     // PB10 21
     static PinOut pinBKG(GPIOA, GPIO_PIN_4);      // PA4  14
     static PinOut pinSCL(GPIOA, GPIO_PIN_5);      // PA5  15
     static PinOut pinSDA(GPIOA, GPIO_PIN_7);      // PA7  17
-    static PinOut pinOn(GPIOB, GPIO_PIN_2);       // PB2  20
+    static PinOut pinON(GPIOB, GPIO_PIN_2);       // PB2  20
 
 #define SDA_TO_LOW GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_7
 #define SDA_TO_HI  GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_7
@@ -123,7 +123,7 @@ namespace ST7735
 
     static void SendData16(uint16 word)
     {
-        pinDC.ToHi();
+        pinDC_RS.ToHi();
 
         SendByte((uint8)(word >> 8));
         SendByte((uint8)word);
@@ -133,7 +133,7 @@ namespace ST7735
 
     static void Write_Cmd(unsigned char CMD)
     {
-        pinDC.ToLow();
+        pinDC_RS.ToLow();
 
         SendByte(CMD);
     }
@@ -145,7 +145,7 @@ namespace ST7735
 
     static void Write_Cmd_Data(unsigned char CMDP)
     {
-        pinDC.ToHi();
+        pinDC_RS.ToHi();
 
         SendByte(CMDP);
     }
@@ -209,21 +209,21 @@ uint ST7735::TimeEnabled()
 
 void ST7735::Init()
 {
-    pinOn.Init();
-    pinDC.Init();
+    pinON.Init();
+    pinDC_RS.Init();
     pinRES.Init();
     pinBKG.Init();
     pinSCL.Init();
     pinSDA.Init();
 
-    pinOn.ToHi();
+    pinON.ToHi();
 
     pinSCL.ToLow();
 
-    pinBKG.ToHi();
+    pinBKG.ToLow();
 
     pinRES.ToLow();
-    pinDC.ToLow();
+    pinDC_RS.ToLow();
 
     pinRES.ToLow(); //-V525
     Timer::Delay(50);
