@@ -172,7 +172,7 @@ void Display::BeginScene2(int num_part)
 {
     Buffer::current_part = num_part;
 
-    Buffer::Fill(Color::BLACK);
+    Buffer::Fill(num_part % 2 ? Color::BLACK : Color::WHITE);
 }
 
 
