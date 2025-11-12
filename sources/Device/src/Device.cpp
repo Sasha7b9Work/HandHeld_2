@@ -14,6 +14,7 @@
 #include "Modules/Beeper/Beeper.h"
 #include "Modules/ST7735/ST7735.h"
 #include "Hardware/Power.h"
+#include "Hardware/HAL/HAL_PINS.h"
 #ifdef TYPE_1602
     #include "Display/Display1602.h"
 #else
@@ -37,6 +38,20 @@
 void Device::Init()
 {
     HAL::Init();
+
+    static PinOut pinSCL(GPIOA, GPIO_PIN_5);      // PA5  15
+    static PinOut pinSDA(GPIOA, GPIO_PIN_7);      // PA7  17
+
+    pinSCL.Init();
+    pinSDA.Init();
+
+    while (true)
+    {
+        pinSCL.ToHi();
+        pinSDA.ToHi();
+        pinSCL.ToLow();
+        pinSDA.ToLow();
+    }
 
     PCF8563::Init();
 
