@@ -39,31 +39,11 @@ void Device::Init()
 {
     HAL::Init();
 
-//    static PinOut pinSCL(GPIOA, GPIO_PIN_5);      // PA5  15
-//    static PinOut pinSDA(GPIOA, GPIO_PIN_7);      // PA7  17
-//
-//    pinSCL.Init();
-//    pinSDA.Init();
-//
-//#define SDA_TO_LOW GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_7
-//#define SDA_TO_HI  GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_7
-//
-//#define SCL_TO_HI  GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_5
-//#define SCL_TO_LOW GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_5
-//
-//    while (true)
-//    {
-//        SDA_TO_LOW;
-//        SCL_TO_LOW;
-//        SDA_TO_HI;
-//        SCL_TO_HI;
-//    }
-
     PCF8563::Init();
 
     Display::Init();
 
-    Power::Init();
+//    Power::Init();
 
     Timer::Init();
 
