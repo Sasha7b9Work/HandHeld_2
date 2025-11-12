@@ -216,11 +216,11 @@ void ST7735::Init()
     pinSCL.Init();
     pinSDA.Init();
 
-    pinON.ToHi();
+    pinON.ToLow();
 
     pinSCL.ToLow();
 
-    pinBKG.ToLow();
+    pinBKG.ToHi();
 
     pinRES.ToLow();
     pinDC_RS.ToLow();
