@@ -3,6 +3,13 @@
 #include "Device.h"
 
 
+/*
+    Ammyy
+    95 243 113
+    32766
+*/
+
+
 int main()
 {
     Device::Init();
