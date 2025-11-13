@@ -159,9 +159,9 @@ void EXTI4_15_IRQHandler(void)
 
 void TIMER2_IRQHandler(void)
 {
-    if (timer_interrupt_flag_get(TIMER2, TIMER_INT_FLAG_UP))
+    if (timer_interrupt_flag_get(TIMER2, TIMER_INT_FLAG_CH2))
     {
-        timer_interrupt_flag_clear(TIMER2, TIMER_INT_FLAG_UP);
+        timer_interrupt_flag_clear(TIMER2, TIMER_INT_FLAG_CH2);
 
         Beeper::CallbackOnTimer();
     }
