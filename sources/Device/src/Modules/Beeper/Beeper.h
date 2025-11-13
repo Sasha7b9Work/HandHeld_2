@@ -34,4 +34,6 @@ namespace Beeper
     void CallbackOnTimer();
 
     bool IsRunning();
+
+    uint TimeAfterStop();
 }

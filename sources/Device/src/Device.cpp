@@ -66,16 +66,11 @@ void Device::Init()
 
 void Device::Update2()
 {
-    static int sound = 0;
-
-    Beeper::Play((TypeSound::E)sound, 2);
-
-    sound++;
-
-    if (sound == TypeSound::Count)
+    if (!Beeper::IsRunning() && Beeper::TimeAfterStop() > 5000)
     {
-        sound = 0;
+        Beeper::Play(TypeSound::_1, 2);
     }
+
 
 //    Display::Update2();
 

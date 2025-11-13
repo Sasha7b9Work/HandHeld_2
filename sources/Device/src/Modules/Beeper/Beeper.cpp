@@ -94,6 +94,8 @@ namespace Beeper
     static uint8 volume = 0;
 
     static PinOut pinMUTE(GPIOB, GPIO_PIN_1);
+
+    static TimeMeterMS meter;
 }
 
 
@@ -175,12 +177,20 @@ void Beeper::Stop()
     Beeper::Driver::Stop();
 
     pinMUTE.ToHi();
+
+    meter.Reset();
 }
 
 
 bool Beeper::IsRunning()
 {
     return is_running;
+}
+
+
+uint Beeper::TimeAfterStop()
+{
+    return meter.ElapsedTime();
 }
 
 
