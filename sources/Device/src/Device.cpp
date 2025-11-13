@@ -66,10 +66,12 @@ void Device::Init()
 
 void Device::Update2()
 {
-    if (!Beeper::IsRunning() && Beeper::TimeAfterStop() > 5000)
-    {
-        Beeper::Play(TypeSound::_1, 2);
-    }
+//    if (!Beeper::IsRunning() && Beeper::TimeAfterStop() > 5000)
+//    {
+//        Beeper::Play(TypeSound::_1, 2);
+//    }
+
+    Beeper::Play(TypeSound::_2, 2);
 
 
 //    Display::Update2();
