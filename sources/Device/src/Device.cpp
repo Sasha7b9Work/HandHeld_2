@@ -61,7 +61,25 @@ void Device::Init()
 
     Storage::Init();
 
+    ModeClock::Set(ModeClock::Hi);
+}
 
+void Device::Update2()
+{
+    static int sound = 0;
+
+    Beeper::Play((TypeSound::E)sound, 2);
+
+    sound++;
+
+    if (sound == TypeSound::Count)
+    {
+        sound = 0;
+    }
+
+//    Display::Update2();
+
+    Beeper::Update();
 }
 
 
@@ -99,23 +117,4 @@ void Device::Update()
     Source::Update();
 
     Power::Update();
-}
-
-
-void Device::Update2()
-{
-    static int sound = 0;
-
-    Beeper::Play((TypeSound::E)sound, 2);
-
-    sound++;
-
-    if (sound == TypeSound::Count)
-    {
-        sound = 0;
-    }
-
-    Display::Update2();
-
-    Beeper::Update();
 }
