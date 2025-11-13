@@ -110,7 +110,7 @@ void Device::Update2()
 
     sound++;
 
-    if (sound > TypeSound::Count)
+    if (sound == TypeSound::Count)
     {
         sound = 0;
     }
