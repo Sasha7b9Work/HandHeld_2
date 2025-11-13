@@ -43,7 +43,7 @@ void Device::Init()
 
     Display::Init();
 
-    Power::Init();
+//    Power::Init();
 
     Timer::Init();
 
@@ -60,6 +60,8 @@ void Device::Init()
     Beeper::Init();
 
     Storage::Init();
+
+
 }
 
 
@@ -102,5 +104,16 @@ void Device::Update()
 
 void Device::Update2()
 {
+    static int sound = 0;
+
+    Beeper::Play((TypeSound::E)sound, 2);
+
+    sound++;
+
+    if (sound > TypeSound::Count)
+    {
+        sound = 0;
+    }
+
     Display::Update2();
 }

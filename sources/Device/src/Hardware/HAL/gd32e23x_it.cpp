@@ -163,17 +163,6 @@ void TIMER2_IRQHandler(void)
     {
         timer_interrupt_flag_clear(TIMER2, TIMER_INT_FLAG_UP);
 
-        CMT2210AW::CallbackOnBit();
-    }
-}
-
-
-void TIMER14_IRQHandler(void)
-{
-    if (timer_interrupt_flag_get(TIMER14, TIMER_INT_FLAG_CH1))
-    {
-        timer_interrupt_flag_clear(TIMER14, TIMER_INT_FLAG_CH1);
-
         Beeper::CallbackOnTimer();
     }
 }

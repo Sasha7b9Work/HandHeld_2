@@ -5,10 +5,12 @@
 #include "Hardware/Timer.h"
 #include "Modules/PCF8563/PCF8563.h"
 #include "Settings/Settings.h"
+#include "Hardware/HAL/HAL_PINS.h"
 #include <cmath>
 #ifdef GUI
     #include "GUI/Controls/PainterMelody.h"
 #endif
+#include <gd32e23x.h>
 
 
 struct Note
@@ -90,16 +92,22 @@ namespace Beeper
     static bool need_running = false;
     static uint time_start = 0;       // В это время нужно запустить
     static uint8 volume = 0;
+
+    static PinOut pinMUTE(GPIOB, GPIO_PIN_1);
 }
 
 
 void Beeper::Init()
 {
     Beeper::Driver::Init();
+
+    pinMUTE.Init();
+
+    pinMUTE.ToHi();
 }
 
 
-void Beeper::_Play(TypeSound::E type, uint8 _volume)
+void Beeper::Play(TypeSound::E type, uint8 _volume)
 {
     if (is_running)
     {
@@ -121,6 +129,8 @@ void Beeper::_Play(TypeSound::E type, uint8 _volume)
     Sound::current = Sound::sounds[type];
 
     volume = _volume;
+
+    pinMUTE.ToLow();
 }
 
 
@@ -163,6 +173,8 @@ void Beeper::Stop()
     is_running = false;
 
     Beeper::Driver::Stop();
+
+    pinMUTE.ToHi();
 }
 
 

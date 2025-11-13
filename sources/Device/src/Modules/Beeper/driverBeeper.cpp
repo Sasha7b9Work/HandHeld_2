@@ -10,25 +10,27 @@ namespace Beeper
 {
     namespace Driver
     {
-        // PA3 - Alternate TIMER14_CH1 AF0
+        // PB0 - Alternate TIMER2_CH2 AF_1
+
+        static const uint PORT = GPIOB;
+        static const uint PIN = GPIO_PIN_0;
+        static const uint TIMER = TIMER2;
+        static const uint TIMER_CHAN = TIMER_CH_2;
     }
 }
 
 
 void Beeper::Driver::Init()
 {
-    rcu_periph_clock_enable(RCU_TIMER14);
-    nvic_irq_enable(TIMER14_IRQn, 0);
+    gpio_mode_set(PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, PIN);
+    gpio_output_options_set(PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PIN);
+    gpio_af_set(PORT, GPIO_AF_1, PIN);
 
-    gpio_mode_set(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO_PIN_3);
-    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_3);
-    gpio_af_set(GPIOA, GPIO_AF_0, GPIO_PIN_3);
-
-    timer_deinit(TIMER14);
+    timer_deinit(TIMER);
 
     timer_parameter_struct timer_initpara =
     {
-        // TIMER14CLK = SystemCoreClock / 18 = 4MHz, the PWM frequency is 16000 Hz
+        // TIMER2CLK = SystemCoreClock / 18 = 4MHz, the PWM frequency is 16000 Hz
         8,
         TIMER_COUNTER_EDGE,
         TIMER_COUNTER_UP,
@@ -37,7 +39,7 @@ void Beeper::Driver::Init()
         0
     };
 
-    timer_init(TIMER14, &timer_initpara);
+    timer_init(TIMER, &timer_initpara);
 
     timer_oc_parameter_struct timer_ocinitpara =
     {
@@ -48,17 +50,17 @@ void Beeper::Driver::Init()
         TIMER_OC_IDLE_STATE_LOW,
         TIMER_OCN_IDLE_STATE_LOW
     };
-    timer_channel_output_config(TIMER14, TIMER_CH_1, &timer_ocinitpara);
+    timer_channel_output_config(TIMER, TIMER_CHAN, &timer_ocinitpara);
 
     /* CH1 configuration in PWM mode0, duty cycle 50% */
-    timer_channel_output_pulse_value_config(TIMER14, TIMER_CH_1, 125);
-    timer_channel_output_mode_config(TIMER14, TIMER_CH_1, TIMER_OC_MODE_PWM1);
-    timer_channel_output_shadow_config(TIMER14, TIMER_CH_1, TIMER_OC_SHADOW_DISABLE);
+    timer_channel_output_pulse_value_config(TIMER, TIMER_CHAN, 125);
+    timer_channel_output_mode_config(TIMER, TIMER_CHAN, TIMER_OC_MODE_PWM1);
+    timer_channel_output_shadow_config(TIMER, TIMER_CHAN, TIMER_OC_SHADOW_DISABLE);
 
-    timer_primary_output_config(TIMER14, ENABLE);
+    timer_primary_output_config(TIMER, ENABLE);
 
     /* auto-reload preload enable */
-    timer_auto_reload_shadow_enable(TIMER14);
+    timer_auto_reload_shadow_enable(TIMER);
 //    timer_interrupt_enable(TIMER14, TIMER_INT_CH1);
 //    timer_enable(TIMER14);
 }
@@ -66,9 +68,9 @@ void Beeper::Driver::Init()
 
 void Beeper::Driver::StartFrequency(float frequency, uint8 vol)
 {
-    gpio_mode_set(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO_PIN_3);
-    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_3);
-    gpio_af_set(GPIOA, GPIO_AF_0, GPIO_PIN_3);
+    gpio_mode_set(PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, PIN);
+    gpio_output_options_set(PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PIN);
+    gpio_af_set(PORT, GPIO_AF_1, PIN);
 
     uint period = 250;
 
@@ -83,28 +85,28 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol)
 
     uint16 prescaler = (uint16)(SystemCoreClock / period / (uint)(frequency + 0.5f));
 
-    TIMER_PSC(TIMER14) = prescaler;
-    TIMER_CAR(TIMER14) = period;
+    TIMER_PSC(TIMER) = prescaler;
+    TIMER_CAR(TIMER) = period;
 
-    TIMER_DMAINTEN(TIMER14) |= (uint32_t)TIMER_INT_CH1;
+    TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
 
-    TIMER_CTL0(TIMER14) |= (uint32_t)TIMER_CTL0_CEN;
+    TIMER_CTL0(TIMER) |= (uint32_t)TIMER_CTL0_CEN;
 }
 
 
 void Beeper::Driver::Stop()
 {
-    timer_interrupt_disable(TIMER14, TIMER_INT_CH1);
-    timer_disable(TIMER14);
+    timer_interrupt_disable(TIMER, TIMER_INT_CH2);
+    timer_disable(TIMER);
 
-    gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO_PIN_3);
-    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_3);
+    gpio_mode_set(PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, PIN);
+    gpio_output_options_set(PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PIN);
 
-    gpio_bit_reset(GPIOA, GPIO_PIN_3);                  // Переводим в ноль, чтобы не палить динамик
+    gpio_bit_reset(PORT, PIN);                  // Переводим в ноль, чтобы не палить динамик
 }
 
 
 void Beeper::Driver::CallbackOnOutputSample(uint8 sample)
 {
-    TIMER_CH1CV(TIMER14) = (uint32_t)sample;
+    TIMER_CH1CV(TIMER) = (uint32_t)sample;
 }
