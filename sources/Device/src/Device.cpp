@@ -43,7 +43,7 @@ void Device::Init()
 
     Display::Init();
 
-//    Power::Init();
+    Power::Init();
 
     Timer::Init();
 
