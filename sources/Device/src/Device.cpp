@@ -71,7 +71,7 @@ void Device::Update2()
 //        Beeper::Play(TypeSound::_1, 2);
 //    }
 
-    Beeper::Play(TypeSound::_2, 2);
+    Beeper::Play(TypeSound::_4, 2);
 
 
 //    Display::Update2();

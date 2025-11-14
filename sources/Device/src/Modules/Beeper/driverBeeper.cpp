@@ -53,8 +53,8 @@ void Beeper::Driver::Init()
     timer_channel_output_config(TIMER, TIMER_CHAN, &timer_ocinitpara);
 
     /* CH1 configuration in PWM mode0, duty cycle 50% */
-    timer_channel_output_pulse_value_config(TIMER, TIMER_CHAN, 125);
-    timer_channel_output_mode_config(TIMER, TIMER_CHAN, TIMER_OC_MODE_PWM1);
+    timer_channel_output_pulse_value_config(TIMER, TIMER_CHAN, 12);
+    timer_channel_output_mode_config(TIMER, TIMER_CHAN, TIMER_OC_MODE_PWM0);
     timer_channel_output_shadow_config(TIMER, TIMER_CHAN, TIMER_OC_SHADOW_DISABLE);
 
     timer_primary_output_config(TIMER, ENABLE);
@@ -86,7 +86,7 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol)
     uint16 prescaler = (uint16)(SystemCoreClock / period / (uint)(frequency + 0.5f));
 
     TIMER_PSC(TIMER) = prescaler;
-    TIMER_CAR(TIMER) = period;
+    TIMER_CAR(TIMER) = period/4;
 
     TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
 
