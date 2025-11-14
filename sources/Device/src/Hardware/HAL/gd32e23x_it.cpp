@@ -112,7 +112,7 @@ void EXTI4_15_IRQHandler(void)
     {
         exti_interrupt_flag_clear(EXTI_13);
 
-        PAN3060::CallbackOnClock();
+        PAN3060::CallbackOnIRQ();
     }
 
     if (SET == exti_interrupt_flag_get(EXTI_7))

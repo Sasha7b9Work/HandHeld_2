@@ -16,8 +16,5 @@ namespace PAN3060
 
     uint GetCode(Source::E);
 
-    // Вызывается на приёме очередного бита
-    void CallbackOnBit();
-
-    void CallbackOnClock();
+    void CallbackOnIRQ();
 }

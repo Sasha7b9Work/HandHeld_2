@@ -14,17 +14,6 @@
 
 namespace PAN3060
 {
-    static uint64 words[3] = { 0, 0, 0 };
-    static uint64 xors[3] = { 0, 0, 0 };
-
-    void AppendBit(bool);
-
-    static void VerifySequence();
-
-    static uint GetBits(uint64);
-
-    static void ExecutePacket(uint); 
-
     static uint time_enable = 0;        // Время, когда начались клоки
 
     static bool need_start = false;
@@ -67,7 +56,7 @@ void PAN3060::PrepareToSleep()
 }
 
 
-void PAN3060::CallbackOnClock()
+void PAN3060::CallbackOnIRQ()
 {
 #ifdef WIN32
 #else
@@ -87,141 +76,6 @@ bool PAN3060::IsEnabled()
     }
 
     return result;
-}
-
-
-void PAN3060::CallbackOnBit()
-{
-#ifdef ENABLE_EMULATOR
-
-    ExecutePacket(EmuRecv::NextPacket());
-
-#else
-
-    AppendBit(pinDOUT.IsHi());
-
-#endif
-}
-
-
-void PAN3060::AppendBit(bool bit)
-{
-    words[0] <<= 1;
-
-    if (words[1] & 0x8000000000000000)
-    {
-        words[0] |= 1;
-    }
-
-    words[1] <<= 1;
-
-    if (words[2] & 0x8000000000000000)
-    {
-        words[1] |= 1;
-    }
-
-    words[2] <<= 1;
-
-//    if (EmuRecv::NextBit())
-    if (bit)
-    {
-        words[2] |= 1;
-    }
-
-    // Посылка будет вот такая : 1111110 10001101 - 15 бит,
-    // где каждая единица - это прямая последовательность баркера(11100010110),
-    // а ноль - тоже прямая последовательность, а не инверсная для нуля(00011101001)
-    // 0x1c5b8b716e2dc5b8b716e2dc5b8b716e2dc5b8b716
-
-    xors[0] = words[0] ^ 0x0000001C5B8B716E;
-    xors[1] = words[1] ^ 0x2DC5B8B716E2DC5B;
-    xors[2] = words[2] ^ 0x8B716E2DC5B8B716;
-
-    VerifySequence();
-}
-
-
-uint PAN3060::GetBits(uint64 bits)
-{
-    static const uint byte_count[256] =
-    {
-        0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
-        1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
-        1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
-        2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
-        1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
-        2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
-        2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
-        3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8
-    };
-
-    uint result = 0;
-
-    while (bits != 0)
-    {
-        result += byte_count[bits & 0xFF];
-        bits >>= 8;
-    }
-
-    return result;
-}
-
-
-void PAN3060::VerifySequence()
-{
-#define BARKERTRESHOLD 3
-
-    uint packet = 0;
-    uint bitlevel = 0;
-
-    //check bit HEAD 3
-    bitlevel = (uint)(GetBits(xors[0] & 0x0F) + GetBits((xors[1] >> 57) & 0x07FF));
-    if (bitlevel < BARKERTRESHOLD)
-        packet |= 0x0800;
-    else
-        if (bitlevel < (11 - BARKERTRESHOLD))
-            return;
-
-    //check bit PAYLOAD 5
-    bitlevel = (uint)(GetBits((uint)((xors[2] >> 55) & 0x07FF)) + GetBits((uint)(xors[1] & 0x03)));
-    if (bitlevel < BARKERTRESHOLD)
-        packet |= 0x0020;
-    else
-        if (bitlevel < (11 - BARKERTRESHOLD))
-            return;
-
-    //                           H6      H5      H4      H2     H1     H0     P0   P1   P2   P3   P4    P6    P7
-    static const int index[] = { 0,      0,      0,      1,     1,     1,     2,   2,   2,   2,   2,    1,    1 };
-    static const int shift[] = { 26,     15,     4,      46,    35,    24,    0,   11,  22,  33,  44,   2,    13 };
-    static const uint bit[]  = { 0x4000, 0x2000, 0x1000, 0x400, 0x200, 0x100, 0x1, 0x2, 0x4, 0x8, 0x10, 0x40, 0x80 };
-
-    for (int i = 0; i < 13; i++)
-    {
-        uint level = GetBits((xors[index[i]] >> shift[i]) & 0x7FF);
-        if (level < BARKERTRESHOLD)
-        {
-            packet |= bit[i];
-        }
-        else if (level < (11 - BARKERTRESHOLD))
-        {
-            return;
-        }
-    }
-
-    ExecutePacket(packet);
-}
-
-
-void PAN3060::ExecutePacket(uint packet)
-{
-    for (int i = 0; i < Source::Count; i++)
-    {
-        if (packet == GetCode((Source::E)i))
-        {
-            Source::Receive((Source::E)i);
-            break;
-        }
-    }
 }
 
 
