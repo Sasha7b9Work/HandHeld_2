@@ -1,10 +1,10 @@
 // 2024/03/01 22:46:05 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Modules/CMT2210AW/CMT2210AW.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Settings/Settings.h"
 #include "Hardware/Timer.h"
 #include "Hardware/HAL/HAL.h"
+#include "Modules/PAN3060/PAN3060.h"
 #ifdef ENABLE_EMULATOR
     #include "Modules/CMT2210AW/EmulatorReceiver.h"
 #endif
@@ -12,7 +12,7 @@
 #include <cstring>
 
 
-namespace CMT2210AW
+namespace PAN3060
 {
     static uint64 words[3] = { 0, 0, 0 };
     static uint64 xors[3] = { 0, 0, 0 };
@@ -31,7 +31,7 @@ namespace CMT2210AW
 }
 
 
-void CMT2210AW::Init()
+void PAN3060::Init()
 {
     pinDOUT.Init();
 
@@ -44,7 +44,7 @@ void CMT2210AW::Init()
 }
 
 
-void CMT2210AW::Update()
+void PAN3060::Update()
 {
     if (need_start)
     {
@@ -57,7 +57,7 @@ void CMT2210AW::Update()
 }
 
 
-void CMT2210AW::PrepareToSleep()
+void PAN3060::PrepareToSleep()
 {
 #ifdef WIN32
 #else
@@ -67,7 +67,7 @@ void CMT2210AW::PrepareToSleep()
 }
 
 
-void CMT2210AW::CallbackOnClock()
+void PAN3060::CallbackOnClock()
 {
 #ifdef WIN32
 #else
@@ -77,7 +77,7 @@ void CMT2210AW::CallbackOnClock()
 }
 
 
-bool CMT2210AW::IsEnabled()
+bool PAN3060::IsEnabled()
 {
     bool result = TIME_MS - time_enable < 700;      // \todo здесь должно быть 610
 
@@ -90,7 +90,7 @@ bool CMT2210AW::IsEnabled()
 }
 
 
-void CMT2210AW::CallbackOnBit()
+void PAN3060::CallbackOnBit()
 {
 #ifdef ENABLE_EMULATOR
 
@@ -104,7 +104,7 @@ void CMT2210AW::CallbackOnBit()
 }
 
 
-void CMT2210AW::AppendBit(bool bit)
+void PAN3060::AppendBit(bool bit)
 {
     words[0] <<= 1;
 
@@ -141,7 +141,7 @@ void CMT2210AW::AppendBit(bool bit)
 }
 
 
-uint CMT2210AW::GetBits(uint64 bits)
+uint PAN3060::GetBits(uint64 bits)
 {
     static const uint byte_count[256] =
     {
@@ -167,7 +167,7 @@ uint CMT2210AW::GetBits(uint64 bits)
 }
 
 
-void CMT2210AW::VerifySequence()
+void PAN3060::VerifySequence()
 {
 #define BARKERTRESHOLD 3
 
@@ -212,7 +212,7 @@ void CMT2210AW::VerifySequence()
 }
 
 
-void CMT2210AW::ExecutePacket(uint packet)
+void PAN3060::ExecutePacket(uint packet)
 {
     for (int i = 0; i < Source::Count; i++)
     {
@@ -225,7 +225,7 @@ void CMT2210AW::ExecutePacket(uint packet)
 }
 
 
-uint CMT2210AW::GetCode(Source::E source)
+uint PAN3060::GetCode(Source::E source)
 {
     static const uint packets[Source::Count] = { 0x7E9E, 0x7EA6, 0x7ED5, 0x7EB9, 0x7ECA, 0x7EED };
 

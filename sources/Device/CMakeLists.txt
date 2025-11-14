@@ -2,7 +2,7 @@
 
 project (Device)
 
-#set(CMAKE_UNITY_BUILD OFF)
+set(CMAKE_UNITY_BUILD OFF)
 
 message("------------------------------------------------------------------------ ${PROJECT_NAME}")
 
@@ -14,7 +14,7 @@ include_directories(
     ../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include
 )
 
-add_definitions(-DGD32E230 -DTYPE_BOARD_799)
+add_definitions(-DGD32E230)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
 
@@ -46,7 +46,6 @@ file(GLOB MENU                    src/Menu/*.*)
 file(GLOB MENU_PAGES              src/Menu/Pages/*.*)
 file(GLOB MODULES_BEEPER          src/Modules/Beeper/*.*)
 file(GLOB MODULES_BEEPER_SOUNDS   src/Modules/Beeper/Sounds/*.*)
-file(GLOB MODULES_CMT2210AW       src/Modules/CMT2210AW/*.*)
 file(GLOB MODULES_LED             src/Modules/LED/*.h
                                   src/Modules/LED/LED.cpp
                                   src/Modules/LED/driverLED_7735.cpp)
@@ -69,7 +68,6 @@ source_group(Menu                   FILES ${MENU})
 source_group(Menu/Pages             FILES ${MENU_PAGES})
 source_group(Modules/Beeper         FILES ${MODULES_BEEPER})
 source_group(Modules/Beeper/Sounds  FILES ${MODULES_BEEPER_SOUNDS})
-source_group(Modules/CMT2210AW      FILES ${MODULES_CMT2210AW})
 source_group(Modules/LED            FILES ${MODULES_LED})
 source_group(Modules/PAN3060        FILES ${MODULES_PAN3060})
 source_group(Modules/PCF8563        FILES ${MODULES_PCF8563})
@@ -98,7 +96,6 @@ add_library(${PROJECT_NAME}
     ${KEYBOARD}
     ${MODULES_BEEPER}
     ${MODULES_BEEPER_SOUNDS}
-    ${MODULES_CMT2210AW}
     ${MODULES_LED}
     ${MODULES_PAN3060}
     ${MODULES_PCF8563}

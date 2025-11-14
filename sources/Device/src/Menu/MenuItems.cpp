@@ -60,15 +60,15 @@ void Page::Draw() const
 
         if (num_words == 1)
         {
-            title.WriteInCenter(0, HAL::Is1602() ? 0 : 30, Display::WIDTH, Color::GREEN);
+            title.WriteInCenter(0, 30, Display::WIDTH, Color::GREEN);
         }
         else if(num_words == 2)
         {
             char buffer[32];
 
-            Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, HAL::Is1602() ? 0 : 15, Display::WIDTH, Color::GREEN);
+            Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, 15, Display::WIDTH, Color::GREEN);
 
-            Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, HAL::Is1602() ? 1 : 45, Display::WIDTH);
+            Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, 45, Display::WIDTH);
         }
 
         Font::SetSize(1);
@@ -91,7 +91,7 @@ void Choice::Draw() const
     {
         Font::SetSize(2);
 
-        data->item->Title().WriteInCenter(0, HAL::Is1602() ? 0 : 15, Display::WIDTH, Color::GREEN);
+        data->item->Title().WriteInCenter(0, 15, Display::WIDTH, Color::GREEN);
 
         int index = (int)(*data->value);
 
@@ -104,7 +104,7 @@ void Choice::Draw() const
             color = Color(data->colors[index]);
         }
 
-        Text<>(text).WriteInCenter(0, HAL::Is1602() ? 1 : 45, Display::WIDTH, color);
+        Text<>(text).WriteInCenter(0, 45, Display::WIDTH, color);
 
         Font::SetSize(1);
     }
@@ -115,17 +115,6 @@ void DateTime::DrawField(int x, int y, Text<> &text, bool selected) const
 {
     bool need_draw = true;
 
-#ifdef TYPE_1602
-
-    if (selected)
-    {
-        if (((TIME_MS / 250) % 3) == 2)     // Âûêëþ÷àåì íà 250 ìñ ÷åðåç êàæäûå 750
-        {
-            need_draw = false;
-        }
-    }
-
-#else
     const int width = 42;
     const int height = 35;
 
@@ -136,12 +125,10 @@ void DateTime::DrawField(int x, int y, Text<> &text, bool selected) const
         Rect(width + 2, height + 2).Draw(x - 1, y - 1, Color::WHITE);
     }
 
-#endif
-
     if (need_draw)
     {
         Font::SetSize(4);
-        text.Write(x + 3, HAL::Is1602() ? 1 : (y + 3), selected ? Color::BLACK : Color::WHITE);
+        text.Write(x + 3, (y + 3), selected ? Color::BLACK : Color::WHITE);
         Font::SetSize(1);
     }
 }
@@ -153,7 +140,7 @@ void DateTime::Draw() const
     {
         Font::SetSize(2);
 
-        Text<>("ÓÑÒÀÍÎÂÊÀ").WriteInCenter(0, HAL::Is1602() ? 0 : 10, Display::WIDTH, Color::WHITE);
+        Text<>("ÓÑÒÀÍÎÂÊÀ").WriteInCenter(0, 10, Display::WIDTH, Color::WHITE);
 
         Font::SetSize(1);
 
@@ -201,7 +188,7 @@ void DateTime::Draw() const
     {
         Font::SetSize(2);
 
-        data->item->Title().WriteInCenter(0, HAL::Is1602() ? 0 : 30, Display::WIDTH, Color::GREEN);
+        data->item->Title().WriteInCenter(0, 30, Display::WIDTH, Color::GREEN);
 
         Font::SetSize(1);
     }

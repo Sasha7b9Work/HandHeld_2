@@ -39,6 +39,4 @@ struct IconSourceSensor : public Icon
 };
 
 
-#ifndef TYPE_1602
 extern Icon *sourceIcons[Source::Count];
-#endif

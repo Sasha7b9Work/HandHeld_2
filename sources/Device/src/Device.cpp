@@ -4,7 +4,6 @@
 #include "Keyboard/Keyboard.h"
 #include "Menu/Menu.h"
 #include "Hardware/HAL/HAL.h"
-#include "Modules/CMT2210AW/CMT2210AW.h"
 #include "Modules/PCF8563/PCF8563.h"
 #include "Hardware/Timer.h"
 #include "Settings/Settings.h"
@@ -15,11 +14,8 @@
 #include "Modules/ST7735/ST7735.h"
 #include "Hardware/Power.h"
 #include "Hardware/HAL/HAL_PINS.h"
-#ifdef TYPE_1602
-    #include "Display/Display1602.h"
-#else
-    #include "Display/Display7735.h"
-#endif
+#include "Display/Display7735.h"
+#include "Modules/PAN3060/PAN3060.h"
 
 
 /*
@@ -55,7 +51,7 @@ void Device::Init()
 
     Vibrato::Init();
 
-    CMT2210AW::Init();
+    PAN3060::Init();
 
     Beeper::Init();
 
@@ -82,7 +78,7 @@ void Device::Update2()
 
 void Device::Update()
 {
-    bool recv_enabled = CMT2210AW::IsEnabled();
+    bool recv_enabled = PAN3060::IsEnabled();
     bool keyboard_more_time = Keyboard::ToMoreTime();
     int num_sources = Source::GetCountReceived();
     bool is_alarmed = PCF8563::IsAlarmed();
@@ -98,7 +94,7 @@ void Device::Update()
 
     Menu::Update();
 
-    CMT2210AW::Update();
+    PAN3060::Update();
 
     if (Source::GetCountReceived() || !Keyboard::ToMoreTime())
     {

@@ -26,12 +26,6 @@
     #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
     #pragma clang diagnostic ignored "-Wnon-virtual-dtor"
     #pragma clang diagnostic ignored "-Wundefined-func-template"
-
-#ifdef TYPE_1602
-    #pragma clang diagnostic ignored "-Wunused-variable"
-    #pragma clang diagnostic ignored "-Wunused-private-field"
-#endif
-
 #else
 #endif
 

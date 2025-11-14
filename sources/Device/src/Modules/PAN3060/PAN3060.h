@@ -3,7 +3,7 @@
 #include "Settings/Settings.h"
 
 
-namespace CMT2210AW
+namespace PAN3060
 {
     void Init();
 

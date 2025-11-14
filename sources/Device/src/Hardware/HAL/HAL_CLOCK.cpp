@@ -2,14 +2,11 @@
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
 #include "Modules/ST7735/ST7735.h"
-#include "Modules/CMT2210AW/CMT2210AW.h"
 #include "Hardware/HAL/systick.h"
 #include "Keyboard/Keyboard.h"
-#ifdef TYPE_1602
-    #include "Display/Display1602.h"
-#else
-    #include "Display/Display7735.h"
-#endif
+#include "Settings/Source.h"
+#include "Display/Display7735.h"
+#include "Modules/PAN3060/PAN3060.h"
 #include <gd32e23x.h>
 
 
@@ -89,7 +86,7 @@ void HAL_CLOCK::SetDeepSleep()
 {
     Display::PrepareToSleep();
 
-    CMT2210AW::PrepareToSleep();
+    PAN3060::PrepareToSleep();
 
 //    HAL::DeInit();
 

@@ -32,12 +32,6 @@ namespace PageJournal
 
         Font::SetSize(2);
 
-#ifdef TYPE_1602
-        Text<>("%02d  %02d/%02d %02d:%02d",
-            top_record + 1, time.Day, time.Month, time.Hour, time.Minute).Write(0, 0, (rec->source & 0x80) ? Color::GREEN : Color::RED);
-
-        Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).WriteInCenter(x, 1, Display::WIDTH);
-#else
         int y = 0;
 
         Text<>("%d", top_record + 1).Write(x + 5, y + 15);
@@ -46,7 +40,6 @@ namespace PageJournal
             time.Day, time.Month, time.Hour, time.Minute).Write(x + 55, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
 
         Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).WriteInCenter(x, y + 50, Display::WIDTH);
-#endif
 
         Font::SetSize(1);
     }
@@ -57,8 +50,8 @@ namespace PageJournal
         {
             Font::SetSize(2);
 
-            Text<>("∆”–Õ¿À").WriteInCenter(0, HAL::Is1602() ? 0 : 20, Display::WIDTH, Color::WHITE);
-            Text<>("œ”—“").WriteInCenter(0, HAL::Is1602() ? 1 : 50, Display::WIDTH);
+            Text<>("∆”–Õ¿À").WriteInCenter(0, 20, Display::WIDTH, Color::WHITE);
+            Text<>("œ”—“").WriteInCenter(0, 50, Display::WIDTH);
 
             Font::SetSize(1);
         }

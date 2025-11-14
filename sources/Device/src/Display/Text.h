@@ -38,9 +38,6 @@ struct Text
     }
     int GetLength() const
     {
-#ifdef TYPE_1602
-        return (int)std::strlen(text);
-#else
         int result = 0;
 
         pchar pointer = text;
@@ -53,7 +50,6 @@ struct Text
         }
 
         return result;
-#endif
     }
     char *c_str()
     {

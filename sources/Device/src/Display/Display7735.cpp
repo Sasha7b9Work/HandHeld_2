@@ -12,9 +12,9 @@
 #include "Utils/StringUtils.h"
 #include "Hardware/Power.h"
 #include "Hardware/HAL/HAL_PINS.h"
-#include "Modules/CMT2210AW/CMT2210AW.h"
 #include "Utils/Math.h"
 #include "Modules/PCF8563/PCF8563.h"
+#include "Modules/PAN3060/PAN3060.h"
 #include <string>
 
 
@@ -103,7 +103,7 @@ void Display::Update()
         FPS::EndFrame();
     }
 
-    if (!CMT2210AW::IsEnabled() && Source::GetCountReceived() == 0 && !PCF8563::IsAlarmed())
+    if (!PAN3060::IsEnabled() && Source::GetCountReceived() == 0 && !PCF8563::IsAlarmed())
     {
         ModeClock::Set(ModeClock::Low);
     }
@@ -212,9 +212,9 @@ void Display::EndScene(int num_parts)
     {
         if (!ModeClock::IsHi())
         {
-            while (CMT2210AW::IsEnabled())
+            while (PAN3060::IsEnabled())
             {
-                CMT2210AW::Update();
+                PAN3060::Update();
             }
         }
 

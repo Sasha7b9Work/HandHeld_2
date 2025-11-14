@@ -7,8 +7,8 @@
 #include "Storage/Storage.h"
 #include "Modules/LED/LED.h"
 #include "Modules/Beeper/Beeper.h"
-#include "Modules/CMT2210AW/CMT2210AW.h"
 #include "Keyboard/Keyboard.h"
+#include "Modules/PAN3060/PAN3060.h"
 #include <cstring>
 
 
@@ -162,7 +162,7 @@ bool Source::IsReceived(E type)
 
 void Source::Update()
 {
-    if (CMT2210AW::IsEnabled())
+    if (PAN3060::IsEnabled())
     {
         return;
     }
