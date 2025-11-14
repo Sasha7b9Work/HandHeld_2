@@ -203,7 +203,7 @@ static int dayofweek(int Day, int Month, int Year)
 {
     int Y, C, M, N, D;
     M = 1 + (9 + Month) % 12;
-    Y = Year - (M > 10);
+    Y = Year - (M > 10); //-V602
     C = Y / 100;
     D = Y % 100;
     N = ((13 * M - 1) / 5 + D + D / 4 + 6 * C + Day + 5) % 7;

@@ -113,8 +113,6 @@ void Choice::Draw() const
 
 void DateTime::DrawField(int x, int y, Text<> &text, bool selected) const
 {
-    bool need_draw = true;
-
     const int width = 42;
     const int height = 35;
 
@@ -125,12 +123,9 @@ void DateTime::DrawField(int x, int y, Text<> &text, bool selected) const
         Rect(width + 2, height + 2).Draw(x - 1, y - 1, Color::WHITE);
     }
 
-    if (need_draw)
-    {
-        Font::SetSize(4);
-        text.Write(x + 3, (y + 3), selected ? Color::BLACK : Color::WHITE);
-        Font::SetSize(1);
-    }
+    Font::SetSize(4);
+    text.Write(x + 3, (y + 3), selected ? Color::BLACK : Color::WHITE);
+    Font::SetSize(1);
 }
 
 

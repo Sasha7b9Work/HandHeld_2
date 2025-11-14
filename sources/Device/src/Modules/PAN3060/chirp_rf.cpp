@@ -52,7 +52,7 @@ void rf_init(void)
     rf_write_reg(REG_SYS_CTL, _data);
     delay_us(10);
     _data &= 0x7F;
-    rf_write_reg(REG_SYS_CTL, _data);
+    rf_write_reg(REG_SYS_CTL, _data); //-V525
     delay_us(10);
 
     rf_write_reg(REG_OP_MODE, RF_MODE_DEEP_SLEEP);
@@ -83,7 +83,7 @@ void rf_init(void)
     //        return;
     delay_us(10);
 
-    rf_write_reg(0x04, 0x36);
+    rf_write_reg(0x04, 0x36); //-V525
     //    if(rf_reply != RF_OK)
     //        return;
     delay_us(10);
@@ -336,7 +336,7 @@ void rf_deepsleep(void)
     //    rf_port.antenna_close();
     //    rf_port.delayus(10);
 
-    rf_write_reg(REG_OP_MODE, RF_MODE_STB3);
+    rf_write_reg(REG_OP_MODE, RF_MODE_STB3); //-V525
     delay_us(150);
     rf_write_reg(REG_OP_MODE, RF_MODE_STB2);
     delay_us(10);
@@ -374,7 +374,7 @@ void rf_set_default_para(void)
     _data = rf_read_spec_page_reg(PAGE0_SEL, 0x3d);
     _data &= ~(0x70);
     _data |= 0x10;
-    rf_write_spec_page_reg(PAGE0_SEL, 0x3d, _data);
+    rf_write_spec_page_reg(PAGE0_SEL, 0x3d, _data); //-V525
 
     rf_write_spec_page_reg(PAGE3_SEL, 0x15, 0x22);
     rf_write_spec_page_reg(PAGE3_SEL, 0x16, 0xC0);
@@ -557,7 +557,7 @@ void rf_sleep(void)
 {
     uint8 _data;
 
-    rf_write_reg(REG_OP_MODE, RF_MODE_STB3);
+    rf_write_reg(REG_OP_MODE, RF_MODE_STB3); //-V525
     if (rf_reply == RF_FAIL)
         return;
     delay_us(150);                          //150us
@@ -605,7 +605,7 @@ uint8 rf_clr_irq(void)
     {
         rf_write_spec_page_reg(PAGE0_SEL, 0x6C, 0x3f);  //clr irq
         reg_value = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
-        if ((reg_value & 0x7f) == 0)
+        if ((reg_value & 0x7f) == 0) //-V547
         {
             return OK;
         }

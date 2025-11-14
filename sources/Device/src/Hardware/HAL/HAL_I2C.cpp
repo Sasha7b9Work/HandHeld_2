@@ -317,10 +317,10 @@ static uint8_t SW_I2C_Read_8addr(uint8_t IICID, uint8_t regaddr, uint8_t *pdata,
     i2c_slave_address(IICID, WRITE_CMD);
     if (!i2c_check_ack()) { returnack = FALSE; }
     i2c_register_address(regaddr);
-    if (!i2c_check_ack()) { returnack = FALSE; }
+    if (!i2c_check_ack()) { returnack = FALSE; } //-V1048
     i2c_start_condition();                              //repeated START
     i2c_slave_address(IICID, READ_CMD);
-    if (!i2c_check_ack()) { returnack = FALSE; }
+    if (!i2c_check_ack()) { returnack = FALSE; } //-V1048
     if (rcnt > 1)
     {
         for (index = 0; index < (rcnt - 1); index++)
@@ -392,7 +392,7 @@ static uint8_t SW_I2C_Write_8addr(uint8_t IICID, uint8_t regaddr, const uint8_t 
     i2c_slave_address(IICID, WRITE_CMD);
     if (!i2c_check_ack()) { returnack = FALSE; }
     i2c_register_address(regaddr);
-    if (!i2c_check_ack()) { returnack = FALSE; }
+    if (!i2c_check_ack()) { returnack = FALSE; } //-V1048
     for (int index = 0; index < rcnt; index++)
     {
         i2c_register_address(pdata[index]);
