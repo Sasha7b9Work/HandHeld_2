@@ -1,7 +1,24 @@
 #include "defines.h"
 #include "Modules/PAN3060/chirp_rf.h"
 
-volatile uint8 rf_reply;
+
+static volatile uint8 rf_reply;
+
+
+static void delay_us(uint)
+{
+
+}
+
+static uint8 spi_readwrite(uint8 /*_tx_data*/)
+{
+	return 0;
+}
+
+
+#define spi_cs_set_low()                       /* (SPI_CS_GPIO_PORT->ODR &= (uint8_t)(~SPI_CS_PIN))  */
+#define spi_cs_set_high()                      /* (SPI_CS_GPIO_PORT->ODR |= (uint8_t)(SPI_CS_PIN))   */
+
 
 /**
  * @brief change rf mode from deep sleep to standby3(STB3)
@@ -10,77 +27,77 @@ volatile uint8 rf_reply;
  */
 void rf_init(void)
 {
-  uint8_t _data;
-  uint8_t _cal30, _cal31, _cal32;
-  
+	uint8 _data;
+	uint8 _cal30, _cal31, _cal32;
+
 #ifdef SPI_SOFT_3LINE
-  rf_write_reg(REG_SYS_CTL, 0x03);
-  rf_write_reg(0x1A, 0x83);
+	rf_write_reg(REG_SYS_CTL, 0x03);
+	rf_write_reg(0x1A, 0x83);
 #endif
 
-  //deepsleep wakeup
-  _data = rf_read_reg(0x04);
-    _data |= 0x10;
-    rf_write_reg(0x04, _data);
-    delay_us(10);
-    _data &= 0xEF;
-    rf_write_reg(0x04, _data);
-	if(rf_reply != RF_OK)
+	//deepsleep wakeup
+	_data = rf_read_reg(0x04);
+	_data |= 0x10;
+	rf_write_reg(0x04, _data);
+	delay_us(10);
+	_data &= 0xEF;
+	rf_write_reg(0x04, _data);
+	if (rf_reply != RF_OK)
 		return;
-    _data = rf_read_reg(REG_SYS_CTL);
-    _data &= 0x7F;
-    rf_write_reg(REG_SYS_CTL, _data);
-    delay_us(10);
-    _data |= 0x80;
-    rf_write_reg(REG_SYS_CTL, _data);
-    delay_us(10);
-    _data &= 0x7F;
-    rf_write_reg(REG_SYS_CTL, _data);
-    delay_us(10);
+	_data = rf_read_reg(REG_SYS_CTL);
+	_data &= 0x7F;
+	rf_write_reg(REG_SYS_CTL, _data);
+	delay_us(10);
+	_data |= 0x80;
+	rf_write_reg(REG_SYS_CTL, _data);
+	delay_us(10);
+	_data &= 0x7F;
+	rf_write_reg(REG_SYS_CTL, _data);
+	delay_us(10);
 
-    rf_write_reg(REG_OP_MODE, RF_MODE_DEEP_SLEEP);
-//	if(rf_reply != RF_OK)
-//		return;
-    delay_us(10);
+	rf_write_reg(REG_OP_MODE, RF_MODE_DEEP_SLEEP);
+	//	if(rf_reply != RF_OK)
+	//		return;
+	delay_us(10);
 
-    rf_write_reg(REG_OP_MODE, RF_MODE_SLEEP);
-//	if(rf_reply != RF_OK)
-//		return;
-    delay_us(10);
+	rf_write_reg(REG_OP_MODE, RF_MODE_SLEEP);
+	//	if(rf_reply != RF_OK)
+	//		return;
+	delay_us(10);
 
 	//set bit5 in register 0x06 at page 3
 	_data = rf_read_spec_page_reg(PAGE3_SEL, 0x06);
 	_data |= 1 << 5;
 	rf_write_spec_page_reg(PAGE3_SEL, 0x06, _data);
-//	if(rf_reply != RF_OK)
-//		return;
+	//	if(rf_reply != RF_OK)
+	//		return;
 	delay_us(10);
 
 	rf_write_reg(REG_OP_MODE, RF_MODE_STB1);
-//	if(rf_reply != RF_OK)
-//		return;
+	//	if(rf_reply != RF_OK)
+	//		return;
 	delay_us(10);
 
 	rf_write_spec_page_reg(PAGE3_SEL, 0x26, 0x2F);
-//	if(rf_reply != RF_OK)
-//		return;
+	//	if(rf_reply != RF_OK)
+	//		return;
 	delay_us(10);
 
 	rf_write_reg(0x04, 0x36);
-//	if(rf_reply != RF_OK)
-//		return;
+	//	if(rf_reply != RF_OK)
+	//		return;
 	delay_us(10);
 
 	//rf_tcxo_init();
 
 	rf_write_reg(REG_OP_MODE, RF_MODE_STB2);
-//	if(rf_reply != RF_OK)
-//		return;
+	//	if(rf_reply != RF_OK)
+	//		return;
 	delay_us(2000);
 
 	rf_write_reg(REG_OP_MODE, RF_MODE_STB3);
-//	if(rf_reply != RF_OK)
-//		return;
+	//	if(rf_reply != RF_OK)
+	//		return;
 	delay_us(10);
 
 	//rf_ft_calibr
@@ -90,14 +107,14 @@ void rf_init(void)
 	_cal31 = rf_efuse_read_encry_byte(31);
 	_cal32 = rf_efuse_read_encry_byte(32);
 
-	if(rf_efuse_read_encry_byte(28) == 0x5A)
+	if (rf_efuse_read_encry_byte(28) == 0x5A)
 	{
 		rf_write_spec_page_reg(PAGE2_SEL, 0x3D, 0xFD);
 
-		if(_cal32 != 0)
+		if (_cal32 != 0)
 			rf_write_spec_page_reg(PAGE0_SEL, 0x45, _cal32);
 
-		if(rf_efuse_read_encry_byte(13) == MODEM_MPA)
+		if (rf_efuse_read_encry_byte(13) == MODEM_MPA)
 		{
 			_data = rf_read_spec_page_reg(PAGE3_SEL, 0x1C);
 			_data &= 0xE0;
@@ -105,31 +122,31 @@ void rf_init(void)
 			rf_write_spec_page_reg(PAGE3_SEL, 0x1C, _data);
 		}
 		else
-			if(rf_efuse_read_encry_byte(13) == MODEM_MPB)
+			if (rf_efuse_read_encry_byte(13) == MODEM_MPB)
 			{
-				_data = (0xc0 | (_cal30 & 0x1f));
+				_data = (uint8)(0xc0 | (uint8)(_cal30 & 0x1f));
 				rf_write_spec_page_reg(PAGE3_SEL, 0x1C, _data);
-			};
+			}
 
 		rf_write_spec_page_reg(PAGE3_SEL, 0x1D, _cal31);
-	};
+	}
 
 	rf_efuse_off();
 
 	//init rf registers
-	for(uint8_t i = 0; i < sizeof(g_reg_cfg)/sizeof(pan_reg_cfg_t); i++)
+	for (uint8 i = 0; i < sizeof(g_reg_cfg) / sizeof(pan_reg_cfg_t); i++)
 	{
 		rf_write_spec_page_reg(g_reg_cfg[i].page, g_reg_cfg[i].addr, g_reg_cfg[i].data);
-	};
+	}
 
 	//set AGC on
 	_data = rf_read_spec_page_reg(PAGE2_SEL, 0x06);
 	_data &= 0xFE;
 	rf_write_spec_page_reg(PAGE2_SEL, 0x06, _data);
 
-        rf_write_fifo_otp(PAGE2_SEL, 0x0A, (uint8_t *)reg_agc_freq400, 40);
+	rf_write_fifo_otp(PAGE2_SEL, 0x0A, (const uint8 *)reg_agc_freq400, 40);
 
-        rf_write_spec_page_reg(PAGE2_SEL, 0x34, 0xef);
+	rf_write_spec_page_reg(PAGE2_SEL, 0x34, 0xef);
 
 	//init antenna and LED outputs, 
 	//  all gpio as outputs
@@ -140,8 +157,8 @@ void rf_init(void)
 	rf_write_spec_page_reg(PAGE0_SEL, 0x67, (0 << RF_GPIO_3) | (0 << RF_GPIO_0));
 	rf_write_spec_page_reg(PAGE0_SEL, 0x68, (0 << RF_GPIO_11) | (1 << RF_GPIO_10));
 
-//	rf_set_gpio_input(MODULE_GPIO_CAD_IRQ);				//CAD not used
-//	rf_set_gpio_state(MODULE_GPIO_CAD_IRQ, 0);
+	//	rf_set_gpio_input(MODULE_GPIO_CAD_IRQ);				//CAD not used
+	//	rf_set_gpio_state(MODULE_GPIO_CAD_IRQ, 0);
 }
 
 /**
@@ -149,16 +166,16 @@ void rf_init(void)
  * @param[in] <addr> register address to write
  * @return value read from register
  */
-uint8_t rf_read_reg(uint8_t _addr)
+uint8 rf_read_reg(uint8 _addr)
 {
-  uint8_t _data;
-  
-  spi_cs_set_low();
-  spi_readwrite(_addr << 1);
-  _data = spi_readwrite(0x00);
-  spi_cs_set_high();
+	uint8 _data;
 
-  return _data;
+	spi_cs_set_low();
+	spi_readwrite((uint8)(_addr << 1));
+	_data = spi_readwrite(0x00);
+	spi_cs_set_high();
+
+	return _data;
 }
 
 /**
@@ -167,31 +184,30 @@ uint8_t rf_read_reg(uint8_t _addr)
  * @param[in] <value> address value to write to rgister
  * @return result
  */
-void rf_write_reg(uint8_t _addr, uint8_t _data)
+void rf_write_reg(uint8 _addr, uint8 _data)
 {
-  spi_cs_set_low();
-  spi_readwrite((_addr << 1) | 0x01);
-  spi_readwrite(_data);
-  spi_cs_set_high();
+	spi_cs_set_low();
+	spi_readwrite((uint8)((_addr << 1) | 0x01));
+	spi_readwrite(_data);
+	spi_cs_set_high();
 
-  rf_reply = RF_OK;
+	rf_reply = RF_OK;
 #if SPI_WRITE_CHECK
-  if(rf_read_reg(_addr) != _data)
-    rf_reply = RF_FAIL;
+	if (rf_read_reg(_addr) != _data)
+		rf_reply = RF_FAIL;
 #endif
 }
 
-void rf_write_fifo_otp(enum PAGE_SEL _page, uint8_t _addr, const uint8_t *_buffer, uint8_t _cnt)
+void rf_write_fifo_otp(enum PAGE_SEL /*_page*/, uint8 _addr, const uint8 *_buffer, uint8 _cnt)
 {
-  spi_cs_set_low();
-  spi_readwrite((_addr << 1) | 0x01);
+	spi_cs_set_low();
+	spi_readwrite((uint8)((_addr << 1) | 0x01));
 
-  do
-  {
-    spi_readwrite(*_buffer++);
-  }
-  while(--_cnt);
-  spi_cs_set_high();
+	do
+	{
+		spi_readwrite(*_buffer++);
+	} while (--_cnt);
+	spi_cs_set_high();
 }
 
 /**
@@ -201,16 +217,15 @@ void rf_write_fifo_otp(enum PAGE_SEL _page, uint8_t _addr, const uint8_t *_buffe
  * @param[in] <_cnt> receive data size
  * @return none
  */
-void rf_read_fifo(uint8_t _addr, uint8_t *_buffer, uint8_t _cnt)
+void rf_read_fifo(uint8 _addr, uint8 *_buffer, uint8 _cnt)
 {
-  spi_cs_set_low();
-  spi_readwrite((_addr << 1) | 0x00);
-  do
-  {
-    *_buffer++ = spi_readwrite(0x00);
-  }
-  while(--_cnt);
-  spi_cs_set_high();
+	spi_cs_set_low();
+	spi_readwrite((uint8)((_addr << 1) | 0x00));
+	do
+	{
+		*_buffer++ = spi_readwrite(0x00);
+	} while (--_cnt);
+	spi_cs_set_high();
 }
 
 /**
@@ -220,7 +235,7 @@ void rf_read_fifo(uint8_t _addr, uint8_t *_buffer, uint8_t _cnt)
  */
 void rf_switch_page(enum PAGE_SEL _page)
 {
-    rf_write_reg(REG_SYS_CTL, (_page & 0x03));
+	rf_write_reg(REG_SYS_CTL, (uint8)(_page & 0x03));
 }
 
 /**
@@ -229,7 +244,7 @@ void rf_switch_page(enum PAGE_SEL _page)
  * @param[in] <addr> register address
  * @return register value
  */
-uint8_t rf_read_spec_page_reg(enum PAGE_SEL _page, uint8_t _addr)
+uint8 rf_read_spec_page_reg(enum PAGE_SEL _page, uint8 _addr)
 {
 	rf_switch_page(_page);
 
@@ -243,10 +258,10 @@ uint8_t rf_read_spec_page_reg(enum PAGE_SEL _page, uint8_t _addr)
  * @param[in] <value> value to write
  * @return result
  */
-void rf_write_spec_page_reg(enum PAGE_SEL _page, uint8_t _addr, uint8_t _data)
+void rf_write_spec_page_reg(enum PAGE_SEL _page, uint8 _addr, uint8 _data)
 {
 	rf_switch_page(_page);
-	if(rf_reply != RF_OK)
+	if (rf_reply != RF_OK)
 		return;
 
 	rf_write_reg(_addr, _data);
@@ -259,11 +274,11 @@ void rf_write_spec_page_reg(enum PAGE_SEL _page, uint8_t _addr, uint8_t _data)
  */
 void rf_efuse_on(void)
 {
-  uint8_t _data;
-  
-  _data = rf_read_spec_page_reg(PAGE2_SEL, 0x3E);
-  _data &= ~(1<<3);
-  rf_write_spec_page_reg(PAGE2_SEL, 0x3E, _data);
+	uint8 _data;
+
+	_data = rf_read_spec_page_reg(PAGE2_SEL, 0x3E);
+	_data &= ~(1 << 3);
+	rf_write_spec_page_reg(PAGE2_SEL, 0x3E, _data);
 }
 
 /**
@@ -273,20 +288,20 @@ void rf_efuse_on(void)
  */
 void rf_efuse_off(void)
 {
-  uint8_t _data;
+	uint8 _data;
 
-  _data = rf_read_spec_page_reg(PAGE2_SEL, 0x3E);
-  _data |= 1<<3;
-  rf_write_spec_page_reg(PAGE2_SEL, 0x3E, _data);
+	_data = rf_read_spec_page_reg(PAGE2_SEL, 0x3E);
+	_data |= 1 << 3;
+	rf_write_spec_page_reg(PAGE2_SEL, 0x3E, _data);
 }
 
 /**
  * @brief read efuse data for initialize
  * @return data
  */
-uint8_t rf_efuse_read_encry_byte(uint8_t _efuse_addr)
+uint8 rf_efuse_read_encry_byte(uint8 _efuse_addr)
 {
-	uint8_t _tmp, _timeout = 100;
+	uint8 _tmp, _timeout = 100;
 
 	rf_switch_page(PAGE2_SEL);
 
@@ -294,16 +309,17 @@ uint8_t rf_efuse_read_encry_byte(uint8_t _efuse_addr)
 	spi_readwrite((0x3B << 1) | 0x01);
 	spi_readwrite(0x5A);
 	spi_readwrite(0xA5);
-	spi_readwrite(_efuse_addr << 1);
+	spi_readwrite((uint8)(_efuse_addr << 1));
 	spi_cs_set_high();
 
-	do{
+	do
+	{
 		_tmp = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
-		if(_tmp & 0x80)
+		if (_tmp & 0x80)
 		{
 			break;
 		}
-	}while(_timeout--);
+	} while (_timeout--);
 
 	return rf_read_spec_page_reg(PAGE2_SEL, 0x3B);
 }
@@ -315,10 +331,10 @@ uint8_t rf_efuse_read_encry_byte(uint8_t _efuse_addr)
  */
 void rf_deepsleep(void)
 {
-  uint8_t _data;
+	uint8 _data;
 
-//	rf_port.antenna_close();
-//	rf_port.delayus(10);
+	//	rf_port.antenna_close();
+	//	rf_port.delayus(10);
 
 	rf_write_reg(REG_OP_MODE, RF_MODE_STB3);
 	delay_us(150);
@@ -350,8 +366,8 @@ void rf_deepsleep(void)
  */
 void rf_set_default_para(void)
 {
-  uint8_t _data;
-  
+	uint8 _data;
+
 	//set frequency
 	rf_write_spec_page_reg(PAGE0_SEL, 0x40, 0x3A);
 
@@ -410,7 +426,7 @@ void rf_set_default_para(void)
 	rf_efuse_on();
 	_data = rf_efuse_read_encry_byte(32);
 	rf_efuse_off();
-	if(_data == 0)
+	if (_data == 0)
 		_data = 8;
 	_data |= 0x80;
 	rf_write_spec_page_reg(PAGE0_SEL, 0x45, _data);
@@ -429,29 +445,29 @@ void rf_set_default_para(void)
 void rf_sleep_wakeup(void)
 {
 	/*
-    RF_ASSERT(rf_set_spec_page_reg_bits(PAGE3_SEL, 0x06, BIT5));
-    rf_port.delayus(10);
+	RF_ASSERT(rf_set_spec_page_reg_bits(PAGE3_SEL, 0x06, BIT5));
+	rf_port.delayus(10);
 
-    RF_ASSERT(rf_write_reg(REG_OP_MODE, RF_MODE_STB1));
-    rf_port.delayus(10);
+	RF_ASSERT(rf_write_reg(REG_OP_MODE, RF_MODE_STB1));
+	rf_port.delayus(10);
 
-    RF_ASSERT(rf_write_spec_page_reg(PAGE3_SEL, 0x26, 0x2f));
-    rf_port.delayus(10);
+	RF_ASSERT(rf_write_spec_page_reg(PAGE3_SEL, 0x26, 0x2f));
+	rf_port.delayus(10);
 
-    RF_ASSERT(rf_write_reg(0x04, 0x36));
-    rf_port.delayus(10);
+	RF_ASSERT(rf_write_reg(0x04, 0x36));
+	rf_port.delayus(10);
 
-    rf_port.tcxo_init();
+	rf_port.tcxo_init();
 
-    RF_ASSERT(rf_write_reg(REG_OP_MODE, RF_MODE_STB2));
-    rf_port.delayus(150);
+	RF_ASSERT(rf_write_reg(REG_OP_MODE, RF_MODE_STB2));
+	rf_port.delayus(150);
 
-    RF_ASSERT(rf_write_reg(REG_OP_MODE, RF_MODE_STB3));
+	RF_ASSERT(rf_write_reg(REG_OP_MODE, RF_MODE_STB3));
 
-    rf_port.delayus(10);
-    rf_port.antenna_init();
+	rf_port.delayus(10);
+	rf_port.antenna_init();
 
-    return OK;
+	return OK;
 	*/
 }
 
@@ -461,31 +477,31 @@ void rf_sleep_wakeup(void)
  * @param[in] <_cnt> the length of data to send
  * @return result
  */
-void rf_single_tx_data_otp(const uint8_t *_buffer, uint8_t _cnt)
+void rf_single_tx_data_otp(const uint8 *_buffer, uint8 _cnt)
 {
-  uint8_t _data;
+	uint8 _data;
 
-  //set mode STB3
-  rf_write_reg(REG_OP_MODE, RF_MODE_STB3);
+	//set mode STB3
+	rf_write_reg(REG_OP_MODE, RF_MODE_STB3);
 
-  //set ldo pa on
-  _data = rf_read_spec_page_reg(PAGE0_SEL, 0x4F);
-  _data |= 1 << 3;
-  rf_write_spec_page_reg(PAGE0_SEL, 0x4F, _data);
+	//set ldo pa on
+	_data = rf_read_spec_page_reg(PAGE0_SEL, 0x4F);
+	_data |= 1 << 3;
+	rf_write_spec_page_reg(PAGE0_SEL, 0x4F, _data);
 
-  //set single tx mode
-  _data = rf_read_spec_page_reg(PAGE3_SEL, 0x06);
-  _data &= ~(1 << 2);
-  rf_write_spec_page_reg(PAGE3_SEL, 0x06, _data);
-  
-  //set payload length
-  rf_write_spec_page_reg(PAGE1_SEL, REG_PAYLOAD_LEN, PACKET_PAYLOAD_LENGTH);
+	//set single tx mode
+	_data = rf_read_spec_page_reg(PAGE3_SEL, 0x06);
+	_data &= ~(1 << 2);
+	rf_write_spec_page_reg(PAGE3_SEL, 0x06, _data);
 
-  //set mode TX
-  rf_write_reg(REG_OP_MODE, RF_MODE_TX);
+	//set payload length
+	rf_write_spec_page_reg(PAGE1_SEL, REG_PAYLOAD_LEN, PACKET_PAYLOAD_LENGTH);
 
-  //write fifo buffer
-  rf_write_fifo_otp(PAGE1_SEL, REG_FIFO_ACC_ADDR, _buffer, _cnt);
+	//set mode TX
+	rf_write_reg(REG_OP_MODE, RF_MODE_TX);
+
+	//write fifo buffer
+	rf_write_fifo_otp(PAGE1_SEL, REG_FIFO_ACC_ADDR, _buffer, _cnt);
 }
 
 /**
@@ -495,17 +511,17 @@ void rf_single_tx_data_otp(const uint8_t *_buffer, uint8_t _cnt)
  */
 void rf_enter_continous_rx(void)
 {
-  uint8_t _data;
+	uint8 _data;
 
-  rf_write_reg(REG_OP_MODE, RF_MODE_STB3);    //set mode
+	rf_write_reg(REG_OP_MODE, RF_MODE_STB3);    //set mode
 
-  //set continuos receive mode
-  _data = rf_read_spec_page_reg(PAGE3_SEL, 0x06);
-  _data &= 0xFC;
-  _data |= RF_RX_CONTINOUS;
-  rf_write_spec_page_reg(PAGE3_SEL, 0x06, _data);
+	//set continuos receive mode
+	_data = rf_read_spec_page_reg(PAGE3_SEL, 0x06);
+	_data &= 0xFC;
+	_data |= RF_RX_CONTINOUS;
+	rf_write_spec_page_reg(PAGE3_SEL, 0x06, _data);
 
-  rf_write_reg(REG_OP_MODE, RF_MODE_RX);      //set mode
+	rf_write_reg(REG_OP_MODE, RF_MODE_RX);      //set mode
 }
 
 /**
@@ -513,23 +529,23 @@ void rf_enter_continous_rx(void)
  * @param[in] <timeout> rx single timeout time(in ms)
  * @return result
  */
-void rf_enter_single_timeout_rx(uint16_t _timeout)
+void rf_enter_single_timeout_rx(uint16 _timeout)
 {
-  uint8_t _data;
+	uint8 _data;
 
-  rf_write_reg(REG_OP_MODE, RF_MODE_STB3);    //set mode
+	rf_write_reg(REG_OP_MODE, RF_MODE_STB3);    //set mode
 
-  //set single receive mode
-  _data = rf_read_spec_page_reg(PAGE3_SEL, 0x06);
-  _data &= 0xFC;
-  _data |= RF_RX_SINGLE_TIMEOUT;
-  rf_write_spec_page_reg(PAGE3_SEL, 0x06, _data);
-    
-  //set timeout value
-  rf_write_spec_page_reg(PAGE3_SEL, 0x07, (uint8_t)_timeout);
-  rf_write_spec_page_reg(PAGE3_SEL, 0x08, (uint8_t)(_timeout>>8));
+	//set single receive mode
+	_data = rf_read_spec_page_reg(PAGE3_SEL, 0x06);
+	_data &= 0xFC;
+	_data |= RF_RX_SINGLE_TIMEOUT;
+	rf_write_spec_page_reg(PAGE3_SEL, 0x06, _data);
 
-  rf_write_reg(REG_OP_MODE, RF_MODE_RX);      //set mode
+	//set timeout value
+	rf_write_spec_page_reg(PAGE3_SEL, 0x07, (uint8)_timeout);
+	rf_write_spec_page_reg(PAGE3_SEL, 0x08, (uint8)(_timeout >> 8));
+
+	rf_write_reg(REG_OP_MODE, RF_MODE_RX);      //set mode
 }
 
 /**
@@ -539,37 +555,37 @@ void rf_enter_single_timeout_rx(uint16_t _timeout)
  */
 void rf_sleep(void)
 {
-  uint8_t _data;
+	uint8 _data;
 
 	rf_write_reg(REG_OP_MODE, RF_MODE_STB3);
-	if(rf_reply == RF_FAIL)
+	if (rf_reply == RF_FAIL)
 		return;
 	delay_us(150);					//150us
 
 	rf_write_reg(REG_OP_MODE, RF_MODE_STB2);
-	if(rf_reply == RF_FAIL)
+	if (rf_reply == RF_FAIL)
 		return;
 	delay_us(10);					//10us
 
 	rf_write_reg(REG_OP_MODE, RF_MODE_STB1);
-	if(rf_reply == RF_FAIL)
+	if (rf_reply == RF_FAIL)
 		return;
 	delay_us(10);					//10us
 
 	rf_write_reg(0x04, 0x16);
-	if(rf_reply == RF_FAIL)
+	if (rf_reply == RF_FAIL)
 		return;
 	delay_us(10);					//10us
 
 	rf_write_reg(REG_OP_MODE, RF_MODE_SLEEP);
-	if(rf_reply == RF_FAIL)
+	if (rf_reply == RF_FAIL)
 		return;
 
 	//reset bit 5 in register 0x06 at page 3
 	_data = rf_read_spec_page_reg(PAGE3_SEL, 0x06);
 	_data &= ~(1 << 5);
 	rf_write_spec_page_reg(PAGE3_SEL, 0x06, _data);
-	if(rf_reply == RF_FAIL)
+	if (rf_reply == RF_FAIL)
 		return;
 	delay_us(10);					//10us
 
@@ -581,23 +597,25 @@ void rf_sleep(void)
  * @param[in] <none>
  * @return result
  */
-uint8_t rf_clr_irq(void)
+uint8 rf_clr_irq(void)
 {
-    uint8_t clr_cnt = 0, reg_value;
-    uint16_t a = 0, b = 0;
-    while(clr_cnt < 3)
-    {
-        rf_write_spec_page_reg(PAGE0_SEL, 0x6C, 0x3f);  //clr irq
-        reg_value = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
-        if((reg_value & 0x7f)==0)
-        {
-            return OK;
-        } else {
-            clr_cnt++;
-            for(a=0; a<1200; a++)
-                for(b=0; b<100; b++);
-            continue;
-        }
-    }
-    return FAIL;
+	uint8 clr_cnt = 0, reg_value;
+	uint16 a = 0, b = 0;
+	while (clr_cnt < 3)
+	{
+		rf_write_spec_page_reg(PAGE0_SEL, 0x6C, 0x3f);  //clr irq
+		reg_value = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
+		if ((reg_value & 0x7f) == 0)
+		{
+			return OK;
+		}
+		else
+		{
+			clr_cnt++;
+			for (a = 0; a < 1200; a++)
+				for (b = 0; b < 100; b++);
+			continue;
+		}
+	}
+	return FAIL;
 }

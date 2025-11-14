@@ -20,9 +20,6 @@ typedef struct
 
 #define SPI_WRITE_CHECK         		1
 
-#define spi_cs_set_low()                        (SPI_CS_GPIO_PORT->ODR &= (uint8_t)(~SPI_CS_PIN))
-#define spi_cs_set_high()                       (SPI_CS_GPIO_PORT->ODR |= (uint8_t)(SPI_CS_PIN))
-
 #define RF_GPIO_0				0
 #define RF_GPIO_3				3
 #define RF_GPIO_10				2
@@ -267,7 +264,5 @@ void rf_enter_single_timeout_rx(uint16 _timeout);
 void rf_sleep(void);
 void rf_irq_process(void);
 uint8 rf_clr_irq(void);
-
-extern uint8 spi_readwrite(uint8 _tx_data);
 
 #endif

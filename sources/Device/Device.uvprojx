@@ -1010,6 +1010,16 @@
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PAN3060\PAN3060.h</FilePath>
             </File>
+            <File>
+              <FileName>chirp_rf.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\PAN3060\chirp_rf.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>chirp_rf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\PAN3060\chirp_rf.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2127,6 +2137,16 @@
               <FileName>PAN3060.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PAN3060\PAN3060.h</FilePath>
+            </File>
+            <File>
+              <FileName>chirp_rf.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\PAN3060\chirp_rf.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>chirp_rf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\PAN3060\chirp_rf.h</FilePath>
             </File>
           </Files>
         </Group>
