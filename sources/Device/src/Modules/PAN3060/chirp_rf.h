@@ -1,8 +1,14 @@
-#ifndef __CHIRP_RF_H
-#define __CHIRP_RF_H
+#pragma once
 
-enum {RF_OK = 0, OK = 0, RF_FAIL = 1, FAIL = 1};
-enum PAGE_SEL {PAGE0_SEL, PAGE1_SEL, PAGE2_SEL, PAGE3_SEL};
+
+enum
+{
+    RF_OK = 0, OK = 0, RF_FAIL = 1, FAIL = 1
+};
+enum PAGE_SEL
+{
+    PAGE0_SEL, PAGE1_SEL, PAGE2_SEL, PAGE3_SEL
+};
 
 typedef struct
 {
@@ -11,22 +17,22 @@ typedef struct
     uint8 data;
 }pan_reg_cfg_t;
 
-#define	VIBROLINE_HEAD				0x7E	//constant head of the packet
-#define	VIBROLINE_DEVICE_DOORBELL		0x01	//bit7 set = low battery
-#define	VIBROLINE_DEVICE_PHONE  		0x02	//bit7 set = low battery
-#define	VIBROLINE_DEVICE_INTERCOM		0x04	//bit7 set = low battery
-#define	VIBROLINE_DEVICE_BABYCRY		0x08	//bit7 set = low battery
-#define	PACKET_PAYLOAD_LENGTH			4
+#define    VIBROLINE_HEAD                0x7E    //constant head of the packet
+#define    VIBROLINE_DEVICE_DOORBELL        0x01    //bit7 set = low battery
+#define    VIBROLINE_DEVICE_PHONE          0x02    //bit7 set = low battery
+#define    VIBROLINE_DEVICE_INTERCOM        0x04    //bit7 set = low battery
+#define    VIBROLINE_DEVICE_BABYCRY        0x08    //bit7 set = low battery
+#define    PACKET_PAYLOAD_LENGTH            4
 
-#define SPI_WRITE_CHECK         		1
+#define SPI_WRITE_CHECK                 1
 
-#define RF_GPIO_0				0
-#define RF_GPIO_3				3
-#define RF_GPIO_10				2
-#define RF_GPIO_11				3
-#define MODULE_GPIO_TX          		0
-#define MODULE_GPIO_RX          		10
-#define MODULE_GPIO_LED          		11
+#define RF_GPIO_0                0
+#define RF_GPIO_3                3
+#define RF_GPIO_10                2
+#define RF_GPIO_11                3
+#define MODULE_GPIO_TX                  0
+#define MODULE_GPIO_RX                  10
+#define MODULE_GPIO_LED                  11
 
 /* RF mode define*/
 #define RF_MODE_DEEP_SLEEP              0
@@ -166,7 +172,7 @@ typedef struct
 #define DEFAULT_SF                      SF_5
 #define DEFAULT_BW                      BW_500K
 #define DEFAULT_CR                      CODE_RATE_45
-         
+
 #define RADIO_FLAG_IDLE                 0
 #define RADIO_FLAG_TXDONE               1
 #define RADIO_FLAG_RXDONE               2
@@ -174,11 +180,11 @@ typedef struct
 #define RADIO_FLAG_RXERR                4
 #define RADIO_FLAG_PLHDRXDONE           5
 #define RADIO_FLAG_MAPM                 6
-        
+
 #define LEVEL_INACTIVE                  0
 #define LEVEL_ACTIVE                    1
 
-const pan_reg_cfg_t g_reg_cfg[]= 
+const pan_reg_cfg_t g_reg_cfg[] =
 {
     {PAGE0_SEL, 0x03, 0x1B},
     {PAGE0_SEL, 0x04, 0x76},
@@ -229,7 +235,7 @@ const pan_reg_cfg_t g_reg_cfg[]=
     {PAGE3_SEL, 0x26, 0x20},
 };
 
-const uint8 reg_agc_freq400[40] = 
+const uint8 reg_agc_freq400[40] =
 {
     0x06, 0x00, 0xf8, 0x06, 0x06, 0x00,
     0xf8, 0x06, 0x06, 0x00, 0xf8, 0x06, 0x06, 0x00, 0xf8, 0x06, 0x14, 0xc0, 0xf9, 0x14, 0x22, 0xd4,
@@ -264,5 +270,3 @@ void rf_enter_single_timeout_rx(uint16 _timeout);
 void rf_sleep(void);
 void rf_irq_process(void);
 uint8 rf_clr_irq(void);
-
-#endif
