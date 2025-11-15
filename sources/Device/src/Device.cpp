@@ -51,13 +51,16 @@ void Device::Init()
 
     Vibrato::Init();
 
+    ModeClock::Set(ModeClock::Hi);
+
+    uint clock = SystemCoreClock;
+    clock = clock;
+
     PAN3060::Init();
 
     Beeper::Init();
 
     Storage::Init();
-
-    ModeClock::Set(ModeClock::Hi);
 }
 
 void Device::Update2()
