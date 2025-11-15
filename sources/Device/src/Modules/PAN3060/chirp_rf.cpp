@@ -21,19 +21,15 @@ static uint8 spi_readwrite(uint8 byte)
 {
     while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
     {
-        int i = 0;
     }
 
     spi_i2s_data_transmit(SPI_PAN3060, byte);
 
     while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_RBNE))
     {
-        int i = 0;
     }
     
-    uint8 result = (uint8)spi_i2s_data_receive(SPI_PAN3060);
-    
-    return result;
+    return (uint8)spi_i2s_data_receive(SPI_PAN3060);
 }
 
 
