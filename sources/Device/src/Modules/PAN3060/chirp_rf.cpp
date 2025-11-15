@@ -25,11 +25,11 @@ static uint8 spi_readwrite(uint8 byte)
 
     spi_i2s_data_transmit(SPI_PAN3060, byte);
 
-    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_RBNE))
+    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
     {
     }
     
-    return (uint8)spi_i2s_data_receive(SPI_PAN3060);
+    return (uint8)SPI_DATA(SPI_PAN3060);
 }
 
 
