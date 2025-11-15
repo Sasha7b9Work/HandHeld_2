@@ -2,6 +2,9 @@
 #pragma once
 
 
+#define SPI_PAN3060 SPI1
+
+
 struct ModeClock
 {
     enum E

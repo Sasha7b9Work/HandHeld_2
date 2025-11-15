@@ -40,6 +40,10 @@ void PAN3060::Init()
     InitSPI();
 
     rf_init();
+
+    rf_set_default_para();
+
+    rf_enter_continous_rx();
 }
 
 
@@ -63,7 +67,7 @@ void PAN3060::InitSPI()
 
     spi_parameter_struct spi_init_struct;
 
-    spi_i2s_deinit(SPI1);
+    spi_i2s_deinit(SPI_PAN3060);
     spi_struct_para_init(&spi_init_struct);
 
     spi_init_struct.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
@@ -73,9 +77,9 @@ void PAN3060::InitSPI()
     spi_init_struct.nss = SPI_NSS_SOFT;
     spi_init_struct.prescale = SPI_PSC_32;
     spi_init_struct.endian = SPI_ENDIAN_MSB;
-    spi_init(SPI1, &spi_init_struct);
+    spi_init(SPI_PAN3060, &spi_init_struct);
 
-    spi_fifo_access_size_config(SPI1, SPI_BYTE_ACCESS);
+    spi_fifo_access_size_config(SPI_PAN3060, SPI_BYTE_ACCESS);
 }
 
 

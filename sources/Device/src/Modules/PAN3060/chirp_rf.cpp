@@ -1,6 +1,8 @@
 #include "defines.h"
 #include "Modules/PAN3060/chirp_rf.h"
 #include "Hardware/HAL/HAL_PINS.h"
+#include "Hardware/HAL/HAL.h"
+#include <gd32e23x.h>
 
 
 static volatile uint8 rf_reply = 0;
@@ -15,9 +17,19 @@ static void delay_us(uint us)
     }
 }
 
-static uint8 spi_readwrite(uint8 /*_tx_data*/)
+static uint8 spi_readwrite(uint8 byte)
 {
-    return 0;
+    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
+    {
+    }
+
+    spi_i2s_data_transmit(SPI_PAN3060, byte);
+
+    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_RBNE))
+    {
+    }
+
+    return (uint8)spi_i2s_data_receive(SPI_PAN3060);
 }
 
 
