@@ -3,9 +3,11 @@
 #include "Hardware/HAL/HAL_PINS.h"
 #include <gd32e23x.h>
 
-PinIn  pinPWR_CTRL(GPIOA, GPIO_PIN_0);      // PA0  10
 
-PinOut pinPWR(GPIOA, GPIO_PIN_12);           // PA12 33
+PinIn  pinPWR_CTRL(GPIOA, GPIO_PIN_0);          // PA0  10
+PinOut pinPWR(GPIOA, GPIO_PIN_12);              // PA12 33
+
+PinOut pinSPI1_NSS(GPIOB, GPIO_PIN_12);
 
 
 void Pin::Init()

@@ -235,6 +235,7 @@ const pan_reg_cfg_t g_reg_cfg[] =
     {PAGE3_SEL, 0x26, 0x20},
 };
 
+
 const uint8 reg_agc_freq400[40] =
 {
     0x06, 0x00, 0xf8, 0x06, 0x06, 0x00,
@@ -243,24 +244,20 @@ const uint8 reg_agc_freq400[40] =
     0x38, 0x01
 };
 
-/**
- * @brief set radio default parameter
- * @param[in] <none>
- * @return result
- */
+
 void rf_init(void);
 uint8 rf_read_reg(uint8 _addr);
 void rf_write_reg(uint8 _addr, uint8 _data);
-void rf_write_fifo_otp(enum PAGE_SEL _page, uint8 _addr, const uint8 *_buffer, uint8 _cnt);
+void rf_write_fifo_otp(enum PAGE_SEL, uint8 _addr, const uint8 *_buffer, uint8 _cnt);
 void rf_read_fifo(uint8 _addr, uint8 *_buffer, uint8 _cnt);
-void rf_switch_page(enum PAGE_SEL _page);
+void rf_switch_page(enum PAGE_SEL);
 uint8 rf_read_spec_page_reg(enum PAGE_SEL _page, uint8 _addr);
 void rf_write_spec_page_reg(enum PAGE_SEL _page, uint8 _addr, uint8 _data);
-void rf_ft_calibr(void);
+//void rf_ft_calibr(void);
 void rf_efuse_on(void);
 void rf_efuse_off(void);
 uint8 rf_efuse_read_encry_byte(uint8);
-void rf_set_agc_on(void);
+//void rf_set_agc_on(void);
 void rf_deepsleep(void);
 void rf_set_default_para(void);
 void rf_sleep_wakeup(void);
@@ -268,5 +265,5 @@ void rf_single_tx_data_otp(const uint8 *_buffer, uint8 _cnt);
 void rf_enter_continous_rx(void);
 void rf_enter_single_timeout_rx(uint16 _timeout);
 void rf_sleep(void);
-void rf_irq_process(void);
+//void rf_irq_process(void);
 uint8 rf_clr_irq(void);

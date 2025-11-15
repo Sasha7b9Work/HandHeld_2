@@ -1,13 +1,18 @@
 #include "defines.h"
 #include "Modules/PAN3060/chirp_rf.h"
+#include "Hardware/HAL/HAL_PINS.h"
 
 
-static volatile uint8 rf_reply;
+static volatile uint8 rf_reply = 0;
 
 
-static void delay_us(uint)
+static void delay_us(uint us)
 {
+    volatile uint counter = us * 10;
 
+    while (counter-- != 0)
+    {
+    }
 }
 
 static uint8 spi_readwrite(uint8 /*_tx_data*/)
@@ -16,8 +21,8 @@ static uint8 spi_readwrite(uint8 /*_tx_data*/)
 }
 
 
-#define spi_cs_set_low()                       /* (SPI_CS_GPIO_PORT->ODR &= (uint8_t)(~SPI_CS_PIN))  */
-#define spi_cs_set_high()                      /* (SPI_CS_GPIO_PORT->ODR |= (uint8_t)(SPI_CS_PIN))   */
+#define spi_cs_set_low()            pinSPI1_NSS.ToLow()
+#define spi_cs_set_high()           pinSPI1_NSS.ToHi()
 
 
 /**

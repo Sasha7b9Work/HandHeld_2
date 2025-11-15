@@ -108,9 +108,10 @@ void EXTI2_3_IRQHandler(void)
 
 void EXTI4_15_IRQHandler(void)
 {
-    if (SET == exti_interrupt_flag_get(EXTI_13))
+    // Получено прерывание от приёмника
+    if (SET == exti_interrupt_flag_get(EXTI_8))
     {
-        exti_interrupt_flag_clear(EXTI_13);
+        exti_interrupt_flag_clear(EXTI_8);
 
         PAN3060::CallbackOnIRQ();
     }

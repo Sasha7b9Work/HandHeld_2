@@ -5,9 +5,7 @@
 #include "Hardware/Timer.h"
 #include "Hardware/HAL/HAL.h"
 #include "Modules/PAN3060/PAN3060.h"
-#ifdef ENABLE_EMULATOR
-    #include "Modules/CMT2210AW/EmulatorReceiver.h"
-#endif
+#include "Modules/PAN3060/chirp_rf.h"
 #include <gd32e23x.h>
 #include <cstring>
 
@@ -16,7 +14,8 @@ namespace PAN3060
 {
     /*
     *   IRQ  - PA8
-    *   NSS  - PB12     SPI1_NSS    AF_0
+    *   NSS  - PB12     SPI1_NSS
+    *   SCK  - PB13     SPI1_SCK    AF_0
     *   MISO - PB14     SIP1_MISO   AF_0
     *   MOSI - PB15     SPI1_MOSI   AF_0
     */
@@ -24,19 +23,59 @@ namespace PAN3060
     static uint time_enable = 0;        // Время, когда начались клоки
 
     static bool need_start = false;
+
+    static void InitIRQ();
+
+    static void InitSPI();
 }
 
 
 void PAN3060::Init()
 {
-//    pinDOUT.Init();
+    pinSPI1_NSS.Init();
+    pinSPI1_NSS.ToHi();
 
+    InitIRQ();
+
+    InitSPI();
+
+    rf_init();
+}
+
+
+void PAN3060::InitIRQ()
+{
     // Инициализируем пин клоков от приёмника на прерывание
-    gpio_mode_set(GPIOB, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_13);
+    gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_8);
     nvic_irq_enable(EXTI4_15_IRQn, 2);
-    syscfg_exti_line_config(EXTI_SOURCE_GPIOB, EXTI_SOURCE_PIN13);
-    exti_init(EXTI_13, EXTI_INTERRUPT, EXTI_TRIG_RISING);
-    exti_interrupt_flag_clear(EXTI_13);
+    syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
+    exti_init(EXTI_8, EXTI_INTERRUPT, EXTI_TRIG_RISING);
+    exti_interrupt_flag_clear(EXTI_8);
+}
+
+
+void PAN3060::InitSPI()
+{
+    //                              SCK             MISO         MOSI
+    gpio_af_set(GPIOB, GPIO_AF_0, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+    gpio_mode_set(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+
+    spi_parameter_struct spi_init_struct;
+
+    spi_i2s_deinit(SPI1);
+    spi_struct_para_init(&spi_init_struct);
+
+    spi_init_struct.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
+    spi_init_struct.device_mode = SPI_MASTER;
+    spi_init_struct.frame_size = SPI_FRAMESIZE_8BIT;
+    spi_init_struct.clock_polarity_phase = SPI_CK_PL_HIGH_PH_2EDGE;
+    spi_init_struct.nss = SPI_NSS_SOFT;
+    spi_init_struct.prescale = SPI_PSC_32;
+    spi_init_struct.endian = SPI_ENDIAN_MSB;
+    spi_init(SPI1, &spi_init_struct);
+
+    spi_fifo_access_size_config(SPI1, SPI_BYTE_ACCESS);
 }
 
 
@@ -57,18 +96,14 @@ void PAN3060::PrepareToSleep()
 {
 #ifdef WIN32
 #else
-    EXTI_PD = EXTI_13;
-    EXTI_INTEN |= EXTI_13;
+    EXTI_PD = EXTI_8;
+    EXTI_INTEN |= EXTI_8;
 #endif
 }
 
 
 void PAN3060::CallbackOnIRQ()
 {
-#ifdef WIN32
-#else
-    EXTI_INTEN &= ~(uint)EXTI_13;
-#endif
     need_start = true;
 }
 
