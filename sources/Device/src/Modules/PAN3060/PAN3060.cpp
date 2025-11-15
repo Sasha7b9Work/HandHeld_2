@@ -14,6 +14,13 @@
 
 namespace PAN3060
 {
+    /*
+    *   IRQ  - PA8
+    *   NSS  - PB12     SPI0_NSS
+    *   MISO - PB14     SIP0_MISO
+    *   MOSI - PB15     SPI0_MOSI
+    */
+
     static uint time_enable = 0;        // Время, когда начались клоки
 
     static bool need_start = false;
@@ -22,7 +29,7 @@ namespace PAN3060
 
 void PAN3060::Init()
 {
-    pinDOUT.Init();
+//    pinDOUT.Init();
 
     // Инициализируем пин клоков от приёмника на прерывание
     gpio_mode_set(GPIOB, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_13);

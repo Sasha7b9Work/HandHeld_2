@@ -2,9 +2,9 @@
 
 #ifndef VERSION_BUILD
 
-#define VERSION_BUILD 32
+#define VERSION_BUILD 33
 
-#define DATE_BUILD "2025-11-14 23:54:53"
+#define DATE_BUILD "2025-11-15 07:45:54"
 
 #define VERSION_SCPI  "1.0"
 

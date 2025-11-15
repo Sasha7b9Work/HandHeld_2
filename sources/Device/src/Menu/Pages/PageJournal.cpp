@@ -5,11 +5,7 @@
 #include "Storage/Storage.h"
 #include "Display/Font/Font.h"
 #include "Hardware/HAL/HAL.h"
-#ifdef TYPE_1602
-    #include "Display/Display1602.h"
-#else
-    #include "Display/Display7735.h"
-#endif
+#include "Display/Display7735.h"
 
 
 namespace PageJournal

@@ -7,20 +7,13 @@
 #include "Modules/PCF8563/PCF8563.h"
 #include "Modules/LED/driverLED.h"
 #include "Storage/Storage.h"
-#ifdef TYPE_1602
-    #include "Display/Display1602.h"
-#else
-    #include "Display/Display7735.h"
-#endif
+#include "Display/Display7735.h"
 
 
 namespace Power
 {
-#ifdef TYPE_1602
-#else
     static const int WIDTH = 38;
     static const int HEIGHT = 14;
-#endif
 
     static void PowerDown();
 }
@@ -130,34 +123,6 @@ void Power::Draw()
 {
     float voltage = HAL_ADC::GetVoltage(false);
 
-#ifdef TYPE_1602
-
-    if (voltage > 3.9f)         // 5/5 Полный заряд
-    {
-        Display::DrawSymbol(15, 0, 0xF5);
-    }
-    else if (voltage > 3.85f)
-    {
-        Display::DrawSymbol(15, 0, 0xF4);
-    }
-    else if (voltage > 3.8f)
-    {
-        Display::DrawSymbol(15, 0, 0xF3);
-    }
-    else if (voltage > 3.7f)
-    {
-        Display::DrawSymbol(15, 0, 0xF2);
-    }
-    else if (voltage > 3.6f)
-    {
-        Display::DrawSymbol(15, 0, 0xF1);
-    }
-    else if (voltage > 3.5f)
-    {
-        Display::DrawSymbol(15, 0, 0xF0);
-    }
-
-#else
     int x = 121;
     int y = 0;
 
@@ -187,5 +152,4 @@ void Power::Draw()
         Rect(WIDTH, HEIGHT).Draw(x, y, Color::RED);
         Rect(5, 7).Fill(x - 4, y + 3);
     }
-#endif
 }

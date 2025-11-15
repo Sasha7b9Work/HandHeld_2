@@ -44,15 +44,5 @@ struct PinOut : public Pin
 };
 
 
-extern PinIn  pinDOUT;
-extern PinIn  pinSCK;
-
-extern PinOut pinADC;
-
-extern PinOut pinLEDPWR;
-
 extern PinOut pinPWR;               // Управление включением - 1 - вкл
 extern PinIn  pinPWR_CTRL;          // Сигнал включения - 0 - нажата кнопка или будильник сработал
-
-
-extern const uint I2C_ADDR;

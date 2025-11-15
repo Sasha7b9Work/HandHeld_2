@@ -8,11 +8,7 @@
 #include "Utils/StringUtils.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
-#ifdef TYPE_1602
-    #include "Display/Display1602.h"
-#else
-    #include "Display/Display7735.h"
-#endif
+#include "Display/Display7735.h"
 
 
 void Item::Draw() const
@@ -154,15 +150,6 @@ void DateTime::Draw() const
 
         const int y = 32;
 
-#ifdef TYPE_1602
-        int x[3] = { 1, 4, 7 };
-
-        if (data->is_time)
-        {
-            x[0] = 3;
-            x[1] = 6;
-        }
-#else
         int x[3] = { 5, 58, 111 };
 
         if (data->is_time)
@@ -170,7 +157,6 @@ void DateTime::Draw() const
             x[0] = 30;
             x[1] = 80;
         }
-#endif
 
         for (int i = 0; i < NumFields(); i++)
         {

@@ -87,16 +87,10 @@ int Source::Queue::size = 0;
 
 Source::Queue::Time Source::Queue::time_recv[Source::Count];
 
-#ifdef TYPE_1602
-void Source::DrawIcon(int , int , const Color &) const
-{
-}
-#else
 void Source::DrawIcon(int x, int y, const Color &color) const
 {
     sourceIcons[value]->Draw(x, y, color);
 }
-#endif
 
 
 static bool need_received[Source::Count] = { false, false, false, false, false, false };
@@ -361,11 +355,5 @@ bool ModeIndication::ConsistLED(E mode)
 
 bool ModeIndication::ConsistVibro(E mode)
 {
-#ifdef TYPE_1602
-    (void)mode;
-
-    return true;
-#else
     return mode == All || mode == Vibro || mode == Sound_Vibro || mode == LED_Vibro;
-#endif
 }

@@ -9,11 +9,7 @@
 
 namespace Vibrato
 {
-#ifdef TYPE_1602
-    static uint PIN = GPIO_PIN_2;
-#else
     static uint PIN = GPIO_PIN_10;
-#endif
 
     namespace Driver
     {
