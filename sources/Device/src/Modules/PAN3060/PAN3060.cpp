@@ -70,7 +70,7 @@ void PAN3060::InitSPI()
     spi_i2s_deinit(SPI_PAN3060);
     spi_struct_para_init(&spi_init_struct);
 
-    spi_init_struct.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
+    spi_init_struct.trans_mode = SPI_TRANSMODE_BDTRANSMIT;
     spi_init_struct.device_mode = SPI_MASTER;
     spi_init_struct.frame_size = SPI_FRAMESIZE_8BIT;
     spi_init_struct.clock_polarity_phase = SPI_CK_PL_LOW_PH_1EDGE;
