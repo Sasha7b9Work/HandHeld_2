@@ -16,9 +16,9 @@ namespace PAN3060
 {
     /*
     *   IRQ  - PA8
-    *   NSS  - PB12     SPI0_NSS
-    *   MISO - PB14     SIP0_MISO
-    *   MOSI - PB15     SPI0_MOSI
+    *   NSS  - PB12     SPI1_NSS    AF_0
+    *   MISO - PB14     SIP1_MISO   AF_0
+    *   MOSI - PB15     SPI1_MOSI   AF_0
     */
 
     static uint time_enable = 0;        // Время, когда начались клоки

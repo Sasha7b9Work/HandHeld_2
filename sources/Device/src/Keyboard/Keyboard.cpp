@@ -18,7 +18,7 @@ namespace Keyboard
         void Init()
         {
             gpio_mode_set(port, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, pin);
-            nvic_irq_enable(irqn, 2);
+            nvic_irq_enable((IRQn_Type)irqn, 2);
             syscfg_exti_line_config(exti_source_port, exti_source_pin);
             exti_init(exti, EXTI_INTERRUPT, EXTI_TRIG_BOTH);
             exti_interrupt_flag_clear(exti);
