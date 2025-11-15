@@ -73,48 +73,32 @@ void rf_init(void)
     delay_us(10);
 
     rf_write_reg(REG_OP_MODE, RF_MODE_DEEP_SLEEP);
-    //    if(rf_reply != RF_OK)
-    //        return;
     delay_us(10);
 
     rf_write_reg(REG_OP_MODE, RF_MODE_SLEEP);
-    //    if(rf_reply != RF_OK)
-    //        return;
     delay_us(10);
 
     //set bit5 in register 0x06 at page 3
     _data = rf_read_spec_page_reg(PAGE3_SEL, 0x06);
     _data |= 1 << 5;
     rf_write_spec_page_reg(PAGE3_SEL, 0x06, _data);
-    //    if(rf_reply != RF_OK)
-    //        return;
     delay_us(10);
 
     rf_write_reg(REG_OP_MODE, RF_MODE_STB1);
-    //    if(rf_reply != RF_OK)
-    //        return;
     delay_us(10);
 
     rf_write_spec_page_reg(PAGE3_SEL, 0x26, 0x2F);
-    //    if(rf_reply != RF_OK)
-    //        return;
     delay_us(10);
 
     rf_write_reg(0x04, 0x36); //-V525
-    //    if(rf_reply != RF_OK)
-    //        return;
     delay_us(10);
 
     //rf_tcxo_init();
 
     rf_write_reg(REG_OP_MODE, RF_MODE_STB2);
-    //    if(rf_reply != RF_OK)
-    //        return;
     delay_us(2000);
 
     rf_write_reg(REG_OP_MODE, RF_MODE_STB3);
-    //    if(rf_reply != RF_OK)
-    //        return;
     delay_us(10);
 
     //rf_ft_calibr
