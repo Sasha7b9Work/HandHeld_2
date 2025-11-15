@@ -2,11 +2,11 @@
     \file    readme.txt
     \brief   description of the slave receiver
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -32,7 +32,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 OF SUCH DAMAGE.
 */
 
-  This demo is based on the GD32E230C-EVAL-V1.0 board, it shows the I2C programming 
+  This demo is based on the GD32E230C-EVAL-V1.1 board, it shows the I2C programming 
 mode in slave receiving mode. In this demo, I2C0 is operated as slave receiver, 
 and the SCL line and SDA line of I2C0 interface are controlled by the I/O pin 
 PB6 and PB7 respectively.

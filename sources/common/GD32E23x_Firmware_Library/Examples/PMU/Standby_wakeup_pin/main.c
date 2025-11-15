@@ -2,11 +2,11 @@
     \file    main.c
     \brief   standby wakeup through wakeup pin
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -37,6 +37,14 @@ OF SUCH DAMAGE.
 #include "gd32e230c_eval.h"
 
 void led_config(void);
+/* software delay to prevent the impact of Vcore fluctuations.
+   It is strongly recommended to include it to avoid issues caused by self-removal. */
+static void _soft_delay_(uint32_t time)
+{
+    __IO uint32_t i;
+    for(i=0; i<time*10; i++){
+    }
+}
 
 /*!
     \brief      main function
@@ -60,6 +68,12 @@ int main(void)
     /* press tamper key to enter standby mode and use wakeup key to wakeup mcu */
     while(1){
         if(RESET == gpio_input_bit_get(TAMPER_KEY_GPIO_PORT, TAMPER_KEY_PIN)){
+            /* The following is to prevent Vcore fluctuations caused by frequency switching. 
+               It is strongly recommended to include it to avoid issues caused by self-removal. */
+            rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV2);
+            _soft_delay_(0x80);
+            rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV4);
+            _soft_delay_(0x80);
             pmu_to_standbymode();
         }
     }

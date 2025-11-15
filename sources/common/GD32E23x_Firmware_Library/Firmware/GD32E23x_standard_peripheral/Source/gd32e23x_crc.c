@@ -1,34 +1,34 @@
 /*!
     \file    gd32e23x_crc.c
     \brief   CRC driver
-    
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
-    Redistribution and use in source and binary forms, with or without modification, 
+    Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
 
-    1. Redistributions of source code must retain the above copyright notice, this 
+    1. Redistributions of source code must retain the above copyright notice, this
        list of conditions and the following disclaimer.
-    2. Redistributions in binary form must reproduce the above copyright notice, 
-       this list of conditions and the following disclaimer in the documentation 
+    2. Redistributions in binary form must reproduce the above copyright notice,
+       this list of conditions and the following disclaimer in the documentation
        and/or other materials provided with the distribution.
-    3. Neither the name of the copyright holder nor the names of its contributors 
-       may be used to endorse or promote products derived from this software without 
+    3. Neither the name of the copyright holder nor the names of its contributors
+       may be used to endorse or promote products derived from this software without
        specific prior written permission.
 
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 
@@ -84,7 +84,7 @@ void crc_data_register_reset(void)
 }
 
 /*!
-    \brief      read the data register 
+    \brief      read the data register
     \param[in]  none
     \param[out] none
     \retval     32-bit value of the data register
@@ -190,11 +190,11 @@ void crc_polynomial_set(uint32_t poly)
 */
 uint32_t crc_single_data_calculate(uint32_t sdata, uint8_t data_format)
 {
-    if(INPUT_FORMAT_WORD == data_format){
+    if(INPUT_FORMAT_WORD == data_format) {
         REG32(CRC) = sdata;
-    }else if(INPUT_FORMAT_HALFWORD == data_format){
+    } else if(INPUT_FORMAT_HALFWORD == data_format) {
         REG16(CRC) = (uint16_t)sdata;
-    }else{
+    } else {
         REG8(CRC) = (uint8_t)sdata;
     }
 
@@ -215,27 +215,29 @@ uint32_t crc_single_data_calculate(uint32_t sdata, uint8_t data_format)
 */
 uint32_t crc_block_data_calculate(void *array, uint32_t size, uint8_t data_format)
 {
-    uint8_t *data8;
-    uint16_t *data16;
-    uint32_t *data32;
     uint32_t index;
+    uint32_t data;
+    uint32_t data_calcul = 0xFFFFFFFFU;
 
-    if(INPUT_FORMAT_WORD == data_format){
-        data32 = (uint32_t *)array;
-        for(index = 0U; index < size; index++){
-            REG32(CRC) = data32[index];
+    data = (uint32_t)array;
+
+    if(INPUT_FORMAT_WORD == data_format) {
+        for(index = 0U; index < size; index++) {
+            REG32(CRC) = *(uint32_t *)data;
+            data += 4U;
         }
-    }else if(INPUT_FORMAT_HALFWORD == data_format){
-        data16 = (uint16_t *)array;
-        for(index = 0U; index < size; index++){
-            REG16(CRC) = data16[index];
+    } else if(INPUT_FORMAT_HALFWORD == data_format) {
+        for(index = 0U; index < size; index++) {
+            REG16(CRC) = *(uint16_t *)data;
+            data += 2U;
         }
-    }else{
-        data8 = (uint8_t *)array;
-        for(index = 0U; index < size; index++){
-            REG8(CRC) =  data8[index];
+    } else {
+        for(index = 0U; index < size; index++) {
+            REG8(CRC) = *(uint8_t *)data;
+            data += 1U;
         }
     }
+    data_calcul = CRC_DATA;
 
-    return (CRC_DATA);
+    return data_calcul;
 }

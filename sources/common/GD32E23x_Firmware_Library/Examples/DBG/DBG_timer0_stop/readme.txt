@@ -2,11 +2,11 @@
     \file  readme.txt
     \brief description of the DBG demo
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -32,7 +32,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 OF SUCH DAMAGE.
 */
 
-  This demo is based on the GD32E230C-EVAL-V1.0 board, it shows that, when the 
+  This demo is based on the GD32E230C-EVAL-V1.1 board, it shows that, when the 
 DBG_CTL0_TM1_HOLD bit in DBG control register(DBG_CTL0) is set and the core halted,
 the TIMER0 counter stop counting and the PWM outputs of all channels are stopped as
 well.It's benefit for debuging.

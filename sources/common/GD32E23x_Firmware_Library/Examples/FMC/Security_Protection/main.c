@@ -2,11 +2,11 @@
     \file    main.c
     \brief   main flash read protection
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -63,7 +63,7 @@ int main(void)
         /* indicates the page is not in read protection */
         gd_eval_led_on(LED1);
         gd_eval_led_off(LED2);
-    }else{
+    } else {
         /* indicates the page is in read protection */
         gd_eval_led_on(LED2);
     }

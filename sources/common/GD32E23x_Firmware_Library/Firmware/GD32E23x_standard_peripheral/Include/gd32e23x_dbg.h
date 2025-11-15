@@ -2,11 +2,11 @@
     \file    gd32e23x_dbg.h
     \brief   definitions for the DBG
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -82,7 +82,7 @@ OF SUCH DAMAGE.
 enum dbg_reg_idx
 {
     DBG_IDX_CTL0  = 0x04U, 
-    DBG_IDX_CTL1  = 0x08U 
+    DBG_IDX_CTL1  = 0x08U, 
 };
 
 /* peripherals hold bit */
@@ -99,7 +99,7 @@ typedef enum
     DBG_TIMER16_HOLD        = DBG_REGIDX_BIT(DBG_IDX_CTL1, 18U),             /*!< TIMER16 hold bit */
     DBG_I2C0_HOLD           = DBG_REGIDX_BIT(DBG_IDX_CTL0, 15U),             /*!< I2C0 hold bit */
     DBG_I2C1_HOLD           = DBG_REGIDX_BIT(DBG_IDX_CTL0, 16U),             /*!< I2C1 hold bit */
-    DBG_RTC_HOLD            = DBG_REGIDX_BIT(DBG_IDX_CTL1, 10U)              /*!< RTC hold bit */
+    DBG_RTC_HOLD            = DBG_REGIDX_BIT(DBG_IDX_CTL1, 10U),             /*!< RTC hold bit */
 }dbg_periph_enum;
 
 /* function declarations */

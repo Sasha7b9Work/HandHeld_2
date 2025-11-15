@@ -2,11 +2,11 @@
     \file    main.c
     \brief   main flash program, erase and reprogram
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -144,7 +144,7 @@ void fmc_erase_pages_check(void)
             lednum = LED1;
             gd_eval_led_on(lednum);
             break;
-        }else{
+        } else {
             ptrd++;
         }
     }
@@ -168,7 +168,7 @@ void fmc_program_check(void)
             lednum = LED1;
             gd_eval_led_on(lednum);
             break;
-        }else{
+        } else {
             ptrd++;
         }
     }
@@ -196,7 +196,7 @@ void fmc_program_doubleword_check(void)
             lednum = LED1;
             gd_eval_led_on(lednum);
             break;
-        }else{
+        } else {
             ptrd++;
         }
     }

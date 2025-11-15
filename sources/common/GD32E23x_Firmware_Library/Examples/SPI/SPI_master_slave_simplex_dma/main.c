@@ -2,11 +2,11 @@
     \file    main.c
     \brief   SPI simplex communication using DMA
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -73,7 +73,7 @@ int main(void)
     dma_config();
     /* configure SPI */
     spi_config();
-
+  
 #ifdef MASTER_TRAMSMIT_SLAVE_RECEIVE
     /* enable DMA channel */
     /* SPI0_Tx DMA channel */
@@ -98,12 +98,12 @@ int main(void)
     spi_dma_enable(SPI0, SPI_DMA_RECEIVE);
 #endif /* slave send and master receive */
 
+    /* enable SPI0 NSS output */
+    spi_nss_output_enable(SPI0);
+    
     /* enable SPI */
     spi_enable(SPI1);
     spi_enable(SPI0);
-
-    /* enable SPI0 NSS output */
-    spi_nss_output_enable(SPI0);
 
 #ifdef MASTER_TRAMSMIT_SLAVE_RECEIVE
     /* wait DMA transmit completed */

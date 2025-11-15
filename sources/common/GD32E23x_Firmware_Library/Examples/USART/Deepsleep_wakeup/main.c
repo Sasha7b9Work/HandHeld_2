@@ -2,11 +2,11 @@
     \file    main.c
     \brief   Deepsleep wakeup
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -153,12 +153,12 @@ void led_spark(void)
         if(timing_delay_local < 500){
             /* light on */
             gd_eval_led_on(LED2);
-        }else{
+        } else {
             /* light off */
             gd_eval_led_off(LED2);
         }
         timing_delay_local--;
-    }else{
+    } else {
         timing_delay_local = 1000;
     }
 }

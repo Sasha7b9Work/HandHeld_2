@@ -2,11 +2,11 @@
     \file    gd32e230c_eval.c
     \brief   firmware functions to manage leds, keys, COM ports
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -80,7 +80,7 @@ static const uint8_t KEY_PIN_SOURCE[KEYn]       = {WAKEUP_KEY_EXTI_PIN_SOURCE,
                                                    TAMPER_KEY_EXTI_PIN_SOURCE
                                                    };
 
-static const uint8_t KEY_IRQn[KEYn]             = {WAKEUP_KEY_EXTI_IRQn, 
+static const IRQn_Type KEY_IRQn[KEYn]             = {WAKEUP_KEY_EXTI_IRQn, 
                                                    TAMPER_KEY_EXTI_IRQn
                                                    };
 

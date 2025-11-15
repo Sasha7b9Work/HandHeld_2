@@ -2,11 +2,11 @@
 ;    \file    startup_gd32e23x.s
 ;    \brief   start up file
 ;
-;    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+;    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 ;*/
 
 ;/*  Copyright (c) 2012 ARM LIMITED
-;    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+;    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 ;
 ;   All rights reserved.
 ;   Redistribution and use in source and binary forms, with or without
@@ -129,6 +129,20 @@ Reset_Handler   PROC
                 EXPORT  Reset_Handler                     [WEAK]
                 IMPORT  SystemInit
                 IMPORT  __main
+
+                LDR     R0, =0x1FFFF7E0
+                LDR     R2, [R0]
+                LDR     R0, = 0xFFFF0000
+                ANDS    R2, R2, R0
+                LSRS    R2, R2, #16
+                LSLS    R2, R2, #10
+                LDR     R1, =0x20000000
+                MOV     R0, #0x00
+SRAM_INIT       STM     R1!, {R0}
+                SUBS    R2, R2, #4
+                CMP     R2, #0x00
+                BNE     SRAM_INIT
+
                 LDR     R0, =SystemInit
                 BLX     R0
                 LDR     R0, =__main

@@ -2,11 +2,11 @@
     \file    main.c
     \brief   DMA reload transfer number by EXTI interrupt in discontinuous mode
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -36,7 +36,7 @@ OF SUCH DAMAGE.
 #include "gd32e230c_eval.h"
 #include "main.h"
 
-uint8_t welcome[50] = "hi,this is a example: RAM_TO_USART by DMA !\n";
+uint8_t welcome[] = "hi,this is a example: DMA reload transfer number by EXTI interrupt in discontinuous mode !\n";
 __IO uint32_t transfer_flag = 0;
 
 void nvic_config(void);

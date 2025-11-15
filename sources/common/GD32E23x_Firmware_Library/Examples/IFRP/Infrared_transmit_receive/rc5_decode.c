@@ -2,11 +2,11 @@
     \file    rc5_decode.c
     \brief   the rc5 infrared decoding file
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -256,7 +256,7 @@ void rc5_data_sampling(uint16_t raw_pulse_length, uint8_t edge)
             /* bit determination by the rising edge */
             tmp_last_bit = rc5_logic_table_rising_edge[rc5_tmp_packet.last_bit][pulse];
             rc5_modify_last_bit(tmp_last_bit);
-        }else{
+        } else {
             rc5_reset_packet();
         }
     }
@@ -265,12 +265,12 @@ void rc5_data_sampling(uint16_t raw_pulse_length, uint8_t edge)
         /* if this is the first falling edge - don't compute anything */
         if(rc5_tmp_packet.status & RC5_PACKET_STATUS_EMPTY){ 
             rc5_tmp_packet.status &= (uint8_t)~RC5_PACKET_STATUS_EMPTY;
-        }else{
+        } else {
             if(pulse <= RC5_2T_TIME){ 
                 /* bit determination by the falling edge */
                 tmp_last_bit = rc5_logic_table_falling_edge[rc5_tmp_packet.last_bit][pulse];
                 rc5_modify_last_bit(tmp_last_bit);
-            }else{
+            } else {
                 rc5_reset_packet();
             }
         }
@@ -311,7 +311,7 @@ static void rc5_modify_last_bit(trc5_last_bit_type bit)
             rc5_tmp_packet.last_bit = bit;
             /* insert one bit into the rc5 packet */
             rc5_write_bit(rc5_tmp_packet.last_bit);
-        }else{
+        } else {
             rc5_reset_packet();
         }
     }
@@ -330,7 +330,7 @@ static void rc5_write_bit(uint8_t bit_val)
         bit_val = 1;
     }else if(bit_val == RC5_ZER){
         bit_val = 0;
-    }else{
+    } else {
         rc5_reset_packet();
         return;
     } 
@@ -345,7 +345,7 @@ static void rc5_write_bit(uint8_t bit_val)
         rc5_tmp_packet.data = rc5_tmp_packet.data << 1;
         /* decrement the bit_count */
         rc5_tmp_packet.bit_count--;
-    }else{
+    } else {
         rc5_frame_received = YES;
     }
 }
@@ -372,7 +372,7 @@ static uint32_t timer_get_counter_clk_value(void)
     /* if APBx clock div >= 4 */
     if(apb_prescaler >= 4){
         return((apb_frequency * 2)/(timer_prescaler + 1));
-    }else{
+    } else {
         return(apb_frequency/(timer_prescaler+ 1));
     }
 }

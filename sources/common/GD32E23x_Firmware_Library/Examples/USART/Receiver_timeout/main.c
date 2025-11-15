@@ -2,11 +2,11 @@
     \file    main.c
     \brief   UASRT receiver timeout
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -55,7 +55,7 @@ int main(void)
     uint32_t i=0, j=0;
     nvic_config();
 
-    /* initilize the com */
+    /* initialize the com */
     com_gpio_init();
     com_usart_init();
 
@@ -65,7 +65,7 @@ int main(void)
         if(0 == rxcount){
             /* enable the USART receive interrupt */
             usart_interrupt_enable(USART0, USART_INT_RBNE);
-        }else{
+        } else {
             /* enable the USART receive timeout and configure the time of timeout */
             usart_receiver_timeout_enable(USART0);
             usart_receiver_timeout_threshold_config(USART0, 115200*3);
@@ -100,7 +100,7 @@ void nvic_config(void)
 }
 
 /*!
-    \brief      initilize the com GPIO
+    \brief      initialize the com GPIO
     \param[in]  none
     \param[out] none
     \retval     none
@@ -126,7 +126,7 @@ void com_gpio_init(void)
 }
 
 /*!
-    \brief      initilize the USART configuration of the com
+    \brief      initialize the USART configuration of the com
     \param[in]  none
     \param[out] none
     \retval     none
@@ -148,10 +148,21 @@ void com_usart_init(void)
     usart_enable(USART0);
 }
 
+#ifdef GD_ECLIPSE_GCC
+/* retarget the C library printf function to the USART, in Eclipse GCC environment */
+int __io_putchar(int ch)
+{
+    usart_data_transmit(EVAL_COM, (uint8_t) ch);
+    while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+    return ch;
+}
+#else
 /* retarget the C library printf function to the USART */
 int fputc(int ch, FILE *f)
 {
-    usart_data_transmit(USART0, (uint8_t)ch);
-    while(RESET == usart_flag_get(USART0, USART_FLAG_TBE));
+    usart_data_transmit(EVAL_COM, (uint8_t)ch);
+    while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+
     return ch;
 }
+#endif /* GD_ECLIPSE_GCC */

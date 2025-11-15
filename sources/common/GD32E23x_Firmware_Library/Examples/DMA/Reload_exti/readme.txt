@@ -2,11 +2,11 @@
     \file    readme.txt
     \brief   description of DMA reload transfer number by EXTI interrupt in discontinuous mode
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -34,8 +34,7 @@ OF SUCH DAMAGE.
 
   This example is based on the GD32E230C-EVAL-V1.1 board, it provides a description of 
 how to reconfigure the DMA transfer number in discontinuous mode, when use DMA channel1 
-to transfer data from RAM memory to USART0 transmit data register, and JP13 on 
-GD32350R-EVAL-V1.0 board must be fitted.
+to transfer data from RAM memory to USART0 transmit data register.
 
   The start of transfer is triggered by software. If the DMA transfer operation is finished 
 correctly, data stored array welcome[] will be transfered to a serial port tool by USART0 

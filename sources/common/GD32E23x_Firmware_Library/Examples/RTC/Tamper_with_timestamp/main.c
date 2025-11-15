@@ -2,11 +2,11 @@
     \file  main.c
     \brief RTC tamper with timestamp demo
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -77,7 +77,7 @@ int main(void)
         or RTC clock source is not configured (when the first time the program 
         is executed or data in RCU_BDCTL is lost due to Vbat feeding) */
         rtc_setup(); 
-    }else{
+    } else {
         /* detect the reset source */
         if (RESET != rcu_flag_get(RCU_FLAG_PORRST)){
             printf("power on reset occurred....\n\r");
@@ -188,7 +188,7 @@ void rtc_setup(void)
     /* RTC current time configuration */
     if(ERROR == rtc_init(&rtc_initpara)){    
         printf("** RTC time configuration failed! **\n\r");
-    }else{
+    } else {
         printf("** RTC time configuration success! **\n\r");
         rtc_show_time();
         RTC_BKP0 = BKP_VALUE;
@@ -271,10 +271,21 @@ uint8_t usart_input_threshold(uint32_t value)
     return index;
 }
 
+#ifdef GD_ECLIPSE_GCC
+/* retarget the C library printf function to the USART, in Eclipse GCC environment */
+int __io_putchar(int ch)
+{
+    usart_data_transmit(EVAL_COM, (uint8_t) ch);
+    while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+    return ch;
+}
+#else
 /* retarget the C library printf function to the USART */
 int fputc(int ch, FILE *f)
 {
-    usart_data_transmit(EVAL_COM, (uint8_t) ch);
-    while (RESET == usart_flag_get(EVAL_COM,USART_FLAG_TC));
+    usart_data_transmit(EVAL_COM, (uint8_t)ch);
+    while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+
     return ch;
 }
+#endif /* GD_ECLIPSE_GCC */

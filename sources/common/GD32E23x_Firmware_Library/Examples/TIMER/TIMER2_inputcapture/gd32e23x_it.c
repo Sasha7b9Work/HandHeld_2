@@ -2,11 +2,11 @@
     \file    gd32e23x_it.c
     \brief   interrupt service routines
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -41,6 +41,8 @@ __IO uint16_t ccnumber = 0;
 __IO uint32_t count = 0;
 __IO float fre = 0;
 
+#define SRAM_PARITY_CHECK_ERROR_HANDLE(s)    do{}while(1)
+
 /*!
     \brief      this function handles NMI exception
     \param[in]  none
@@ -49,8 +51,13 @@ __IO float fre = 0;
 */
 void NMI_Handler(void)
 {
-    /* if NMI exception occurs, go to infinite loop */
-    while(1) {
+    if(SET == syscfg_flag_get(SYSCFG_SRAM_PCEF)) {
+        SRAM_PARITY_CHECK_ERROR_HANDLE("SRAM parity check error error\r\n");
+    } else {
+        /* if NMI exception occurs, go to infinite loop */
+        /* HXTAL clock monitor NMI error or NMI pin error */
+        while(1) {
+        }
     }
 }
 
@@ -125,7 +132,7 @@ void TIMER2_IRQHandler(void)
             /* calculates the number of cycles between the two capture values */
             if(readvalue2 > readvalue1){
                 count = (readvalue2 - readvalue1); 
-            }else{
+            } else {
                 count = ((0xFFFFU - readvalue1) + readvalue2); 
             }
             /* calculated frequency */

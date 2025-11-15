@@ -2,11 +2,11 @@
     \file    gd32e23x_rcu.h
     \brief   definitions for the RCU
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -284,7 +284,7 @@ typedef enum
 {
     /* AHB peripherals */
     RCU_SRAM_SLP     = RCU_REGIDX_BIT(IDX_AHBEN, 2U),             /*!< SRAM clock */
-    RCU_FMC_SLP      = RCU_REGIDX_BIT(IDX_AHBEN, 4U)              /*!< FMC clock */
+    RCU_FMC_SLP      = RCU_REGIDX_BIT(IDX_AHBEN, 4U),             /*!< FMC clock */
 }rcu_periph_sleep_enum;
 
 /* peripherals reset */
@@ -315,7 +315,7 @@ typedef enum
     RCU_USART1RST  = RCU_REGIDX_BIT(IDX_APB1RST, 17U),            /*!< USART1 reset */
     RCU_I2C0RST    = RCU_REGIDX_BIT(IDX_APB1RST, 21U),            /*!< I2C0 reset */
     RCU_I2C1RST    = RCU_REGIDX_BIT(IDX_APB1RST, 22U),            /*!< I2C1 reset */
-    RCU_PMURST     = RCU_REGIDX_BIT(IDX_APB1RST, 28U)             /*!< PMU reset */
+    RCU_PMURST     = RCU_REGIDX_BIT(IDX_APB1RST, 28U),            /*!< PMU reset */
 }rcu_periph_reset_enum;
 
 /* clock stabilization and peripheral reset flags */
@@ -347,7 +347,7 @@ typedef enum
     RCU_INT_FLAG_HXTALSTB  = RCU_REGIDX_BIT(IDX_INT, 3U),         /*!< HXTAL stabilization interrupt flag */
     RCU_INT_FLAG_PLLSTB    = RCU_REGIDX_BIT(IDX_INT, 4U),         /*!< PLL stabilization interrupt flag */
     RCU_INT_FLAG_IRC28MSTB = RCU_REGIDX_BIT(IDX_INT, 5U),         /*!< IRC28M stabilization interrupt flag */
-    RCU_INT_FLAG_CKM       = RCU_REGIDX_BIT(IDX_INT, 7U)          /*!< CKM interrupt flag */
+    RCU_INT_FLAG_CKM       = RCU_REGIDX_BIT(IDX_INT, 7U),         /*!< CKM interrupt flag */
 }rcu_int_flag_enum;
 
 /* clock stabilization and stuck interrupt flags clear */
@@ -359,7 +359,7 @@ typedef enum
     RCU_INT_FLAG_HXTALSTB_CLR  = RCU_REGIDX_BIT(IDX_INT, 19U),    /*!< HXTAL stabilization interrupt flags clear */
     RCU_INT_FLAG_PLLSTB_CLR    = RCU_REGIDX_BIT(IDX_INT, 20U),    /*!< PLL stabilization interrupt flags clear */
     RCU_INT_FLAG_IRC28MSTB_CLR = RCU_REGIDX_BIT(IDX_INT, 21U),    /*!< IRC28M stabilization interrupt flags clear */
-    RCU_INT_FLAG_CKM_CLR       = RCU_REGIDX_BIT(IDX_INT, 23U)     /*!< CKM interrupt flags clear */
+    RCU_INT_FLAG_CKM_CLR       = RCU_REGIDX_BIT(IDX_INT, 23U),    /*!< CKM interrupt flags clear */
 }rcu_int_flag_clear_enum;
 
 /* clock stabilization interrupt enable or disable */
@@ -370,7 +370,7 @@ typedef enum
     RCU_INT_IRC8MSTB        = RCU_REGIDX_BIT(IDX_INT, 10U),       /*!< IRC8M stabilization interrupt */
     RCU_INT_HXTALSTB        = RCU_REGIDX_BIT(IDX_INT, 11U),       /*!< HXTAL stabilization interrupt */
     RCU_INT_PLLSTB          = RCU_REGIDX_BIT(IDX_INT, 12U),       /*!< PLL stabilization interrupt */
-    RCU_INT_IRC28MSTB       = RCU_REGIDX_BIT(IDX_INT, 13U)         /*!< IRC28M stabilization interrupt */
+    RCU_INT_IRC28MSTB       = RCU_REGIDX_BIT(IDX_INT, 13U),       /*!< IRC28M stabilization interrupt */
 }rcu_int_enum;
 
 /* ADC clock source */

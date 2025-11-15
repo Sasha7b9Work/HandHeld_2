@@ -2,11 +2,11 @@
     \file    main.c
     \brief   use the I2C bus to write and read EEPROM with interrupt
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -168,10 +168,21 @@ void i2c_nvic_config(void)
     nvic_irq_enable(I2C0_ER_IRQn, 1);
 }
 
-/* retarget the C library printf function to the usart */
+#ifdef GD_ECLIPSE_GCC
+/* retarget the C library printf function to the USART, in Eclipse GCC environment */
+int __io_putchar(int ch)
+{
+    usart_data_transmit(EVAL_COM, (uint8_t) ch);
+    while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+    return ch;
+}
+#else
+/* retarget the C library printf function to the USART */
 int fputc(int ch, FILE *f)
 {
     usart_data_transmit(EVAL_COM, (uint8_t)ch);
     while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+
     return ch;
 }
+#endif /* GD_ECLIPSE_GCC */

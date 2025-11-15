@@ -2,11 +2,11 @@
     \file    main.c
     \brief   USART HalfDuplex transmitter and receiver
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -73,12 +73,12 @@ int main(void)
     /* configure the USART0 Tx pin and USART1 Tx pin */
     gpio_af_set(GPIOA, GPIO_AF_1, GPIO_PIN_2);
     gpio_af_set(GPIOA, GPIO_AF_1, GPIO_PIN_9);
-    /* configure USART0 Tx as alternate function push-pull */
+    /* configure USART0 Tx as alternate function open drain */
     gpio_mode_set(GPIOA, GPIO_MODE_AF, GPIO_PUPD_PULLUP, GPIO_PIN_9);
-    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_9);
-    /* configure USART1 Tx as alternate function push-pull */
+    gpio_output_options_set(GPIOA, GPIO_OTYPE_OD, GPIO_OSPEED_50MHZ, GPIO_PIN_9);
+    /* configure USART1 Tx as alternate function open drain */
     gpio_mode_set(GPIOA, GPIO_MODE_AF, GPIO_PUPD_PULLUP, GPIO_PIN_2);
-    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_2);
+    gpio_output_options_set(GPIOA, GPIO_OTYPE_OD, GPIO_OSPEED_50MHZ, GPIO_PIN_2);
     
     /* USART0 and USART1 baudrate configuration */
     usart_baudrate_set(USART0, 115200);
@@ -127,14 +127,14 @@ int main(void)
     if(SUCCESS == state1){
         /* if the data transmitted from USART0 and received by USART1 are the same */
         gd_eval_led_on(LED1);
-    }else{
+    } else {
         /* if the data transmitted from USART0 and received by USART1 are not the same */
         gd_eval_led_off(LED1);
     }
     if(SUCCESS == state2){
         /* if the data transmitted from USART1 and received by USART0 are the same */
         gd_eval_led_on(LED2);
-    }else{
+    } else {
         /* if the data transmitted from USART1 and received by USART0 are not the same */
         gd_eval_led_off(LED2); 
     }
@@ -160,10 +160,21 @@ ErrStatus memory_compare(uint8_t* src, uint8_t* dst, uint16_t length)
     return SUCCESS;
 }
 
-/* retarget the C library printf function to the USART */
-int fputc(int ch, FILE *f)
+#ifdef GD_ECLIPSE_GCC
+/* retarget the C library printf function to the USART, in Eclipse GCC environment */
+int __io_putchar(int ch)
 {
     usart_data_transmit(EVAL_COM, (uint8_t) ch);
     while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
     return ch;
 }
+#else
+/* retarget the C library printf function to the USART */
+int fputc(int ch, FILE *f)
+{
+    usart_data_transmit(EVAL_COM, (uint8_t)ch);
+    while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+
+    return ch;
+}
+#endif /* GD_ECLIPSE_GCC */

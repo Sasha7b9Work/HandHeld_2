@@ -2,11 +2,11 @@
     \file    main.c
     \brief   deepsleep wakeup through exti interrupt
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -39,6 +39,15 @@ OF SUCH DAMAGE.
 
 void led_config(void);
 
+/* software delay to prevent the impact of Vcore fluctuations.
+   It is strongly recommended to include it to avoid issues caused by self-removal. */
+static void _soft_delay_(uint32_t time)
+{
+    __IO uint32_t i;
+    for(i=0; i<time*10; i++){
+    }
+}
+
 /*!
     \brief      main function
     \param[in]  none
@@ -60,6 +69,12 @@ int main(void)
     /* press wakeup key to enter deepsleep mode and use tamper key to generate an exti interrupt to wakeup mcu */
     while(1){
         if(SET == gpio_input_bit_get(WAKEUP_KEY_GPIO_PORT, WAKEUP_KEY_PIN)){
+            /* The following is to prevent Vcore fluctuations caused by frequency switching. 
+               It is strongly recommended to include it to avoid issues caused by self-removal. */
+            rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV2);
+            _soft_delay_(0x80);
+            rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV4);
+            _soft_delay_(0x80);
             pmu_to_deepsleepmode(PMU_LDO_LOWPOWER, WFI_CMD);
         }
     }
@@ -79,12 +94,12 @@ void led_spark(void)
         /* all the LEDs on */
         if(timingdelaylocal < 200){
             gd_eval_led_on(LED2);
-        }else{
+        } else {
             /* all the LEDs off */
             gd_eval_led_off(LED2);
         }
         timingdelaylocal--;
-    }else{
+    } else {
         timingdelaylocal = 400;
     }
 }

@@ -2,11 +2,11 @@
     \file    main.c
     \brief   TIMERs parallel synchro demo for gd32e23x
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -82,7 +82,7 @@ void timer_config(void)
 
        2/TIMER2 is slave for TIMER14, 
        - PWM mode is used.
-       - The ITR2(TIMER1) is used as input trigger.
+       - The ITR2(TIMER14) is used as input trigger.
        - external clock mode is used, the counter counts on the rising edges of
          the selected trigger.
 
@@ -218,7 +218,7 @@ void timer_config(void)
     timer_master_slave_mode_config(TIMER0, TIMER_MASTER_SLAVE_MODE_ENABLE);
     /* slave mode selection: external clock mode 0 */
     timer_slave_mode_select(TIMER0, TIMER_SLAVE_MODE_EVENT);
-    /* select TIMER input trigger source: internal trigger 2(ITI2) */
+    /* select TIMER input trigger source: internal trigger 2(ITI0) */
     timer_input_trigger_source_select(TIMER0, TIMER_SMCFG_TRGSEL_ITI0);
 
     /* TIMER counter enable */

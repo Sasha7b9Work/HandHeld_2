@@ -2,11 +2,11 @@
     \file    rc5_encode.c
     \brief   the rc5 infrared encoder file
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -202,11 +202,11 @@ void rc5_encode_signal_generate( uint32_t rc5_manchester_frame_format )
         
         if(1 == bit_msg){
             timer_channel_output_mode_config(TIMER15, TIMER_CH_0, TIMER_OC_MODE_HIGH);
-        }else{
+        } else {
             timer_channel_output_mode_config(TIMER15, TIMER_CH_0, TIMER_OC_MODE_LOW);
         }
         bits_sent_counter++;
-    }else{
+    } else {
         send_operation_completed = 0x01;
 
         /* TIMER15 INT disable */
@@ -276,7 +276,7 @@ static uint32_t rc5_manchester_convert(uint16_t rc5_binary_frame_format)
         if(0 != bit_format){
             /* manchester 1 -|_  */
             converted_msg |= RC5_HIGH_STATE;
-        }else{
+        } else {
             /* manchester 0 _|-  */
             converted_msg |= RC5_LOW_STATE;
         }

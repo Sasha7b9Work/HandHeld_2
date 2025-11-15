@@ -2,11 +2,11 @@
     \file    readme.txt
     \brief   description of TIMER trigger inserted channel of ADC demo
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -36,3 +36,5 @@ OF SUCH DAMAGE.
 inserted group channels continuously using TIMER2 external trigger. The inserted group 
 length is 4, the scan mode is set, every compare event will trigger ADC to convert all 
 the channels in the inserted group.
+
+  We can watch inserted_data in debug mode.

@@ -2,11 +2,11 @@
     \file    gd32e23x.h
     \brief   general definitions for GD32E23x
 
-    \version 2023-09-04, V2.0.1, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /* Copyright (c) 2012 ARM LIMITED
-   Copyright (c) 2023, GigaDevice Semiconductor Inc.
+   Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
    All rights reserved.
    Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@
 
 /* define value of high speed crystal oscillator (HXTAL) in Hz */
 #if !defined  (HXTAL_VALUE)
-#define HXTAL_VALUE    ((uint32_t)26000000)
+#define HXTAL_VALUE    ((uint32_t)8000000)
 #endif /* high speed crystal oscillator value */
 
 /* define startup timeout value of high speed crystal oscillator (HXTAL) */
@@ -90,8 +90,8 @@
 #endif /* low speed crystal oscillator value */
 
 /* GD32E23x firmware library version number V1.0 */
-#define __GD32E23x_STDPERIPH_VERSION_MAIN   (0x01) /*!< [31:24] main version     */
-#define __GD32E23x_STDPERIPH_VERSION_SUB1   (0x00) /*!< [23:16] sub1 version     */
+#define __GD32E23x_STDPERIPH_VERSION_MAIN   (0x02) /*!< [31:24] main version     */
+#define __GD32E23x_STDPERIPH_VERSION_SUB1   (0x03) /*!< [23:16] sub1 version     */
 #define __GD32E23x_STDPERIPH_VERSION_SUB2   (0x00) /*!< [15:8]  sub2 version     */
 #define __GD32E23x_STDPERIPH_VERSION_RC     (0x00) /*!< [7:0]  release candidate */
 #define __GD32E23x_STDPERIPH_VERSION        ((__GD32E23x_STDPERIPH_VERSION_MAIN << 24)\
@@ -146,7 +146,7 @@ typedef enum IRQn
     USART0_IRQn                  = 27,     /*!< USART0 interrupt                                         */
     USART1_IRQn                  = 28,     /*!< USART1 interrupt                                         */
     I2C0_ER_IRQn                 = 32,     /*!< I2C0 error interrupt                                     */
-    I2C1_ER_IRQn                 = 34      /*!< I2C1 error interrupt                                     */
+    I2C1_ER_IRQn                 = 34,     /*!< I2C1 error interrupt                                     */
 } IRQn_Type;
 
 /* includes */

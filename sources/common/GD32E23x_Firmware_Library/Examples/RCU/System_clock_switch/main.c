@@ -2,11 +2,11 @@
     \file    main.c
     \brief   system clock switch example
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -36,9 +36,59 @@ OF SUCH DAMAGE.
 #include <stdio.h>
 #include "gd32e230c_eval.h"
 
+/* The following is to prevent Vcore fluctuations caused by frequency switching. 
+   It is strongly recommended to include it to avoid issues caused by self-removal. 
+*/
+#define RCU_MODIFY(__delay)     do{                                     \
+                                    volatile uint32_t i,reg;            \
+                                    if(0 != __delay){                   \
+                                        reg = RCU_CFG0;                 \
+                                        reg &= ~(RCU_CFG0_AHBPSC);      \
+                                        /* CK_AHB = SYSCLK/2 */         \
+                                        reg |= RCU_AHB_CKSYS_DIV2;      \
+                                        RCU_CFG0 = reg;                 \
+                                        for(i=0; i<__delay; i++){       \
+                                        }                               \
+                                        reg = RCU_CFG0;                 \
+                                        reg &= ~(RCU_CFG0_AHBPSC);      \
+                                        reg |= RCU_AHB_CKSYS_DIV4;      \
+                                        /* CK_AHB = SYSCLK/4 */         \
+                                        RCU_CFG0 = reg;                 \
+                                        for(i=0; i<__delay; i++){       \
+                                        }                               \
+                                    }                                   \
+                                }while(0)
+
+#define RCU_MODIFY_UP_2(__delay)     do{                                    \
+                                        volatile uint32_t i,reg;            \
+                                        if(0 != __delay){                   \
+                                            for(i=0; i<__delay; i++){       \
+                                            }                               \
+                                            reg = RCU_CFG0;                 \
+                                            reg &= ~(RCU_CFG0_AHBPSC);      \
+                                            reg |= RCU_AHB_CKSYS_DIV2;      \
+                                            RCU_CFG0 = reg;                 \
+                                            for(i=0; i<__delay; i++){       \
+                                            }                               \
+                                            reg = RCU_CFG0;                 \
+                                            reg &= ~(RCU_CFG0_AHBPSC);      \
+                                            reg |= RCU_AHB_CKSYS_DIV1;      \
+                                            RCU_CFG0 = reg;                 \
+                                    }                                       \
+                                }while(0)
+
 static void _delay(uint32_t timeout);
 static void switch_system_clock_to_36m_hxtal(void);
 static void switch_system_clock_to_72m_irc8m(void);
+
+/* software delay to prevent the impact of Vcore fluctuations.
+   It is strongly recommended to include it to avoid issues caused by self-removal. */
+static void _soft_delay_(uint32_t time)
+{
+    __IO uint32_t i;
+    for(i=0; i<time*10; i++){
+    }
+}
 
 /*!
     \brief      main function
@@ -97,9 +147,12 @@ static void switch_system_clock_to_36m_hxtal(void)
 {
     uint32_t timeout = 0U;
     uint32_t stab_flag = 0U;
-
+    __IO uint32_t reg_temp;
+    
+    RCU_MODIFY(0x80);
     /* select IRC8M as system clock source, deinitialize the RCU */
     rcu_system_clock_source_config(RCU_CKSYSSRC_IRC8M);
+    _soft_delay_(100);
     rcu_deinit();
     
     /* enable HXTAL */
@@ -120,8 +173,8 @@ static void switch_system_clock_to_36m_hxtal(void)
     FMC_WS = (FMC_WS & (~FMC_WS_WSCNT)) | WS_WSCNT_1;
     
     /* HXTAL is stable */
-    /* AHB = SYSCLK */
-    RCU_CFG0 |= RCU_AHB_CKSYS_DIV1;
+    /* AHB = SYSCLK/4 */
+    RCU_CFG0 |= RCU_AHB_CKSYS_DIV4;
     /* APB2 = AHB */
     RCU_CFG0 |= RCU_APB2_CKAHB_DIV1;
     /* APB1 = AHB */
@@ -138,13 +191,16 @@ static void switch_system_clock_to_36m_hxtal(void)
     while(0U == (RCU_CTL0 & RCU_CTL0_PLLSTB)){
     }
 
+    reg_temp = RCU_CFG0;
     /* select PLL as system clock */
-    RCU_CFG0 &= ~RCU_CFG0_SCS;
-    RCU_CFG0 |= RCU_CKSYSSRC_PLL;
+    reg_temp &= ~RCU_CFG0_SCS;
+    reg_temp |= RCU_CKSYSSRC_PLL;
+    RCU_CFG0 = reg_temp;
 
     /* wait until PLL is selected as system clock */
     while(0U == (RCU_CFG0 & RCU_SCSS_PLL)){
     }
+    RCU_MODIFY_UP_2(0x80);
 }
 
 /*!
@@ -157,9 +213,12 @@ static void switch_system_clock_to_72m_irc8m(void)
 {
     uint32_t timeout = 0U;
     uint32_t stab_flag = 0U;
-
+    __IO uint32_t reg_temp;
+    
+    RCU_MODIFY(0x80);
     /* select IRC8M as system clock source, deinitialize the RCU */
     rcu_system_clock_source_config(RCU_CKSYSSRC_IRC8M);
+    _soft_delay_(100);
     rcu_deinit();
     
     /* enable IRC8M */
@@ -180,8 +239,8 @@ static void switch_system_clock_to_72m_irc8m(void)
 
     FMC_WS = (FMC_WS & (~FMC_WS_WSCNT)) | WS_WSCNT_2;
     
-    /* AHB = SYSCLK */
-    RCU_CFG0 |= RCU_AHB_CKSYS_DIV1;
+    /* AHB = SYSCLK/4 */
+    RCU_CFG0 |= RCU_AHB_CKSYS_DIV4;
     /* APB2 = AHB */
     RCU_CFG0 |= RCU_APB2_CKAHB_DIV1;
     /* APB1 = AHB */
@@ -197,15 +256,27 @@ static void switch_system_clock_to_72m_irc8m(void)
     while(0U == (RCU_CTL0 & RCU_CTL0_PLLSTB)){
     }
 
+    reg_temp = RCU_CFG0;
     /* select PLL as system clock */
-    RCU_CFG0 &= ~RCU_CFG0_SCS;
-    RCU_CFG0 |= RCU_CKSYSSRC_PLL;
+    reg_temp &= ~RCU_CFG0_SCS;
+    reg_temp |= RCU_CKSYSSRC_PLL;
+    RCU_CFG0 = reg_temp;
 
     /* wait until PLL is selected as system clock */
     while(0U == (RCU_CFG0 & RCU_SCSS_PLL)){
     }
+    RCU_MODIFY_UP_2(0x80);
 }
 
+#ifdef GD_ECLIPSE_GCC
+/* retarget the C library printf function to the USART, in Eclipse GCC environment */
+int __io_putchar(int ch)
+{
+    usart_data_transmit(EVAL_COM, (uint8_t) ch);
+    while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+    return ch;
+}
+#else
 /* retarget the C library printf function to the USART */
 int fputc(int ch, FILE *f)
 {
@@ -214,3 +285,4 @@ int fputc(int ch, FILE *f)
 
     return ch;
 }
+#endif /* GD_ECLIPSE_GCC */

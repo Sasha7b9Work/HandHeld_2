@@ -2,11 +2,11 @@
     \file    main.c
     \brief   TIMER2 input capture demo for gd32e23x
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -45,16 +45,6 @@ void gpio_config(void);
 void timer_config(void);
 /* configure the TIMER1 interrupt */
 void nvic_config(void);
-/* retarget the C library printf function to the USART */
-int fputc(int ch, FILE *f);
-
-/* retarget the C library printf function to the USART */
-int fputc(int ch, FILE *f)
-{
-    usart_data_transmit(EVAL_COM, (uint8_t)ch);
-    while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
-    return ch;
-}
 
 /**
     \brief      configure the GPIO ports
@@ -159,3 +149,23 @@ int main(void)
         printf(" the frequence is %dHz\r\n", fre);  
     }
 }
+
+
+#ifdef GD_ECLIPSE_GCC
+/* retarget the C library printf function to the USART, in Eclipse GCC environment */
+int __io_putchar(int ch)
+{
+    usart_data_transmit(EVAL_COM, (uint8_t) ch);
+    while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+    return ch;
+}
+#else
+/* retarget the C library printf function to the USART */
+int fputc(int ch, FILE *f)
+{
+    usart_data_transmit(EVAL_COM, (uint8_t)ch);
+    while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+
+    return ch;
+}
+#endif /* GD_ECLIPSE_GCC */

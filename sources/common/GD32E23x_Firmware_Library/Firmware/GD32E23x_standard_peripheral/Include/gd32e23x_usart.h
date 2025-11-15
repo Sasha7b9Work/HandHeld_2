@@ -2,11 +2,11 @@
     \file    gd32e23x_usart.h
     \brief   definitions for the USART
     
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -237,7 +237,7 @@ typedef enum{
     /* flags in RFCS register */
     USART_FLAG_RFFINT = USART_REGIDX_BIT(USART_RFCS_REG_OFFSET, 15U),      /*!< receive FIFO full interrupt flag */
     USART_FLAG_RFF = USART_REGIDX_BIT(USART_RFCS_REG_OFFSET, 11U),         /*!< receive FIFO full flag */
-    USART_FLAG_RFE = USART_REGIDX_BIT(USART_RFCS_REG_OFFSET, 10U)          /*!< receive FIFO empty flag */
+    USART_FLAG_RFE = USART_REGIDX_BIT(USART_RFCS_REG_OFFSET, 10U),         /*!< receive FIFO empty flag */
 }usart_flag_enum;
 
 /* USART interrupt flags */
@@ -262,7 +262,7 @@ typedef enum
     USART_INT_FLAG_ERR_ORERR = USART_REGIDX_BIT2(USART_CTL2_REG_OFFSET, 0U, USART_STAT_REG_OFFSET, 3U),  /*!< error interrupt and overrun error */
     USART_INT_FLAG_ERR_FERR = USART_REGIDX_BIT2(USART_CTL2_REG_OFFSET, 0U, USART_STAT_REG_OFFSET, 1U),   /*!< error interrupt and frame error flag */
     /* interrupt flags in RFCS register */
-    USART_INT_FLAG_RFF = USART_REGIDX_BIT2(USART_RFCS_REG_OFFSET, 9U, USART_RFCS_REG_OFFSET, 15U)        /*!< receive FIFO full interrupt and flag */
+    USART_INT_FLAG_RFF = USART_REGIDX_BIT2(USART_RFCS_REG_OFFSET, 9U, USART_RFCS_REG_OFFSET, 15U),       /*!< receive FIFO full interrupt and flag */
 }usart_interrupt_flag_enum;
 
 /* USART interrupt enable or disable */
@@ -284,7 +284,7 @@ typedef enum
     USART_INT_CTS = USART_REGIDX_BIT(USART_CTL2_REG_OFFSET, 10U),        /*!< CTS interrupt */
     USART_INT_ERR = USART_REGIDX_BIT(USART_CTL2_REG_OFFSET, 0U),         /*!< error interrupt */
     /* interrupt in RFCS register */
-    USART_INT_RFF = USART_REGIDX_BIT(USART_RFCS_REG_OFFSET, 9U)          /*!< receive FIFO full interrupt */
+    USART_INT_RFF = USART_REGIDX_BIT(USART_RFCS_REG_OFFSET, 9U),         /*!< receive FIFO full interrupt */
 }usart_interrupt_enum;
 
 /* USART invert configure */
@@ -300,7 +300,7 @@ typedef enum {
     USART_RXPIN_DISABLE,                                             /*!< RX pin level not inversion */
     /* swap TX/RX pins */
     USART_SWAP_ENABLE,                                               /*!< swap TX/RX pins */                
-    USART_SWAP_DISABLE                                               /*!< not swap TX/RX pins */
+    USART_SWAP_DISABLE,                                              /*!< not swap TX/RX pins */
 }usart_invert_enum;
 
 /* USART receiver configure */

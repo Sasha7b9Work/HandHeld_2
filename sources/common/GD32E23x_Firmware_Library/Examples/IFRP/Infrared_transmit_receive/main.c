@@ -2,11 +2,11 @@
     \file    main.c
     \brief   Infrared_tramsmit_receive
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -127,7 +127,7 @@ int main(void)
 
             /* insert 200 ms delay */
             delay_1ms(200);
-        }else{
+        } else {
             /* flash LED for status error */
             flash_led(1);
         }

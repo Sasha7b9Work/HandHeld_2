@@ -2,11 +2,11 @@
     \file    main.c
     \brief   master receiver two bytes
 
-    \version 2024-02-22, V2.1.0, firmware for GD32E23x
+    \version 2025-08-08, V2.4.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -161,10 +161,21 @@ void i2c_config(void)
     i2c_ack_config(I2C0, I2C_ACK_ENABLE);
 }
 
-/* retarget the C library printf function to the usart */
+#ifdef GD_ECLIPSE_GCC
+/* retarget the C library printf function to the USART, in Eclipse GCC environment */
+int __io_putchar(int ch)
+{
+    usart_data_transmit(EVAL_COM, (uint8_t) ch);
+    while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+    return ch;
+}
+#else
+/* retarget the C library printf function to the USART */
 int fputc(int ch, FILE *f)
 {
     usart_data_transmit(EVAL_COM, (uint8_t)ch);
     while(RESET == usart_flag_get(EVAL_COM, USART_FLAG_TBE));
+
     return ch;
 }
+#endif /* GD_ECLIPSE_GCC */
