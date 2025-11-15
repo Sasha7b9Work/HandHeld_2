@@ -34,6 +34,10 @@ OF SUCH DAMAGE.
 
 #include "gd32e23x_rcu.h"
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic ignored "-Wcovered-switch-default"
+#endif
+
 /* define clock source */
 #define SEL_IRC8M       0x00U
 #define SEL_HXTAL       0x01U

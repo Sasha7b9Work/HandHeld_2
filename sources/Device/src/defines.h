@@ -26,7 +26,6 @@
     #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
     #pragma clang diagnostic ignored "-Wnon-virtual-dtor"
     #pragma clang diagnostic ignored "-Wundefined-func-template"
-#else
 #endif
 
 

@@ -34,6 +34,10 @@ OF SUCH DAMAGE.
 
 #include "gd32e23x_usart.h"
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic ignored "-Wcovered-switch-default"
+#endif
+
 /*!
     \brief      reset USART
     \param[in]  usart_periph: USARTx(x=0,1)

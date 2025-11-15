@@ -37,6 +37,7 @@ OF SUCH DAMAGE.
 
 #include "gd32e23x.h"
 
+
 /* RTC definitions */
 #define RTC                                RTC_BASE
 

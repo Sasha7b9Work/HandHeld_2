@@ -34,6 +34,10 @@ OF SUCH DAMAGE.
 
 #include "gd32e23x_cmp.h"
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic ignored "-Wunused-parameter"
+#endif
+
 /*!
     \brief      CMP deinit
     \param[in]  cmp_periph

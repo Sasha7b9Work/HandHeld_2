@@ -68,7 +68,7 @@ void nvic_irq_disable(IRQn_Type nvic_irq)
     \param[out] none
     \retval     none
 */
-void nvic_system_reset(void)
+__attribute__ ((noreturn)) void nvic_system_reset(void)
 {
     NVIC_SystemReset();
 }

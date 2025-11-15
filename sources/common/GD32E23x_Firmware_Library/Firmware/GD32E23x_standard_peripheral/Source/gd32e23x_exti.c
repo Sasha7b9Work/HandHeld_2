@@ -34,6 +34,10 @@ OF SUCH DAMAGE.
 
 #include "gd32e23x_exti.h"
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic ignored "-Wcovered-switch-default"
+#endif
+
 #define EXTI_INTEN_RESET_VAL    ((uint32_t)0x0F900000U)
 #define EXTI_REG_RESET_VAL     ((uint32_t)0x00000000U)
 
