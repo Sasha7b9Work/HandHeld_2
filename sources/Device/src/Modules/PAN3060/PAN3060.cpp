@@ -78,8 +78,6 @@ void PAN3060::InitSPI()
     spi_init_struct.prescale = SPI_PSC_32;
     spi_init_struct.endian = SPI_ENDIAN_MSB;
     spi_init(SPI_PAN3060, &spi_init_struct);
-
-    spi_fifo_access_size_config(SPI_PAN3060, SPI_BYTE_ACCESS);
 }
 
 
