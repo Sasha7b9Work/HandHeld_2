@@ -60,10 +60,10 @@ void PAN3060::InitIRQ()
 
 void PAN3060::InitSPI()
 {
-    //                              SCK             MISO         MOSI
-    gpio_af_set(GPIOB, GPIO_AF_0, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
     gpio_mode_set(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
     gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+    //                              SCK             MISO         MOSI
+    gpio_af_set(GPIOB, GPIO_AF_0, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
 
     spi_parameter_struct spi_init_struct;
 
@@ -78,6 +78,8 @@ void PAN3060::InitSPI()
     spi_init_struct.prescale = SPI_PSC_8;
     spi_init_struct.endian = SPI_ENDIAN_MSB;
     spi_init(SPI_PAN3060, &spi_init_struct);
+
+    spi_enable(SPI_PAN3060);
 }
 
 
