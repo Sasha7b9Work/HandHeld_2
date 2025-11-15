@@ -25,8 +25,6 @@ void HAL::Init()
     HAL_I2C::Init();
 
     HAL_ADC::Init();
-
-    HAL_TIM2::Init();
 }
 
 

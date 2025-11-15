@@ -89,8 +89,6 @@ void PAN3060::Update()
     {
         need_start = false;
 
-        HAL_TIM2::Init();
-
         time_enable = TIME_MS;
     }
 }
@@ -125,7 +123,7 @@ bool PAN3060::IsEnabled()
 }
 
 
-uint PAN3060::GetCode(Source::E source)
+uint PAN3060::_GetCode(Source::E source)
 {
     static const uint packets[Source::Count] = { 0x7E9E, 0x7EA6, 0x7ED5, 0x7EB9, 0x7ECA, 0x7EED };
 
