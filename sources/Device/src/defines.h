@@ -52,5 +52,8 @@ typedef unsigned long long uint64;
 
 #define BINARY_U8( bits ) _bitset(0##bits)
 
+#define _GET_BIT(value, bit) ((value >> bit) & 0x01)
+#define _SET_BIT(value, bit) (value | (1 << bit))
+
 #define ENABLED_RU "Вкл"
 #define DISABLED_RU "Откл"

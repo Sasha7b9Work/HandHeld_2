@@ -19,17 +19,35 @@ static void delay_us(uint us)
 
 static uint8 spi_readwrite(uint8 byte)
 {
-    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
+    uint8 result = 0;
+
+    for (int i = 7; i >= 0; i--)
     {
+        pinSPI1_MOSI.Set(_GET_BIT(byte, i) != 0);
+
+        pinSPI1_CLK.ToHi();
+
+        if (pinSPI_MISO.IsHi())
+        {
+            _SET_BIT(result, i);
+        }
+
+        pinSPI1_CLK.ToLow();
     }
 
-    spi_i2s_data_transmit(SPI_PAN3060, byte);
+    return result;
 
-    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
-    {
-    }
-    
-    return (uint8)SPI_DATA(SPI_PAN3060);
+//    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
+//    {
+//    }
+//
+//    spi_i2s_data_transmit(SPI_PAN3060, byte);
+//
+//    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
+//    {
+//    }
+//    
+//    return (uint8)SPI_DATA(SPI_PAN3060);
 }
 
 

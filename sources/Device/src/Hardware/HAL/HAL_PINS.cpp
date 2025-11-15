@@ -8,6 +8,10 @@ PinIn  pinPWR_CTRL(GPIOA, GPIO_PIN_0);          // PA0  10
 PinOut pinPWR(GPIOA, GPIO_PIN_12);              // PA12 33
 
 PinOut pinSPI1_NSS(GPIOB, GPIO_PIN_12);
+PinOut pinSPI1_CLK(GPIOB, GPIO_PIN_13);
+PinOut pinSPI1_MOSI(GPIOB, GPIO_PIN_14);
+PinIn  pinSPI_MISO(GPIOB, GPIO_PIN_15);
+
 
 
 void Pin::Init()

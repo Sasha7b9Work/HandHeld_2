@@ -60,26 +60,33 @@ void PAN3060::InitIRQ()
 
 void PAN3060::InitSPI()
 {
-    //                                                                   SCK           MISO          MOSI
-    gpio_mode_set          (GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE,     GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
-    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
-    gpio_af_set            (GPIOB, GPIO_AF_0,                        GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+    pinSPI1_MOSI.Init();
+    pinSPI_MISO.Init();
+    pinSPI1_CLK.Init();
 
-    spi_parameter_struct spi_init_struct;
+    pinSPI1_MOSI.ToLow();
+    pinSPI1_CLK.ToLow();
 
-    spi_i2s_deinit(SPI_PAN3060);
-    spi_struct_para_init(&spi_init_struct);
-
-    spi_init_struct.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
-    spi_init_struct.device_mode = SPI_MASTER;
-    spi_init_struct.frame_size = SPI_FRAMESIZE_8BIT;
-    spi_init_struct.clock_polarity_phase = SPI_CK_PL_LOW_PH_1EDGE;
-    spi_init_struct.nss = SPI_NSS_SOFT;
-    spi_init_struct.prescale = SPI_PSC_8;
-    spi_init_struct.endian = SPI_ENDIAN_MSB;
-    spi_init(SPI_PAN3060, &spi_init_struct);
-
-    spi_enable(SPI_PAN3060);
+//    //                                                                   SCK           MISO          MOSI
+//    gpio_mode_set          (GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE,     GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+//    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+//    gpio_af_set            (GPIOB, GPIO_AF_0,                        GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+//
+//    spi_parameter_struct spi_init_struct;
+//
+//    spi_i2s_deinit(SPI_PAN3060);
+//    spi_struct_para_init(&spi_init_struct);
+//
+//    spi_init_struct.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
+//    spi_init_struct.device_mode = SPI_MASTER;
+//    spi_init_struct.frame_size = SPI_FRAMESIZE_8BIT;
+//    spi_init_struct.clock_polarity_phase = SPI_CK_PL_LOW_PH_1EDGE;
+//    spi_init_struct.nss = SPI_NSS_SOFT;
+//    spi_init_struct.prescale = SPI_PSC_8;
+//    spi_init_struct.endian = SPI_ENDIAN_MSB;
+//    spi_init(SPI_PAN3060, &spi_init_struct);
+//
+//    spi_enable(SPI_PAN3060);
 }
 
 
