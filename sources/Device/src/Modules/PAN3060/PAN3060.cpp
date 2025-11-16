@@ -22,7 +22,7 @@ namespace PAN3060
 
     static uint time_enable = 0;        // Время, когда начались клоки
 
-    static bool need_start = false;
+    static bool need_rx = false;
 
     static void InitIRQ();
 
@@ -92,11 +92,55 @@ void PAN3060::InitSPI()
 
 void PAN3060::Update()
 {
-    if (need_start)
+    if (need_rx)
     {
-        need_start = false;
+        need_rx = false;
 
-        time_enable = TIME_MS;
+        uint8_t _irq;
+
+        _irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
+        if (_irq & REG_IRQ_RX_TIMEOUT)
+        {
+            rf_clr_irq();
+        }
+
+        int i = 0;
+
+        if (_irq & REG_IRQ_RX_DONE)
+        {
+            uint8_t _buffer[PACKET_PAYLOAD_LENGTH];
+            uint8_t _len = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
+
+            rf_read_fifo(REG_FIFO_ACC_ADDR, _buffer, PACKET_PAYLOAD_LENGTH);
+            rf_clr_irq();
+            if (_len == PACKET_PAYLOAD_LENGTH && _buffer[0] == VIBROLINE_HEAD)
+            {
+                _buffer[1] &= 0x7F;
+                if (_buffer[1] & VIBROLINE_DEVICE_DOORBELL)
+                {
+                    i = VIBROLINE_DEVICE_DOORBELL;
+                }
+                if (_buffer[1] & VIBROLINE_DEVICE_PHONE)
+                {
+                    i = VIBROLINE_DEVICE_PHONE;
+                }
+
+                if (_buffer[1] & VIBROLINE_DEVICE_INTERCOM)
+                {
+                    i = VIBROLINE_DEVICE_INTERCOM;
+                }
+                if (_buffer[1] & VIBROLINE_DEVICE_BABYCRY)
+                {
+                    i = VIBROLINE_DEVICE_BABYCRY;
+                }
+
+                rf_init();
+                rf_set_default_para();
+                rf_enter_continous_rx();
+            }
+        }
+
+        i = i;
     }
 }
 
@@ -113,7 +157,7 @@ void PAN3060::PrepareToSleep()
 
 void PAN3060::CallbackOnIRQ()
 {
-    need_start = true;
+    need_rx = true;
 }
 
 
