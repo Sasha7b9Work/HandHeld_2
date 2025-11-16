@@ -76,6 +76,8 @@ void Device::Update2()
 //    Display::Update2();
 
     Beeper::Update();
+
+    PAN3060::Update();
 }
 
 
