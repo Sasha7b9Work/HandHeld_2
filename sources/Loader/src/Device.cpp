@@ -5,6 +5,8 @@
 #include "Hardware/HAL/HAL.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include "Hardware/Keyboard.h"
+#include "Modules/LED/LED.h"
+#include "Hardware/Timer.h"
 #include "stm_includes.h"
 
 
@@ -21,6 +23,8 @@ void Device::Init()
     HAL::Init();
 
     PAN3060::Init();
+
+    LED::Init();
 }
 
 
@@ -28,6 +32,10 @@ void Device::Update()
 {
     if (Keyboard::NeedUpdate())
     {
+        Timer::Delay(500);
+
+        LED::Enable(ColorLED::Red);
+
         ReceiveFirmwareFromPAN3060();
     }
 
