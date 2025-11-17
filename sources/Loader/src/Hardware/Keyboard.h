@@ -7,5 +7,7 @@ namespace Keyboard
 {
     void Init();
 
-    bool NeedUpdate();
+    bool NeedUpgrade();
+
+    void Update();
 }

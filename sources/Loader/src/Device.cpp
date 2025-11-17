@@ -32,7 +32,12 @@ void Device::Init()
 
 void Device::Update()
 {
-    if (Keyboard::NeedUpdate())
+    while (true)
+    {
+        Keyboard::Update();
+    }
+
+    if (Keyboard::NeedUpgrade())
     {
         LED::Enable(ColorLED::Red);
 
