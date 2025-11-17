@@ -339,7 +339,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER, STM32F407xx, DEBUG</Define>
+              <Define>USE_HAL_DRIVER, GD32E230, DEBUG</Define>
               <Undefine></Undefine>
               <IncludePath>.\src;.\src\Hardware\HAL;..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x\Include;..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x;..\common\GD32E23x_Firmware_Library\Firmware\GD32E23x_standard_peripheral\Include</IncludePath>
             </VariousControls>
@@ -877,7 +877,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>USE_HAL_DRIVER, STM32F407xx</Define>
+              <Define>USE_HAL_DRIVER, GD32E230</Define>
               <Undefine></Undefine>
               <IncludePath>..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x\Include;..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x;.\src\Hardware\HAL;..\common\GD32E23x_Firmware_Library\Firmware\GD32E23x_standard_peripheral\Include;.\src</IncludePath>
             </VariousControls>

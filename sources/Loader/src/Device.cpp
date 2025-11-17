@@ -40,7 +40,7 @@ void Device::UpgradeFirmware()
 
 void Device::JumpToMainApplication()
 {
-#define APP_ADDRESS 0x8020000
+#define APP_ADDRESS 0x8002000
 
     typedef void (*pFunction)(void);
     pFunction jump_to_app;

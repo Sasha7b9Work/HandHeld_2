@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 
 project (HandHeld_2)
 
@@ -11,3 +11,4 @@ if(${CMAKE_BUILD_TYPE} STREQUAL Debug)
 endif()
 
 add_subdirectory(Device)
+add_subdirectory(Loader)
