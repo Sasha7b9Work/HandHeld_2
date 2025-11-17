@@ -11,7 +11,11 @@ PinIn  pinSPI_MISO(GPIOB, GPIO_PIN_14);
 
 PinIn btnUp(GPIOA, GPIO_PIN_12);
 PinIn btnDown(GPIOB, GPIO_PIN_5);
-PinIn btnLeft(GPIOA, GPIO_PIN_15);
+#ifdef BOARD_NEW
+    PinIn btnLeft(GPIOA, GPIO_PIN_15);
+#else
+    PinIn btnLeft(GPIOB, GPIO_PIN_3);
+#endif
 PinIn btnRight(GPIOA, GPIO_PIN_3);
 
 
