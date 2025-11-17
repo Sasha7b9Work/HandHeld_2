@@ -21,8 +21,6 @@ namespace LED
         static PinOut pinRED(GPIOA, GPIO_PIN_9);
         static PinOut pinGREEN(GPIOA, GPIO_PIN_10);
         static PinOut pinBLUE(GPIOA, GPIO_PIN_11);
-
-        static const PinOut *pins[3] = { &pinRED, &pinGREEN, &pinBLUE };
     }
 }
 

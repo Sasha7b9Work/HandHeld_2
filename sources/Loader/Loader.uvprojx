@@ -698,6 +698,31 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Modules/LED</GroupName>
+          <Files>
+            <File>
+              <FileName>driverLED.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\LED\driverLED.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>driverLED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\LED\driverLED.h</FilePath>
+            </File>
+            <File>
+              <FileName>LED.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\LED\LED.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>LED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\LED\LED.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Modules/PAN3060</GroupName>
           <Files>
             <File>
@@ -1432,6 +1457,31 @@
               <FileName>Device.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Device.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Modules/LED</GroupName>
+          <Files>
+            <File>
+              <FileName>driverLED.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\LED\driverLED.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>driverLED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\LED\driverLED.h</FilePath>
+            </File>
+            <File>
+              <FileName>LED.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\LED\LED.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>LED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\LED\LED.h</FilePath>
             </File>
           </Files>
         </Group>
