@@ -1,7 +1,17 @@
 *uvgui*
 
+sources/Loader/*.scvd
+sources/Loader/*.bin
+sources/Device/*.bin
+
 sources/generated
 sources/Device/Objects
 sources/Device/Objects-Debug
 sources/Device/Listings
 sources/Device/Listings-Debug
+
+sources/Loader/DebugConfig
+sources/Loader/Objects
+sources/Loader/Objects-Debug
+sources/Loader/Listings
+sources/Loader/Listings-Debug
