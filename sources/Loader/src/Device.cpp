@@ -34,8 +34,6 @@ void Device::Update()
 {
     if (Keyboard::NeedUpdate())
     {
-        Timer::Delay(500);
-
         LED::Enable(ColorLED::Red);
 
         Timer::Delay(500);
