@@ -58,7 +58,7 @@ OF SUCH DAMAGE.
 /* constants definitions */
 /* CMP units */
 typedef enum{
-    CMP0,                                                                       /*!< comparator 0 */
+    CMP0                                                                        /*!< comparator 0 */
 }cmp_enum;
 
 /* CMP operating mode */

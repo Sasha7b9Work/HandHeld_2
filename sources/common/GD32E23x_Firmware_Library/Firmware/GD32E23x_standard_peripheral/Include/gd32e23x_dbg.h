@@ -82,7 +82,7 @@ OF SUCH DAMAGE.
 enum dbg_reg_idx
 {
     DBG_IDX_CTL0  = 0x04U, 
-    DBG_IDX_CTL1  = 0x08U, 
+    DBG_IDX_CTL1  = 0x08U
 };
 
 /* peripherals hold bit */
@@ -99,7 +99,7 @@ typedef enum
     DBG_TIMER16_HOLD        = DBG_REGIDX_BIT(DBG_IDX_CTL1, 18U),             /*!< TIMER16 hold bit */
     DBG_I2C0_HOLD           = DBG_REGIDX_BIT(DBG_IDX_CTL0, 15U),             /*!< I2C0 hold bit */
     DBG_I2C1_HOLD           = DBG_REGIDX_BIT(DBG_IDX_CTL0, 16U),             /*!< I2C1 hold bit */
-    DBG_RTC_HOLD            = DBG_REGIDX_BIT(DBG_IDX_CTL1, 10U),             /*!< RTC hold bit */
+    DBG_RTC_HOLD            = DBG_REGIDX_BIT(DBG_IDX_CTL1, 10U)              /*!< RTC hold bit */
 }dbg_periph_enum;
 
 /* function declarations */

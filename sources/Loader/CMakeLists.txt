@@ -6,13 +6,11 @@ project (Loader)
 
 
 include_directories(
-    src
+    ../common/VS_KEIL
     src/Hardware/HAL
-    ../common/_VS_KEIL
-    ../common/_VS_KEIL/CMSIS
-    ../common/_VS_KEIL/std_includes
-    ../common/libs/STM32Cube_F4/Drivers/CMSIS/Device/ST/STM32F4xx/Include
-    ../common/libs/STM32Cube_F4/Drivers/STM32F4xx_HAL_Driver/Inc
+    src
+    ../common/GD32E23x_Firmware_Library/Firmware/CMSIS/GD/GD32E23x/Include
+    ../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include
 )
 
 add_definitions(-DSTM32F407xx)
@@ -40,16 +38,18 @@ file(GLOB SRC              src/*.*)
 file(GLOB HARDWARE         src/Hardware/*.*)
 file(GLOB HARDWARE_CMSIS   src/Hardware/CMSIS/*.*)
 file(GLOB HARDWARE_HAL     src/Hardware/HAL/*.*)
-file(GLOB UTILS            src/Utils/*)
+file(GLOB MODULES_PAN3060  src/Modules/PAN3060/*.*)
+file(GLOB UTILS            src/Utils/*.*)
 
 set_source_files_properties(${LIBS_HAL} PROPERTIES HEADER_FILE_ONLY TRUE)
 
-source_group(src                   FILES ${SRC})
-source_group(libs/HAL              FILES ${LIBS_HAL})
-source_group(Hardware              FILES ${HARDWARE})
-source_group(Hardware/CMSIS        FILES ${HARDWARE_CMSIS})
-source_group(Hardware/HAL          FILES ${HARDWARE_HAL})
-source_group(Utils                 FILES ${UTILS})
+source_group(src             FILES ${SRC})
+source_group(libs/HAL        FILES ${LIBS_HAL})
+source_group(Hardware        FILES ${HARDWARE})
+source_group(Hardware/CMSIS  FILES ${HARDWARE_CMSIS})
+source_group(Hardware/HAL    FILES ${HARDWARE_HAL})
+source_group(Modules/PAN3060 FILES ${MODULES_PAN3060})
+source_group(Utils           FILES ${UTILS})
 
 add_library(
     ${PROJECT_NAME}
@@ -58,5 +58,6 @@ add_library(
     ${HARDWARE}
     ${HARDWARE_CMSIS}
     ${HARDWARE_HAL}
+    ${MODULES_PAN3060}
     ${UTILS}
 )

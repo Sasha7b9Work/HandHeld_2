@@ -146,7 +146,7 @@ typedef enum IRQn
     USART0_IRQn                  = 27,     /*!< USART0 interrupt                                         */
     USART1_IRQn                  = 28,     /*!< USART1 interrupt                                         */
     I2C0_ER_IRQn                 = 32,     /*!< I2C0 error interrupt                                     */
-    I2C1_ER_IRQn                 = 34,     /*!< I2C1 error interrupt                                     */
+    I2C1_ER_IRQn                 = 34      /*!< I2C1 error interrupt                                     */
 } IRQn_Type;
 
 /* includes */

@@ -23,6 +23,11 @@ void Device::Init()
 
 void Device::Update()
 {
+    if(ExistFirmwareInROM())
+    {
+        UpgradeFirmware();
+    }
+    
     JumpToMainApplication();
 }
 
@@ -42,6 +47,8 @@ void Device::JumpToMainApplication()
 {
 #define APP_ADDRESS 0x8002000
 
+#ifndef WIN32
+
     typedef void (*pFunction)(void);
     pFunction jump_to_app;
     uint32_t jump_address;
@@ -57,4 +64,6 @@ void Device::JumpToMainApplication()
     __enable_irq();
 
     jump_to_app();
+
+#endif
 }

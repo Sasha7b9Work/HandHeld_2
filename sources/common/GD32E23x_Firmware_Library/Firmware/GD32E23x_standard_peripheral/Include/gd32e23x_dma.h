@@ -108,7 +108,7 @@ typedef enum
     DMA_CH1,                              /*!< DMA Channel1 */ 
     DMA_CH2,                              /*!< DMA Channel2 */ 
     DMA_CH3,                              /*!< DMA Channel3 */ 
-    DMA_CH4,                              /*!< DMA Channel4 */ 
+    DMA_CH4                               /*!< DMA Channel4 */ 
 } dma_channel_enum;
 
 /* DMA initialize struct */
