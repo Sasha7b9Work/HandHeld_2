@@ -17,5 +17,5 @@ void Keyboard::Init()
 
 bool Keyboard::NeedUpdate()
 {
-    return btnLeft.IsLow() && btnRight.IsLow() && btnUp.IsLow();
+    return btnLeft.IsLow() || btnRight.IsLow() || btnUp.IsLow();
 }
