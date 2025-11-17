@@ -23,14 +23,11 @@ void LED::Init()
 
 void LED::Enable(ColorLED::E color)
 {
-    if (!is_enabled)
-    {
-        is_enabled = true;
+    is_enabled = true;
 
-        time_enable = TIME_MS;
+    time_enable = TIME_MS;
 
-        Driver::On(color);
-    }
+    Driver::On(color);
 }
 
 

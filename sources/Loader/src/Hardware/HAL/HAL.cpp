@@ -15,5 +15,4 @@ void HAL::Init()
     rcu_periph_clock_enable(RCU_GPIOF);
 
     rcu_periph_clock_enable(RCU_CFGCMP);
-
 }
