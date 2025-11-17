@@ -25,6 +25,8 @@ void Device::Init()
     PAN3060::Init();
 
     LED::Init();
+
+    Keyboard::Init();
 }
 
 
