@@ -590,6 +590,16 @@
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\Timer.h</FilePath>
             </File>
+            <File>
+              <FileName>Keyboard.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\Keyboard.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Keyboard.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\Keyboard.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1317,6 +1327,16 @@
               <FileName>Timer.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\Timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>Keyboard.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\Keyboard.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Keyboard.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\Keyboard.h</FilePath>
             </File>
           </Files>
         </Group>

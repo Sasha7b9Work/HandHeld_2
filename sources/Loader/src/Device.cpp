@@ -4,6 +4,7 @@
 #include "Utils/String.h"
 #include "Hardware/HAL/HAL.h"
 #include "Modules/PAN3060/PAN3060.h"
+#include "Hardware/Keyboard.h"
 #include "stm_includes.h"
 
 
@@ -11,10 +12,7 @@ namespace Device
 {
     static void JumpToMainApplication();
 
-    // Есть ли новая прошивка для обновления
-    static bool ExistFirmwareInROM();
-
-    static void UpgradeFirmware();
+    static void ReceiveFirmwareFromPAN3060();
 }
 
 
@@ -28,23 +26,18 @@ void Device::Init()
 
 void Device::Update()
 {
-    if(ExistFirmwareInROM())
+    if (Keyboard::NeedUpdate())
     {
-        UpgradeFirmware();
+        ReceiveFirmwareFromPAN3060();
     }
-    
+
     JumpToMainApplication();
 }
 
 
-bool Device::ExistFirmwareInROM()
+void Device::ReceiveFirmwareFromPAN3060()
 {
-    return false;
-}
 
-
-void Device::UpgradeFirmware()
-{
 }
 
 
