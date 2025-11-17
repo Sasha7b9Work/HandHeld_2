@@ -36,6 +36,18 @@ void Device::Update()
 
         LED::Enable(ColorLED::Red);
 
+        Timer::Delay(500);
+
+        LED::Enable(ColorLED::Green);
+
+        Timer::Delay(500);
+
+        LED::Enable(ColorLED::Blue);
+
+        Timer::Delay(500);
+
+        LED::Disable();
+
         ReceiveFirmwareFromPAN3060();
     }
 
