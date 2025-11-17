@@ -104,8 +104,6 @@ void PAN3060::Update()
             rf_clr_irq();
         }
 
-        int i = 0;
-
         if (_irq & REG_IRQ_RX_DONE)
         {
             uint8_t _buffer[PACKET_PAYLOAD_LENGTH];
@@ -118,20 +116,20 @@ void PAN3060::Update()
                 _buffer[1] &= 0x7F;
                 if (_buffer[1] & VIBROLINE_DEVICE_DOORBELL)
                 {
-                    i = VIBROLINE_DEVICE_DOORBELL;
+
                 }
                 if (_buffer[1] & VIBROLINE_DEVICE_PHONE)
                 {
-                    i = VIBROLINE_DEVICE_PHONE;
+
                 }
 
                 if (_buffer[1] & VIBROLINE_DEVICE_INTERCOM)
                 {
-                    i = VIBROLINE_DEVICE_INTERCOM;
+
                 }
                 if (_buffer[1] & VIBROLINE_DEVICE_BABYCRY)
                 {
-                    i = VIBROLINE_DEVICE_BABYCRY;
+
                 }
 
                 rf_init();
@@ -139,8 +137,6 @@ void PAN3060::Update()
                 rf_enter_continous_rx();
             }
         }
-
-        i = i;
     }
 }
 
