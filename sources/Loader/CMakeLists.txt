@@ -25,6 +25,7 @@ add_compile_options(
     /wd4625
     /wd4626    # assignment operator was implicitly defined as deleted
     /wd4820    # 'x' bytes padding added after
+    /wd4996
     /wd5027    # move assignment operator was implicitly defined as deleted
     /wd5045    # Compiler will insert Spectre mitigation
     /wd5204

@@ -2,6 +2,8 @@
 #include "defines.h"
 #include "Device.h"
 #include "Utils/String.h"
+#include "Hardware/HAL/HAL.h"
+#include "Modules/PAN3060/PAN3060.h"
 #include "stm_includes.h"
 
 
@@ -18,6 +20,9 @@ namespace Device
 
 void Device::Init()
 {
+    HAL::Init();
+
+    PAN3060::Init();
 }
 
 
