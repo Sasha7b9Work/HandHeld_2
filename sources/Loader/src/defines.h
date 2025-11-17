@@ -88,4 +88,4 @@ typedef void(*pFuncVI)(int);
 #define ERROR_STRING_VALUE  "--.--"
 
 
-#define BOARD_NEW
+//#define BOARD_NEW
