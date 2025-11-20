@@ -112,7 +112,10 @@
 #else
   #define     __I     volatile const          /*!< defines 'read only' permissions      */
 #endif
-#define     __O     volatile                  /*!< defines 'write only' permissions     */
+#ifndef __O
+    #define     __O     volatile                  /*!< defines 'write only' permissions     */
+#endif
+
 #define     __IO    volatile                  /*!< defines 'read / write' permissions   */
 
 

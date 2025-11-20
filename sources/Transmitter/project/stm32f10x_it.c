@@ -22,7 +22,8 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f10x_it.h" 
+#include "stm32f10x_it.h"
+#include "stm32f10x_exti.h"
 
 volatile uint8_t rfIntRequest = 0;
 irqCallback_ts *irqCallback_tim1;
