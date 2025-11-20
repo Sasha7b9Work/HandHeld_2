@@ -16,7 +16,7 @@
         <TargetCommonOption>
           <Device>-AT32F413RCT7</Device>
           <Vendor>ArteryTek</Vendor>
-          <PackID>ArteryTek.AT32F413_DFP.2.0.7</PackID>
+          <PackID>ArteryTek.AT32F413_DFP.2.1.7</PackID>
           <Cpu>IRAM(0x20000000,0x8000) IROM(0x08000000,0x40000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -132,7 +132,7 @@
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
-            <Capability>0</Capability>
+            <Capability>1</Capability>
             <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
@@ -185,6 +185,7 @@
             <RvdsVP>1</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -335,7 +336,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--diag_suppress=111,167,177,223,550</MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
               <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio</IncludePath>
@@ -831,6 +832,7 @@
             <RvdsVP>0</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -981,7 +983,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--diag_suppress=111,167,177,223,550</MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER,__SPI_SOFT_3LINE</Define>
               <Undefine></Undefine>
               <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio</IncludePath>
@@ -1307,7 +1309,7 @@
         <TargetCommonOption>
           <Device>-AT32F413RCT7</Device>
           <Vendor>ArteryTek</Vendor>
-          <PackID>ArteryTek.AT32F413_DFP.2.0.7</PackID>
+          <PackID>ArteryTek.AT32F413_DFP.2.1.7</PackID>
           <Cpu>IRAM(0x20000000,0x8000) IROM(0x08000000,0x40000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -1476,6 +1478,7 @@
             <RvdsVP>1</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -1626,7 +1629,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--diag_suppress=111,167,177,223,550</MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER,BOOTLOADER_APP</Define>
               <Undefine></Undefine>
               <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio</IncludePath>
@@ -2122,6 +2125,7 @@
             <RvdsVP>0</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -2272,7 +2276,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--diag_suppress=111,167,177,223,550</MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER,BOOTLOADER_APP,__SPI_SOFT_3LINE</Define>
               <Undefine></Undefine>
               <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio</IncludePath>

@@ -12,7 +12,7 @@ static irqCallback_ts myIrqCallback_uart1;
 
 void uart1_callback(uint8_t status, uint32_t param)
 {
-    uint8_t Res;
+//    uint8_t Res;
 
     switch (status)
     {
