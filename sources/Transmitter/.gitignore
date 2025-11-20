@@ -1,0 +1,4 @@
+keil_v5/*.scvd
+keil_v5/DebugConfig/*
+keil_v5/Listings/*
+keil_v5/Objects/*
