@@ -557,7 +557,7 @@ void rfRx_callback(uint8_t status, rfRxPacket_ts packet)
 }
 int main(void)
 {
-    userParams_ts userParamsTemp;
+//    userParams_ts userParamsTemp;
 #ifdef BOOTLOADER_APP
 	SCB->VTOR = FLASH_BASE | 0x000C800;
 #endif
@@ -683,7 +683,7 @@ int main(void)
             event_clear(EVENT_RF_PACKET_TX);
             memset(rfTxPacket.payload, 0, sizeof(rfTxPacket.payload));
             sprintf(rfTxPacket.payload, "%05u-hello...", rfTxCount);
-            rfTxPacket.len = strlen(rfTxPacket.payload);
+            rfTxPacket.len = (uint8_t)strlen(rfTxPacket.payload);
             memset(&rfTxPacket.payload[rfTxPacket.len + 1], 0x77, sizeof(rfTxPacket.payload) - rfTxPacket.len - 1);
             rfTxPacket.len = deviceInfor.packetLen;
             myDisplay_ui_rf_tx_packet_buffer(rfTxPacket.payload);
@@ -760,7 +760,7 @@ int main(void)
                     rfTxCount ++;
                     memset(rfTxPacket.payload, 0, sizeof(rfTxPacket.payload));
                     sprintf(rfTxPacket.payload, "%05u-hello...", rfTxCount);
-                    rfTxPacket.len = strlen(rfTxPacket.payload);
+                    rfTxPacket.len = (uint8_t)strlen(rfTxPacket.payload);
                     memset(&rfTxPacket.payload[rfTxPacket.len + 1], 0x77, sizeof(rfTxPacket.payload) - rfTxPacket.len - 1);
                     rfTxPacket.len = deviceInfor.packetLen;
                     myRadio_transmit(&rfTxPacket);

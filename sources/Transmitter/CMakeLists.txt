@@ -10,17 +10,24 @@ include_directories(
     ./core
     ./app
     ./project
+    ./radio
     ./upgrader
     ./peripheral
     ./STM32F10x_FWLib/inc
 )
 
-add_definitions(-DSTM32F10X_HD)
+add_definitions(-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
 
 add_compile_options(
+    /wd4013
+    /wd4057
+    /wd4113
     /wd4127    # conditional expression is constant
+    /wd4152
+    /wd4242
+    /wd4244
     /wd4464    # relative include path contains '..'
     /wd4514    # unreferenced inline function
     /wd4623
