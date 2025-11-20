@@ -6,7 +6,7 @@
 #include "Hardware/HAL/HAL.h"
 #include "Modules/PCF8563/PCF8563.h"
 #include "Hardware/Timer.h"
-#include "Settings/Settings.h"
+//#include "Settings/Settings.h"
 #include "Hardware/Vibrato.h"
 #include "Storage/Storage.h"
 #include "Modules/LED/LED.h"
