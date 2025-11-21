@@ -6,6 +6,7 @@ set(CMAKE_UNITY_BUILD OFF)
 
 
 include_directories(
+    .
     ./vs_keil
     ./core
     ./app
@@ -21,6 +22,7 @@ add_definitions(-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
 
 add_compile_options(
+    /wd4002
     /wd4013
     /wd4057
     /wd4061

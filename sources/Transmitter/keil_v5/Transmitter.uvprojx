@@ -650,6 +650,21 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>upgrader</GroupName>
+          <Files>
+            <File>
+              <FileName>Upgrader.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\upgrader\Upgrader.h</FilePath>
+            </File>
+            <File>
+              <FileName>Upgrader.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\upgrader\Upgrader.c</FilePath>
+            </File>
+          </Files>
+        </Group>
       </Groups>
     </Target>
     <Target>
@@ -726,7 +741,7 @@
             <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>1</RunUserProg1>
+            <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
             <UserProg1Name>fromelf.exe --bin --output .\Listings\@L.bin !L</UserProg1Name>
             <UserProg2Name></UserProg2Name>
@@ -986,7 +1001,7 @@
               <MiscControls>--diag_suppress=111,167,177,223,550</MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER,__SPI_SOFT_3LINE</Define>
               <Undefine></Undefine>
-              <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio</IncludePath>
+              <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio;..\..\Transmitter</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1294,6 +1309,21 @@
               <FileName>radio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\radio\radio.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>upgrader</GroupName>
+          <Files>
+            <File>
+              <FileName>Upgrader.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\upgrader\Upgrader.h</FilePath>
+            </File>
+            <File>
+              <FileName>Upgrader.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\upgrader\Upgrader.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1943,6 +1973,21 @@
             </File>
           </Files>
         </Group>
+        <Group>
+          <GroupName>upgrader</GroupName>
+          <Files>
+            <File>
+              <FileName>Upgrader.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\upgrader\Upgrader.h</FilePath>
+            </File>
+            <File>
+              <FileName>Upgrader.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\upgrader\Upgrader.c</FilePath>
+            </File>
+          </Files>
+        </Group>
       </Groups>
     </Target>
     <Target>
@@ -2587,6 +2632,21 @@
               <FileName>radio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\radio\radio.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>upgrader</GroupName>
+          <Files>
+            <File>
+              <FileName>Upgrader.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\upgrader\Upgrader.h</FilePath>
+            </File>
+            <File>
+              <FileName>Upgrader.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\upgrader\Upgrader.c</FilePath>
             </File>
           </Files>
         </Group>
