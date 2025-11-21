@@ -44,7 +44,7 @@ static uint32_t rfTxAndGetAckTimeSet_ms = 1000;
 static uint32_t rfTxReTmCount = 0;
 static bool rfTxGetAckStatus = false;
 static uint8_t rfCtrlMode;
-const uint32_t rfBaseFreqList[DVTP_MAX_COUNT] = 
+const uint32_t rfBaseFreqList[DVTP_MAX_COUNT] =
 {
     /*"1"*/433920000,
     /*"2"*/490000000,
@@ -52,41 +52,41 @@ const uint32_t rfBaseFreqList[DVTP_MAX_COUNT] =
     /*"4"*/910000000,
 
 };
-const uint32_t rfBaudrateList[MAX_RF_BAUDRATE_COUNT] = 
+const uint32_t rfBaudrateList[MAX_RF_BAUDRATE_COUNT] =
 {
     244, 627, 1220, 2441, 5022, 12500, 20400, 62500
 };
-const int8_t rfTxPowerList[RF_TX_PWR_MAX_COUNT] = 
+const int8_t rfTxPowerList[RF_TX_PWR_MAX_COUNT] =
 {
     -26,-17,-5,-3,-2,-1,2,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
 };
-static char deviceNameList[DVTP_MAX_COUNT][20] = 
+static char deviceNameList[DVTP_MAX_COUNT][20] =
 {
     /*"1"*/"VG4130S433N0S1",
     /*"2"*/"VG4130S490N0S1",
     /*"3"*/"VG4130S868N0S1",
     /*"4"*/"VG4130S915N0S1",
 };
-static char rf_cr_name[][20] = 
+static char rf_cr_name[][20] =
 {
     /*"0"*/"4/5",
     /*"1"*/"4/6",
     /*"2"*/"4/7",
     /*"3"*/"4/8",
 };
-static char rf_bw_name[][20] = 
+static char rf_bw_name[][20] =
 {
     /*"0"*/"62.5k",
     /*"1"*/"125k",
     /*"2"*/"250k",
     /*"3"*/"500k",
 };
-static char rf_rgm_name[][20] = 
+static char rf_rgm_name[][20] =
 {
     /*"0"*/"LDO",
     /*"1"*/"DCDC",
 };
-userParams_ts deviceInforDef = 
+userParams_ts deviceInforDef =
 {
     .projectModel = "VG4130",
     .deviceId = 1,
@@ -132,9 +132,9 @@ void dealKeyPressProccess(void)
     {
     case LEFT_KEY:
     {
-        if(getLongKeySt() == true)
+        if (getLongKeySt() == true)
         {
-            clearLongKey(); 
+            clearLongKey();
 
             EnableReleaseKey();
             myDisplay_enter(ENTER_LAST_PAGE);
@@ -147,16 +147,16 @@ void dealKeyPressProccess(void)
             }
             else
             {
-                EnableLongKey(5);   
+                EnableLongKey(5);
             }
         }
     }
-        break;
+    break;
     case RIGHT_KEY:
     {
-        if(getLongKeySt() == true)
+        if (getLongKeySt() == true)
         {
-            clearLongKey(); 
+            clearLongKey();
 
             EnableReleaseKey();
         }
@@ -168,16 +168,16 @@ void dealKeyPressProccess(void)
             }
             else
             {
-                EnableLongKey(5);   
+                EnableLongKey(5);
             }
         }
     }
-        break;
+    break;
     case TOP_KEY:
     {
-        if(getCyclicKeySt() == true)
+        if (getCyclicKeySt() == true)
         {
-            EnableCyclicKey(30); 
+            EnableCyclicKey(30);
             myDisplay_change(1);
         }
         else
@@ -190,16 +190,16 @@ void dealKeyPressProccess(void)
             else
             {
                 EnableReleaseKey();
-                EnableCyclicKey(300);   
+                EnableCyclicKey(300);
             }
         }
     }
-        break;
+    break;
     case BOTTOM_KEY:
     {
-        if(getCyclicKeySt() == true)
+        if (getCyclicKeySt() == true)
         {
-            EnableCyclicKey(30); 
+            EnableCyclicKey(30);
             myDisplay_change(0);
         }
         else
@@ -212,16 +212,16 @@ void dealKeyPressProccess(void)
             else
             {
                 EnableReleaseKey();
-                EnableCyclicKey(300);   
+                EnableCyclicKey(300);
             }
         }
     }
-        break;
+    break;
     case OK_KEY:
     {
-        if(getLongKeySt() == true)
+        if (getLongKeySt() == true)
         {
-            clearLongKey(); 
+            clearLongKey();
 
             EnableReleaseKey();
             beep_shortBeep();
@@ -235,48 +235,48 @@ void dealKeyPressProccess(void)
             }
             else
             {
-                EnableLongKey(5);   
+                EnableLongKey(5);
             }
         }
     }
-        break;
+    break;
     default:
         break;
     }
 }
 
 /**
- * 
+ *
  * 串口回调函数，当串口有硬件超时时会调用该函数
 */
 static void rcc_init(void)
 {
     //---------普通IO口时钟使能
-    RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA, ENABLE ); 
-    RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOB, ENABLE ); 
-    RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOC, ENABLE ); 
-    RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOD, ENABLE ); 
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
 
     //----------SPI1时钟使能
-    RCC_APB2PeriphClockCmd( RCC_APB2Periph_SPI1, ENABLE );  
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
     //----------复用功能时钟使能
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 
-    #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || defined (STM32F10X_HD_VL)
+#if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || defined (STM32F10X_HD_VL)
     /* ADCCLK = PCLK2/2 */
     RCC_ADCCLKConfig(RCC_PCLK2_Div2);
-    #else
+#else
     /* ADCCLK = PCLK2/4 */
-    RCC_ADCCLKConfig(RCC_PCLK2_Div4); 
-    #endif
+    RCC_ADCCLKConfig(RCC_PCLK2_Div4);
+#endif
 }
 /**
- * 
+ *
  * 串口回调函数，当串口有硬件超时时会调用该函数
 */
 void UART1_CALLBACK(uint8_t *buf, uint16_t len)
 {
-    if(uartPackage_Rx.isValid == 0)
+    if (uartPackage_Rx.isValid == 0)
     {
         memcpy(uartPackage_Rx.packet, buf, len);
         uartPackage_Rx.len = len;
@@ -286,7 +286,7 @@ void UART1_CALLBACK(uint8_t *buf, uint16_t len)
 }
 void UART3_CALLBACK(uint8_t *buf, uint16_t len)
 {
-    if(uart3Packet.isValid == 0)
+    if (uart3Packet.isValid == 0)
     {
         memcpy(uart3Packet.packet, buf, len);
         uart3Packet.len = len;
@@ -295,7 +295,7 @@ void UART3_CALLBACK(uint8_t *buf, uint16_t len)
     }
 }
 /**
- * 
+ *
  * 定时器中断回调，当产生定时器中断会调用该函数
 */
 void TIM3_CALLBACK(void)
@@ -303,10 +303,10 @@ void TIM3_CALLBACK(void)
     static uint8_t timeCnt_1ms = 0;
 
     beep_onDriver();
-    if( ++timeCnt_1ms == 5)
+    if (++timeCnt_1ms == 5)
     {
         timeCnt_1ms = 0;
-        rfTxAndGetAckTime_ms ++;
+        rfTxAndGetAckTime_ms++;
         eventDriver();
     }
 }
@@ -329,22 +329,22 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
             event_post(EVENT_RF_CONTINUOUS_TX);
             rfCtrlMode = status ? UI_PAGE_ID_RF_CONTINUOUS : 0;
         }
-            break;
+        break;
         case CNT_ITEM_INDEX_RX:
         {
             event_post(status ? EVENT_RF_CONTINUOUS_RX : EVENT_RF_IDLE);
         }
-            break;
+        break;
         case CNT_ITEM_INDEX_TX_MD:
         {
             event_post(status ? EVENT_RF_CONTINUOUS_TX_MD : EVENT_RF_IDLE);
         }
-            break;
+        break;
         default:
             break;
         }
     }
-        break;
+    break;
     case UI_PAGE_ID_TX_PACKET:
     {
         switch (cursorCount)
@@ -353,20 +353,20 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
         case 1:// pcaket tx and wait ack
         case 2://packet tx unitl max count
         {
-            setEvent(status ? EVENT_RF_PACKET_TX : EVENT_RF_IDLE, 
-                    status ? true : false, 
-                    status ? 500 : 0);
+            setEvent(status ? EVENT_RF_PACKET_TX : EVENT_RF_IDLE,
+                status ? true : false,
+                status ? 500 : 0);
             rfCtrlMode = status ? UI_PAGE_ID_TX_PACKET : 0;
             rfTxCount = 0;
             rfRxCount = 0;
             packetTxMode = cursorCount;
         }
-            break;
+        break;
         default:
             break;
         }
     }
-        break;
+    break;
     case UI_PAGE_ID_RX_PACKET:
     {
         switch (cursorCount)
@@ -380,12 +380,12 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
             rfRxCount = 0;
             packetRxMode = cursorCount;
         }
-            break;
+        break;
         default:
             break;
         }
     }
-        break;
+    break;
     case UI_PAGE_ID_SETTING:
     {
         switch (cursorCount)
@@ -393,9 +393,9 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
         case SET_ITEM_INDEX_TYPE://chipType
         {
             deviceInfor.chipType = value;
-            myDisplay_setSettingParamsProfile(SET_ITEM_INDEX_TXPOWER, 
-                                            deviceInfor.txPower, 
-                                            RF_TX_PWR_N_26, RF_TX_PWR_MAX_COUNT - 1, 1);
+            myDisplay_setSettingParamsProfile(SET_ITEM_INDEX_TXPOWER,
+                deviceInfor.txPower,
+                RF_TX_PWR_N_26, RF_TX_PWR_MAX_COUNT - 1, 1);
             myRadio_setTxPower(rfTxPowerList[deviceInfor.txPower]);
             myDisplay_setting_loadParams(SET_ITEM_INDEX_TXPOWER, "%ddBm", rfTxPowerList[deviceInfor.txPower]);
             myDisplay_setting_loadParams(SET_ITEM_INDEX_TYPE, deviceNameList[deviceInfor.chipType]);
@@ -403,7 +403,7 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
             myRadio_setFrequency(SET_RF_FREQ_HZ(rfBaseFreqList[deviceInfor.chipType], deviceInfor.rfChannel, deviceInfor.channelStep));
             setEvent(EVENT_TIMEOUT_TO_SAVE_PARAMS, false, 200);
         }
-            break;
+        break;
         case SET_ITEM_INDEX_FREQ://Freq
         {
             deviceInfor.rfChannel = value;
@@ -411,16 +411,16 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
             myRadio_setFrequency(SET_RF_FREQ_HZ(rfBaseFreqList[deviceInfor.chipType], deviceInfor.rfChannel, deviceInfor.channelStep));
             setEvent(EVENT_TIMEOUT_TO_SAVE_PARAMS, false, 200);
         }
-            break;
+        break;
         case SET_ITEM_INDEX_STEP://channelStep
         {
             deviceInfor.channelStep = value;
-            myDisplay_setting_loadParams(SET_ITEM_INDEX_STEP, "%uHz", deviceInfor.channelStep*10*1000);
+            myDisplay_setting_loadParams(SET_ITEM_INDEX_STEP, "%uHz", deviceInfor.channelStep * 10 * 1000);
             myDisplay_setting_loadParams(SET_ITEM_INDEX_FREQ, "%03u->%6.2fMHz", deviceInfor.rfChannel, (float)(SET_RF_FREQ_HZ(rfBaseFreqList[deviceInfor.chipType], deviceInfor.rfChannel, deviceInfor.channelStep)) / 1000000.0);
             myRadio_setFrequency(SET_RF_FREQ_HZ(rfBaseFreqList[deviceInfor.chipType], deviceInfor.rfChannel, deviceInfor.channelStep));
             setEvent(EVENT_TIMEOUT_TO_SAVE_PARAMS, false, 200);
         }
-            break;
+        break;
         case SET_ITEM_INDEX_TXPOWER://TxPower
         {
             deviceInfor.txPower = value;
@@ -442,47 +442,47 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
             myDisplay_setting_loadParams(SET_ITEM_INDEX_BW, "%u->%s", deviceInfor.rf_bw, rf_bw_name[deviceInfor.rf_bw - 6]);
             myDisplay_setting_loadParams(SET_ITEM_INDEX_CR, "%u->%s", deviceInfor.rf_cr, rf_cr_name[deviceInfor.rf_cr - 1]);
         }
-            break;
+        break;
         case SET_ITEM_INDEX_PACKET_LEN://
         {
             deviceInfor.packetLen = value;
             myDisplay_setting_loadParams(SET_ITEM_INDEX_PACKET_LEN, "%u Byte", deviceInfor.packetLen);
             setEvent(EVENT_TIMEOUT_TO_SAVE_PARAMS, false, 200);
         }
-            break;
+        break;
         case SET_ITEM_INDEX_SF://
         {
             deviceInfor.rf_sf = value;
             myDisplay_setting_loadParams(SET_ITEM_INDEX_SF, "%u", deviceInfor.rf_sf);
             setEvent(EVENT_TIMEOUT_TO_SAVE_PARAMS, false, 200);
         }
-            break;
+        break;
         case SET_ITEM_INDEX_BW://
         {
             deviceInfor.rf_bw = value;
             myDisplay_setting_loadParams(SET_ITEM_INDEX_BW, "%u->%s", deviceInfor.rf_bw, rf_bw_name[deviceInfor.rf_bw - 6]);
             setEvent(EVENT_TIMEOUT_TO_SAVE_PARAMS, false, 200);
         }
-            break;
+        break;
         case SET_ITEM_INDEX_CR://
         {
             deviceInfor.rf_cr = value;
             myDisplay_setting_loadParams(SET_ITEM_INDEX_CR, "%u->%s", deviceInfor.rf_cr, rf_cr_name[deviceInfor.rf_cr - 1]);
             setEvent(EVENT_TIMEOUT_TO_SAVE_PARAMS, false, 200);
         }
-            break;
+        break;
         case SET_ITEM_INDEX_RGM://
         {
             deviceInfor.rf_regulatorMode = value;
             myDisplay_setting_loadParams(SET_ITEM_INDEX_RGM, "%u->%s", deviceInfor.rf_regulatorMode, rf_rgm_name[deviceInfor.rf_regulatorMode]);
             setEvent(EVENT_TIMEOUT_TO_SAVE_PARAMS, false, 200);
         }
-            break;
+        break;
         default:
             break;
         }
     }
-        break;
+    break;
 
     default:
         break;
@@ -490,86 +490,86 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
 }
 void rfRx_callback(uint8_t status, rfRxPacket_ts packet)
 {
-    
-    
+
+
     switch (status)
     {
-        case RX_STA_SECCESS:
+    case RX_STA_SECCESS:
+    {
+        rfRecvPacket = packet;
+        myRadio_receiver();
+        event_post(EVENT_RF_GET_RX_PACKET);
+    }
+    break;
+    case RX_STA_TIMEOUT:
+    {
+        event_post(EVENT_RF_RX_ERROR);
+    }
+    break;
+    case RX_STA_PAYLOAD_ERROR:
+    {
+        event_post(EVENT_RF_RX_ERROR);
+    }
+    break;
+    case TX_STA_SECCESS:
+    {
+        LED1_ON_ONE();
+        if (rfCtrlMode == UI_PAGE_ID_TX_PACKET)
         {
-            rfRecvPacket = packet;
-            myRadio_receiver();
-            event_post(EVENT_RF_GET_RX_PACKET);
-        }
-        break;
-        case RX_STA_TIMEOUT:
-        {
-            event_post(EVENT_RF_RX_ERROR);
-        }
-        break;
-        case RX_STA_PAYLOAD_ERROR:
-        {
-            event_post(EVENT_RF_RX_ERROR);
-        }
-        break;
-        case TX_STA_SECCESS:
-        {
-            LED1_ON_ONE();
-            if (rfCtrlMode == UI_PAGE_ID_TX_PACKET)
+            switch (packetTxMode)
             {
-                switch (packetTxMode)
-                {
-                case 0://signle pcaket tx
-                {
-                    setEvent( EVENT_RF_PACKET_TX, false, 50);
-                }break;
-                case 1:// pcaket tx and wait ack
-                {
-                    setEvent( EVENT_RF_PACKET_TX, false, (uint32_t)((float)(rfTxAndGetAckTime_ms>100?rfTxAndGetAckTime_ms:100) * 1.5));
-                    myRadio_receiver();
-                }break;
-                case 2://packet tx unitl max count
-                {
-                    if (rfTxCount < deviceInfor.sendPacketCounts)
-                    {
-                        setEvent( EVENT_RF_PACKET_TX, false, 50);
-                    }
-                    else
-                    {
-                        event_clear(EVENT_RF_PACKET_TX);
-                    }
-                    
-                }
-                    break;
-                default:
-                    break;
-                }
-                myDisplay_ui_rf_tx_packet_consumeTime(rfTxAndGetAckTime_ms);
-            }
-            else
+            case 0://signle pcaket tx
             {
+                setEvent(EVENT_RF_PACKET_TX, false, 50);
+            }break;
+            case 1:// pcaket tx and wait ack
+            {
+                setEvent(EVENT_RF_PACKET_TX, false, (uint32_t)((float)(rfTxAndGetAckTime_ms > 100 ? rfTxAndGetAckTime_ms : 100) * 1.5));
                 myRadio_receiver();
+            }break;
+            case 2://packet tx unitl max count
+            {
+                if (rfTxCount < deviceInfor.sendPacketCounts)
+                {
+                    setEvent(EVENT_RF_PACKET_TX, false, 50);
+                }
+                else
+                {
+                    event_clear(EVENT_RF_PACKET_TX);
+                }
+
             }
-        }
-        break;
-        default:
             break;
+            default:
+                break;
+            }
+            myDisplay_ui_rf_tx_packet_consumeTime(rfTxAndGetAckTime_ms);
+        }
+        else
+        {
+            myRadio_receiver();
+        }
+    }
+    break;
+    default:
+        break;
     }
 }
 int main(void)
 {
-//    userParams_ts userParamsTemp;
+    //    userParams_ts userParamsTemp;
 #ifdef BOOTLOADER_APP
-	SCB->VTOR = FLASH_BASE | 0x000C800;
+    SCB->VTOR = FLASH_BASE | 0x000C800;
 #endif
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//设置中断优先级分组为组2：2位抢占优先级，2位响应优先级
     rcc_init();
-        
+
     GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);//关闭jtag , 开启swd
     //读取本地保存数据
-    myFlash_read((uint8_t*)&deviceInfor, sizeof(userParams_ts));
-    if (crc8_gernCheckT((unsigned char*)&deviceInfor, 
-                        sizeof(userParams_ts) - 1, 
-                        deviceInfor.checkSum) == 0)
+    myFlash_read((uint8_t *)&deviceInfor, sizeof(userParams_ts));
+    if (crc8_gernCheckT((unsigned char *)&deviceInfor,
+        sizeof(userParams_ts) - 1,
+        deviceInfor.checkSum) == 0)
     {
         deviceInfor = deviceInforDef;
     }
@@ -617,9 +617,9 @@ int main(void)
     myDisplay_setSettingParamsProfile(SET_ITEM_INDEX_FREQ, deviceInfor.rfChannel, 0, 255, 1);
     myDisplay_setSettingParamsProfile(SET_ITEM_INDEX_STEP, deviceInfor.channelStep, 25, 200, 1);
 
-    myDisplay_setSettingParamsProfile(SET_ITEM_INDEX_TXPOWER, 
-                                    deviceInfor.txPower, 
-                                    RF_TX_PWR_N_26, RF_TX_PWR_MAX_COUNT - 1, 1);
+    myDisplay_setSettingParamsProfile(SET_ITEM_INDEX_TXPOWER,
+        deviceInfor.txPower,
+        RF_TX_PWR_N_26, RF_TX_PWR_MAX_COUNT - 1, 1);
     myDisplay_setSettingParamsProfile(SET_ITEM_INDEX_RFBAUDRATE, deviceInfor.rfBaudrate, RF_BAUDRATE_RESV1, MAX_RF_BAUDRATE_COUNT - 1, 1);
     myDisplay_setSettingParamsProfile(SET_ITEM_INDEX_PACKET_LEN, deviceInfor.packetLen, 1, 255, 1);
     myDisplay_setSettingParamsProfile(SET_ITEM_INDEX_SF, deviceInfor.rf_sf, 5, 12, 1);
@@ -627,7 +627,7 @@ int main(void)
     myDisplay_setSettingParamsProfile(SET_ITEM_INDEX_CR, deviceInfor.rf_cr, 1, 4, 1);
     myDisplay_setSettingParamsProfile(SET_ITEM_INDEX_RGM, deviceInfor.rf_regulatorMode, 0, 1, 1);
     myDisplay_setting_loadParams(SET_ITEM_INDEX_FREQ, "%03u->%6.2fMHz", deviceInfor.rfChannel, (float)(SET_RF_FREQ_HZ(rfBaseFreqList[deviceInfor.chipType], deviceInfor.rfChannel, deviceInfor.channelStep)) / 1000000.0);
-    myDisplay_setting_loadParams(SET_ITEM_INDEX_STEP, "%uHz", deviceInfor.channelStep*10*1000);
+    myDisplay_setting_loadParams(SET_ITEM_INDEX_STEP, "%uHz", deviceInfor.channelStep * 10 * 1000);
     myDisplay_setting_loadParams(SET_ITEM_INDEX_TYPE, deviceNameList[deviceInfor.chipType]);
     myDisplay_setting_loadParams(SET_ITEM_INDEX_RFBAUDRATE, "%ubps", rfBaudrateList[deviceInfor.rfBaudrate]);
     myDisplay_setting_loadParams(SET_ITEM_INDEX_TXPOWER, "%ddBm", rfTxPowerList[deviceInfor.txPower]);
@@ -643,8 +643,8 @@ int main(void)
 
     setEvent(EVENT_TIME_CYCLE_10ms, true, 10);
     setEvent(EVENT_TIME_CYCLE_500ms, true, 500);
-    while(1)
-    {   
+    while (1)
+    {
         eventReturn = event_pend();
 
         if (getEvent(EVENT_TIME_CYCLE_10ms))
@@ -654,7 +654,7 @@ int main(void)
         }
         if (getEvent(EVENT_TIME_CYCLE_500ms))
         {
-            present_moduleCurrendValue = myADC_getVoltageValue()/50/0.5*1000;
+            present_moduleCurrendValue = myADC_getVoltageValue() / 50 / 0.5 * 1000;
             myDisplay_ui_rf_continuos_txCurrent(present_moduleCurrendValue);
             myDisplay_ui_rf_rxPacket_rxCurrent(present_moduleCurrendValue);
             myDisplay_ui_rf_continuos_rxRssi(myRadio_getRssi());
@@ -662,24 +662,24 @@ int main(void)
         }
         if (getEvent(EVENT_RF_CONTINUOUS_RX))
         {
-            myRadio_setCtrl(RADIO_EXT_CONTROL_RX_SENSITIVITY, 
-                        SET_RF_FREQ_HZ(rfBaseFreqList[deviceInfor.chipType], deviceInfor.rfChannel, deviceInfor.channelStep));
+            myRadio_setCtrl(RADIO_EXT_CONTROL_RX_SENSITIVITY,
+                SET_RF_FREQ_HZ(rfBaseFreqList[deviceInfor.chipType], deviceInfor.rfChannel, deviceInfor.channelStep));
             startToCountingRx = true;
             validPackageCount = 0;
         }
         if (getEvent(EVENT_RF_CONTINUOUS_TX))
         {
-            myRadio_setCtrl(RADIO_EXT_CONTROL_TX_UNMODULATED, 
-                        SET_RF_FREQ_HZ(rfBaseFreqList[deviceInfor.chipType], deviceInfor.rfChannel, deviceInfor.channelStep));
+            myRadio_setCtrl(RADIO_EXT_CONTROL_TX_UNMODULATED,
+                SET_RF_FREQ_HZ(rfBaseFreqList[deviceInfor.chipType], deviceInfor.rfChannel, deviceInfor.channelStep));
         }
         if (getEvent(EVENT_RF_CONTINUOUS_TX_MD))
         {
-            myRadio_setCtrl(RADIO_EXT_CONTROL_TX_MODULATED, 
-                        SET_RF_FREQ_HZ(rfBaseFreqList[deviceInfor.chipType], deviceInfor.rfChannel, deviceInfor.channelStep));
+            myRadio_setCtrl(RADIO_EXT_CONTROL_TX_MODULATED,
+                SET_RF_FREQ_HZ(rfBaseFreqList[deviceInfor.chipType], deviceInfor.rfChannel, deviceInfor.channelStep));
         }
         if (getEvent(EVENT_RF_PACKET_TX))
         {
-            rfTxCount ++;
+            rfTxCount++;
             event_clear(EVENT_RF_PACKET_TX);
             memset(rfTxPacket.payload, 0, sizeof(rfTxPacket.payload));
             sprintf(rfTxPacket.payload, "%05u-hello...", rfTxCount);
@@ -693,7 +693,7 @@ int main(void)
             event_clear(EVENT_TIMEOUT_CHECK_RF_PACKET);
             printf("rfTxPacket.absTime = %u\n", rfTxPacket.absTime);
             if (rfCtrlMode == UI_PAGE_ID_TX_PACKET)
-            {  
+            {
                 switch (packetTxMode)
                 {
                 case 0://signle pcaket tx
@@ -703,17 +703,17 @@ int main(void)
                 }break;
                 case 1:// pcaket tx and wait ack
                 {
-                        setEvent(EVENT_RF_PACKET_TX, false, (rfTxPacket.absTime + 1000));
+                    setEvent(EVENT_RF_PACKET_TX, false, (rfTxPacket.absTime + 1000));
                     if (rfTxCount > deviceInfor.sendPacketCounts)
                     {
-                        myDisplay_ui_rf_tx_packet_rate((float)rfRxCount/rfTxCount * 100);
+                        myDisplay_ui_rf_tx_packet_rate((float)rfRxCount / rfTxCount * 100);
                         rfTxCount = 0;
                         rfRxCount = 0;
                     }
                     else
                     {
                     }
-                    
+
                 }break;
                 default:
                     break;
@@ -723,14 +723,14 @@ int main(void)
         if (getEvent(EVENT_RF_PACKET_RX))
         {
             myRadio_receiver();
-            validPackageCount  = 0;
+            validPackageCount = 0;
         }
         if (getEvent(EVENT_RF_GET_RX_PACKET))
         {
-            rfRxCount ++;
+            rfRxCount++;
             myDisplay_ui_rf_continuos_rxLen(0, validPackageCount);
             if (rfCtrlMode == UI_PAGE_ID_TX_PACKET)
-            {   
+            {
                 switch (packetTxMode)
                 {
                 case 0://signle pcaket tx
@@ -744,12 +744,13 @@ int main(void)
                 case 2://packet tx unitl max count
                 {
                 }
-                    break;
+                break;
                 default:
                     break;
                 }
-            }else if (rfCtrlMode == UI_PAGE_ID_RX_PACKET)
-            {   
+            }
+            else if (rfCtrlMode == UI_PAGE_ID_RX_PACKET)
+            {
                 switch (packetRxMode)
                 {
                 case 0:
@@ -757,7 +758,7 @@ int main(void)
                 }break;
                 case 1:
                 {
-                    rfTxCount ++;
+                    rfTxCount++;
                     memset(rfTxPacket.payload, 0, sizeof(rfTxPacket.payload));
                     sprintf(rfTxPacket.payload, "%05u-hello...", rfTxCount);
                     rfTxPacket.len = (uint8_t)strlen(rfTxPacket.payload);
@@ -774,15 +775,15 @@ int main(void)
                 {
                     rfRxCount = 1;
                 }
-                
+
                 float rxRate = (float)rfRxCount / atoi(rfRecvPacket.payload) * 100;
                 myDisplay_ui_rf_rxPacket_rate(rxRate);
                 myDisplay_ui_rf_rxPacket_scroll_buffer(rfRecvPacket.payload, 0);
                 myDisplay_ui_rf_rxContinue_scroll_buffer(rfRecvPacket.payload, 0);
             }
             else if (rfCtrlMode == UI_PAGE_ID_FIRST_UI)
-            {   
-                setEvent( EVENT_RF_PACKET_TX, false, 0);
+            {
+                setEvent(EVENT_RF_PACKET_TX, false, 0);
             }
             myUart1_sendArray(rfRecvPacket.payload, rfRecvPacket.len);
             memset(rfRecvPacket.payload, 0, sizeof(rfRecvPacket.payload));
@@ -824,13 +825,13 @@ int main(void)
         }
         if (getEvent(EVENT_TIMEOUT_TO_SAVE_PARAMS))
         {
-            deviceInfor.checkSum = crc8_ger((unsigned char*)&deviceInfor, sizeof(userParams_ts) - 1);
-            myFlash_write((uint8_t*)&deviceInfor, sizeof(userParams_ts));
+            deviceInfor.checkSum = crc8_ger((unsigned char *)&deviceInfor, sizeof(userParams_ts) - 1);
+            myFlash_write((uint8_t *)&deviceInfor, sizeof(userParams_ts));
         }
-        
+
         keyPressValue = keyScan();
         myRadio_process();
-        
-    }     
-} 
 
+        upg_update();
+    }
+}

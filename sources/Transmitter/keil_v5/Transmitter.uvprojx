@@ -10,7 +10,7 @@
       <TargetName>project_AT</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC536</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -88,7 +88,7 @@
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
-          <SelectedForBatchBuild>1</SelectedForBatchBuild>
+          <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress=111,167,177,223,550</MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio</IncludePath>
+              <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio;..\..\Transmitter</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -671,7 +671,7 @@
       <TargetName>project_ST</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC536</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -1333,7 +1333,7 @@
       <TargetName>project_AT_APP</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC536</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -1411,7 +1411,7 @@
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
-          <SelectedForBatchBuild>1</SelectedForBatchBuild>
+          <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
@@ -1662,7 +1662,7 @@
               <MiscControls>--diag_suppress=111,167,177,223,550</MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER,BOOTLOADER_APP</Define>
               <Undefine></Undefine>
-              <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio</IncludePath>
+              <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio;..\..\Transmitter</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1994,7 +1994,7 @@
       <TargetName>project_ST_APP</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCC536</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -2073,7 +2073,7 @@
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
-          <SelectedForBatchBuild>1</SelectedForBatchBuild>
+          <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
@@ -2324,7 +2324,7 @@
               <MiscControls>--diag_suppress=111,167,177,223,550</MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER,BOOTLOADER_APP,__SPI_SOFT_3LINE</Define>
               <Undefine></Undefine>
-              <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio</IncludePath>
+              <IncludePath>..\project;..\core;..\STM32F10x_FWLib\inc;..\peripheral;..\app;..\radio;..\..\Transmitter</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

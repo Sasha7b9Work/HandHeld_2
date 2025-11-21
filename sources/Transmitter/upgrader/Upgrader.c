@@ -16,6 +16,19 @@ static const uint8_t *data = (const uint8_t *)DATA_BEGIN;
 static const int SIZE_CHAIN = 128;
 
 
+// Сбрасывает указатель данных прошивки
+static void upg_data_reset(void);
+
+// Возвращает указатель на следующую порцию данных. size - размер порции
+static const uint8_t *upg_data_next(int *size);
+
+
+void upg_update()
+{
+
+}
+
+
 void upg_data_reset()
 {
     data = DATA_BEGIN;

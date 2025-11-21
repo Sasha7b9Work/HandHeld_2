@@ -10,8 +10,8 @@
       <TargetName>Debug</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>6180000::V6.18::ARMCLANG</pArmCC>
-      <pCCUsed>6180000::V6.18::.\ARMCLANG537</pCCUsed>
+      <pArmCC>6180000::V6.18::.\ARMCLANG_537_6_18</pArmCC>
+      <pCCUsed>6180000::V6.18::.\ARMCLANG_537_6_18</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -1133,7 +1133,7 @@
       <TargetName>Release</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>6180000::V6.18::.\ARMCLANG537</pArmCC>
+      <pArmCC>6180000::V6.18::.\ARMCLANG_537_6_18</pArmCC>
       <pCCUsed>6180000::V6.18::.\ARMCLANG_537_6_18</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
@@ -1204,10 +1204,10 @@
             <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>1</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>D:\Keil_v542a\ARM\ARMCLANG\bin\fromelf.exe --bin Objects\HandeHeld.axf --output HandHeld.bin</UserProg1Name>
-            <UserProg2Name></UserProg2Name>
+            <RunUserProg1>0</RunUserProg1>
+            <RunUserProg2>1</RunUserProg2>
+            <UserProg1Name>D:\Keil_v542a\ARM\ARMCLANG\bin\fromelf.exe --bin Objects\HandHeld.axf --output HandHeld.bin</UserProg1Name>
+            <UserProg2Name>C:\Keil_v5\ARM\ARMCLANG\bin\fromelf.exe --bin Objects\HandHeld.axf --output HandHeld.bin</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
