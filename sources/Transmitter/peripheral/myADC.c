@@ -4,7 +4,7 @@
 #include "stm32f10x_adc.h"
 ADC_InitTypeDef ADC_InitStructure;
 __IO uint16_t VREFINT_CAL;
-uint16_t getRefAdcValue;
+//uint16_t getRefAdcValue;
 void myADC_delay(void)
 {
   uint16_t i = 0;

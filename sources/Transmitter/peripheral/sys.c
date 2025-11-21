@@ -1,5 +1,8 @@
 #include "sys.h"
 
+
+#ifndef WIN32
+
 void WFI_SET(void)
 {
 	__ASM volatile("wfi");		  
@@ -21,3 +24,5 @@ __asm void MSR_MSP(u32 addr)
     MSR MSP, r0 			//set Main Stack value
     BX r14
 }
+
+#endif
