@@ -23,11 +23,13 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
 add_compile_options(
     /wd4013
     /wd4057
+    /wd4061
     /wd4068    # unknown pragma 'xxx'
     /wd4100
     /wd4113
     /wd4127    # conditional expression is constant
     /wd4152
+    /wd4189
     /wd4242
     /wd4244
     /wd4255
@@ -37,6 +39,7 @@ add_compile_options(
     /wd4623
     /wd4625
     /wd4626    # assignment operator was implicitly defined as deleted
+    /wd4701
     /wd4774
     /wd4820    # 'x' bytes padding added after
     /wd4996
@@ -50,16 +53,19 @@ add_compile_options(
 file(GLOB APP              app/*.*)
 file(GLOB PERIPHERAL       peripheral/*.*)
 file(GLOB PROJECT          project/*.*)
+file(GLOB RADIO            radio/*.*)
 file(GLOB UPGRADER         upgrader/*.*)
 
 source_group(App           FILES ${APP})
 source_group(Peripheral    FILES ${PERIPHERAL})
 source_group(Project       FILES ${PROJECT})
+source_group(Radio         FILES ${RADIO})
 source_group(Upgrader      FILES ${UPGRADER})
 
 add_library(${PROJECT_NAME}
     ${APP}
     ${PERIPHERAL}
     ${PROJECT}
+    ${RADIO}
     ${UPGRADER}
 )

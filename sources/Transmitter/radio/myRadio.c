@@ -461,7 +461,7 @@ void myRadio_transmit(rfTxPacket_ts *packet)
         return;
     }
     RF_EXT_PA_TO_TX();
-    uint32_t getTxtime;
+//    uint32_t getTxtime;
     if (rf_get_mode() == PAN3029_MODE_DEEP_SLEEP)
     {
         rf_deepsleep_wakeup();
