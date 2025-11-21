@@ -16,6 +16,8 @@
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Display/Display7735.h"
 #include "Modules/PAN3060/PAN3060.h"
+#include "Hardware/Timer.h"
+#include "Modules/LED/LED.h"
 
 
 /*
@@ -29,6 +31,12 @@
       его тоже сбросить, конечно), а если нет, то написать на экране ¬џ Ћё„≈Ќ»≈, сделать
       задержку 1, 5с и сн€ть единицу с ноги PWR(PA12).
 */
+
+
+namespace Device
+{
+    static void UpdateLED();
+}
 
 
 void Device::Init()
@@ -62,19 +70,39 @@ void Device::Init()
 
 void Device::Update2()
 {
-//    if (!Beeper::IsRunning() && Beeper::TimeAfterStop() > 5000)
-//    {
-//        Beeper::Play(TypeSound::_1, 2);
-//    }
-
     Beeper::Play(TypeSound::_4, 2);
-
-
-//    Display::Update2();
 
     Beeper::Update();
 
     PAN3060::Update();
+
+    UpdateLED();
+}
+
+
+void Device::UpdateLED()
+{
+    static TimeMeterMS meter;
+
+    if (meter.ElapsedTime() > 200)
+    {
+        meter.Reset();
+
+        ColorLED::E current = LED::CurrentColor();
+
+        if (current == ColorLED::Red)
+        {
+            LED::Enable(ColorLED::Green);
+        }
+        else if (current == ColorLED::Green)
+        {
+            LED::Enable(ColorLED::Blue);
+        }
+        else if (current == ColorLED::Blue)
+        {
+            LED::Enable(ColorLED::Red);
+        }
+    }
 }
 
 

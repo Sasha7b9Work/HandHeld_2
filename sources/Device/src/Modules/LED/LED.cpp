@@ -10,6 +10,8 @@ namespace LED
     static bool is_enabled = false;
 
     static uint time_enable = 0;
+
+    static ColorLED::E current_color = ColorLED::Red;
 }
 
 
@@ -49,6 +51,22 @@ void LED::Enable()
 
         time_enable = TIME_MS;
     }
+}
+
+
+void LED::Enable(ColorLED::E color)
+{
+    current_color = color;
+
+    is_enabled = true;
+
+    Driver::On(color);
+}
+
+
+ColorLED::E LED::CurrentColor()
+{
+    return current_color;
 }
 
 

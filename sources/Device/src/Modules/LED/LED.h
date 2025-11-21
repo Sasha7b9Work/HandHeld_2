@@ -3,6 +3,18 @@
 #include "Settings/Source.h"
 
 
+struct ColorLED
+{
+    enum E
+    {
+        Red,
+        Green,
+        Blue,
+        Count
+    };
+};
+
+
 namespace LED
 {
     void Init();
@@ -11,7 +23,11 @@ namespace LED
 
     void Enable();
 
+    void Enable(ColorLED::E);
+
     void Disable();
+
+    ColorLED::E CurrentColor();
 
     // true, если в данный момент черзе светодиод идёт ток (повышенное потребление)
     bool IsFired();

@@ -1,5 +1,6 @@
 // 2024/04/01 10:51:48 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
+#include "Modules/LED/LED.h"
 
 
 namespace LED
@@ -9,6 +10,8 @@ namespace LED
         void Init();
 
         void On();
+
+        void On(ColorLED::E);
 
         void Off();
 

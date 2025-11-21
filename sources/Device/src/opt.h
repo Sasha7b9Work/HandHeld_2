@@ -6,3 +6,6 @@
 #ifdef GUI
     #define ENABLE_EMULATOR
 #endif
+
+
+#define BOARD_NEW

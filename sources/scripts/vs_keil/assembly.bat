@@ -21,7 +21,7 @@ cmake ../../CMakeLists.txt -B../../generated/Keil -G "Visual Studio 18 2026" -A 
 :BUILDING
 if %isBuild%==0 goto EXIT
 @echo on
-MSBuild.exe ../../generated/Keil/HandHeld_2.slnx -clp:ErrorsOnly;WarningsOnly -nologo /m
+MSBuild.exe ../../generated/Keil/HandHeld_2.sln -clp:ErrorsOnly;WarningsOnly -nologo /m
 @echo off
 goto EXIT
 

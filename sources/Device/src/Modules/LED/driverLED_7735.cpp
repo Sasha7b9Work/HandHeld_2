@@ -1,37 +1,84 @@
 // 2024/04/01 10:52:06 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Modules/LED/driverLED.h"
+#include "Hardware/HAL/HAL_PINS.h"
 #include <gd32e23x.h>
+
+
+/*
+    RED   - PA9
+    GREEN - PA10
+    BLUE  - PA11
+
+*/
+
+
+namespace LED
+{
+    namespace Driver
+    {
+        static bool is_fired = false;
+
+        static PinOut pinRED(GPIOA, GPIO_PIN_9);
+#ifdef BOARD_NEW
+        static PinOut pinGREEN(GPIOA, GPIO_PIN_10);
+        static PinOut pinBLUE(GPIOA, GPIO_PIN_11);
+#else
+        static PinOut pinGREEN(GPIOA, GPIO_PIN_11);
+        static PinOut pinBLUE(GPIOA, GPIO_PIN_10);
+#endif
+    }
+}
 
 
 void LED::Driver::Init()
 {
-    gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, GPIO_PIN_9);
-    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_9);
-    gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, GPIO_PIN_10);
-    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_10);
-    gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, GPIO_PIN_11);
-    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_11);
+    pinRED.Init();
+    pinGREEN.Init();
+    pinBLUE.Init();
+
+    Off();
 }
 
 
 void LED::Driver::On()
 {
-    gpio_bit_set(GPIOA, GPIO_PIN_9);
-    gpio_bit_set(GPIOA, GPIO_PIN_10);
-    gpio_bit_set(GPIOA, GPIO_PIN_11);
+
 }
 
 
 void LED::Driver::Off()
 {
-    gpio_bit_reset(GPIOA, GPIO_PIN_9);
-    gpio_bit_reset(GPIOA, GPIO_PIN_10);
-    gpio_bit_reset(GPIOA, GPIO_PIN_11);
+    is_fired = false;
+
+    pinRED.ToLow();
+    pinGREEN.ToLow();
+    pinBLUE.ToLow();
 }
 
 
 bool LED::Driver::IsFired()
 {
-    return gpio_input_bit_get(GPIOA, GPIO_PIN_2) != RESET;
+    return is_fired;
+}
+
+
+void LED::Driver::On(ColorLED::E color)
+{
+    Off();
+
+    if (color == ColorLED::Red)
+    {
+        pinRED.ToHi();
+    }
+    else if (color == ColorLED::Green)
+    {
+        pinGREEN.ToHi();
+    }
+    else if (color == ColorLED::Blue)
+    {
+        pinBLUE.ToHi();
+    }
+
+    is_fired = true;
 }
