@@ -223,14 +223,14 @@ void myDisplay_setting_loadParams(int index, const char *fmt, ...)
 }
 void myDisplay_ui_rf_setting(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
 {
-  int i;
+//  int i;
   int index = agr0;
   static int oldIndex = 255;
 
   if (uiPageIdAddress != UI_PAGE_ID_SETTING)
   {    
     myLCD_clearFull();
-    for ( i = 0; i <= MAX_PAGE_COUNT; i++)
+    for (int i = 0; i <= MAX_PAGE_COUNT; i++)
     {
       myLCD_displayBlock(1, i);
     }
@@ -616,7 +616,7 @@ void loadDisplayBufferContinue(uint8_t *buf, uint16_t len)
 }
 void myDisplay_ui_rf_rxContinue_scroll_buffer(uint8_t *buf, uint16_t len)
 {
-    int i = 0;
+//    int i = 0;
     if (uiPageIdAddress == UI_PAGE_ID_RF_CONTINUOUS)
     {
         loadDisplayBufferContinue(buf, len);
