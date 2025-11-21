@@ -5,23 +5,20 @@
 #endif
 
 __attribute__((used, section(".binary_section")))
-const uint8_t binary_data_placeholder[1] = {0xFF};
+const uint8_t binary_data_placeholder[1] = {0xFF};      // Ётот байт будет размещЄн в первом байте .binary_section.
+                                                        // “.е. после заливки прошивки нужно перепрошивать двоичные данные
 
-/*
-extern const uint8_t binary_data_start[] __attribute__((section(".binary_section")));
-extern const uint8_t binary_data_end[] __attribute__((section(".binary_section")));
+#define DATA_BEGIN ((uint8_t *)0x08030000)
+#define DATA_SIZE 0xd800
+#define DATA_END (DATA_BEGIN + DATA_SIZE)
 
-#define BINARY_DATA_SIZE (binary_data_end - binary_data_start)
-#define DATA_BEGING (&binary_data_start[0])
-#define DATA_END (&binary_data_end[0])
-
-static const uint8_t *data = &binary_data_start[0];                   // ”казатель
+static const uint8_t *data = (const uint8_t *)DATA_BEGIN;
 static const int SIZE_CHAIN = 128;
 
 
 void upg_data_reset()
 {
-    data = DATA_BEGING;
+    data = DATA_BEGIN;
 }
 
 
@@ -42,4 +39,3 @@ const uint8_t *upg_data_next(int *size)
 
     return result;
 }
-*/
