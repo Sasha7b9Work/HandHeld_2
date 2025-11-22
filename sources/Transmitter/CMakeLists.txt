@@ -20,6 +20,7 @@ include_directories(
 add_definitions(-DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
+SET(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -MP -Wall")
 
 add_compile_options(
     /wd4002

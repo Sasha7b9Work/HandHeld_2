@@ -24,6 +24,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
 #include "stm32f10x_exti.h"
+#include "upgrader/Timer.h"
 
 volatile uint8_t rfIntRequest = 0;
 irqCallback_ts *irqCallback_tim1;
@@ -334,6 +335,7 @@ void PendSV_Handler(void)
  
 void SysTick_Handler(void)
 {
+    counter_ms++;
 }
 
 /******************************************************************************/

@@ -3,4 +3,6 @@
 #include <stdint.h>
 
 
+void upg_init(void);
+
 void upg_update(void);

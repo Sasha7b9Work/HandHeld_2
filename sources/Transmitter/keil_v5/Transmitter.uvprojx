@@ -663,6 +663,16 @@
               <FileType>1</FileType>
               <FilePath>..\upgrader\Upgrader.c</FilePath>
             </File>
+            <File>
+              <FileName>Timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\upgrader\Timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>Timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\upgrader\Timer.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1325,6 +1335,16 @@
               <FileType>1</FileType>
               <FilePath>..\upgrader\Upgrader.c</FilePath>
             </File>
+            <File>
+              <FileName>Timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\upgrader\Timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>Timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\upgrader\Timer.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1985,6 +2005,16 @@
               <FileName>Upgrader.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\upgrader\Upgrader.c</FilePath>
+            </File>
+            <File>
+              <FileName>Timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\upgrader\Timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>Timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\upgrader\Timer.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -2647,6 +2677,16 @@
               <FileName>Upgrader.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\upgrader\Upgrader.c</FilePath>
+            </File>
+            <File>
+              <FileName>Timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\upgrader\Timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>Timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\upgrader\Timer.h</FilePath>
             </File>
           </Files>
         </Group>
