@@ -43,13 +43,16 @@ static bool NeedToStartTheUpdate(void);
 static uint32_t CalculateCRC32(const void *buffer, int size);
 
 // Послать пакет прошивки
-static void SendPacketFirmware(const uint8_t *);
+// Если возвращает false, послать не удалось - нулевой указатель
+static bool SendPacketFirmware(const uint8_t *);
 
 // Послать завершающий пакет
 static void SendPacketFinish(void);
 
 // Заслать пакет непосредственно в передатчик
 static void SendRawPacket(const uint8_t *, int size);
+
+static int NumPacket(const uint8_t *);
 
 
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -85,19 +88,11 @@ void upg_update()
         break;
 
     case ProcessTransmit:
+        if (!SendPacketFirmware(DataNext()))
         {
-            const uint8_t *next_packet = DataNext();
+            SendPacketFinish();
 
-            if (next_packet)
-            {
-                SendPacketFirmware(next_packet);
-            }
-            else
-            {
-                SendPacketFinish();
-
-                state = Idle;
-            }
+            state = Idle;
         }
         break;
     }
@@ -126,13 +121,24 @@ const uint8_t *DataNext()
 }
 
 
-void SendPacketFirmware(const uint8_t *packet)
+int NumPacket(const uint8_t *packet)
 {
+    return (packet - DATA_BEGIN) / SIZE_CHAIN;
+}
+
+
+bool SendPacketFirmware(const uint8_t *packet)
+{
+    if (packet == 0)
+    {
+        return false;
+    }
+
 #define SIZE_PACKET (2 + SIZE_CHAIN + 4)
 
     uint8_t raw[SIZE_PACKET];
 
-    uint16_t num_packet = (packet - DATA_BEGIN) / SIZE_CHAIN;
+    uint16_t num_packet = NumPacket(packet);
 
     memcpy(raw, &num_packet, 2);
 
@@ -141,11 +147,14 @@ void SendPacketFirmware(const uint8_t *packet)
     uint32_t crc = CalculateCRC32(raw, SIZE_CHAIN + 2);
 
     SendRawPacket(raw, SIZE_PACKET);
+
+    return true;
 }
 
 
 void SendPacketFinish()
 {
+#undef SIZE_PACKET
 #define SIZE_PACKET (2 + 4 + 4)
 
     uint8_t raw[SIZE_PACKET] = { 0xFF, 0xFF };
