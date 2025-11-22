@@ -1,4 +1,5 @@
 #include "upgrader/Upgrader.h"
+#include <stdbool.h>
 
 #ifdef WIN32
 #define __attribute__()
@@ -17,19 +18,47 @@ static const int SIZE_CHAIN = 128;
 
 
 // Сбрасывает указатель данных прошивки
-static void upg_data_reset(void);
+static void DataReset(void);
 
 // Возвращает указатель на следующую порцию данных. size - размер порции
-static const uint8_t *upg_data_next(int *size);
+static const uint8_t *DateNext(int *size);
+
+static bool NeedToStartTheUpdate(void);
+
+
+typedef enum
+{
+    Idle,
+    ProcessTransmit
+} State;
+
+
+static State state = Idle;
 
 
 void upg_update()
 {
+    switch (state)
+    {
+    case Idle:
+        DataReset();
+        data_reset();
+        state = ProcessTransmit;
+        break;
 
+    case ProcessTransmit:
+        break;
+    }
 }
 
 
-void upg_data_reset()
+static bool NeedToStartTheUpdate()
+{
+    return false;
+}
+
+
+void DataReset()
 {
     data = DATA_BEGIN;
 }
