@@ -27,20 +27,32 @@ const uint8_t binary_data_placeholder[1] = {0xFF};      // Этот байт будет разме
 #define DATA_END (DATA_BEGIN + DATA_SIZE)
 
 static const uint8_t *data = (const uint8_t *)DATA_BEGIN;   // Это указатель на данные, которые следует передавать в данной итерации
-static const int SIZE_CHAIN = 128;
+#define SIZE_CHAIN 128
 
-uint32_t counter_timer = 0;
+//----------------------------------------------------------------------------------------------------------------------------------
 
 // Сбрасывает указатель данных прошивки
 static void DataReset(void);
 
-// Возвращает указатель на следующую порцию данных. size - размер порции
-static const uint8_t *DataNext(int *size);
+// Возвращает указатель на следующую порцию данных.
+// Если 0 - данные закончились
+static const uint8_t *DataNext(void);
 
 static bool NeedToStartTheUpdate(void);
 
 static uint32_t CalculateCRC32(const void *buffer, int size);
 
+// Послать пакет прошивки
+static void SendPacketFirmware(const uint8_t *);
+
+// Послать завершающий пакет
+static void SendPacketFinish(void);
+
+// Заслать пакет непосредственно в передатчик
+static void SendRawPacket(const uint8_t *, int size);
+
+
+//----------------------------------------------------------------------------------------------------------------------------------
 
 typedef enum
 {
@@ -48,9 +60,10 @@ typedef enum
     ProcessTransmit
 } State;
 
-
 static State state = Idle;
 
+
+//----------------------------------------------------------------------------------------------------------------------------------
 
 void upg_init()
 {
@@ -63,11 +76,29 @@ void upg_update()
     switch (state)
     {
     case Idle:
-        DataReset();
-        state = ProcessTransmit;
+        if (NeedToStartTheUpdate())
+        {
+            DataReset();
+
+            state = ProcessTransmit;
+        }
         break;
 
     case ProcessTransmit:
+        {
+            const uint8_t *next_packet = DataNext();
+
+            if (next_packet)
+            {
+                SendPacketFirmware(next_packet);
+            }
+            else
+            {
+                SendPacketFinish();
+
+                state = Idle;
+            }
+        }
         break;
     }
 }
@@ -85,22 +116,55 @@ void DataReset()
 }
 
 
-const uint8_t *DataNext(int *size)
+const uint8_t *DataNext()
 {
     const uint8_t *result = data;
 
-    if (DATA_END - result >= SIZE_CHAIN)
-    {
-        *size = SIZE_CHAIN;
-    }
-    else
-    {
-        *size = DATA_END - result;
-    }
+    data += SIZE_CHAIN;
 
-    data += *size;
+    return data < DATA_END ? result : 0;
+}
 
-    return result;
+
+void SendPacketFirmware(const uint8_t *packet)
+{
+#define SIZE_PACKET (2 + SIZE_CHAIN + 4)
+
+    uint8_t raw[SIZE_PACKET];
+
+    uint16_t num_packet = (packet - DATA_BEGIN) / SIZE_CHAIN;
+
+    memcpy(raw, &num_packet, 2);
+
+    memcpy(raw + 2, packet, SIZE_CHAIN);
+
+    uint32_t crc = CalculateCRC32(raw, SIZE_CHAIN + 2);
+
+    SendRawPacket(raw, SIZE_PACKET);
+}
+
+
+void SendPacketFinish()
+{
+#define SIZE_PACKET (2 + 4 + 4)
+
+    uint8_t raw[SIZE_PACKET] = { 0xFF, 0xFF };
+
+    uint32_t crc_firmware = CalculateCRC32(DATA_BEGIN, DATA_SIZE);
+
+    memcpy(raw + 2, &crc_firmware, 4);
+
+    uint32_t crc = CalculateCRC32(raw, 6);
+
+    memcpy(raw + 6, &crc, 4);
+
+    SendRawPacket(raw, SIZE_PACKET);
+}
+
+
+void SendRawPacket(const uint8_t *packet, int size)
+{
+
 }
 
 
