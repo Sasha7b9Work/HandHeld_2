@@ -1,20 +1,19 @@
 // 2022/11/23 14:55:48 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Device.h"
-#include "Utils/String.h"
 #include "Hardware/HAL/HAL.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include "Hardware/Keyboard.h"
 #include "Modules/LED/LED.h"
 #include "Hardware/Timer.h"
-#include "stm_includes.h"
+#include "Upgrader.h"
 
 
 namespace Device
 {
     static void JumpToMainApplication();
 
-    static void ReceiveFirmwareFromPAN3060();
+    static bool NeedUpgrade();
 }
 
 
@@ -32,32 +31,18 @@ void Device::Init()
 
 void Device::Update()
 {
-    if (Keyboard::NeedUpgrade())
+    if (NeedUpgrade())
     {
-        LED::Enable(ColorLED::Red);
-
-        Timer::Delay(500);
-
-        LED::Enable(ColorLED::Green);
-
-        Timer::Delay(500);
-
-        LED::Enable(ColorLED::Blue);
-
-        Timer::Delay(500);
-
-        LED::Disable();
-
-        ReceiveFirmwareFromPAN3060();
+        Upgrader::Run();
     }
 
     JumpToMainApplication();
 }
 
 
-void Device::ReceiveFirmwareFromPAN3060()
+bool Device::NeedUpgrade()
 {
-
+    return Keyboard::NeedUpgrade();
 }
 
 
