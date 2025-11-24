@@ -25,6 +25,8 @@ namespace HAL_CLOCK
 
 void ModeClock::Set(E v)
 {
+    return;
+
     if (v == ModeClock::DeepSleep)
     {
         if (!ModeClock::IsDeepSleep())
@@ -180,7 +182,7 @@ void HAL_CLOCK::SetLow()
 
 void HAL_CLOCK::SetHi()
 {
-    SystemCoreClock = 78000000;
+    SystemCoreClock = 72000000;
 
     uint32_t timeout = 0U;
     uint32_t stab_flag = 0U;
