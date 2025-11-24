@@ -15,9 +15,15 @@ namespace Upgrader
 
 void Upgrader::Run()
 {
-    NotifyBeginUpgrade();
+    while (true)
+    {
+        NotifyBeginUpgrade();
 
-    ReceiveFirmwareFromPAN3060();
+        if (ReceiveFirmwareFromPAN3060())
+        {
+
+        }
+    }
 }
 
 
