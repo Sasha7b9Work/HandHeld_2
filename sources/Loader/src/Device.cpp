@@ -31,10 +31,10 @@ void Device::Init()
 
 void Device::Update()
 {
-    if (NeedUpgrade())
-    {
-        Upgrader::Run();
-    }
+//    if (NeedUpgrade())
+//    {
+//        Upgrader::Run();
+//    }
 
     JumpToMainApplication();
 }
