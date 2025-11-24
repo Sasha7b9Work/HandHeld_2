@@ -77,6 +77,8 @@ void Device::Update2()
     PAN3060::Update();
 
     UpdateLED();
+
+    Display::UpdateDebug();
 }
 
 

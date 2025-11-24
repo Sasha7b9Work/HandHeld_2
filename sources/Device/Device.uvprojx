@@ -776,11 +776,6 @@
           <GroupName>Display/Font</GroupName>
           <Files>
             <File>
-              <FileName>Display.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Display.h</FilePath>
-            </File>
-            <File>
               <FileName>Font.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Display\Font\Font.cpp</FilePath>
@@ -1898,11 +1893,6 @@
         <Group>
           <GroupName>Display/Font</GroupName>
           <Files>
-            <File>
-              <FileName>Display.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Display.h</FilePath>
-            </File>
             <File>
               <FileName>Font.cpp</FileName>
               <FileType>8</FileType>

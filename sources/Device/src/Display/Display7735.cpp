@@ -56,9 +56,9 @@ namespace Display
     static void DrawScene(int num_part);
     static void EndScene(int num_parts);
 
-    static void BeginScene2(int num_part);
-    static void DrawScene2(int num_part);
-    static void EndScene2(int num_part);
+    static void BeginSceneDebug(int num_part);
+    static void DrawSceneDebug(int num_part);
+    static void EndSceneDebug(int num_part);
 }
 
 
@@ -110,13 +110,13 @@ void Display::Update()
 }
 
 
-void Display::Update2()
+void Display::UpdateDebug()
 {
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
     {
-        BeginScene2(i);
-        DrawScene2(i);
-        EndScene2(i);
+        BeginSceneDebug(i);
+        DrawSceneDebug(i);
+        EndSceneDebug(i);
     }
 }
 
@@ -168,14 +168,6 @@ void Display::DrawLowVoltage()
 }
 
 
-void Display::BeginScene2(int num_part)
-{
-    Buffer::current_part = num_part;
-
-    Buffer::Fill(Color::BLACK);
-}
-
-
 void Display::BeginScene(int num_part)
 {
     Buffer::current_part = num_part;
@@ -193,14 +185,6 @@ void Display::BeginScene(int num_part)
     }
 
     Buffer::Fill(color);
-}
-
-
-void Display::EndScene2(int num_part)
-{
-    ST7735::Enable();
-
-    ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_part);
 }
 
 
@@ -225,28 +209,6 @@ void Display::EndScene(int num_parts)
         Buffer::crc[Buffer::current_part] = crc;
 
         ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
-    }
-}
-
-
-void Display::DrawScene2(int)
-{
-    static TimeMeterMS meter;
-
-    static int num_lines = 0;
-
-    if (meter.ElapsedTime() > 200)
-    {
-        meter.Reset();
-
-        num_lines = (num_lines + 1) % 11;
-    }
-
-    HLine line(100);
-
-    for (int i = 0; i < num_lines; i++)
-    {
-        line.Draw(10, 10 + i, Color::WHITE);
     }
 }
 
@@ -432,4 +394,42 @@ int Text<capacity>::Write(int x, int y, const Color &color) const
     }
 
     return x;
+}
+
+
+void Display::BeginSceneDebug(int num_part)
+{
+    Buffer::current_part = num_part;
+
+    Buffer::Fill(Color::BLACK);
+}
+
+
+void Display::DrawSceneDebug(int)
+{
+    static TimeMeterMS meter;
+
+    static int num_lines = 0;
+
+    if (meter.ElapsedTime() > 200)
+    {
+        meter.Reset();
+
+        num_lines = (num_lines + 1) % 11;
+    }
+
+    HLine line(100);
+
+    for (int i = 0; i < num_lines; i++)
+    {
+        line.Draw(10, 10 + i, Color::WHITE);
+    }
+}
+
+
+void Display::EndSceneDebug(int num_part)
+{
+    ST7735::Enable();
+
+    ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_part);
 }

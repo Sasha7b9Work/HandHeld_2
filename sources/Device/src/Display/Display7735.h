@@ -19,7 +19,7 @@ namespace Display
 
     void Update();
 
-    void Update2();
+    void UpdateDebug();
 
     void PrepareToSleep();
 
