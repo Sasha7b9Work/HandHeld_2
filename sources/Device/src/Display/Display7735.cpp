@@ -63,11 +63,6 @@ namespace Display
     static TimeMeterMS meter_draw;
     static TimeMeterMS meter_end_scene;
     static TimeMeterMS meter_full;
-
-    static uint time_begin_scene = 0;
-    static uint time_draw = 0;
-    static uint time_end_scene = 0;
-    static uint time_full = 0;
 }
 
 
@@ -409,19 +404,19 @@ void Display::DrawSceneDebug(int)
     int y = 10;
     int dy = 10;
 
-    Text<64>("begin scene : %u ms", time_begin_scene).Write(x, y, Color::WHITE);
+    Text<64>("begin scene : %u ms", meter_begin_scene.ElapsedTime()).Write(x, y, Color::WHITE);
 
     y += dy;
 
-    Text<64>("draw scene : %u ms", time_draw).Write(x, y, Color::WHITE);
+    Text<64>("draw scene : %u ms", meter_draw.ElapsedTime()).Write(x, y, Color::WHITE);
 
     y += dy;
 
-    Text<64>("end scene : %u ms", time_end_scene).Write(x, y);
+    Text<64>("end scene : %u ms", meter_end_scene.ElapsedTime()).Write(x, y);
 
     y += dy;
 
-    Text<64>("time full : %u ms", time_full).Write(x, y);
+    Text<64>("time full : %u ms", meter_full.ElapsedTime()).Write(x, y);
 }
 
 
