@@ -9,7 +9,7 @@ namespace Upgrader
 {
     static void NotifyBeginUpgrade();
 
-    static void ReceiveFirmwareFromPAN3060();
+    static bool ReceiveFirmwareFromPAN3060();
 }
 
 
@@ -21,7 +21,7 @@ void Upgrader::Run()
 
         if (ReceiveFirmwareFromPAN3060())
         {
-
+            break;
         }
     }
 }
@@ -45,7 +45,7 @@ void Upgrader::NotifyBeginUpgrade()
 }
 
 
-void Upgrader::ReceiveFirmwareFromPAN3060()
+bool Upgrader::ReceiveFirmwareFromPAN3060()
 {
-
+    return true;
 }
