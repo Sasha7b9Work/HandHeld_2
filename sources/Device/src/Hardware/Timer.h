@@ -38,9 +38,17 @@ struct TimeMeterMS
 
     uint ElapsedTime() const;
 
+    void Pause();
+
+    void Resume();
+
 private:
 
     uint time_reset;
+
+    uint time_begin_pause;
+
+    bool in_pause = false;
 };
 
 

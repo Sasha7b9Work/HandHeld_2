@@ -35,13 +35,39 @@ void Timer::Delay(uint timeMS)
 
 void TimeMeterMS::Reset()
 {
+    in_pause = false;
+
     time_reset = timer_counter;
 }
 
 
 uint TimeMeterMS::ElapsedTime() const
 {
+    if (in_pause)
+    {
+        uint time_reset_temp = time_reset;
+        time_reset_temp += (timer_counter - time_begin_pause);
+
+        return timer_counter - time_reset_temp;
+    }
+
     return timer_counter - time_reset;
+}
+
+
+void TimeMeterMS::Pause()
+{
+    in_pause = true;
+
+    time_begin_pause = timer_counter;
+}
+
+
+void TimeMeterMS::Resume()
+{
+    in_pause = false;
+
+    time_reset += (timer_counter - time_begin_pause);
 }
 
 
