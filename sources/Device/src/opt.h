@@ -8,4 +8,8 @@
 #endif
 
 
-#define BOARD_NEW
+//#define BOARD_NEW
+
+
+//#define SOUND_ENABELD
+

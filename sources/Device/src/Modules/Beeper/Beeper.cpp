@@ -150,6 +150,8 @@ void Sound::Start()
 
 void Beeper::Update()
 {
+#ifdef SOUND_ENABLED
+
 #ifdef GUI
 
     PainterMelody::self->Update();
@@ -165,6 +167,8 @@ void Beeper::Update()
             need_running = false;
         }
     }
+
+#endif
 
 #endif
 }
