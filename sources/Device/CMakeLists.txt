@@ -36,7 +36,8 @@ file(GLOB GD32E23x                ../common/GD32E23x_Firmware_Library/Firmware/G
 file(GLOB SRC                     src/*.*)
 file(GLOB DISPLAY                 src/Display/Display7735.*
                                   src/Display/Icons.*
-                                  src/Display/Colors.*)
+                                  src/Display/Colors.*
+                                  src/Display/Text.*)
 file(GLOB DISPLAY_FONT            src/Display/Font/*.*)
 file(GLOB HARDWARE                src/Hardware/*.*)
 file(GLOB HARDWARE_CMSIS          src/Hardware/CMSIS/*.*)

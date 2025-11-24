@@ -11,11 +11,10 @@
 #include "Utils/FPS.h"
 #include "Utils/StringUtils.h"
 #include "Hardware/Power.h"
-#include "Hardware/HAL/HAL_PINS.h"
 #include "Utils/Math.h"
 #include "Modules/PCF8563/PCF8563.h"
 #include "Modules/PAN3060/PAN3060.h"
-#include <string>
+#include "Display/Text.h"
 
 
 template int Text<64>::Write(int x, int y, const Color &color) const;
@@ -59,6 +58,16 @@ namespace Display
     static void BeginSceneDebug(int num_part);
     static void DrawSceneDebug(int num_part);
     static void EndSceneDebug(int num_part);
+
+    static TimeMeterMS meter_begin_scene;
+    static TimeMeterMS meter_draw;
+    static TimeMeterMS meter_end_scene;
+    static TimeMeterMS meter_full;
+
+    static uint time_begin_scene = 0;
+    static uint time_draw = 0;
+    static uint time_end_scene = 0;
+    static uint time_full = 0;
 }
 
 
@@ -106,17 +115,6 @@ void Display::Update()
     if (!PAN3060::IsEnabled() && Source::GetCountReceived() == 0 && !PCF8563::IsAlarmed())
     {
         ModeClock::Set(ModeClock::Low);
-    }
-}
-
-
-void Display::UpdateDebug()
-{
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
-    {
-        BeginSceneDebug(i);
-        DrawSceneDebug(i);
-        EndSceneDebug(i);
     }
 }
 
@@ -407,23 +405,23 @@ void Display::BeginSceneDebug(int num_part)
 
 void Display::DrawSceneDebug(int)
 {
-    static TimeMeterMS meter;
+    int x = 10;
+    int y = 10;
+    int dy = 10;
 
-    static int num_lines = 0;
+    Text<64>("begin scene : %u ms", time_begin_scene).Write(x, y, Color::WHITE);
 
-    if (meter.ElapsedTime() > 200)
-    {
-        meter.Reset();
+    y += dy;
 
-        num_lines = (num_lines + 1) % 11;
-    }
+    Text<64>("draw scene : %u ms", time_draw).Write(x, y, Color::WHITE);
 
-    HLine line(100);
+    y += dy;
 
-    for (int i = 0; i < num_lines; i++)
-    {
-        line.Draw(10, 10 + i, Color::WHITE);
-    }
+    Text<64>("end scene : %u ms", time_end_scene).Write(x, y);
+
+    y += dy;
+
+    Text<64>("time full : %u ms", time_full).Write(x, y);
 }
 
 
@@ -432,4 +430,15 @@ void Display::EndSceneDebug(int num_part)
     ST7735::Enable();
 
     ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_part);
+}
+
+
+void Display::UpdateDebug()
+{
+    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    {
+        BeginSceneDebug(i);
+        DrawSceneDebug(i);
+        EndSceneDebug(i);
+    }
 }
