@@ -18,9 +18,7 @@
 #define __attribute__()
 #endif
 
-//__attribute__((used, section(".binary_section")))
-//const uint8_t binary_data_placeholder[1] = {0xFF};      // Этот байт будет размещён в первом байте .binary_section.
-                                                        // Т.е. после заливки прошивки нужно перепрошивать двоичные данные
+static const uint8_t __attribute__((section(".ARM.__at_0x08030000"))) large_array[63 * 1024] = {0};
 
 #define DATA_BEGIN ((uint8_t *)0x08030000)
 #define DATA_SIZE (54 * 1024)
