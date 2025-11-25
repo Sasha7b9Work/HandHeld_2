@@ -304,19 +304,24 @@ void myDisplay_ui_selectMode(bool flashFlag, int agr0, void *agr1_ptr, void *agr
     myLCD_str8x16(agr0 == 5 && flashFlag ? IM_INVERSE : IM_NOMALE,
         10, 6, "Upgrade Firmware");
 }
-void myDisplay_ui_upgradeFirmware(bool flashFlag, int arg0, void *arg1_ptr, void *arg2_ptr)
+void myDisplay_ui_upgradeFirmware(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr)
 {
-    myLCD_clearFull();
+    if (uiPageIdAddress != UI_PAGE_ID_UPGRADE_FIRMWARE)
+    {
+        myLCD_clearFull();
 
-    myLCD_str8x16(IM_NOMALE, 0, 1, "First bytes : ");
+        myLCD_str8x16(IM_NOMALE, 0, 1, "First bytes : ");
 
-    uint32_t address = upg_address_begin();
+        uint32_t address = upg_address_begin();
 
-    uint8_t *pointer = (uint8_t *)address;
+        uint8_t *pointer = (uint8_t *)address;
 
-    myLCD_str8x16(IM_NOMALE, 0, 2, "%02X %02X %02X %02X %02X %02X %02X %02X", *(pointer), *(pointer + 1), *(pointer + 2), *(pointer + 3), *(pointer + 4), *(pointer + 5), *(pointer + 6), *(pointer + 7));
+        myLCD_str8x16(IM_NOMALE, 0, 2, "%02X %02X %02X %02X %02X %02X %02X %02X", *(pointer), *(pointer + 1), *(pointer + 2), *(pointer + 3), *(pointer + 4), *(pointer + 5), *(pointer + 6), *(pointer + 7));
+    }
 
     uiPageIdAddress = UI_PAGE_ID_UPGRADE_FIRMWARE;
+
+    myLCD_str8x16(agr0 == 0 && flashFlag ? IM_INVERSE : IM_NOMALE, 0, 4, "Start");
 }
 void myDisplay_ui_rf_rx_packet(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
 {
@@ -826,7 +831,10 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].uiDriver = myDisplay_ui_upgradeFirmware;
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].nextPageIdTab[0] = 0;
-    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].cursorCount = 0;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].itemTypeTab[0] = TYPE_WRITE_TEXT;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].writeStaTab[0] = 0;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].cursorCounting = 0;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].cursorCount = 1;
 
     // Enter RF Receiver ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_RX_PACKET].id = UI_PAGE_ID_RX_PACKET + 1;
