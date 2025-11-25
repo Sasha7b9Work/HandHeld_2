@@ -304,6 +304,12 @@ void myDisplay_ui_rf_setting(bool flashFlag, int agr0, void *agr1_ptr, void *agr
         oldIndex = agr0;
     }
 }
+void myDisplay_ui_upgradeFirmware(bool flashFlag, int arg0, void *arg1_ptr, void *arg2_ptr)
+{
+    myLCD_clearFull();
+
+    uiPageIdAddress = UI_PAGE_ID_UPGRADE_FIRMWARE;
+}
 uint8_t ver_buffer;
 char *mod_buffer;
 void myDisplay_ui_device_infor(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
@@ -777,6 +783,7 @@ void myDisplay_init(enterCallback cb)
 {
     myLCD_init();
 
+    // Стартовый экран ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_FIRST_UI].id = UI_PAGE_ID_FIRST_UI + 1;
     uiPageParams[UI_PAGE_ID_FIRST_UI].uiDriver = myDisplay_ui_firstUi;
     uiPageParams[UI_PAGE_ID_FIRST_UI].lastPageIdTab[0] = 0;
@@ -786,6 +793,7 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_FIRST_UI].cursorCounting = 0;
     uiPageParams[UI_PAGE_ID_FIRST_UI].cursorCount = 2;
 
+    // Первая страница меню ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_ITEM_MODE].id = UI_PAGE_ID_ITEM_MODE + 1;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].uiDriver = myDisplay_ui_selectMode;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].lastPageIdTab[0] = 0;
@@ -800,10 +808,27 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[3] = TYPE_NEXT_LINK;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[4] = UI_PAGE_ID_DEVICE_INFOR + 1;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[4] = TYPE_NEXT_LINK;
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[5] = UI_PAGE_ID_UPGRADE_FIRMWARE + 1;
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[5] = TYPE_NEXT_LINK;
 
     uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCounting = 0;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCount = 6;
 
+    // Upgrade Firmware ----------------------------------------------------------------------------------------------------------
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].id = UI_PAGE_ID_UPGRADE_FIRMWARE + 1;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].uiDriver = myDisplay_ui_upgradeFirmware;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].nextPageIdTab[0] = 0;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].cursorCount = 0;
+
+    // Enter Device Infor ------------------------------------------------------------------------------------------------------
+    uiPageParams[UI_PAGE_ID_DEVICE_INFOR].id = UI_PAGE_ID_DEVICE_INFOR + 1;
+    uiPageParams[UI_PAGE_ID_DEVICE_INFOR].uiDriver = myDisplay_ui_device_infor;
+    uiPageParams[UI_PAGE_ID_DEVICE_INFOR].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
+    uiPageParams[UI_PAGE_ID_DEVICE_INFOR].nextPageIdTab[0] = 0;
+    uiPageParams[UI_PAGE_ID_DEVICE_INFOR].cursorCount = 0;
+
+    // Enter RF Transmitter ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_TX_PACKET].id = UI_PAGE_ID_TX_PACKET + 1;
     uiPageParams[UI_PAGE_ID_TX_PACKET].uiDriver = myDisplay_ui_rf_tx_packet;
     uiPageParams[UI_PAGE_ID_TX_PACKET].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
@@ -817,12 +842,7 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_TX_PACKET].cursorCounting = 0;
     uiPageParams[UI_PAGE_ID_TX_PACKET].cursorCount = 3;
 
-    uiPageParams[UI_PAGE_ID_DEVICE_INFOR].id = UI_PAGE_ID_DEVICE_INFOR + 1;
-    uiPageParams[UI_PAGE_ID_DEVICE_INFOR].uiDriver = myDisplay_ui_device_infor;
-    uiPageParams[UI_PAGE_ID_DEVICE_INFOR].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
-    uiPageParams[UI_PAGE_ID_DEVICE_INFOR].nextPageIdTab[0] = 0;
-    uiPageParams[UI_PAGE_ID_DEVICE_INFOR].cursorCount = 0;
-
+    // Enter RF Receiver ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_RX_PACKET].id = UI_PAGE_ID_RX_PACKET + 1;
     uiPageParams[UI_PAGE_ID_RX_PACKET].uiDriver = myDisplay_ui_rf_rx_packet;
     uiPageParams[UI_PAGE_ID_RX_PACKET].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
@@ -834,6 +854,7 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_RX_PACKET].cursorCounting = 0;
     uiPageParams[UI_PAGE_ID_RX_PACKET].cursorCount = 2;
 
+    // Enter RF Continuous ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_RF_CONTINUOUS].id = UI_PAGE_ID_RF_CONTINUOUS + 1;
     uiPageParams[UI_PAGE_ID_RF_CONTINUOUS].uiDriver = myDisplay_ui_rf_continuos;
     uiPageParams[UI_PAGE_ID_RF_CONTINUOUS].lastPageIdTab[CNT_ITEM_INDEX_TX] = UI_PAGE_ID_ITEM_MODE + 1;
@@ -846,6 +867,7 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_RF_CONTINUOUS].cursorCounting = 0;
     uiPageParams[UI_PAGE_ID_RF_CONTINUOUS].cursorCount = CNT_ITEM_INDEX_MAX_COUNT;
 
+    // Enter RF Setting ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_SETTING].id = UI_PAGE_ID_SETTING + 1;
     uiPageParams[UI_PAGE_ID_SETTING].uiDriver = myDisplay_ui_rf_setting;
     uiPageParams[UI_PAGE_ID_SETTING].lastPageIdTab[SET_ITEM_INDEX_TYPE] = UI_PAGE_ID_ITEM_MODE + 1;

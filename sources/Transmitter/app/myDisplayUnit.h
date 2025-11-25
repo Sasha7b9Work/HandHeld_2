@@ -16,6 +16,7 @@ typedef enum
     UI_PAGE_ID_RF_CONTINUOUS,
     UI_PAGE_ID_SETTING,
     UI_PAGE_ID_DEVICE_INFOR,
+    UI_PAGE_ID_UPGRADE_FIRMWARE,
     UI_PAGE_ID_MAX,
 }uiPageIndex_te;
 typedef enum
