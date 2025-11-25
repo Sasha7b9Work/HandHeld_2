@@ -344,7 +344,17 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
             break;
         }
     }
-    break;
+        break;
+    case UI_PAGE_ID_UPGRADE_FIRMWARE:
+        switch (cursorCount)
+        {
+        case 0:
+            {
+                int i = 0;
+            }
+            break;
+        }
+        break;
     case UI_PAGE_ID_TX_PACKET:
     {
         switch (cursorCount)
