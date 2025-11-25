@@ -62,29 +62,6 @@ void myDisplay_ui_firstUi(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_p
     }
     uiPageIdAddress = UI_PAGE_ID_FIRST_UI;
 }
-void myDisplay_ui_selectMode(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
-{
-    int i;
-
-    myLCD_clearFull();
-    for (i = 0; i <= MAX_PAGE_COUNT; i++)
-    {
-        myLCD_displayBlock(1, i);
-    }
-    uiPageIdAddress = UI_PAGE_ID_ITEM_MODE;
-    myLCD_str8x16(agr0 == 0 && flashFlag ? IM_INVERSE : IM_NOMALE,
-        10, 1, "Enter RF Transmiter");
-    myLCD_str8x16(agr0 == 1 && flashFlag ? IM_INVERSE : IM_NOMALE,
-        10, 2, "Enter RF Receiver");
-    myLCD_str8x16(agr0 == 2 && flashFlag ? IM_INVERSE : IM_NOMALE,
-        10, 3, "Enter RF Continuous");
-    myLCD_str8x16(agr0 == 3 && flashFlag ? IM_INVERSE : IM_NOMALE,
-        10, 4, "Enter RF Setting");
-    myLCD_str8x16(agr0 == 4 && flashFlag ? IM_INVERSE : IM_NOMALE,
-        10, 5, "Enter Device Infor");
-    myLCD_str8x16(agr0 == 5 && flashFlag ? IM_INVERSE : IM_NOMALE,
-        10, 6, "Upgrade Firmware");
-}
 void myDisplay_ui_rf_tx(uint8_t mode)
 {
     int i;
@@ -303,6 +280,29 @@ void myDisplay_ui_rf_setting(bool flashFlag, int agr0, void *agr1_ptr, void *agr
         }
         oldIndex = agr0;
     }
+}
+void myDisplay_ui_selectMode(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
+{
+    int i;
+
+    myLCD_clearFull();
+    for (i = 0; i <= MAX_PAGE_COUNT; i++)
+    {
+        myLCD_displayBlock(1, i);
+    }
+    uiPageIdAddress = UI_PAGE_ID_ITEM_MODE;
+    myLCD_str8x16(agr0 == 0 && flashFlag ? IM_INVERSE : IM_NOMALE,
+        10, 1, "Enter RF Transmiter");
+    myLCD_str8x16(agr0 == 1 && flashFlag ? IM_INVERSE : IM_NOMALE,
+        10, 2, "Enter RF Receiver");
+    myLCD_str8x16(agr0 == 2 && flashFlag ? IM_INVERSE : IM_NOMALE,
+        10, 3, "Enter RF Continuous");
+    myLCD_str8x16(agr0 == 3 && flashFlag ? IM_INVERSE : IM_NOMALE,
+        10, 4, "Enter RF Setting");
+    myLCD_str8x16(agr0 == 4 && flashFlag ? IM_INVERSE : IM_NOMALE,
+        10, 5, "Enter Device Infor");
+    myLCD_str8x16(agr0 == 5 && flashFlag ? IM_INVERSE : IM_NOMALE,
+        10, 6, "Upgrade Firmware");
 }
 void myDisplay_ui_upgradeFirmware(bool flashFlag, int arg0, void *arg1_ptr, void *arg2_ptr)
 {
