@@ -82,6 +82,8 @@ void myDisplay_ui_selectMode(bool flashFlag, int agr0, void *agr1_ptr, void *agr
         10, 4, "Enter RF Setting");
     myLCD_str8x16(agr0 == 4 && flashFlag ? IM_INVERSE : IM_NOMALE,
         10, 5, "Enter Device Infor");
+    myLCD_str8x16(agr0 == 5 && flashFlag ? IM_INVERSE : IM_NOMALE,
+        10, 6, "Upgrade Firmware");
 }
 void myDisplay_ui_rf_tx(uint8_t mode)
 {
@@ -800,7 +802,7 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[4] = TYPE_NEXT_LINK;
 
     uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCounting = 0;
-    uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCount = 5;
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCount = 6;
 
     uiPageParams[UI_PAGE_ID_TX_PACKET].id = UI_PAGE_ID_TX_PACKET + 1;
     uiPageParams[UI_PAGE_ID_TX_PACKET].uiDriver = myDisplay_ui_rf_tx_packet;
