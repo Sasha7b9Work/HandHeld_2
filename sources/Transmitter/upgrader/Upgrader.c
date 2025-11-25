@@ -18,7 +18,7 @@
 #define __attribute__()
 #endif
 
-static const uint8_t __attribute__((section(".ARM.__at_0x08030000"))) large_array[63 * 1024] = {0};
+static const uint8_t __attribute__((section(".ARM.__at_0x08001000"))) large_array[54 * 1024] = {0};
 
 #define DATA_BEGIN ((uint8_t *)0x08030000)
 #define DATA_SIZE (54 * 1024)
