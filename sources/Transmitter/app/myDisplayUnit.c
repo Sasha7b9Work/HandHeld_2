@@ -318,6 +318,30 @@ void myDisplay_ui_upgradeFirmware(bool flashFlag, int arg0, void *arg1_ptr, void
 
     uiPageIdAddress = UI_PAGE_ID_UPGRADE_FIRMWARE;
 }
+void myDisplay_ui_rf_rx_packet(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
+{
+    int i;
+    if (uiPageIdAddress != UI_PAGE_ID_RX_PACKET)
+    {
+        myLCD_clearFull();
+        for (i = 0; i <= MAX_PAGE_COUNT; i++)
+        {
+            myLCD_displayBlock(1, i);
+        }
+        myLCD_str8x16(IM_NOMALE, HORIZONTAL_CENTER, 1, "Packet RX");
+        myLCD_str8x16(IM_NOMALE,
+            5, 3, "Packet:");
+    }
+    uiPageIdAddress = UI_PAGE_ID_RX_PACKET;
+
+    if (uiPageIdAddress == UI_PAGE_ID_RX_PACKET)
+    {
+        myLCD_str8x16(agr0 == 0 && flashFlag ? IM_INVERSE : IM_NOMALE,
+            HORIZONTAL_RIGHT, 5, "START");
+        myLCD_str8x16(agr0 == 1 && flashFlag ? IM_INVERSE : IM_NOMALE,
+            HORIZONTAL_RIGHT, 6, "RXAA");
+    }
+}
 uint8_t ver_buffer;
 char *mod_buffer;
 void myDisplay_ui_device_infor(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
@@ -496,31 +520,6 @@ void myDisplay_ui_rf_continuos_rxPacketGetCount(uint32_t count)
     {
         myLCD_str8x16(IM_NOMALE,
             10, 6, "rx count=%d", count);
-    }
-}
-
-void myDisplay_ui_rf_rx_packet(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
-{
-    int i;
-    if (uiPageIdAddress != UI_PAGE_ID_RX_PACKET)
-    {
-        myLCD_clearFull();
-        for (i = 0; i <= MAX_PAGE_COUNT; i++)
-        {
-            myLCD_displayBlock(1, i);
-        }
-        myLCD_str8x16(IM_NOMALE, HORIZONTAL_CENTER, 1, "Packet RX");
-        myLCD_str8x16(IM_NOMALE,
-            5, 3, "Packet:");
-    }
-    uiPageIdAddress = UI_PAGE_ID_RX_PACKET;
-
-    if (uiPageIdAddress == UI_PAGE_ID_RX_PACKET)
-    {
-        myLCD_str8x16(agr0 == 0 && flashFlag ? IM_INVERSE : IM_NOMALE,
-            HORIZONTAL_RIGHT, 5, "START");
-        myLCD_str8x16(agr0 == 1 && flashFlag ? IM_INVERSE : IM_NOMALE,
-            HORIZONTAL_RIGHT, 6, "RXAA");
     }
 }
 void myDisplay_ui_rf_rxPacket_rxCurrent(float current)
@@ -829,6 +828,18 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].nextPageIdTab[0] = 0;
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].cursorCount = 0;
 
+    // Enter RF Receiver ------------------------------------------------------------------------------------------------------
+    uiPageParams[UI_PAGE_ID_RX_PACKET].id = UI_PAGE_ID_RX_PACKET + 1;
+    uiPageParams[UI_PAGE_ID_RX_PACKET].uiDriver = myDisplay_ui_rf_rx_packet;
+    uiPageParams[UI_PAGE_ID_RX_PACKET].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
+    uiPageParams[UI_PAGE_ID_RX_PACKET].nextPageIdTab[0] = 0;
+    uiPageParams[UI_PAGE_ID_RX_PACKET].itemTypeTab[0] = TYPE_WRITE_TEXT;
+    uiPageParams[UI_PAGE_ID_RX_PACKET].writeStaTab[0] = 0;
+    uiPageParams[UI_PAGE_ID_RX_PACKET].itemTypeTab[1] = TYPE_WRITE_TEXT;
+    uiPageParams[UI_PAGE_ID_RX_PACKET].writeStaTab[1] = 0;
+    uiPageParams[UI_PAGE_ID_RX_PACKET].cursorCounting = 0;
+    uiPageParams[UI_PAGE_ID_RX_PACKET].cursorCount = 2;
+
     // Enter Device Infor ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_DEVICE_INFOR].id = UI_PAGE_ID_DEVICE_INFOR + 1;
     uiPageParams[UI_PAGE_ID_DEVICE_INFOR].uiDriver = myDisplay_ui_device_infor;
@@ -849,18 +860,6 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_TX_PACKET].writeStaTab[2] = 0;
     uiPageParams[UI_PAGE_ID_TX_PACKET].cursorCounting = 0;
     uiPageParams[UI_PAGE_ID_TX_PACKET].cursorCount = 3;
-
-    // Enter RF Receiver ------------------------------------------------------------------------------------------------------
-    uiPageParams[UI_PAGE_ID_RX_PACKET].id = UI_PAGE_ID_RX_PACKET + 1;
-    uiPageParams[UI_PAGE_ID_RX_PACKET].uiDriver = myDisplay_ui_rf_rx_packet;
-    uiPageParams[UI_PAGE_ID_RX_PACKET].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
-    uiPageParams[UI_PAGE_ID_RX_PACKET].nextPageIdTab[0] = 0;
-    uiPageParams[UI_PAGE_ID_RX_PACKET].itemTypeTab[0] = TYPE_WRITE_TEXT;
-    uiPageParams[UI_PAGE_ID_RX_PACKET].writeStaTab[0] = 0;
-    uiPageParams[UI_PAGE_ID_RX_PACKET].itemTypeTab[1] = TYPE_WRITE_TEXT;
-    uiPageParams[UI_PAGE_ID_RX_PACKET].writeStaTab[1] = 0;
-    uiPageParams[UI_PAGE_ID_RX_PACKET].cursorCounting = 0;
-    uiPageParams[UI_PAGE_ID_RX_PACKET].cursorCount = 2;
 
     // Enter RF Continuous ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_RF_CONTINUOUS].id = UI_PAGE_ID_RF_CONTINUOUS + 1;
