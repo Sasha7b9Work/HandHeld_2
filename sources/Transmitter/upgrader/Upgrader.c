@@ -18,6 +18,11 @@
 #define __attribute__()
 #endif
 
+uint32_t upg_address_begin()
+{
+    return 0x08001000;
+}
+
 static const uint8_t __attribute__((section(".ARM.__at_0x08001000"))) large_array[54 * 1024] = {0};
 
 #define DATA_BEGIN ((uint8_t *)0x08030000)

@@ -308,6 +308,14 @@ void myDisplay_ui_upgradeFirmware(bool flashFlag, int arg0, void *arg1_ptr, void
 {
     myLCD_clearFull();
 
+    myLCD_str8x16(IM_NOMALE, 0, 1, "First bytes : ");
+
+    uint32_t address = upg_address_begin();
+
+    uint8_t *pointer = (uint8_t *)address;
+
+    myLCD_str8x16(IM_NOMALE, 0, 2, "%02X %02X %02X %02X %02X", *(pointer), *(pointer + 1), *(pointer + 2), *(pointer + 3), *(pointer + 4));
+
     uiPageIdAddress = UI_PAGE_ID_UPGRADE_FIRMWARE;
 }
 uint8_t ver_buffer;
