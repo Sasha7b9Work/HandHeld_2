@@ -18,8 +18,8 @@
 #define __attribute__()
 #endif
 
-__attribute__((used, section(".binary_section")))
-const uint8_t binary_data_placeholder[1] = {0xFF};      // Ётот байт будет размещЄн в первом байте .binary_section.
+//__attribute__((used, section(".binary_section")))
+//const uint8_t binary_data_placeholder[1] = {0xFF};      // Ётот байт будет размещЄн в первом байте .binary_section.
                                                         // “.е. после заливки прошивки нужно перепрошивать двоичные данные
 
 #define DATA_BEGIN ((uint8_t *)0x08030000)
