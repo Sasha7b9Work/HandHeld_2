@@ -643,6 +643,9 @@ int main(void)
 
     setEvent(EVENT_TIME_CYCLE_10ms, true, 10);
     setEvent(EVENT_TIME_CYCLE_500ms, true, 500);
+
+    upg_init();
+
     while (1)
     {
         eventReturn = event_pend();
