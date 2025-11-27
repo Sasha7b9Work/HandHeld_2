@@ -1,5 +1,4 @@
-#ifndef __MY_DISPLAYUNIT_H
-#define __MY_DISPLAYUNIT_H
+#pragma once
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
@@ -122,5 +121,5 @@ void myDisplay_setting_loadParams(int index, const char *fmt, ...);
 void myDisplay_ui_deviceInfor_setVer(uint8_t ver);
 void myDisplay_ui_deviceInfor_setModule(char *moduleName);
 void uiTimerFlash_callBack(void);
-#endif
 
+void myDisplay_ui_upgradeFirmware(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr);

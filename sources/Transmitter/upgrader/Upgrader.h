@@ -12,4 +12,4 @@ void upg_begin_update(void);
 uint32_t upg_address_begin(void);
 
 int upg_chains_transmitted(void);
-int ugp_chains_all(void);
+int upg_chains_all(void);
