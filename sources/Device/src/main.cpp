@@ -102,22 +102,22 @@ void Update2()
 {
     static bool is_first = true;
 
-    if (is_first)
-    {
-        is_first = false;
-
-        RTCDateTime time
-        {
-            (uint8)(std::rand() % 100),
-            (uint8)((std::rand() % 10) + 1),
-            (uint8)(std::rand() % 30),
-            (uint8)(std::rand() % 12),
-            (uint8)(std::rand() % 60),
-            (uint8)(std::rand() % 60)
-        };
-
-        PCF8563::SetDateTime(&time);
-    }
+//    if (is_first)
+//    {
+//        is_first = false;
+//
+//        RTCDateTime time
+//        {
+//            (uint8)(std::rand() % 100),
+//            (uint8)((std::rand() % 10) + 1),
+//            (uint8)(std::rand() % 30),
+//            (uint8)(std::rand() % 12),
+//            (uint8)(std::rand() % 60),
+//            (uint8)(std::rand() % 60)
+//        };
+//
+//        PCF8563::SetDateTime(&time);
+//    }
 
     Beeper::Play(TypeSound::_4, 2);
 
