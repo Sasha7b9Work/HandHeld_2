@@ -8,6 +8,7 @@ void upg_init(void);
 void upg_update(void);
 
 void upg_start_update(void);
+void upg_stop_update(void);
 
 uint32_t upg_address_begin(void);
 

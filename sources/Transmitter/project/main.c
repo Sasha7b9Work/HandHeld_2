@@ -353,6 +353,10 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
             {
                 upg_start_update();
             }
+            else
+            {
+                upg_stop_update();
+            }
             break;
         }
         break;

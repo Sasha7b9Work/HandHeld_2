@@ -478,9 +478,11 @@ void myRadio_transmit(rfTxPacket_ts *packet)
     
     if(rf_single_tx_data(packet->payload, packet->len, &packet->absTime) != OK)	
     {
+        int i = 0;
     }
     else
     {
+        int i = 0;
     }
     rf_workProcess = RF_PRC_TX;
 }

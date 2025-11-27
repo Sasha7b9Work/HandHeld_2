@@ -82,6 +82,12 @@ void upg_start_update()
 }
 
 
+void upg_stop_update()
+{
+    in_process_update = false;
+}
+
+
 void upg_init()
 {
     SysTick_Config(SystemCoreClock / 1000);
