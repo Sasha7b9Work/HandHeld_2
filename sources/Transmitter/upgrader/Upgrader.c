@@ -57,6 +57,9 @@ static bool in_process_update = false;
 
 static int chains_transmitted = 0;
 
+static uint32_t time_big = 200;
+static uint32_t time_small = 20;
+
 //----------------------------------------------------------------------------------------------------------------------------------
 
 uint32_t upg_address_begin()
@@ -65,19 +68,13 @@ uint32_t upg_address_begin()
 }
 
 
-int upg_chains_transmitted()
-{
-    return chains_transmitted;
-}
-
-
-int upg_chains_all()
+static int upg_chains_all()
 {
     return (DATA_END - DATA_BEGIN) / SIZE_CHAIN;
 }
 
 
-void upg_begin_update()
+void upg_start_update()
 {
     if (!in_process_update)
     {
@@ -101,7 +98,9 @@ void upg_update()
         return;
     }
 
-    if (Timer_ElapsedMS(TIM_PACKETS) < 100)
+    uint32_t time_packet = (chains_transmitted % 8) ? time_small : time_big;
+
+    if (Timer_ElapsedMS(TIM_PACKETS) < time_packet)
     {
         return;
     }
@@ -132,12 +131,6 @@ void Reset()
     Timer_Reset(TIM_PACKETS);
 
     Timer_Reset(TIM_ELAPSED_UPGRADE);
-}
-
-
-uint32_t upg_time_passed()
-{
-    return Timer_ElapsedMS(TIM_ELAPSED_UPGRADE) / 1000;
 }
 
 
@@ -270,7 +263,7 @@ void upg_func_display(void)
     myLCD_str8x16(IM_NOMALE, 0, 5, "                              ");
     myLCD_str8x16(IM_NOMALE, 0, 6, "                              ");
 
-    myLCD_str8x16(IM_NOMALE, 0, 5, "%u sec", upg_time_passed());
+    myLCD_str8x16(IM_NOMALE, 0, 5, "%u sec      %u/%u ms", Timer_ElapsedMS(TIM_ELAPSED_UPGRADE) / 1000, time_small, time_big);
 
-    myLCD_str8x16(IM_NOMALE, 0, 6, "%d/%d chains, %.1f %%", upg_chains_transmitted(), upg_chains_all(), ((float)upg_chains_transmitted() / (float)upg_chains_all()) * 100.0f);
+    myLCD_str8x16(IM_NOMALE, 0, 6, "%d/%d chains, %.1f %%", chains_transmitted, upg_chains_all(), ((float)chains_transmitted / (float)upg_chains_all()) * 100.0f);
 }
