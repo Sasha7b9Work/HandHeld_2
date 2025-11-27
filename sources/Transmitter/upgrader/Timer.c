@@ -24,3 +24,13 @@ uint32_t Timer_ElapsedMS(int num_timer)
 {
     return TIME_MS - time_reset[num_timer];
 }
+
+
+void Timer_DelayMS(uint32_t ms)
+{
+    uint32_t end = TIME_MS + ms;
+
+    while (TIME_MS < end)
+    {
+    }
+}

@@ -14,7 +14,7 @@
     2. В конце передаётся пакет такой структуры:
         2 байта     0xFFFF
         4 байта     CRC всей прошивки
-        4 байта     CRC предыдущих байт прошивки
+        4 байта     CRC предыдущих байт пакета
 */
 
 #ifdef WIN32
@@ -36,8 +36,6 @@ static void Reset(void);
 // Возвращает указатель на следующую порцию данных.
 // Если 0 - данные закончились
 static const uint8_t *DataNext(void);
-
-static bool NeedToStartTheUpdate(void);
 
 static uint32_t CalculateCRC32(const void *buffer, int size);
 
@@ -109,19 +107,17 @@ void upg_update()
     {
         SendPacketFinish();
 
+        Timer_DelayMS(2000);
+
         Reset();
     }
 }
 
 
-static bool NeedToStartTheUpdate()
-{
-    return false;
-}
-
-
 void Reset()
 {
+    upg_init();
+
     data = DATA_BEGIN;
 
     chains_transmitted = 0;
@@ -255,5 +251,5 @@ void upg_func_display(void)
 
     myLCD_str8x16(IM_NOMALE, 0, 5, "%u sec      %u/%u ms", Timer_ElapsedMS(TIM_ELAPSED_UPGRADE) / 1000, time_small, time_big);
 
-    myLCD_str8x16(IM_NOMALE, 0, 6, "%d/%d chains, %.1f %%", chains_transmitted, upg_chains_all(), ((float)chains_transmitted / (float)upg_chains_all()) * 100.0f);
+    myLCD_str8x16(IM_NOMALE, 0, 6, "%d/%d chains, %.0f %%", chains_transmitted, upg_chains_all(), ((float)chains_transmitted / (float)upg_chains_all()) * 100.0f);
 }
