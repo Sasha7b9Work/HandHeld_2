@@ -324,7 +324,11 @@ void myDisplay_ui_upgradeFirmware(bool flashFlag, int agr0, void *arg1_ptr, void
 
     myLCD_str8x16(agr0 == 0 && flashFlag ? IM_INVERSE : IM_NOMALE, 0, 4, "Start");
 
-    myLCD_str8x16(IM_NOMALE, 0, 6, "%d", TIME_MS / 1000);
+    myLCD_str8x16(IM_NOMALE, 0, 6, "                  ");
+
+    int value = TIME_MS / 1000;
+
+    myLCD_str8x16(IM_NOMALE, 0, 6, "%d", value);
 }
 void myDisplay_ui_rf_rx_packet(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
 {

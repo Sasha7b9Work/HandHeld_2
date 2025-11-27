@@ -18,13 +18,6 @@
 #define __attribute__()
 #endif
 
-uint32_t upg_address_begin()
-{
-    return 0x08001000;
-}
-
-static const uint8_t __attribute__((section(".ARM.__at_0x08001000"))) large_array[54 * 1024] = {0};
-
 #define DATA_BEGIN ((uint8_t *)0x08030000)
 #define DATA_SIZE (54 * 1024)
 #define DATA_END (DATA_BEGIN + DATA_SIZE)
@@ -35,7 +28,7 @@ static const uint8_t *data = (const uint8_t *)DATA_BEGIN;   // Это указатель на 
 //----------------------------------------------------------------------------------------------------------------------------------
 
 // Сбрасывает указатель данных прошивки
-static void DataReset(void);
+static void Reset(void);
 
 // Возвращает указатель на следующую порцию данных.
 // Если 0 - данные закончились
@@ -57,19 +50,37 @@ static void SendRawPacket(const uint8_t *, int size);
 
 static int NumPacket(const uint8_t *);
 
+static bool in_process_update = false;
+
+static int chains_transmitted = 0;
 
 //----------------------------------------------------------------------------------------------------------------------------------
 
-typedef enum
+uint32_t upg_address_begin()
 {
-    Idle,
-    ProcessTransmit
-} State;
-
-static State state = Idle;
+    return (uint32_t)DATA_BEGIN;
+}
 
 
-//----------------------------------------------------------------------------------------------------------------------------------
+int upg_chains_transmitted()
+{
+    return chains_transmitted;
+}
+
+
+int upg_chains_all()
+{
+    return (DATA_END - DATA_BEGIN) / SIZE_CHAIN;
+}
+
+
+void upg_begin_update()
+{
+    Reset();
+
+    in_process_update = true;
+}
+
 
 void upg_init()
 {
@@ -79,25 +90,16 @@ void upg_init()
 
 void upg_update()
 {
-    switch (state)
+    if (!in_process_update)
     {
-    case Idle:
-        if (NeedToStartTheUpdate())
-        {
-            DataReset();
+        return;
+    }
 
-            state = ProcessTransmit;
-        }
-        break;
+    if (!SendPacketFirmware(DataNext()))
+    {
+        SendPacketFinish();
 
-    case ProcessTransmit:
-        if (!SendPacketFirmware(DataNext()))
-        {
-            SendPacketFinish();
-
-            state = Idle;
-        }
-        break;
+        Reset();
     }
 }
 
@@ -108,14 +110,18 @@ static bool NeedToStartTheUpdate()
 }
 
 
-void DataReset()
+void Reset()
 {
     data = DATA_BEGIN;
+
+    chains_transmitted = 0;
 }
 
 
 const uint8_t *DataNext()
 {
+    chains_transmitted++;
+
     const uint8_t *result = data;
 
     data += SIZE_CHAIN;

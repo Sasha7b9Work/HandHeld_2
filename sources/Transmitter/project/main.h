@@ -1,6 +1,4 @@
-#ifndef __MAIN_H_
-#define __MAIN_H_
-
+#pragma once
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -25,4 +23,6 @@ typedef struct
     uint8_t checkSum;
 }userParams_ts;
 #pragma pack()
-#endif
+
+
+void uiEnterCallback(int pageId, int cursorCount, int status, int value);

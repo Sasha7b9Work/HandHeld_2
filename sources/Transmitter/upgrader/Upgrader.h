@@ -7,5 +7,9 @@ void upg_init(void);
 
 void upg_update(void);
 
-// Адрес первого байта прошивки в памяти
+void upg_begin_update(void);
+
 uint32_t upg_address_begin(void);
+
+int upg_chains_transmitted(void);
+int ugp_chains_all(void);
