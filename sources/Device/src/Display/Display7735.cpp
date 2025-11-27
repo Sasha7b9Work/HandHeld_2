@@ -437,7 +437,9 @@ void Display::DrawSceneDebug(int)
 
     y += dy;
 
-    Text<64>("time : %u s", timer_counter / 1000).Write(x, y);
+    RTCDateTime time = PCF8563::GetDateTime();
+
+    time.DrawTime(x, y);
 
     meter_draw.Pause();
 }
