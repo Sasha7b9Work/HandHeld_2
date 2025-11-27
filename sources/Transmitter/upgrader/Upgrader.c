@@ -1,4 +1,5 @@
 #include "upgrader/Upgrader.h"
+#include "upgrader/Timer.h"
 #include <stdbool.h>
 #include <stm32f10x.h>
 
@@ -98,6 +99,13 @@ void upg_update()
         return;
     }
 
+    if (Timer_ElapsedMS(TIM_PACKETS) < 100)
+    {
+        return;
+    }
+
+    Timer_Reset(TIM_PACKETS);
+
     if (!SendPacketFirmware(DataNext()))
     {
         SendPacketFinish();
@@ -118,6 +126,16 @@ void Reset()
     data = DATA_BEGIN;
 
     chains_transmitted = 0;
+
+    Timer_Reset(TIM_PACKETS);
+
+    Timer_Reset(TIM_ELAPSED_UPGRADE);
+}
+
+
+uint32_t upg_time_passed()
+{
+    return Timer_ElapsedMS(TIM_ELAPSED_UPGRADE) / 1000;
 }
 
 

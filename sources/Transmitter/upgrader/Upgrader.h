@@ -13,3 +13,6 @@ uint32_t upg_address_begin(void);
 
 int upg_chains_transmitted(void);
 int upg_chains_all(void);
+
+// Прошло времени с начала обновления
+uint32_t upg_time_passed(void);
