@@ -16,7 +16,7 @@ namespace HAL_ADC
 }
 
 
-void HAL_ADC::Init()
+void HAL_ADC::_Init()
 {
     rcu_periph_clock_enable(RCU_ADC);
 

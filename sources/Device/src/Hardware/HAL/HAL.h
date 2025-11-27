@@ -40,7 +40,7 @@ namespace HAL
 // Уровень батареи
 namespace HAL_ADC
 {
-    void Init();
+    void _Init();
 
     float GetVoltage(bool force);
 }
