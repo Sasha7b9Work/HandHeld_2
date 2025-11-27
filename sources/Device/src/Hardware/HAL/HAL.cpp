@@ -17,8 +17,6 @@ void HAL::Init()
 
     rcu_periph_clock_enable(RCU_CFGCMP);
 
-    rcu_periph_clock_enable(RCU_I2C1);
-
     rcu_periph_clock_enable(RCU_SPI1);
 
     rcu_periph_clock_enable(RCU_TIMER2);        // Для звука

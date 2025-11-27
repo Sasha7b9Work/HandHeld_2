@@ -437,7 +437,14 @@ void Display::DrawSceneDebug(int)
 
     y += dy;
 
-    RTCDateTime time = PCF8563::GetDateTime();
+    static RTCDateTime time;
+
+    static int counter = 0;
+
+    if ((counter++ % 12) == 0)
+    {
+        time = PCF8563::GetDateTime();
+    }
 
     time.DrawTime(x, y);
 

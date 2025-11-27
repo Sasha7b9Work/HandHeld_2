@@ -422,7 +422,7 @@ namespace HAL_I2C
     void Init()
     {
         gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, GPIO_PIN_0 | GPIO_PIN_1);
-        gpio_output_options_set(GPIOA, GPIO_OTYPE_OD, GPIO_OSPEED_2MHZ, GPIO_PIN_0 | GPIO_PIN_1);
+        gpio_output_options_set(GPIOA, GPIO_OTYPE_OD, GPIO_OSPEED_50MHZ, GPIO_PIN_0 | GPIO_PIN_1);
     }
 
     bool Read(uint8 reg_addr, uint8 *reg_data, uint16 len)
