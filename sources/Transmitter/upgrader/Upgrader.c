@@ -2,6 +2,7 @@
 #include "upgrader/Timer.h"
 #include "myDisplayUnit.h"
 #include "myLcd.h"
+#include "myRadio.h"
 #include <stdbool.h>
 #include <stm32f10x.h>
 
@@ -182,9 +183,14 @@ void SendPacketFinish()
 }
 
 
-void SendRawPacket(const uint8_t *packet, int size)
+void SendRawPacket(const uint8_t *data, int size)
 {
-
+    rfTxPacket_ts packet;
+    memcpy(packet.payload, data, size);
+    packet.len = size;
+    packet.absTime = 0;
+    myRadio_transmit(&packet);
+    packet.absTime = packet.absTime;
 }
 
 
