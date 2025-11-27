@@ -76,9 +76,12 @@ int upg_chains_all()
 
 void upg_begin_update()
 {
-    Reset();
+    if (!in_process_update)
+    {
+        Reset();
 
-    in_process_update = true;
+        in_process_update = true;
+    }
 }
 
 
