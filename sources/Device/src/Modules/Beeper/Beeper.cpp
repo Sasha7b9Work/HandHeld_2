@@ -150,7 +150,7 @@ void Sound::Start()
 
 void Beeper::Update()
 {
-#ifdef SOUND_ENABLED
+#ifdef SOUND_ENABELD
 
 #ifdef GUI
 
