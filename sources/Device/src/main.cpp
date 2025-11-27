@@ -54,8 +54,6 @@ int main()
     
     Beeper::Play(TypeSound::_4, 2);
 
-    HAL_I2C::Init();
-
     PCF8563::Init();
 
     RTCDateTime time
