@@ -120,6 +120,8 @@ void Update2()
 
     PAN3060::Update();
 
+    PCF8563::Update();
+
     UpdateLED();
 
     Display::UpdateDebug();
