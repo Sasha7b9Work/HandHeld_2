@@ -21,10 +21,10 @@ namespace Power
 
 void Power::Init()
 {
-    pinPWR.Init();
+//    pinPWR.Init();
     pinPWR_CTRL.Init();
 
-    pinPWR.ToHi();
+//    pinPWR.ToHi();
 
     float voltage = HAL_ADC::GetVoltage(true);
 
@@ -88,7 +88,7 @@ void Power::PowerDown()
 {
     Storage::Save();
 
-    pinPWR.ToLow();
+//    pinPWR.ToLow();
 
     LED::Driver::On();
 
