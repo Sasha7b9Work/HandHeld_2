@@ -4,35 +4,16 @@
 #include <stdlib.h>
 #include <gd32e23x.h>
 
-/*
-const uint ctrl10 = GPIO_CTL(GPIOB);
-const uint pupd10 = GPIO_PUD(GPIOB);
-
-uint ctrl = ctrl10;
-ctrl &= ~GPIO_MODE_MASK(10);
-ctrl &= ~GPIO_MODE_MASK(11);
-ctrl |= GPIO_MODE_SET(10, GPIO_MODE_OUTPUT);
-ctrl |= GPIO_MODE_SET(11, GPIO_MODE_OUTPUT);
-GPIO_CTL(GPIOB) = ctrl;
-uint pupd = pupd10;
-pupd &= ~GPIO_PUPD_MASK(10);
-pupd &= ~GPIO_PUPD_MASK(11)
-pupd |= GPIO_PUPD_SET(10, GPIO_PUPD_PULLUP);
-pupd |= GPIO_PUPD_SET(11, GPIO_PUPD_PULLUP);
-GPIO_PUD(GPIOB) = pupd;
-*/
-
-
 #ifdef WIN32
     #define __asm(x)
 #endif
 
 
-// SCL PB10 21 - alternate I2C1
-// SDA PB11 22 - alternate I2C1
+// SCL PA0 10 - alternate I2C1
+// SDA PA1 11 - alternate I2C1
 
 
-#define SW_I2C_WAIT_TIME    1 // 10us 100kHz
+#define SW_I2C_WAIT_TIME    2 // 10us 100kHz
 
 #define I2C_SLAVE_ADDRESS7     (0xa2)   // Для часов
 
@@ -49,13 +30,13 @@ GPIO_PUD(GPIOB) = pupd;
 #endif
 
 
-#define SDA_TO_LOW()    GPIO_BC(GPIOB) = (uint)GPIO_PIN_11
-#define SDA_TO_HI()     GPIO_BOP(GPIOB) = (uint)GPIO_PIN_11
+#define SDA_TO_LOW()    GPIO_BC(GPIOA) = (uint)GPIO_PIN_1
+#define SDA_TO_HI()     GPIO_BOP(GPIOA) = (uint)GPIO_PIN_1
 
-#define GET_SDA()       (GPIO_ISTAT(GPIOB)&(GPIO_PIN_11))
+#define GET_SDA()       (GPIO_ISTAT(GPIOA)&(GPIO_PIN_1))
 
-#define SCL_TO_LOW()    GPIO_BC(GPIOB) = (uint)GPIO_PIN_10
-#define SCL_TO_HI()     GPIO_BOP(GPIOB) = (uint)GPIO_PIN_10
+#define SCL_TO_LOW()    GPIO_BC(GPIOA) = (uint)GPIO_PIN_0
+#define SCL_TO_HI()     GPIO_BOP(GPIOA) = (uint)GPIO_PIN_0
 
 #define DELAY()     __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP")
 
@@ -440,8 +421,8 @@ namespace HAL_I2C
 {
     void Init()
     {
-        gpio_mode_set(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, GPIO_PIN_10 | GPIO_PIN_11);
-        gpio_output_options_set(GPIOB, GPIO_OTYPE_OD, GPIO_OSPEED_2MHZ, GPIO_PIN_10 | GPIO_PIN_11);
+        gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, GPIO_PIN_0 | GPIO_PIN_1);
+        gpio_output_options_set(GPIOA, GPIO_OTYPE_OD, GPIO_OSPEED_2MHZ, GPIO_PIN_0 | GPIO_PIN_1);
     }
 
     bool Read(uint8 reg_addr, uint8 *reg_data, uint16 len)
