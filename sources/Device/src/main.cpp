@@ -53,6 +53,8 @@ int main()
     Beeper::Init();
 
     Storage::Init();
+    
+    Beeper::Play(TypeSound::_4, 2);
 
     while (true)
     {
@@ -118,8 +120,6 @@ void Update2()
 //
 //        PCF8563::SetDateTime(&time);
 //    }
-
-    Beeper::Play(TypeSound::_4, 2);
 
     Beeper::Update();
 
