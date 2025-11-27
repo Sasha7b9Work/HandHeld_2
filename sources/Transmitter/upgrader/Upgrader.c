@@ -1,5 +1,7 @@
 #include "upgrader/Upgrader.h"
 #include "upgrader/Timer.h"
+#include "myDisplayUnit.h"
+#include "myLcd.h"
 #include <stdbool.h>
 #include <stm32f10x.h>
 
@@ -260,4 +262,15 @@ static uint32_t ProcessCRC(const uint8_t *data, int length, uint32_t crc)
 uint32_t CalculateCRC32(const void *buffer, int size)
 {
     return ProcessCRC((const uint8_t *)buffer, size, 0);
+}
+
+
+void upg_func_display(void)
+{
+    myLCD_str8x16(IM_NOMALE, 0, 5, "                              ");
+    myLCD_str8x16(IM_NOMALE, 0, 6, "                              ");
+
+    myLCD_str8x16(IM_NOMALE, 0, 5, "%u sec", upg_time_passed());
+
+    myLCD_str8x16(IM_NOMALE, 0, 6, "%d/%d chains, %.1f %%", upg_chains_transmitted(), upg_chains_all(), ((float)upg_chains_transmitted() / (float)upg_chains_all()) * 100.0f);
 }
