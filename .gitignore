@@ -1,3 +1,4 @@
+*.uvoptx
 *uvgui*
 
 sources/Loader/*.scvd
