@@ -51,8 +51,6 @@ static void SendPacketFinish(void);
 // Заслать пакет непосредственно в передатчик
 static void SendRawPacket(const uint8_t *, int size);
 
-static int NumPacket(const uint8_t *);
-
 static bool in_process_update = false;
 
 static int chains_transmitted = 0;
@@ -136,19 +134,11 @@ void Reset()
 
 const uint8_t *DataNext()
 {
-    chains_transmitted++;
-
     const uint8_t *result = data;
 
     data += SIZE_CHAIN;
 
     return data < DATA_END ? result : 0;
-}
-
-
-int NumPacket(const uint8_t *packet)
-{
-    return (packet - DATA_BEGIN) / SIZE_CHAIN;
 }
 
 
@@ -163,15 +153,15 @@ bool SendPacketFirmware(const uint8_t *packet)
 
     uint8_t raw[SIZE_PACKET];
 
-    uint16_t num_packet = NumPacket(packet);
-
-    memcpy(raw, &num_packet, 2);
+    memcpy(raw, &chains_transmitted, 2);
 
     memcpy(raw + 2, packet, SIZE_CHAIN);
 
     uint32_t crc = CalculateCRC32(raw, SIZE_CHAIN + 2);
 
     SendRawPacket(raw, SIZE_PACKET);
+
+    chains_transmitted++;
 
     return true;
 }
