@@ -4,8 +4,8 @@
 #include <gd32e23x.h>
 
 
-PinIn  pinPWR_CTRL(GPIOA, GPIO_PIN_0);          // PA0  10
-PinOut _pinPWR(GPIOA, GPIO_PIN_12);              // PA12 33
+//PinIn  _pinPWR_CTRL(GPIOA, GPIO_PIN_0);          // PA0  10
+//PinOut _pinPWR(GPIOA, GPIO_PIN_12);              // PA12 33
 
 PinOut pinSPI1_NSS(GPIOB, GPIO_PIN_12);
 PinOut pinSPI1_CLK(GPIOB, GPIO_PIN_13);

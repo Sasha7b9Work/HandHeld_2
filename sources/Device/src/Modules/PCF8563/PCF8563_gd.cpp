@@ -275,34 +275,34 @@ void PCF8563::Update()
 
     CalculateDateTime(buffer, &date_time);
 
-    if (pinPWR_CTRL.IsLow() && time_alarm == 0)
-    {
-        uint8 status2 = 0;
-
-        HAL_I2C::Read(PCF8563_REG_CONTROL_STATUS2, &status2, 1);
-
-        if (status2 & (1 << PCF8563_CONTROL2_AF))            // INT
-        {
-            time_alarm = TIME_MS;
-
-            Keyboard::CallbackFromInterrupt();
-
-            if (ModeIndication::ConsistSound(gset.alarm.mode_indication))
-            {
-                Beeper::Play((TypeSound::E)gset.alarm.melody, (uint8)gset.alarm.volume);
-            }
-
-            if (ModeIndication::ConsistLED(gset.alarm.mode_indication))
-            {
-                LED::Enable();
-            }
-
-            if (ModeIndication::ConsistVibro(gset.alarm.mode_indication))
-            {
-                Vibrato::Enable();
-            }
-        }
-    }
+//    if (pinPWR_CTRL.IsLow() && time_alarm == 0)
+//    {
+//        uint8 status2 = 0;
+//
+//        HAL_I2C::Read(PCF8563_REG_CONTROL_STATUS2, &status2, 1);
+//
+//        if (status2 & (1 << PCF8563_CONTROL2_AF))            // INT
+//        {
+//            time_alarm = TIME_MS;
+//
+//            Keyboard::CallbackFromInterrupt();
+//
+//            if (ModeIndication::ConsistSound(gset.alarm.mode_indication))
+//            {
+//                Beeper::Play((TypeSound::E)gset.alarm.melody, (uint8)gset.alarm.volume);
+//            }
+//
+//            if (ModeIndication::ConsistLED(gset.alarm.mode_indication))
+//            {
+//                LED::Enable();
+//            }
+//
+//            if (ModeIndication::ConsistVibro(gset.alarm.mode_indication))
+//            {
+//                Vibrato::Enable();
+//            }
+//        }
+//    }
 }
 
 

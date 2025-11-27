@@ -22,7 +22,7 @@ namespace Power
 void Power::Init()
 {
 //    pinPWR.Init();
-    pinPWR_CTRL.Init();
+//    pinPWR_CTRL.Init();
 
 //    pinPWR.ToHi();
 
@@ -56,10 +56,10 @@ void Power::Init()
     }
     else
     {
-        while (pinPWR_CTRL.IsLow())
-        {
-            Display::DrawPowerOn();
-        }
+//        while (pinPWR_CTRL.IsLow())
+//        {
+//            Display::DrawPowerOn();
+//        }
     }
 
     Timer::Delay(100);          // Антидребезг
@@ -103,19 +103,19 @@ void Power::Update()
         Disable();
     }
 
-    if (pinPWR_CTRL.IsLow())
-    {
-        PCF8563::Update();
-
-        if (!PCF8563::IsAlarmed())
-        {
-            Disable();
-        }
-        else
-        {
-            PCF8563::AlarmFlagEnable(false);
-        }
-    }
+//    if (pinPWR_CTRL.IsLow())
+//    {
+//        PCF8563::Update();
+//
+//        if (!PCF8563::IsAlarmed())
+//        {
+//            Disable();
+//        }
+//        else
+//        {
+//            PCF8563::AlarmFlagEnable(false);
+//        }
+//    }
 }
 
 
