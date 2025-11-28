@@ -56,7 +56,7 @@ namespace PAN3060
     {
         uint8 buffer[200];
         uint8 length;
-        uint16 number_chain;        // Сквозной номер чайна
+        uint16 number_chain_full;   // Сквозной номер чайна
         uint8 number_page;          // Этой странице принадлежит чайн. Нумерация с 0
 
         bool IsValid() const;
@@ -219,7 +219,7 @@ bool PAN3060::Packet::IsValid() const
 
 void PAN3060::Packet::ReceiveChain()
 {
-    number_chain = Struct16(buffer).u16;
+    number_chain_full = Struct16(buffer).u16;
 
     number_page = GetNumberPage();
 
@@ -228,7 +228,7 @@ void PAN3060::Packet::ReceiveChain()
         Reset();
     }
 
-    int chain_in_page = NumberChainInPage(number_chain);
+    int chain_in_page = NumberChainInPage(number_chain_full);
 
     if (crc_page[chain_in_page] == 0)
     {
@@ -239,7 +239,7 @@ void PAN3060::Packet::ReceiveChain()
 
     // Если чайн последний в странице: 7, 15, 23 и т.д., то нужно сохранить страницу в ПЗУ.
     // Передатчик делает для этого паузу
-    if (((number_chain + 1) % CHAINS_IN_PAGE) == 0)
+    if (((number_chain_full + 1) % CHAINS_IN_PAGE) == 0)
     {
         uint *crc_full = crc + number_page * CHAINS_IN_PAGE;
         uint *crc_part = crc_page;
@@ -319,7 +319,7 @@ void PAN3060::CheckForCompletion()
 
 uint8 PAN3060::Packet::GetNumberPage() const
 {
-    return (uint8)(number_chain / 8);
+    return (uint8)(number_chain_full / 8);
 }
 
 
