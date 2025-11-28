@@ -22,7 +22,7 @@ struct DTypeFont
 struct DFont
 {
     int _height;
-    DSymbol symbols[256];
+    DSymbol symbols[128];
 
 public:
     static int  GetLengthText(pchar text);

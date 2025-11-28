@@ -19,7 +19,7 @@ namespace PAN3060
 
     static void InitSPI();
 
-    static const uint begin_firmware = 0x08030000;
+    static const uint begin_firmware = 0x8002000;
     static const uint size_firmware = 54 * 1024;
     static const uint SIZE_CHAIN = 128;
     static const int CHAINS_IN_PAGE = 8;
@@ -38,11 +38,15 @@ namespace PAN3060
     static uint main_crc = 0;
 
     static void Reset();
+    // Эту функцию вызываем, когда контрольная сумма в eeprom не совпала
+    static void FullReset();
 
     static void ReceiveChainPacket(uint8 buffer[256]);
     static void ReceiveFinishPacket(uint8 buffer[256]);
+
     // Cтолько чайнов принято
     int ReceivedChains();
+
     // Преобразует сквозной номер чайна в номер чайна на странице
     static int NumberChainInPage(uint full_number_chain);
 
@@ -51,6 +55,12 @@ namespace PAN3060
     static void ErasePage(int num_page);
 
     static void WritePage(int num_page, uint8 buffer[1024]);
+
+    // Все ли чайны приняты
+    static bool AllChaninsReceived();
+
+    // Проверить на завершение - всё принято и всё соотвествует
+    static void CheckForCompletion();
 }
 
 
@@ -69,6 +79,12 @@ void PAN3060::Init()
 
     rf_enter_continous_rx();
 
+    FullReset();
+}
+
+
+void PAN3060::FullReset()
+{
     // Эту процедуру делаем только один раз. Если какой-то пакет будет принят с ошибкой, то в последующих циклах обновления его просто
     // добавим сюда
     for (uint i = 0; i < ALL_CHAINS; i++)
@@ -230,6 +246,52 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
 
         std::memset(page, 0xFF, 1024);
         std::memset(crc_page, 0x00, CHAINS_IN_PAGE);
+
+        CheckForCompletion();
+    }
+}
+
+
+void PAN3060::ReceiveFinishPacket(uint8 buffer[256])
+{
+    Struct16 head(buffer);
+
+    if (head.u16 != 0xFFFF)
+    {
+        return;
+    }
+
+    Struct32 crc_packet(buffer + 2 + 4);
+
+    uint crc_calc = SU::CalculateCRC32(buffer, 2 + 4);
+
+    if (crc_packet.u32 != crc_calc)
+    {
+        return;
+    }
+
+    Struct32 crc_recv(buffer + 2);
+
+    main_crc = crc_recv.u32;
+
+    CheckForCompletion();
+}
+
+
+void PAN3060::CheckForCompletion()
+{
+    if (main_crc && AllChaninsReceived())
+    {
+        uint crc_firmware = SU::CalculateCRC32((const void *)begin_firmware, size_firmware);
+
+        if (crc_firmware == main_crc)
+        {
+            in_process_upgrade = false;
+        }
+        else
+        {
+            FullReset();
+        }
     }
 }
 
@@ -252,6 +314,20 @@ void PAN3060::WritePage(int num_page, uint8 buffer[1024])
 }
 
 
+bool PAN3060::AllChaninsReceived()
+{
+    for (uint i = 0; i < ALL_CHAINS; i++)
+    {
+        if (crc[i] == 0)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
 int PAN3060::NumberChainInPage(uint full_number_chain)
 {
     return (int)full_number_chain % CHAINS_IN_PAGE;
@@ -262,7 +338,7 @@ int PAN3060::ReceivedChains()
 {
     int counter = 0;
 
-    for (int i = 0; i < ALL_CHAINS; i++)
+    for (uint i = 0; i < ALL_CHAINS; i++)
     {
         if (crc[i] != 0)
         {
@@ -271,12 +347,6 @@ int PAN3060::ReceivedChains()
     }
 
     return counter;
-}
-
-
-void PAN3060::ReceiveFinishPacket(uint8 [256])
-{
-
 }
 
 
@@ -294,5 +364,5 @@ bool PAN3060::InProcessUpgrade()
 
 void PAN3060::FuncDraw()
 {
-    Text<>("Обновление :").Write(10, 10, Color::WHITE);
+    Text<>("Upgrade :").Write(10, 10, Color::WHITE);
 }
