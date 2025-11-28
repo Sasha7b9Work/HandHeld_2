@@ -43,9 +43,6 @@ namespace PAN3060
     // Cтолько чайнов принято
     static int ReceivedChains();
 
-    // Преобразует сквозной номер чайна в номер чайна на странице
-    static int NumberChainInPage(uint full_number_chain);
-
     // Все ли чайны приняты
     static bool AllChaninsReceived();
 
@@ -64,7 +61,9 @@ namespace PAN3060
 
         void ReceiveChain();
         void ReceiveFinish();
-        uint8 CalcualteNumberPage() const;  // Рассчитывает номер страницы, которой принадлежит чайн
+        uint8 CalcualteNumberPage() const;          // Рассчитывает номер страницы, которой принадлежит чайн
+        uint8 CalculateChainInPage() const;         // Преобразует сквозной номер чайна в номер чайна на странице
+
 
         // Стирает страницу в EEPROM, содержащую данный пакет
         void ErasePageEEPROM() const;
@@ -229,13 +228,13 @@ void PAN3060::Packet::ReceiveChain()
         Reset();
     }
 
-    int chain_in_page = NumberChainInPage(number_chain_full);
+    number_chain_in_page = CalculateChainInPage();
 
-    if (crc_page[chain_in_page] == 0)
+    if (crc_page[number_chain_in_page] == 0)
     {
-        crc_page[chain_in_page] = Struct32(buffer + 2 + 128).u32;
+        crc_page[number_chain_in_page] = Struct32(buffer + 2 + 128).u32;
 
-        std::memcpy(page + (uint)chain_in_page * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
+        std::memcpy(page + (uint)number_chain_in_page * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
     }
 
     // Если чайн последний в странице: 7, 15, 23 и т.д., то нужно сохранить страницу в ПЗУ.
@@ -350,9 +349,9 @@ bool PAN3060::AllChaninsReceived()
 }
 
 
-int PAN3060::NumberChainInPage(uint full_number_chain)
+uint8 PAN3060::Packet::CalculateChainInPage() const
 {
-    return (int)full_number_chain % CHAINS_IN_PAGE;
+    return (uint8)(number_chain_full % CHAINS_IN_PAGE);
 }
 
 
