@@ -69,7 +69,7 @@ typedef enum
 //! \brief Structure for the TX Packet
 typedef struct
 {
-    uint8_t rmvAddr[8];              //
+    uint8_t _rmvAddr[8];              //
     uint32_t absTime;                //
     uint8_t len;                     //
     uint8_t payload[MAX_RF_PACKET_LEN];       //

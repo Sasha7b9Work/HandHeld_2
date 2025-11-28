@@ -54,7 +54,7 @@ static bool in_process_update = false;
 static int chains_transmitted = 0;
 
 static uint32_t time_big = 200;
-static uint32_t time_small = 20;
+static uint32_t time_small = 200;
 
 //----------------------------------------------------------------------------------------------------------------------------------
 
@@ -160,6 +160,8 @@ bool SendPacketFirmware(const uint8_t *packet)
     memcpy(raw + 2, packet, SIZE_CHAIN);
 
     uint32_t crc = CalculateCRC32(raw, SIZE_CHAIN + 2);
+
+    memcpy(raw + 2 + SIZE_CHAIN, &crc, 4);
 
     SendRawPacket(raw, SIZE_PACKET);
 
