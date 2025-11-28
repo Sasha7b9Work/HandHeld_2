@@ -37,6 +37,9 @@ namespace PAN3060
     static int chains_is_fail = 0;
 
     static void Reset();
+
+    static void ReceiveChainPacket(uint8 buffer[256]);
+    static void ReceiveFinishPacket(uint8 buffer[256]);
 }
 
 
@@ -103,66 +106,81 @@ void PAN3060::Update()
 
         in_process_upgrade = true;
 
-        uint8_t _irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
+        uint8 irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
 
-        if (_irq & REG_IRQ_RX_TIMEOUT)
+        if (irq & REG_IRQ_RX_TIMEOUT)
         {
             rf_clr_irq();
         }
 
-        if (_irq & REG_IRQ_RX_DONE)
+        if (irq & REG_IRQ_RX_DONE)
         {
-            uint8_t _buffer[256];
+            uint8 buffer[256];
 
-            uint8_t _len = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
+            uint8 len = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
 
-            rf_read_fifo(REG_FIFO_ACC_ADDR, _buffer, _len);
+            rf_read_fifo(REG_FIFO_ACC_ADDR, buffer, len);
 
             rf_clr_irq();
 
-            if (_len == 2 + 128 + 4)            // Принимаем 128 байт прошивки
+            if (len == 2 + 128 + 4)            // Принимаем 128 байт прошивки
             {
-                if ((current_chain % chains_in_page) == 0)
-                {
-                    // Заполняем все биты единицами - запись такого буфера в ПЗУ никак его не изменит.
-                    // Поэтому можно будет записывать всё целиком, даже если нужно записать только один chain
-                    std::memset(page, 0xFF, 1024);
-                }
-
-                Struct16 number_chain(_buffer);
-
-                if (crc[number_chain.u16] == 0)      // Этот чайн ещё не принят - нет контрольной суммы
-                {
-                    Struct32 crc_recv(_buffer + 2 + 128);
-
-                    uint crc_calc = SU::CalculateCRC32(_buffer, 2 + 128);
-
-                    if (crc_calc == crc_recv.u32)
-                    {
-                        chains_is_ok++;
-
-                        crc[number_chain.u16] = crc_calc;
-
-                        std::memcpy(page + (number_chain.u16 % chains_in_page) * SIZE_CHAIN, _buffer + 2, SIZE_CHAIN);
-                    }
-                    else
-                    {
-                        chains_is_fail++;
-                    }
-                }
+                ReceiveChainPacket(buffer);
 
                 rf_init();
                 rf_set_default_para();
                 rf_enter_continous_rx();
             }
-            else if (_len == 2 + 4 + 4)         // Принимаем завершающий пакет
+            else if (len == 2 + 4 + 4)         // Принимаем завершающий пакет
             {
+                ReceiveFinishPacket(buffer);
+
                 rf_init();
                 rf_set_default_para();
                 rf_enter_continous_rx();
             }
         }
     }
+}
+
+
+void PAN3060::ReceiveChainPacket(uint8 buffer[256])
+{
+    if ((current_chain % chains_in_page) == 0)
+    {
+        // Заполняем все биты единицами - запись такого буфера в ПЗУ никак его не изменит.
+        // Поэтому можно будет записывать всё целиком, даже если нужно записать только один chain
+        std::memset(page, 0xFF, 1024);
+    }
+
+    Struct16 number_chain(buffer);
+
+    if (crc[number_chain.u16] == 0)      // Этот чайн ещё не принят - нет контрольной суммы
+    {
+        Struct32 crc_recv(buffer + 2 + 128);
+
+        uint crc_calc = SU::CalculateCRC32(buffer, 2 + 128);
+
+        if (crc_calc == crc_recv.u32)
+        {
+            chains_is_ok++;
+
+            crc[number_chain.u16] = crc_calc;
+
+            std::memcpy(page + (number_chain.u16 % chains_in_page) * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
+        }
+        else
+        {
+            chains_is_fail++;
+        }
+    }
+
+}
+
+
+void PAN3060::ReceiveFinishPacket(uint8 [256])
+{
+
 }
 
 
