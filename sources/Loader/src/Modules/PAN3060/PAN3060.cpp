@@ -368,6 +368,7 @@ void PAN3060::FuncDraw()
 {
     int x1 = 5;
     int x2 = 50;
+    int x3 = 100;
     int y = 5;
     int dy = 10;
 
@@ -380,6 +381,8 @@ void PAN3060::FuncDraw()
     char buffer[32];
 
     Text<>(SU::IntToASCII(ReceivedChains(), buffer)).Write(x2, y);
+
+    Text<>(SU::IntToASCII((int)ALL_CHAINS, buffer)).Write(x3, y);
 
     y += dy;
 
