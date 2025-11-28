@@ -34,7 +34,7 @@ namespace PAN3060
     static int chains_is_ok = 0;
     static int chains_is_fail = 0;
     static uint main_crc = 0;
-//    static int prev_page = -1;                                      // На этой странице находился предыдущий принятый чайн
+    static int prev_page = -1;                                      // На этой странице находился предыдущий принятый чайн
 
     static void Reset();
     // Эту функцию вызываем, когда контрольная сумма в eeprom не совпала
@@ -96,6 +96,7 @@ void PAN3060::FullReset()
     main_crc = 0;
     chains_is_ok = 0;
     chains_is_fail = 0;
+    prev_page = -1;
 
     Reset();
 }
@@ -198,6 +199,11 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
 
     uint16 number_chain = Struct16(buffer).u16;
 
+    if (prev_page != NumberPage(number_chain))
+    {
+        Reset();
+    }
+
     int chain_in_page = NumberChainInPage(number_chain);
 
     if (crc_page[chain_in_page] == 0)
@@ -249,10 +255,10 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
             WritePage(NumberPage(number_chain), page);
         }
 
-        Reset();
-
         CheckForCompletion();
     }
+
+    prev_page = NumberPage(number_chain);
 }
 
 
