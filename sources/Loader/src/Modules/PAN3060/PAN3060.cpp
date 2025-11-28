@@ -46,8 +46,6 @@ namespace PAN3060
     // Преобразует сквозной номер чайна в номер чайна на странице
     static int NumberChainInPage(uint full_number_chain);
 
-    static void WritePage(int num_page, uint8 buffer[1024]);
-
     // Все ли чайны приняты
     static bool AllChaninsReceived();
 
@@ -66,7 +64,12 @@ namespace PAN3060
         void ReceiveChain();
         void ReceiveFinish();
         uint8 GetNumberPage() const;  // Рассчитывает номер страницы, которой принадлежит чайн
-        void ErasePage();
+
+        // Стирает страницу в EEPROM, содержащую данный пакет
+        void ErasePageEEPROM() const;
+
+        // Записывает page[1024] в EEPROM
+        void WritePageEEPROM() const;
     };
 }
 
@@ -255,7 +258,7 @@ void PAN3060::Packet::ReceiveChain()
 
             if (need_erase_page)
             {
-                ErasePage();
+                ErasePageEEPROM();
             }
         }
 
@@ -277,7 +280,7 @@ void PAN3060::Packet::ReceiveChain()
 
             if (need_write_to_eeprom)
             {
-                WritePage(number_page, page);
+                WritePageEEPROM();
             }
         }
 
@@ -320,15 +323,15 @@ uint8 PAN3060::Packet::GetNumberPage() const
 }
 
 
-void PAN3060::Packet::ErasePage()
+void PAN3060::Packet::ErasePageEEPROM() const
 {
     HAL_ROM::ErasePage(begin_firmware + (uint)(number_page * 1024));
 }
 
 
-void PAN3060::WritePage(int num_page, uint8 buffer[1024])
+void PAN3060::Packet::WritePageEEPROM() const
 {
-    HAL_ROM::WritePage(begin_firmware + (uint)(num_page * 1024), buffer);
+    HAL_ROM::WritePage(begin_firmware + (uint)(number_page * 1024), page);
 }
 
 
