@@ -1,10 +1,6 @@
 // 2024/03/01 22:45:47 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Display/Colors.h"
-#include "Display/Font/Font.h"
-#include <cstdarg>
-#include <cstdio>
-#include <cstring>
 
 
 namespace Display

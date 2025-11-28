@@ -8,6 +8,8 @@ namespace PAN3060
 
     void Update();
 
+    void FuncDraw();
+
     void CallbackOnIRQ();
 
     // Идёт процесс обновления

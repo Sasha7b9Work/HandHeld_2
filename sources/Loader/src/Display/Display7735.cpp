@@ -3,9 +3,6 @@
 #include "Display/Display7735.h"
 #include "Modules/ST7735/ST7735.h"
 #include "Display/Font/Font.h"
-#include "Hardware/Keyboard.h"
-#include "Hardware/HAL/HAL.h"
-#include "Hardware/Timer.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include "Display/Text.h"
 
@@ -33,7 +30,6 @@ namespace Display
     }
 
     static void BeginScene(int num_part);
-    static void DrawScene(int num_part);
     static void EndScene(int num_parts);
 }
 
@@ -57,7 +53,7 @@ void Display::Update()
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
     {
         BeginScene(i);      // 0 ms
-        DrawScene(i);       // 20 ms
+        PAN3060::FuncDraw();
         EndScene(i);        // 68 ms
     }
 }
@@ -78,12 +74,6 @@ void Display::EndScene(int num_parts)
     ST7735::Enable();
 
     ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
-}
-
-
-void Display::DrawScene(int /*num_part*/)
-{
-    Text<>("Обновление :").Write(10, 10, Color::WHITE);
 }
 
 
