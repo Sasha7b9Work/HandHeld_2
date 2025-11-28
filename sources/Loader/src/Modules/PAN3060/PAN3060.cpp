@@ -31,11 +31,10 @@ namespace PAN3060
 
     static uint8 page[1024];                                        // Здесь будет принятая страница, котору мы целиком запишем в память
 
-
-    static int received_chains_in_page = 0;                         // Столько чайнов принято на данной странице. Если != 0, то надо записывать в память
     static int chains_is_ok = 0;
     static int chains_is_fail = 0;
     static uint main_crc = 0;
+    static int prev_page = -1;                                      // На этой странице находился предыдущий принятый чайн
 
     static void Reset();
     // Эту функцию вызываем, когда контрольная сумма в eeprom не совпала
@@ -45,7 +44,7 @@ namespace PAN3060
     static void ReceiveFinishPacket(uint8 buffer[256]);
 
     // Cтолько чайнов принято
-    int ReceivedChains();
+    static int ReceivedChains();
 
     // Преобразует сквозной номер чайна в номер чайна на странице
     static int NumberChainInPage(uint full_number_chain);
@@ -102,7 +101,6 @@ void PAN3060::FullReset()
 
 void PAN3060::Reset()
 {
-    received_chains_in_page = 0;
     std::memset(page, 0xFF, 1024);
     std::memset(crc_page, 0x00, CHAINS_IN_PAGE * 4);
 }
@@ -363,5 +361,16 @@ bool PAN3060::InProcessUpgrade()
 
 void PAN3060::FuncDraw()
 {
-    Text<>("Upgrade :").Write(10, 10, Color::WHITE);
+    char buffer[128];
+
+    Text<>("Upgrade").Write(10, 10, Color::WHITE);
+
+    std::sprintf(buffer, "Received : %d", ReceivedChains());
+    Text<>(buffer).Write(10, 20);
+
+    std::sprintf(buffer, "Good : %d", chains_is_ok);
+    Text<>(buffer).Write(10, 30);
+
+    std::sprintf(buffer, "Bad : %d", chains_is_fail);
+    Text<>(buffer).Write(10, 40);
 }
