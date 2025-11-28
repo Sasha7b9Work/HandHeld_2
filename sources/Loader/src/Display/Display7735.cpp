@@ -36,9 +36,12 @@ namespace Display
 
 void Display::Init()
 {
+#ifndef DEBUG
+
     ST7735::Init();
 
     Font::SetType(TypeFont::_5);
+#endif
 }
 
 
@@ -50,12 +53,14 @@ uint Display::TimeEnabled()
 
 void Display::Update()
 {
+#ifndef DEBUG
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
     {
         BeginScene(i);      // 0 ms
         PAN3060::FuncDraw();
         EndScene(i);        // 68 ms
     }
+#endif
 }
 
 
