@@ -213,46 +213,51 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
         std::memcpy(page + chain_in_page * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
     }
 
-    // Если чайн последний в странице: 7, 15, 23 и т.д., то нужно сохранить страницу в ПЗУ
+    // Если чайн последний в странице: 7, 15, 23 и т.д., то нужно сохранить страницу в ПЗУ.
+    // Передатчик делает для этого паузу
     if (((number_chain + 1) % CHAINS_IN_PAGE) == 0)
     {
         uint *crc_full = crc + NumberPage(number_chain);
         uint *crc_part = crc_page;
 
-        bool need_erase_page = true;
+        {                                                   // Стираем страницу, если запись в неё ещё ни разу не производилась
+            bool need_erase_page = true;
 
-        for (int i = 0; i < CHAINS_IN_PAGE; i++)
-        {
-            if (*(crc_full + i))                        // Если уже есть контрольная сумма, то эту страницу мы уже записывали в ПЗУ
+            for (int i = 0; i < CHAINS_IN_PAGE; i++)
             {
-                need_erase_page = false;
-                break;
-            }
-        }
-
-        if (need_erase_page)
-        {
-            ErasePage(NumberPage(number_chain));
-        }
-
-        bool need_write_to_eeprom = false;
-
-        for (int i = 0; i < CHAINS_IN_PAGE; i++)
-        {
-            if (*(crc_part + i))                        // Если принят этот чайн
-            {
-                if (*(crc_full + i) == 0)               // И ранее он не принят
+                if (*(crc_full + i))                        // Если уже есть контрольная сумма, то эту страницу мы уже записывали в ПЗУ
                 {
-                    need_write_to_eeprom = true;
-
-                    *(crc_full + i) = *(crc_part + i);
+                    need_erase_page = false;
+                    break;
                 }
             }
+
+            if (need_erase_page)
+            {
+                ErasePage(NumberPage(number_chain));
+            }
         }
 
-        if (need_write_to_eeprom)
-        {
-            WritePage(NumberPage(number_chain), page);
+        {                                                   // Сохраняем страницу в ПЗУ, если нужно
+            bool need_write_to_eeprom = false;
+
+            for (int i = 0; i < CHAINS_IN_PAGE; i++)
+            {
+                if (*(crc_part + i))                        // Если принят этот чайн
+                {
+                    if (*(crc_full + i) == 0)               // И ранее он не принят
+                    {
+                        need_write_to_eeprom = true;
+
+                        *(crc_full + i) = *(crc_part + i);
+                    }
+                }
+            }
+
+            if (need_write_to_eeprom)
+            {
+                WritePage(NumberPage(number_chain), page);
+            }
         }
 
         CheckForCompletion();
