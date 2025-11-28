@@ -4,12 +4,13 @@
 #include "Modules/PAN3060/PAN3060.h"
 #include "Modules/PAN3060/chirp_rf.h"
 #include "Display/Text.h"
+#include "Hardware/Timer.h"
 #include <gd32e23x.h>
 
 
 namespace PAN3060
 {
-    static bool need_rx = false;
+    static bool need_recv = false;
 
     static bool in_process_upgrade = false;
 
@@ -60,13 +61,14 @@ void PAN3060::InitSPI()
 
 void PAN3060::Update()
 {
-    if (need_rx)
+    if (need_recv)
     {
-        need_rx = false;
+        need_recv = false;
 
-        uint8_t _irq;
+        in_process_upgrade = true;
 
-        _irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
+        uint8_t _irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
+
         if (_irq & REG_IRQ_RX_TIMEOUT)
         {
             rf_clr_irq();
@@ -74,31 +76,17 @@ void PAN3060::Update()
 
         if (_irq & REG_IRQ_RX_DONE)
         {
-            uint8_t _buffer[PACKET_PAYLOAD_LENGTH];
+            uint8_t _buffer[256];
+
             uint8_t _len = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
 
-            rf_read_fifo(REG_FIFO_ACC_ADDR, _buffer, PACKET_PAYLOAD_LENGTH);
+            rf_read_fifo(REG_FIFO_ACC_ADDR, _buffer, _len);
+
             rf_clr_irq();
-            if (_len == PACKET_PAYLOAD_LENGTH && _buffer[0] == VIBROLINE_HEAD)
+
+            if (_len == PACKET_PAYLOAD_LENGTH)
             {
                 _buffer[1] &= 0x7F;
-                if (_buffer[1] & VIBROLINE_DEVICE_DOORBELL)
-                {
-
-                }
-                if (_buffer[1] & VIBROLINE_DEVICE_PHONE)
-                {
-
-                }
-
-                if (_buffer[1] & VIBROLINE_DEVICE_INTERCOM)
-                {
-
-                }
-                if (_buffer[1] & VIBROLINE_DEVICE_BABYCRY)
-                {
-
-                }
 
                 rf_init();
                 rf_set_default_para();
@@ -111,7 +99,7 @@ void PAN3060::Update()
 
 void PAN3060::CallbackOnIRQ()
 {
-    need_rx = true;
+    need_recv = true;
 }
 
 

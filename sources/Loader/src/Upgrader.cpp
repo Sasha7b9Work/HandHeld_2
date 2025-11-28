@@ -14,20 +14,17 @@ void Upgrader::Run()
 
     TimeMeterMS meter;
 
-    while (meter.ElapsedTime() < 3000 && !PAN3060::InProcessUpgrade())
+    while (meter.ElapsedTime() < 5000 && !PAN3060::InProcessUpgrade())
     {
         Display::Update();
 
         PAN3060::Update();
     }
 
-    if (PAN3060::InProcessUpgrade())
+    while (PAN3060::InProcessUpgrade())
     {
-        while (PAN3060::InProcessUpgrade())
-        {
-            Display::Update();
+        Display::Update();
 
-            PAN3060::Update();
-        }
+        PAN3060::Update();
     }
 }

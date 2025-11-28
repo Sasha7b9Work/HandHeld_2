@@ -17,12 +17,7 @@ typedef struct
     uint8 data;
 }pan_reg_cfg_t;
 
-#define    VIBROLINE_HEAD                0x7E    //constant head of the packet
-#define    VIBROLINE_DEVICE_DOORBELL        0x01    //bit7 set = low battery
-#define    VIBROLINE_DEVICE_PHONE          0x02    //bit7 set = low battery
-#define    VIBROLINE_DEVICE_INTERCOM        0x04    //bit7 set = low battery
-#define    VIBROLINE_DEVICE_BABYCRY        0x08    //bit7 set = low battery
-#define    PACKET_PAYLOAD_LENGTH            4
+#define    PACKET_PAYLOAD_LENGTH           4
 
 #define SPI_WRITE_CHECK                 1
 

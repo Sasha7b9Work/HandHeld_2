@@ -1,10 +1,9 @@
 #include "upgrader/Upgrader.h"
 #include "upgrader/Timer.h"
-#include "myDisplayUnit.h"
 #include "myLcd.h"
 #include "myRadio.h"
 #include <stdbool.h>
-#include <stm32f10x.h>
+
 
 /*
     Обновление происходит так.
