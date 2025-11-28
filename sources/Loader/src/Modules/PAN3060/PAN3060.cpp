@@ -19,13 +19,14 @@ namespace PAN3060
 
     static void InitSPI();
 
-    static const uint begin_firmware = 0x8002000;
-    static const uint size_firmware = 54 * 1024;
+    static const uint NUM_PAGES = 54;
+    static const uint BEGIN_FIRMWARE = 0x8002000;
+    static const uint SIZE_FIRMWARE = NUM_PAGES * 1024;
     static const uint SIZE_CHAIN = 128;
     static const int CHAINS_IN_PAGE = 8;
 
     // Здесь хранятся контрольные суммы для каждого пакета
-    static const uint ALL_CHAINS = size_firmware / SIZE_CHAIN;
+    static const uint ALL_CHAINS = SIZE_FIRMWARE / SIZE_CHAIN;
     static uint crc[ALL_CHAINS];                                    // Здесь будут храниться контрольные суммы для всех чайнов
     static uint crc_page[CHAINS_IN_PAGE];                           // А здесь для чайнов текущей принимаемой страницы
 
@@ -37,6 +38,7 @@ namespace PAN3060
     static int prev_page = -1;                                      // На этой странице находился предыдущий принятый чайн
 
     static void Reset();
+
     // Эту функцию вызываем, когда контрольная сумма в eeprom не совпала
     static void FullReset();
 
@@ -49,6 +51,7 @@ namespace PAN3060
     // Проверить на завершение - всё принято и всё соотвествует
     static void CheckForCompletion();
 
+    // Структура используется для приёма пакетов
     struct Packet
     {
         uint8 buffer[200];
@@ -70,6 +73,22 @@ namespace PAN3060
 
         // Записывает page[1024] в EEPROM
         void WritePageEEPROM() const;
+    };
+
+    struct Firmware
+    {
+        bool pages[NUM_PAGES];      // true означает, что страница принята и сохранена в EEPROM
+    };
+
+    struct Page
+    {
+        struct Chain
+        {
+            uint8 buffer[SIZE_CHAIN];
+            uint  crc = 0;
+        };
+
+        Chain chains[CHAINS_IN_PAGE];
     };
 }
 
@@ -303,7 +322,7 @@ void PAN3060::CheckForCompletion()
 {
     if (main_crc && AllChaninsReceived())
     {
-        uint crc_firmware = SU::CalculateCRC32((const void *)begin_firmware, size_firmware);
+        uint crc_firmware = SU::CalculateCRC32((const void *)BEGIN_FIRMWARE, SIZE_FIRMWARE);
 
         if (crc_firmware == main_crc)
         {
@@ -325,13 +344,13 @@ uint8 PAN3060::Packet::CalcualteNumberPage() const
 
 void PAN3060::Packet::ErasePageEEPROM() const
 {
-    HAL_ROM::ErasePage(begin_firmware + (uint)(number_page * 1024));
+    HAL_ROM::ErasePage(BEGIN_FIRMWARE + (uint)(number_page * 1024));
 }
 
 
 void PAN3060::Packet::WritePageEEPROM() const
 {
-    HAL_ROM::WritePage(begin_firmware + (uint)(number_page * 1024), page);
+    HAL_ROM::WritePage(BEGIN_FIRMWARE + (uint)(number_page * 1024), page);
 }
 
 
