@@ -11,7 +11,7 @@ namespace LED
 
     static uint time_enable = 0;
 
-    static ColorLED::E current_color = ColorLED::Red;
+    static ColorLED::E current_color = ColorLED::_0;
 }
 
 

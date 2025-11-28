@@ -65,20 +65,9 @@ bool LED::Driver::IsFired()
 
 void LED::Driver::On(ColorLED::E color)
 {
-    Off();
-
-    if (color == ColorLED::Red)
-    {
-        pinRED.ToHi();
-    }
-    else if (color == ColorLED::Green)
-    {
-        pinGREEN.ToHi();
-    }
-    else if (color == ColorLED::Blue)
-    {
-        pinBLUE.ToHi();
-    }
+    pinRED.Set(_GET_BIT(color, 0) != 0);
+    pinGREEN.Set(_GET_BIT(color, 1) != 0);
+    pinBLUE.Set(_GET_BIT(color, 2) != 0);
 
     is_fired = true;
 }

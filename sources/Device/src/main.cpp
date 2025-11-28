@@ -130,23 +130,16 @@ void UpdateLED()
 {
     static TimeMeterMS meter;
 
-    if (meter.ElapsedTime() > 200)
+    if (meter.ElapsedTime() > 1000)
     {
         meter.Reset();
 
-        ColorLED::E current = LED::CurrentColor();
+        static int color = 0;
 
-        if (current == ColorLED::Red)
-        {
-            LED::Enable(ColorLED::Green);
-        }
-        else if (current == ColorLED::Green)
-        {
-            LED::Enable(ColorLED::Blue);
-        }
-        else if (current == ColorLED::Blue)
-        {
-            LED::Enable(ColorLED::Red);
-        }
+        color++;
+
+        color &= 0x07;
+
+        LED::Enable((ColorLED::E)color);
     }
 }
