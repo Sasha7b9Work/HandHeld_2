@@ -22,24 +22,27 @@ namespace PAN3060
     //    static const uint begin_firmware = 0x08030000;
     static const uint size_firmware = 54 * 1024;
     static const uint SIZE_CHAIN = 128;
-    static const int chains_in_page = 8;
+    static const int CHAINS_IN_PAGE = 8;
 
     // Здесь хранятся контрольные суммы для каждого пакета
-    static const uint num_chanins = size_firmware / SIZE_CHAIN;
-    static uint crc[num_chanins];
+    static const uint ALL_CHAINS = size_firmware / SIZE_CHAIN;
+    static uint crc[ALL_CHAINS];                                    // Здесь будут храниться контрольные суммы для всех чайнов
+    static uint crc_page[CHAINS_IN_PAGE];                           // А здесь для чайнов текущей принимаемой страницы
 
-    static uint8 page[1024];            // Здесь будет принятая страница, котору мы целиком запишем в память
+    static uint8 page[1024];                                        // Здесь будет принятая страница, котору мы целиком запишем в память
 
 
-    static int current_chain = 0;               // Данный чайн сейчас будет приниматься.
-    static int received_chains_in_page = 0;     // Столько чайнов принято на данной странице. Если != 0, то надо записывать в память
+    static int received_chains_in_page = 0;                         // Столько чайнов принято на данной странице. Если != 0, то надо записывать в память
     static int chains_is_ok = 0;
     static int chains_is_fail = 0;
+    static uint main_crc = 0;
 
     static void Reset();
 
     static void ReceiveChainPacket(uint8 buffer[256]);
     static void ReceiveFinishPacket(uint8 buffer[256]);
+    // Cтолько чайнов принято
+    static int ReceivedChains();
 }
 
 
@@ -58,10 +61,14 @@ void PAN3060::Init()
 
     rf_enter_continous_rx();
 
-    for (uint i = 0; i < num_chanins; i++)
+    // Эту процедуру делаем только один раз. Если какой-то пакет будет принят с ошибкой, то в последующих циклах обновления его просто
+    // добавим сюда
+    for (uint i = 0; i < ALL_CHAINS; i++)
     {
         crc[i] = 0;
     }
+
+    main_crc = 0;
 
     Reset();
 }
@@ -69,7 +76,6 @@ void PAN3060::Init()
 
 void PAN3060::Reset()
 {
-    current_chain = 0;
     received_chains_in_page = 0;
     chains_is_ok = 0;
     chains_is_fail = 0;
@@ -146,35 +152,48 @@ void PAN3060::Update()
 
 void PAN3060::ReceiveChainPacket(uint8 buffer[256])
 {
-    if ((current_chain % chains_in_page) == 0)
+    Struct32 crc_recv(buffer + 2 + 128);
+
+    uint crc_calc = SU::CalculateCRC32(buffer, 2 + 128);
+
+    if (crc_recv.u32 != crc_calc)
     {
-        // Заполняем все биты единицами - запись такого буфера в ПЗУ никак его не изменит.
-        // Поэтому можно будет записывать всё целиком, даже если нужно записать только один chain
-        std::memset(page, 0xFF, 1024);
+        chains_is_fail++;
+
+        return;
     }
+
+    chains_is_ok++;
 
     Struct16 number_chain(buffer);
 
-    if (crc[number_chain.u16] == 0)      // Этот чайн ещё не принят - нет контрольной суммы
+    if (crc[number_chain.u16] == 0)
     {
-        Struct32 crc_recv(buffer + 2 + 128);
+        crc[number_chain.u16] = crc_calc;
 
-        uint crc_calc = SU::CalculateCRC32(buffer, 2 + 128);
+        std::memcpy(page + (number_chain.u16 % CHAINS_IN_PAGE) * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
+    }
 
-        if (crc_calc == crc_recv.u32)
+    if (ReceivedChains() == ALL_CHAINS && main_crc)
+    {
+
+    }
+}
+
+
+int PAN3060::ReceivedChains()
+{
+    int counter = 0;
+
+    for (int i = 0; i < ALL_CHAINS; i++)
+    {
+        if (crc[i] != 0)
         {
-            chains_is_ok++;
-
-            crc[number_chain.u16] = crc_calc;
-
-            std::memcpy(page + (number_chain.u16 % chains_in_page) * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
-        }
-        else
-        {
-            chains_is_fail++;
+            counter++;
         }
     }
 
+    return counter;
 }
 
 
