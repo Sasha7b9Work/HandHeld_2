@@ -196,9 +196,9 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
 
     chains_is_ok++;
 
-    Struct16 number_chain(buffer);
+    uint16 number_chain = Struct16(buffer).u16;
 
-    int chain_in_page = NumberChainInPage(number_chain.u16);
+    int chain_in_page = NumberChainInPage(number_chain);
 
     if (crc_page[chain_in_page] == 0)
     {
@@ -208,9 +208,9 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
     }
 
     // Если чайн последний в странице: 7, 15, 23 и т.д., то нужно сохранить страницу в ПЗУ
-    if (((number_chain.u16 + 1) % CHAINS_IN_PAGE) == 0)
+    if (((number_chain + 1) % CHAINS_IN_PAGE) == 0)
     {
-        uint *crc_full = crc + NumberPage(number_chain.u16);
+        uint *crc_full = crc + NumberPage(number_chain);
         uint *crc_part = crc_page;
 
         bool need_erase_page = true;
@@ -226,7 +226,7 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
 
         if (need_erase_page)
         {
-            ErasePage(NumberPage(number_chain.u16));
+            ErasePage(NumberPage(number_chain));
         }
 
         bool need_write_to_eeprom = false;
@@ -246,7 +246,7 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
 
         if (need_write_to_eeprom)
         {
-            WritePage(NumberPage(number_chain.u16), page);
+            WritePage(NumberPage(number_chain), page);
         }
 
         Reset();
@@ -355,8 +355,6 @@ bool PAN3060::InProcessUpgrade()
 
 void PAN3060::FuncDraw()
 {
-    char buffer[32];
-
     int x1 = 5;
     int x2 = 50;
     int y = 5;
@@ -367,6 +365,8 @@ void PAN3060::FuncDraw()
     y += dy;
 
     Text<>("Received").Write(x1, y);
+
+    char buffer[32];
 
     Text<>(SU::IntToASCII(ReceivedChains(), buffer)).Write(x2, y);
 
