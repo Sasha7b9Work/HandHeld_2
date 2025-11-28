@@ -61,8 +61,6 @@ struct TypeFont
     enum E
     {
         _5,
-        _7,
-        _10,
         Count
     };
 };

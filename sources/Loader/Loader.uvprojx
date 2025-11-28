@@ -625,16 +625,6 @@
               <FileType>5</FileType>
               <FilePath>.\src\Display\Font\font5.inc</FilePath>
             </File>
-            <File>
-              <FileName>font8.inc</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Font\font8.inc</FilePath>
-            </File>
-            <File>
-              <FileName>font10_7.inc</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Font\font10_7.inc</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -1462,16 +1452,6 @@
               <FileName>font5.inc</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Font\font5.inc</FilePath>
-            </File>
-            <File>
-              <FileName>font8.inc</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Font\font8.inc</FilePath>
-            </File>
-            <File>
-              <FileName>font10_7.inc</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Font\font10_7.inc</FilePath>
             </File>
           </Files>
         </Group>

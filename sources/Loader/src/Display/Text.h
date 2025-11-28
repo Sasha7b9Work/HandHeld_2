@@ -20,37 +20,11 @@ private:
 template<int capacity = 64>
 struct Text
 {
-    Text(pchar format, ...)
+    Text(pchar _text)
     {
-        std::va_list args;
-        va_start(args, format);
-        std::vsprintf(text, format, args);
-        va_end(args);
+        std::strcpy(text, _text);
     }
     int Write(int x, int y, const Color &color = Color::NUMBER) const;
-    void WriteInCenter(int x, int y, int width, const Color &color = Color::NUMBER) const
-    {
-        int length = GetLength();
-
-        x += width / 2 - length / 2;
-
-        Write(x, y, color);
-    }
-    int GetLength() const
-    {
-        int result = 0;
-
-        pchar pointer = text;
-
-        while (*pointer)
-        {
-            uint8 symbol = (uint8)*pointer++;
-            result += Font::GetWidth(symbol) * Font::GetSize(); //-V1026
-            result += Font::GetSize(); //-V1026
-        }
-
-        return result;
-    }
     char *c_str()
     {
         return &text[0];

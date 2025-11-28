@@ -19,12 +19,6 @@ namespace Display
 
     void Update();
 
-    void DrawPowerOff();
-
-    void DrawPowerOn();
-
-    void DrawLowVoltage();
-
     uint TimeEnabled();
 
     namespace Buffer

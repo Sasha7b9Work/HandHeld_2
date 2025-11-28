@@ -2,22 +2,18 @@
 #include "defines.h"
 #include "Display/Font/Font.h"
 #include "Display/Font/font5.inc"
-#include "Display/Font/font8.inc"
 #include "Display/Text.h"
-#include "Display/Font/font10_7.inc"
 #include "Display/Display7735.h"
 
 //static const DFont *fonts[DTypeFont::Count] = { &font5, &font8 };
 
 
 
-static const DFont *dfont = &font8;
-
-static FontDef font_10x7 = { 7, 10, Font10x7 };
+static const DFont *dfont = &font5;
 
 namespace Font
 {
-    TypeFont::E type = TypeFont::_7;
+    TypeFont::E type = TypeFont::_5;
 
     static int size = 1;
 }
@@ -43,10 +39,6 @@ void Font::SetType(TypeFont::E _type)
     {
         dfont = &font5;
     }
-    else if (_type == TypeFont::_7)
-    {
-        dfont = &font8;
-    }
 }
 
 
@@ -60,8 +52,6 @@ int Font::GetHeight()
     switch (type)
     {
     case TypeFont::_5:      return 5;
-    case TypeFont::_7:      return 7;
-    case TypeFont::_10:     return 10;
     case TypeFont::Count:
         break;
     }
@@ -80,7 +70,7 @@ int Char::Write(int x, int y, const Color &color) const
 {
     color.SetAsCurrent();
 
-    if (Font::type == TypeFont::_5 || Font::type == TypeFont::_7)
+    if (Font::type == TypeFont::_5)
     {
         int height = Font::GetHeight();
         int width = Font::GetWidth(symbol);
@@ -97,28 +87,6 @@ int Char::Write(int x, int y, const Color &color) const
         }
 
         return x + width * Font::size;
-    }
-    else if (Font::type == TypeFont::_10)
-    {
-        if (symbol < 32 || symbol > 126)
-        {
-            return 0;
-        }
-
-        for (int i = 0; i < font_10x7.height; i++)
-        {
-            int b = font_10x7.data[(symbol - 32) * font_10x7.height + i];
-
-            for (int j = 0; j < font_10x7.width; j++)
-            {
-                if ((b << j) & 0x8000)
-                {
-                    Rect(Font::size, Font::size).Fill(x + j * Font::size, y + i * Font::size);
-                }
-            }
-        }
-
-        return x + font_10x7.width * Font::size;
     }
 
     return x;

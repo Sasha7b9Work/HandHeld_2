@@ -42,7 +42,7 @@ void Display::Init()
 {
     ST7735::Init();
 
-    Font::SetType(TypeFont::_7);
+    Font::SetType(TypeFont::_5);
 }
 
 
@@ -59,53 +59,6 @@ void Display::Update()
         BeginScene(i);      // 0 ms
         DrawScene(i);       // 20 ms
         EndScene(i);        // 68 ms
-    }
-}
-
-
-void Display::DrawPowerOff()
-{
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
-    {
-        BeginScene(i);
-
-        Font::SetSize(2);
-
-        Text<>("¬€ Àﬁ◊≈Õ»≈").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
-
-        EndScene(i);
-    }
-}
-
-
-void Display::DrawPowerOn()
-{
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
-    {
-        BeginScene(i);
-
-        Font::SetSize(2);
-
-        Text<>("¬ Àﬁ◊≈Õ»≈").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
-
-        EndScene(i);
-    }
-}
-
-
-void Display::DrawLowVoltage()
-{
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
-    {
-        BeginScene(i);
-
-        Font::SetSize(2);
-
-        Text<>("Õ»« Œ≈").WriteInCenter(0, 20, Display::WIDTH, Color::WHITE);
-
-        Text<>("Õ¿œ–ﬂ∆≈Õ»≈").WriteInCenter(0, 50, Display::WIDTH, Color::WHITE);
-
-        EndScene(i);
     }
 }
 
@@ -130,7 +83,7 @@ void Display::EndScene(int num_parts)
 
 void Display::DrawScene(int /*num_part*/)
 {
-
+    Text<>("Œ·ÌÓ‚ÎÂÌËÂ :").Write(10, 10, Color::WHITE);
 }
 
 
