@@ -5,6 +5,7 @@
 #include "Modules/PAN3060/chirp_rf.h"
 #include "Display/Text.h"
 #include "Hardware/Timer.h"
+#include "Utils/String.h"
 #include <gd32e23x.h>
 
 
@@ -17,6 +18,25 @@ namespace PAN3060
     static void InitIRQ();
 
     static void InitSPI();
+
+    //    static const uint begin_firmware = 0x08030000;
+    static const uint size_firmware = 54 * 1024;
+    static const uint SIZE_CHAIN = 128;
+    static const int chains_in_page = 8;
+
+    // Здесь хранятся контрольные суммы для каждого пакета
+    static const uint num_chanins = size_firmware / SIZE_CHAIN;
+    static uint crc[num_chanins];
+
+    static uint8 page[1024];            // Здесь будет принятая страница, котору мы целиком запишем в память
+
+
+    static int current_chain = 0;               // Данный чайн сейчас будет приниматься.
+    static int received_chains_in_page = 0;     // Столько чайнов принято на данной странице. Если != 0, то надо записывать в память
+    static int chains_is_ok = 0;
+    static int chains_is_fail = 0;
+
+    static void Reset();
 }
 
 
@@ -34,6 +54,22 @@ void PAN3060::Init()
     rf_set_default_para();
 
     rf_enter_continous_rx();
+
+    for (uint i = 0; i < num_chanins; i++)
+    {
+        crc[i] = 0;
+    }
+
+    Reset();
+}
+
+
+void PAN3060::Reset()
+{
+    current_chain = 0;
+    received_chains_in_page = 0;
+    chains_is_ok = 0;
+    chains_is_fail = 0;
 }
 
 
@@ -84,10 +120,43 @@ void PAN3060::Update()
 
             rf_clr_irq();
 
-            if (_len == PACKET_PAYLOAD_LENGTH)
+            if (_len == 2 + 128 + 4)            // Принимаем 128 байт прошивки
             {
-                _buffer[1] &= 0x7F;
+                if ((current_chain % chains_in_page) == 0)
+                {
+                    // Заполняем все биты единицами - запись такого буфера в ПЗУ никак его не изменит.
+                    // Поэтому можно будет записывать всё целиком, даже если нужно записать только один chain
+                    std::memset(page, 0xFF, 1024);
+                }
 
+                Struct16 number_chain(_buffer);
+
+                if (crc[number_chain.u16] == 0)      // Этот чайн ещё не принят - нет контрольной суммы
+                {
+                    Struct32 crc_recv(_buffer + 2 + 128);
+
+                    uint crc_calc = SU::CalculateCRC32(_buffer, 2 + 128);
+
+                    if (crc_calc == crc_recv.u32)
+                    {
+                        chains_is_ok++;
+
+                        crc[number_chain.u16] = crc_calc;
+
+                        std::memcpy(page + (number_chain.u16 % chains_in_page) * SIZE_CHAIN, _buffer + 2, SIZE_CHAIN);
+                    }
+                    else
+                    {
+                        chains_is_fail++;
+                    }
+                }
+
+                rf_init();
+                rf_set_default_para();
+                rf_enter_continous_rx();
+            }
+            else if (_len == 2 + 4 + 4)         // Принимаем завершающий пакет
+            {
                 rf_init();
                 rf_set_default_para();
                 rf_enter_continous_rx();

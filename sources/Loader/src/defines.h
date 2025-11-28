@@ -1,5 +1,7 @@
 // (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
+#include <cstring>
+
 
 #ifndef WIN32
     #pragma clang diagnostic ignored "-Wglobal-constructors"
@@ -89,4 +91,24 @@ typedef void(*pFuncVI)(int);
 #define ERROR_STRING_VALUE  "--.--"
 
 
-//#define BOARD_NEW
+union Struct16
+{
+    Struct16(uint8 bytes[2])
+    {
+        std::memcpy(u8, bytes, 2);
+    }
+
+    uint8  u8[2];
+    uint16 u16;
+};
+
+
+union Struct32
+{
+    Struct32(uint8 bytes[4])
+    {
+        std::memcpy(u8, bytes, 4);
+    }
+    uint8 u8[4];
+    uint  u32;
+};
