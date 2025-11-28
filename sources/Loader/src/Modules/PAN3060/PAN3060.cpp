@@ -60,6 +60,8 @@ namespace PAN3060
 
     // Проверить на завершение - всё принято и всё соотвествует
     static void CheckForCompletion();
+
+    static bool PacketIsValid(uint8 buffer[256], int len);
 }
 
 
@@ -174,16 +176,21 @@ void PAN3060::Update()
 }
 
 
+bool PAN3060::PacketIsValid(uint8 buffer[256], int len)
+{
+    Struct32 crc_recv(buffer + len - 4);
+
+    uint crc_calc = SU::CalculateCRC32(buffer, len - 4);
+
+    return (crc_recv.u32 == crc_calc);
+}
+
+
 void PAN3060::ReceiveChainPacket(uint8 buffer[256])
 {
-    Struct32 crc_recv(buffer + 2 + 128);
-
-    uint crc_calc = SU::CalculateCRC32(buffer, 2 + 128);
-
-    if (crc_recv.u32 != crc_calc)
+    if (!PacketIsValid(buffer, 2 + 128 + 4))
     {
         chains_is_fail++;
-
         return;
     }
 
@@ -195,7 +202,7 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
 
     if (crc_page[chain_in_page] == 0)
     {
-        crc_page[chain_in_page] = crc_calc;
+        crc_page[chain_in_page] = Struct32(buffer + 2 + 128).u32;
 
         std::memcpy(page + chain_in_page * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
     }
@@ -251,25 +258,12 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
 
 void PAN3060::ReceiveFinishPacket(uint8 buffer[256])
 {
-    Struct16 head(buffer);
-
-    if (head.u16 != 0xFFFF)
+    if (!PacketIsValid(buffer, 2 + 4 + 4))
     {
         return;
     }
 
-    Struct32 crc_packet(buffer + 2 + 4);
-
-    uint crc_calc = SU::CalculateCRC32(buffer, 2 + 4);
-
-    if (crc_packet.u32 != crc_calc)
-    {
-        return;
-    }
-
-    Struct32 crc_recv(buffer + 2);
-
-    main_crc = crc_recv.u32;
+    main_crc = Struct32(buffer + 2).u32;
 
     CheckForCompletion();
 }
