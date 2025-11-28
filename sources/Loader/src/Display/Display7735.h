@@ -1,6 +1,5 @@
 // 2024/03/01 22:45:47 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Display/Colors.h"
 
 
 namespace Display
@@ -29,14 +28,14 @@ namespace Display
 
 struct Pixel
 {
-    void Set(int x, int y, const Color &color = Color::NUMBER) const;
+    void Set(int x, int y) const;
 };
 
 
 struct HLine
 {
     HLine(int w) : width(w) { }
-    void Draw(int x, int y, const Color &color = Color::NUMBER) const;
+    void Draw(int x, int y) const;
 private:
     const int width;
 };
@@ -45,7 +44,7 @@ private:
 struct VLine
 {
     VLine(int h) : height(h) { }
-    void Draw(int x, int y, const Color &color = Color::NUMBER) const;
+    void Draw(int x, int y) const;
 private:
     const int height;
 };
@@ -54,8 +53,8 @@ private:
 struct Rect
 {
     Rect(int w, int h) : width(w), height(h) { }
-    void Draw(int x, int y, const Color &color = Color::NUMBER) const;
-    void Fill(int x, int y, const Color &color = Color::NUMBER) const;
+    void Draw(int x, int y) const;
+    void Fill(int x, int y) const;
 private:
     const int width;
     const int height;

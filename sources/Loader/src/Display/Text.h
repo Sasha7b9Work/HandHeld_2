@@ -1,6 +1,5 @@
 // 2024/05/13 11:05:30 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Display/Colors.h"
 #include "Display/Font/Font.h"
 #include <cstdarg>
 #include <cstdio>
@@ -11,7 +10,7 @@
 struct Char
 {
     Char(char s) : symbol((uint8)s) { }
-    int Write(int x, int y, const Color &color = Color::NUMBER) const;
+    int Write(int x, int y) const;
 private:
     uint8 symbol;
 };
@@ -24,7 +23,7 @@ struct Text
     {
         std::strcpy(text, _text);
     }
-    int Write(int x, int y, const Color &color = Color::NUMBER) const;
+    int Write(int x, int y) const;
     char *c_str()
     {
         return &text[0];

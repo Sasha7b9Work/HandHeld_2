@@ -581,16 +581,6 @@
           <GroupName>Display</GroupName>
           <Files>
             <File>
-              <FileName>Colors.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Display\Colors.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Colors.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Colors.h</FilePath>
-            </File>
-            <File>
               <FileName>Display7735.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Display\Display7735.cpp</FilePath>
@@ -1398,16 +1388,6 @@
         <Group>
           <GroupName>Display</GroupName>
           <Files>
-            <File>
-              <FileName>Colors.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Display\Colors.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Colors.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Colors.h</FilePath>
-            </File>
             <File>
               <FileName>Display7735.cpp</FileName>
               <FileType>8</FileType>

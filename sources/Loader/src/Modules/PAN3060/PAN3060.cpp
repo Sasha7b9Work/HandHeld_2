@@ -372,7 +372,7 @@ void PAN3060::FuncDraw()
     int y = 5;
     int dy = 10;
 
-    Text<>("Upgrade").Write(x1, y, Color::WHITE);
+    Text<>("Upgrade").Write(x1, y);
 
     y += dy;
 

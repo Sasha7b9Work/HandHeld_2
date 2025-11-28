@@ -420,7 +420,7 @@ void ST7735::WriteBuffer(int y0)
 
         for (int i = 0; i < Display::WIDTH; i++)
         {
-            SendData16(Color::colors[*points++]);
+            SendData16((*points++) == 0 ? 0x0000 : 0xFFFF);
         }
     }
 }

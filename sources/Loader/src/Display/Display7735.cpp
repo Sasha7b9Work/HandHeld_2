@@ -7,7 +7,7 @@
 #include "Display/Text.h"
 
 
-template int Text<64>::Write(int x, int y, const Color &color) const;
+template int Text<64>::Write(int x, int y) const;
 
 
 namespace Display
@@ -18,9 +18,9 @@ namespace Display
 
         static int current_part = 0;                            // Эту часть сейчас отрисовываем
 
-        static void Fill(const Color &color)
+        static void Fill()
         {
-            std::memset(buffer, color.value, SIZE);
+            std::memset(buffer, 0x00, SIZE);
         }
 
         uint8 *GetLine(int y)
@@ -63,9 +63,7 @@ void Display::BeginScene(int num_part)
 {
     Buffer::current_part = num_part;
 
-    Color color = Color::BLACK;
-
-    Buffer::Fill(color);
+    Buffer::Fill();
 }
 
 
@@ -77,10 +75,8 @@ void Display::EndScene(int num_parts)
 }
 
 
-void Rect::Fill(int x0, int y0, const Color &color) const
+void Rect::Fill(int x0, int y0) const
 {
-    color.SetAsCurrent();
-
     for (int y = y0; y < y0 + height; y++)
     {
         HLine(width).Draw(x0, y);
@@ -88,10 +84,8 @@ void Rect::Fill(int x0, int y0, const Color &color) const
 }
 
 
-void Rect::Draw(int x, int y, const Color &color) const
+void Rect::Draw(int x, int y) const
 {
-    color.SetAsCurrent();
-
     HLine(width).Draw(x, y);
     HLine(width).Draw(x, y + height - 1);
     VLine(height).Draw(x, y);
@@ -99,10 +93,8 @@ void Rect::Draw(int x, int y, const Color &color) const
 }
 
 
-void HLine::Draw(int x, int y, const Color &color) const
+void HLine::Draw(int x, int y) const
 {
-    color.SetAsCurrent();
-
     for (int i = 0; i < width; i++)
     {
         Pixel().Set(x++, y);
@@ -110,10 +102,8 @@ void HLine::Draw(int x, int y, const Color &color) const
 }
 
 
-void VLine::Draw(int x, int y, const Color &color) const
+void VLine::Draw(int x, int y) const
 {
-    color.SetAsCurrent();
-
     for (int i = 0; i < height; i++)
     {
         Pixel().Set(x, y++);
@@ -121,10 +111,8 @@ void VLine::Draw(int x, int y, const Color &color) const
 }
 
 
-void Pixel::Set(int x, int y, const Color &color) const
+void Pixel::Set(int x, int y) const
 {
-    color.SetAsCurrent();
-
     if (x < 0)
     {
         return;
@@ -147,15 +135,13 @@ void Pixel::Set(int x, int y, const Color &color) const
         return;
     }
 
-    Display::Buffer::buffer[y * Display::WIDTH + x] = (uint8)Color::current.value;
+    Display::Buffer::buffer[y * Display::WIDTH + x] = 0xFF;
 }
 
 
 template<int capacity>
-int Text<capacity>::Write(int x, int y, const Color &color) const
+int Text<capacity>::Write(int x, int y) const
 {
-    color.SetAsCurrent();
-
     pchar pointer = text;
 
     while (*pointer)

@@ -66,10 +66,8 @@ int Font::GetWidth(uint8 symbol)
 }
 
 
-int Char::Write(int x, int y, const Color &color) const
+int Char::Write(int x, int y) const
 {
-    color.SetAsCurrent();
-
     if (Font::type == TypeFont::_5)
     {
         int height = Font::GetHeight();
