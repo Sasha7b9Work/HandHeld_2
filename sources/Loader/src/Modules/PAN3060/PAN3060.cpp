@@ -93,6 +93,8 @@ void PAN3060::FullReset()
     }
 
     main_crc = 0;
+    chains_is_ok = 0;
+    chains_is_fail = 0;
 
     Reset();
 }
@@ -101,8 +103,6 @@ void PAN3060::FullReset()
 void PAN3060::Reset()
 {
     received_chains_in_page = 0;
-    chains_is_ok = 0;
-    chains_is_fail = 0;
     std::memset(page, 0xFF, 1024);
     std::memset(crc_page, 0x00, CHAINS_IN_PAGE * 4);
 }
@@ -244,8 +244,7 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
             WritePage(NumberPage(number_chain.u16), page);
         }
 
-        std::memset(page, 0xFF, 1024);
-        std::memset(crc_page, 0x00, CHAINS_IN_PAGE);
+        Reset();
 
         CheckForCompletion();
     }
