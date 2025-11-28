@@ -34,7 +34,7 @@ namespace PAN3060
     static int chains_is_ok = 0;
     static int chains_is_fail = 0;
     static uint main_crc = 0;
-    static int prev_page = -1;                                      // На этой странице находился предыдущий принятый чайн
+//    static int prev_page = -1;                                      // На этой странице находился предыдущий принятый чайн
 
     static void Reset();
     // Эту функцию вызываем, когда контрольная сумма в eeprom не совпала
