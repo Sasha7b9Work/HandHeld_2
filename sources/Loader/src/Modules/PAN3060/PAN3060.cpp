@@ -183,7 +183,12 @@ bool PAN3060::PacketIsValid(uint8 buffer[256], int len)
 
     uint crc_calc = SU::CalculateCRC32(buffer, len - 4);
 
-    return (crc_recv.u32 == crc_calc);
+    if (crc_recv.u32 == crc_calc)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -217,7 +222,7 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
     // Передатчик делает для этого паузу
     if (((number_chain + 1) % CHAINS_IN_PAGE) == 0)
     {
-        uint *crc_full = crc + NumberPage(number_chain);
+        uint *crc_full = crc + NumberPage(number_chain) * CHAINS_IN_PAGE;
         uint *crc_part = crc_page;
 
         {                                                   // Стираем страницу, если запись в неё ещё ни разу не производилась
