@@ -6,3 +6,10 @@ namespace HAL
 {
     void Init();
 }
+
+
+namespace HAL_ROM
+{
+    void ErasePage(uint address);
+    void WritePage(uint addres, uint8[1024]);
+}

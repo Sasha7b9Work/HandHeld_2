@@ -4,7 +4,7 @@
 #include "Modules/PAN3060/PAN3060.h"
 #include "Modules/PAN3060/chirp_rf.h"
 #include "Display/Text.h"
-#include "Hardware/Timer.h"
+#include "Hardware/HAL/HAL.h"
 #include "Utils/String.h"
 #include <gd32e23x.h>
 
@@ -19,7 +19,7 @@ namespace PAN3060
 
     static void InitSPI();
 
-    //    static const uint begin_firmware = 0x08030000;
+    static const uint begin_firmware = 0x08030000;
     static const uint size_firmware = 54 * 1024;
     static const uint SIZE_CHAIN = 128;
     static const int CHAINS_IN_PAGE = 8;
@@ -42,7 +42,15 @@ namespace PAN3060
     static void ReceiveChainPacket(uint8 buffer[256]);
     static void ReceiveFinishPacket(uint8 buffer[256]);
     // Cтолько чайнов принято
-    static int ReceivedChains();
+    int ReceivedChains();
+    // Преобразует сквозной номер чайна в номер чайна на странице
+    static int NumberChainInPage(uint full_number_chain);
+
+    static int NumberPage(int full_number_chain);
+
+    static void ErasePage(int num_page);
+
+    static void WritePage(int num_page, uint8 buffer[1024]);
 }
 
 
@@ -79,6 +87,8 @@ void PAN3060::Reset()
     received_chains_in_page = 0;
     chains_is_ok = 0;
     chains_is_fail = 0;
+    std::memset(page, 0xFF, 1024);
+    std::memset(crc_page, 0x00, CHAINS_IN_PAGE * 4);
 }
 
 
@@ -167,17 +177,84 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
 
     Struct16 number_chain(buffer);
 
-    if (crc[number_chain.u16] == 0)
-    {
-        crc[number_chain.u16] = crc_calc;
+    int chain_in_page = NumberChainInPage(number_chain.u16);
 
-        std::memcpy(page + (number_chain.u16 % CHAINS_IN_PAGE) * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
+    if (crc_page[chain_in_page] == 0)
+    {
+        crc_page[chain_in_page] = crc_calc;
+
+        std::memcpy(page + chain_in_page * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
     }
 
-    if (ReceivedChains() == ALL_CHAINS && main_crc)
+    // Если чайн последний в странице: 7, 15, 23 и т.д., то нужно сохранить страницу в ПЗУ
+    if (((number_chain.u16 + 1) % CHAINS_IN_PAGE) == 0)
     {
+        uint *crc_full = crc + NumberPage(number_chain.u16);
+        uint *crc_part = crc_page;
 
+        bool need_erase_page = true;
+
+        for (int i = 0; i < CHAINS_IN_PAGE; i++)
+        {
+            if (*(crc_full + i))                        // Если уже есть контрольная сумма, то эту страницу мы уже записывали в ПЗУ
+            {
+                need_erase_page = false;
+                break;
+            }
+        }
+
+        if (need_erase_page)
+        {
+            ErasePage(NumberPage(number_chain.u16));
+        }
+
+        bool need_write_to_eeprom = false;
+
+        for (int i = 0; i < CHAINS_IN_PAGE; i++)
+        {
+            if (*(crc_part + i))                        // Если принят этот чайн
+            {
+                if (*(crc_full + i) == 0)               // И ранее он не принят
+                {
+                    need_write_to_eeprom = true;
+
+                    *(crc_full + i) = *(crc_part + i);
+                }
+            }
+        }
+
+        if (need_write_to_eeprom)
+        {
+            WritePage(NumberPage(number_chain.u16), page);
+        }
+
+        std::memset(page, 0xFF, 1024);
+        std::memset(crc_page, 0x00, CHAINS_IN_PAGE);
     }
+}
+
+
+int PAN3060::NumberPage(int full_number_chain)
+{
+    return full_number_chain / 8;
+}
+
+
+void PAN3060::ErasePage(int num_page)
+{
+    HAL_ROM::ErasePage(begin_firmware + num_page * 1024);
+}
+
+
+void PAN3060::WritePage(int num_page, uint8 buffer[1024])
+{
+    HAL_ROM::WritePage(begin_firmware + num_page * 1024, buffer);
+}
+
+
+int PAN3060::NumberChainInPage(uint full_number_chain)
+{
+    return (int)full_number_chain % CHAINS_IN_PAGE;
 }
 
 
