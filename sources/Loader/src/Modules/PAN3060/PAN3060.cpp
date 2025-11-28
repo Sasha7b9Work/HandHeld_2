@@ -75,11 +75,14 @@ namespace PAN3060
         void WritePageEEPROM() const;
     };
 
+    // Эта структура описывает все данные прошивки
     struct Firmware
     {
         bool pages[NUM_PAGES];      // true означает, что страница принята и сохранена в EEPROM
+        uint crc;
     };
 
+    // Описывает одну страницу
     struct Page
     {
         struct Chain
@@ -89,7 +92,15 @@ namespace PAN3060
         };
 
         Chain chains[CHAINS_IN_PAGE];
+
+        int num_page = -1;
     };
+
+    // Принимаемая прошивка
+    static Firmware firmware;
+
+    // Принимаемая страница
+    static Page page;
 }
 
 
