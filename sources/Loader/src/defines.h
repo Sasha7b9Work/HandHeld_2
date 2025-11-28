@@ -35,6 +35,7 @@ typedef unsigned char      uint8_t;
 typedef signed char        int8;
 typedef const char * const cstr;
 typedef const char *       pchar;
+typedef unsigned char      uchar;
 
 #ifndef WIN32
 #pragma clang diagnostic pop

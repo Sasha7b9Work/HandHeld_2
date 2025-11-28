@@ -315,7 +315,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>7</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -578,6 +578,66 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Display</GroupName>
+          <Files>
+            <File>
+              <FileName>Colors.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Colors.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Colors.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Colors.h</FilePath>
+            </File>
+            <File>
+              <FileName>Display7735.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Display7735.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Display7735.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Display7735.h</FilePath>
+            </File>
+            <File>
+              <FileName>Text.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Text.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Display/Font</GroupName>
+          <Files>
+            <File>
+              <FileName>Font.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Font\Font.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Font.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\Font.h</FilePath>
+            </File>
+            <File>
+              <FileName>font5.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\font5.inc</FilePath>
+            </File>
+            <File>
+              <FileName>font8.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\font8.inc</FilePath>
+            </File>
+            <File>
+              <FileName>font10_7.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\font10_7.inc</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Hardware</GroupName>
           <Files>
             <File>
@@ -744,6 +804,21 @@
               <FileName>PAN3060.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PAN3060\PAN3060.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Modules/ST7735</GroupName>
+          <Files>
+            <File>
+              <FileName>ST7735.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\ST7735\ST7735.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ST7735.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\ST7735\ST7735.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1341,6 +1416,66 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Display</GroupName>
+          <Files>
+            <File>
+              <FileName>Colors.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Colors.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Colors.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Colors.h</FilePath>
+            </File>
+            <File>
+              <FileName>Display7735.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Display7735.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Display7735.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Display7735.h</FilePath>
+            </File>
+            <File>
+              <FileName>Text.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Text.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Display/Font</GroupName>
+          <Files>
+            <File>
+              <FileName>Font.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Font\Font.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Font.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\Font.h</FilePath>
+            </File>
+            <File>
+              <FileName>font5.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\font5.inc</FilePath>
+            </File>
+            <File>
+              <FileName>font8.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\font8.inc</FilePath>
+            </File>
+            <File>
+              <FileName>font10_7.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\font10_7.inc</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Hardware</GroupName>
           <Files>
             <File>
@@ -1507,6 +1642,21 @@
               <FileName>PAN3060.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PAN3060\PAN3060.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Modules/ST7735</GroupName>
+          <Files>
+            <File>
+              <FileName>ST7735.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\ST7735\ST7735.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ST7735.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\ST7735\ST7735.h</FilePath>
             </File>
           </Files>
         </Group>

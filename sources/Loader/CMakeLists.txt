@@ -24,6 +24,7 @@ add_compile_options(
     /wd4623
     /wd4625
     /wd4626    # assignment operator was implicitly defined as deleted
+    /wd4710    # function not inlined
     /wd4820    # 'x' bytes padding added after
     /wd4996
     /wd5027    # move assignment operator was implicitly defined as deleted
@@ -36,32 +37,41 @@ add_compile_options(
 file(GLOB LIBS_HAL         ../common/libs/STM32Cube_F4/Drivers/STM32F4xx_HAL_Driver/Inc/*.*
                            ../common/libs/STM32Cube_F4/Drivers/STM32F4xx_HAL_Driver/Src/*.*)
 file(GLOB SRC              src/*.*)
+file(GLOB DISPLAY          src/Display/*.*)
+file(GLOB DISPLAY_FONT     src/Display/Font/*.*)
 file(GLOB HARDWARE         src/Hardware/*.*)
 file(GLOB HARDWARE_CMSIS   src/Hardware/CMSIS/*.*)
 file(GLOB HARDWARE_HAL     src/Hardware/HAL/*.*)
 file(GLOB MODULES_LED      src/Modules/LED/*.*)
 file(GLOB MODULES_PAN3060  src/Modules/PAN3060/*.*)
+file(GLOB MODULES_ST7735   src/Modules/ST7735/*.*)
 file(GLOB UTILS            src/Utils/*.*)
 
 set_source_files_properties(${LIBS_HAL} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 source_group(src             FILES ${SRC})
 source_group(libs/HAL        FILES ${LIBS_HAL})
+source_group(Display         FILES ${DISPLAY})
+source_group(Display/Font    FILES ${DISPLAY_FONT})
 source_group(Hardware        FILES ${HARDWARE})
 source_group(Hardware/CMSIS  FILES ${HARDWARE_CMSIS})
 source_group(Hardware/HAL    FILES ${HARDWARE_HAL})
 source_group(Modules/LED     FILES ${MODULES_LED})
 source_group(Modules/PAN3060 FILES ${MODULES_PAN3060})
+source_group(Modules/ST7735  FILES ${MODULES_ST7735})
 source_group(Utils           FILES ${UTILS})
 
 add_library(
     ${PROJECT_NAME}
     ${LIBS_HAL}
     ${SRC}
+    ${DISPLAY}
+    ${DISPLAY_FONT}
     ${HARDWARE}
     ${HARDWARE_CMSIS}
     ${HARDWARE_HAL}
     ${MODULES_LED}
     ${MODULES_PAN3060}
+    ${MODUELS_ST7735}
     ${UTILS}
 )

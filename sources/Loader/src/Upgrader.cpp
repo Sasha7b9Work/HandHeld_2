@@ -4,6 +4,7 @@
 #include "Modules/LED/LED.h"
 #include "Hardware/Timer.h"
 #include "Modules/PAN3060/PAN3060.h"
+#include "Display/Display7735.h"
 
 
 namespace Upgrader
@@ -18,10 +19,14 @@ void Upgrader::Run()
 
     LED::Init();
 
+    Display::Init();
+
     TimeMeterMS meter;
 
     while (meter.ElapsedTime() < 3000)
     {
+        Display::Update();
+
         PAN3060::Update();
 
         if (PAN3060::InProcessUpgrade())
@@ -35,6 +40,8 @@ void Upgrader::Run()
     {
         while (PAN3060::InProcessUpgrade())
         {
+            Display::Update();
+
             PAN3060::Update();
         }
     }
