@@ -105,7 +105,7 @@ union Struct16
 
 union Struct32
 {
-    Struct32(uint8 bytes[4])
+    Struct32(const uint8 bytes[4])
     {
         std::memcpy(u8, bytes, 4);
     }

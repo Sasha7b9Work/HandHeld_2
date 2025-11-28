@@ -40,9 +40,6 @@ namespace PAN3060
     // Эту функцию вызываем, когда контрольная сумма в eeprom не совпала
     static void FullReset();
 
-    static void ReceiveChainPacket(uint8 buffer[256]);
-    static void ReceiveFinishPacket(uint8 buffer[256]);
-
     // Cтолько чайнов принято
     static int ReceivedChains();
 
@@ -61,7 +58,16 @@ namespace PAN3060
     // Проверить на завершение - всё принято и всё соотвествует
     static void CheckForCompletion();
 
-    static bool PacketIsValid(uint8 buffer[256], int len);
+    struct Packet
+    {
+        uint8 buffer[200];
+        uint8 length;
+
+        bool IsValid() const;
+
+        void ReceiveChain();
+        void ReceiveFinish();
+    };
 }
 
 
@@ -148,25 +154,25 @@ void PAN3060::Update()
 
         if (irq & REG_IRQ_RX_DONE)
         {
-            uint8 buffer[256];
+            Packet packet;
 
-            uint8 len = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
+            packet.length = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
 
-            rf_read_fifo(REG_FIFO_ACC_ADDR, buffer, len);
+            rf_read_fifo(REG_FIFO_ACC_ADDR, packet.buffer, packet.length);
 
             rf_clr_irq();
 
-            if (len == 2 + 128 + 4)            // Принимаем 128 байт прошивки
+            if (packet.length == 2 + 128 + 4)            // Принимаем 128 байт прошивки
             {
-                ReceiveChainPacket(buffer);
+                packet.ReceiveChain();
 
                 rf_init();
                 rf_set_default_para();
                 rf_enter_continous_rx();
             }
-            else if (len == 2 + 4 + 4)         // Принимаем завершающий пакет
+            else if (packet.length == 2 + 4 + 4)         // Принимаем завершающий пакет
             {
-                ReceiveFinishPacket(buffer);
+                packet.ReceiveFinish();
 
                 rf_init();
                 rf_set_default_para();
@@ -177,11 +183,11 @@ void PAN3060::Update()
 }
 
 
-bool PAN3060::PacketIsValid(uint8 buffer[256], int len)
+bool PAN3060::Packet::IsValid() const
 {
-    Struct32 crc_recv(buffer + len - 4);
+    Struct32 crc_recv(buffer + length - 4);
 
-    uint crc_calc = SU::CalculateCRC32(buffer, len - 4);
+    uint crc_calc = SU::CalculateCRC32(buffer, length - 4);
 
     if (crc_recv.u32 == crc_calc)
     {
@@ -192,9 +198,9 @@ bool PAN3060::PacketIsValid(uint8 buffer[256], int len)
 }
 
 
-void PAN3060::ReceiveChainPacket(uint8 buffer[256])
+void PAN3060::Packet::ReceiveChain()
 {
-    if (!PacketIsValid(buffer, 2 + 128 + 4))
+    if (!IsValid())
     {
         chains_is_fail++;
         return;
@@ -272,9 +278,9 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
 }
 
 
-void PAN3060::ReceiveFinishPacket(uint8 buffer[256])
+void PAN3060::Packet::ReceiveFinish()
 {
-    if (!PacketIsValid(buffer, 2 + 4 + 4))
+    if (!IsValid())
     {
         return;
     }
