@@ -57,13 +57,14 @@ namespace PAN3060
         uint8 buffer[200];
         uint8 length;
         uint16 number_chain_full;   // —квозной номер чайна
+        uint8 number_chain_in_page; // Ќомер чайна в странице, которой он принадлежит
         uint8 number_page;          // Ётой странице принадлежит чайн. Ќумераци€ с 0
 
         bool IsValid() const;
 
         void ReceiveChain();
         void ReceiveFinish();
-        uint8 GetNumberPage() const;  // –ассчитывает номер страницы, которой принадлежит чайн
+        uint8 CalcualteNumberPage() const;  // –ассчитывает номер страницы, которой принадлежит чайн
 
         // —тирает страницу в EEPROM, содержащую данный пакет
         void ErasePageEEPROM() const;
@@ -221,7 +222,7 @@ void PAN3060::Packet::ReceiveChain()
 {
     number_chain_full = Struct16(buffer).u16;
 
-    number_page = GetNumberPage();
+    number_page = CalcualteNumberPage();
 
     if (prev_page != number_page)
     {
@@ -317,7 +318,7 @@ void PAN3060::CheckForCompletion()
 }
 
 
-uint8 PAN3060::Packet::GetNumberPage() const
+uint8 PAN3060::Packet::CalcualteNumberPage() const
 {
     return (uint8)(number_chain_full / 8);
 }
