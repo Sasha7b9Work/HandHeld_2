@@ -3,26 +3,44 @@
 #include "Upgrader.h"
 #include "Modules/LED/LED.h"
 #include "Hardware/Timer.h"
+#include "Modules/PAN3060/PAN3060.h"
 
 
 namespace Upgrader
 {
     static void NotifyBeginUpgrade();
-
-    static bool ReceiveFirmwareFromPAN3060();
 }
 
 
 void Upgrader::Run()
 {
-    while (true)
-    {
-        NotifyBeginUpgrade();
+    PAN3060::Init();
 
-        if (ReceiveFirmwareFromPAN3060())
+    LED::Init();
+
+    TimeMeterMS meter;
+
+    while (meter.ElapsedTime() < 3000)
+    {
+        PAN3060::Update();
+
+        if (PAN3060::InProcessUpgrade())
         {
+            NotifyBeginUpgrade();
             break;
         }
+    }
+
+    if (PAN3060::InProcessUpgrade())
+    {
+        while (PAN3060::InProcessUpgrade())
+        {
+            PAN3060::Update();
+        }
+    }
+    else
+    {
+
     }
 }
 
@@ -42,10 +60,4 @@ void Upgrader::NotifyBeginUpgrade()
     Timer::Delay(500);
 
     LED::Disable();
-}
-
-
-bool Upgrader::ReceiveFirmwareFromPAN3060()
-{
-    return true;
 }

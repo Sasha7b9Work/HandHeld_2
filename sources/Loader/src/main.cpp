@@ -1,10 +1,8 @@
 // (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
-#include "Modules/PAN3060/PAN3060.h"
-#include "Modules/LED/LED.h"
-#include "Hardware/Keyboard.h"
 #include "Upgrader.h"
+#include <gd32e23x.h>
 
 
 #ifndef WIN32
@@ -21,12 +19,6 @@ int main()
 {
     HAL::Init();
 
-    PAN3060::Init();
-
-    LED::Init();
-
-    Keyboard::Init();
-
     Upgrader::Run();
 
     JumpToMainApplication();
@@ -41,7 +33,7 @@ void JumpToMainApplication()
 
     typedef void (*pFunction)(void);
     pFunction jump_to_app;
-    uint32_t jump_address;
+    uint jump_address;
 
     __disable_irq();
 

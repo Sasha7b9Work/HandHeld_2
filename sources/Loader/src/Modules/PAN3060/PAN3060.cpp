@@ -11,17 +11,9 @@
 
 namespace PAN3060
 {
-    /*
-    *   IRQ  - PA8
-    *   NSS  - PB12     SPI1_NSS
-    *   SCK  - PB13     SPI1_SCK    AF_0
-    *   MISO - PB14     SIP1_MISO   AF_0
-    *   MOSI - PB15     SPI1_MOSI   AF_0
-    */
-
-    static uint time_enable = 0;        // Время, когда начались клоки
-
     static bool need_rx = false;
+
+    static bool in_process_upgrade = false;
 
     static void InitIRQ();
 
@@ -65,27 +57,6 @@ void PAN3060::InitSPI()
 
     pinSPI1_MOSI.ToLow();
     pinSPI1_CLK.ToLow();
-
-//    //                                                                   SCK           MISO          MOSI
-//    gpio_mode_set          (GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE,     GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
-//    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
-//    gpio_af_set            (GPIOB, GPIO_AF_0,                        GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
-//
-//    spi_parameter_struct spi_init_struct;
-//
-//    spi_i2s_deinit(SPI_PAN3060);
-//    spi_struct_para_init(&spi_init_struct);
-//
-//    spi_init_struct.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
-//    spi_init_struct.device_mode = SPI_MASTER;
-//    spi_init_struct.frame_size = SPI_FRAMESIZE_8BIT;
-//    spi_init_struct.clock_polarity_phase = SPI_CK_PL_LOW_PH_1EDGE;
-//    spi_init_struct.nss = SPI_NSS_SOFT;
-//    spi_init_struct.prescale = SPI_PSC_8;
-//    spi_init_struct.endian = SPI_ENDIAN_MSB;
-//    spi_init(SPI_PAN3060, &spi_init_struct);
-//
-//    spi_enable(SPI_PAN3060);
 }
 
 
@@ -140,30 +111,13 @@ void PAN3060::Update()
 }
 
 
-void PAN3060::PrepareToSleep()
-{
-#ifdef WIN32
-#else
-    EXTI_PD = EXTI_8;
-    EXTI_INTEN |= EXTI_8;
-#endif
-}
-
-
 void PAN3060::CallbackOnIRQ()
 {
     need_rx = true;
 }
 
 
-bool PAN3060::IsEnabled()
+bool PAN3060::InProcessUpgrade()
 {
-    bool result = TIME_MS - time_enable < 700;      // \todo здесь должно быть 610
-
-    if (!result)
-    {
-        PrepareToSleep();
-    }
-
-    return result;
+    return in_process_upgrade;
 }

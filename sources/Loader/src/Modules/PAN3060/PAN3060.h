@@ -8,10 +8,8 @@ namespace PAN3060
 
     void Update();
 
-    // Идут ли клоки
-    bool IsEnabled();
-
-    void PrepareToSleep();
-
     void CallbackOnIRQ();
+
+    // Идёт процесс обновления
+    bool InProcessUpgrade();
 }

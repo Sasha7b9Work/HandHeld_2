@@ -6,9 +6,14 @@ struct ColorLED
 {
     enum E
     {
+        Black,
         Red,
         Green,
+        _3,
         Blue,
+        _5,
+        _6,
+        White,
         Count
     };
 };
