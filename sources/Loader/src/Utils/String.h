@@ -6,4 +6,6 @@
 namespace SU
 {
     uint CalculateCRC32(const void *buffer, int size);
+
+    char *IntToASCII(int, char[32]);
 }

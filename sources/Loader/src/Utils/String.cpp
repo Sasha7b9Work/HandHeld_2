@@ -8,6 +8,14 @@ namespace SU
 }
 
 
+char *SU::IntToASCII(int value, char buffer[32])
+{
+    buffer[31] = '\0';
+
+    return buffer;
+}
+
+
 uint SU::CalculateCRC32(const void *buffer, int size)
 {
     return ProcessCRC((const uint8 *)buffer, size, 0);

@@ -361,16 +361,30 @@ bool PAN3060::InProcessUpgrade()
 
 void PAN3060::FuncDraw()
 {
-    char buffer[128];
+    char buffer[32];
 
-    Text<>("Upgrade").Write(10, 10, Color::WHITE);
+    int x1 = 5;
+    int x2 = 50;
+    int y = 5;
+    int dy = 10;
 
-    std::sprintf(buffer, "Received : %d", ReceivedChains());
-    Text<>(buffer).Write(10, 20);
+    Text<>("Upgrade").Write(x1, y, Color::WHITE);
 
-    std::sprintf(buffer, "Good : %d", chains_is_ok);
-    Text<>(buffer).Write(10, 30);
+    y += dy;
 
-    std::sprintf(buffer, "Bad : %d", chains_is_fail);
-    Text<>(buffer).Write(10, 40);
+    Text<>("Received").Write(x1, y);
+
+    Text<>(SU::IntToASCII(ReceivedChains(), buffer)).Write(x2, y);
+
+    y += dy;
+
+    Text<>("Good").Write(x1, y);
+
+    Text<>(SU::IntToASCII(chains_is_ok, buffer)).Write(x2, y);
+
+    y += dy;
+
+    Text<>("Bad").Write(x1, y);
+
+    Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(x2, y);
 }
