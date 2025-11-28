@@ -821,11 +821,6 @@
           <GroupName>Utils</GroupName>
           <Files>
             <File>
-              <FileName>Buffer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Utils\Buffer.h</FilePath>
-            </File>
-            <File>
               <FileName>String.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Utils\String.cpp</FilePath>
@@ -1653,11 +1648,6 @@
         <Group>
           <GroupName>Utils</GroupName>
           <Files>
-            <File>
-              <FileName>Buffer.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Utils\Buffer.h</FilePath>
-            </File>
             <File>
               <FileName>String.cpp</FileName>
               <FileType>8</FileType>
