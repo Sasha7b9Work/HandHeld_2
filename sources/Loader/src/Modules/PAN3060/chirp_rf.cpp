@@ -407,16 +407,33 @@ void rf_set_default_para(void)
 
     //!!rf_set_refresh                //hz nado ili net
 
-    //set bandwidth 125kHz and code rate 4/5
-    rf_write_spec_page_reg(PAGE3_SEL, 0x0D, 0x72);
+//    // Это настройки для рабочего режима
+//    {
+//        //set bandwidth 125kHz and code rate 4/5
+//        rf_write_spec_page_reg(PAGE3_SEL, 0x0D, 0x72);
+//
+//        //set spread factor 6 (64 chips/symb) and CRC on
+//        rf_write_spec_page_reg(PAGE3_SEL, 0x0E, 0x68);
+//
+//        //clear bit1 at 0x3F register for 500k bandwidth
+//        _data = rf_read_spec_page_reg(PAGE2_SEL, 0x3F);
+//        _data |= 0x02;
+//        rf_write_spec_page_reg(PAGE2_SEL, 0x3F, _data);
+//    }
 
-    //set spread factor 6 (64 chips/symb) and CRC on
-    rf_write_spec_page_reg(PAGE3_SEL, 0x0E, 0x68);
+    // Это настройки для прошивки прошивки
+    {
+        //set bandwidth 500kHz and code rate 4/5
+        rf_write_spec_page_reg(PAGE3_SEL, 0x0D, 0x92);
 
-    //clear bit1 at 0x3F register for 500k bandwidth
-    _data = rf_read_spec_page_reg(PAGE2_SEL, 0x3F);
-    _data |= 0x02;
-    rf_write_spec_page_reg(PAGE2_SEL, 0x3F, _data);
+        //set spread factor 5 (32 chips/symb) and CRC on
+        rf_write_spec_page_reg(PAGE3_SEL, 0x0E, 0x58);
+
+        //clear bit1 at 0x3F register for 500k bandwidth
+        _data = rf_read_spec_page_reg(PAGE2_SEL, 0x3F);
+        _data &= 0xFD;
+        rf_write_spec_page_reg(PAGE2_SEL, 0x3F, _data);
+    }
 
     //set power 14 (ramp 0x0B, trim 0x02, ldo 0x01)
     //  power ramp
