@@ -54,6 +54,22 @@ namespace PAN3060
         bool IsFilled() const;
 
         void Clear();
+
+        int FilledPages() const
+        {
+            int result = 0;
+
+            for (uint i = 0; i < NUM_PAGES; i++)
+            {
+                if (pages[i])
+                {
+                    result++;
+                }
+            }
+
+            return result;
+        }
+
     };
 
     // Описывает одну страницу
@@ -212,7 +228,38 @@ bool PAN3060::Packet::IsValid() const
 
 void PAN3060::Packet::ReceiveChain()
 {
+    static uint16 prev_number_chain_full = 0;
     uint16 number_chain_full = Struct16(buffer).u16;
+    
+    if(number_chain_full == 271 ||
+        number_chain_full == 119 ||
+        number_chain_full == 7)
+    {
+        number_chain_full = number_chain_full;
+    }
+
+    if(number_chain_full == 270 ||
+    number_chain_full == 118 ||
+    number_chain_full == 6)
+    {
+        number_chain_full = number_chain_full;
+    }
+
+    if(number_chain_full == 269 ||
+        number_chain_full == 117 ||
+        number_chain_full == 5)
+    {
+        number_chain_full = number_chain_full;
+    }
+    
+    if(number_chain_full == 268 ||
+        number_chain_full == 116 ||
+        number_chain_full == 4)
+    {
+        number_chain_full = number_chain_full;
+    }
+    
+    prev_number_chain_full = number_chain_full;
 
     number_page = CalculateNumberPage(number_chain_full);
 
@@ -231,6 +278,15 @@ void PAN3060::Packet::ReceiveChain()
 
     std::memcpy(page.chains[number_chain_in_page].buffer, buffer + 2, SIZE_CHAIN);
     page.received[number_chain_in_page] = true;
+
+    int filled = firmware.FilledPages();
+
+    if (number_chain_in_page == CHAINS_IN_PAGE - 2)
+    {
+        filled = filled;
+    }
+
+    filled = filled;
 
     if (number_chain_in_page == CHAINS_IN_PAGE - 1)
     {
@@ -271,7 +327,6 @@ void PAN3060::Firmware::CheckForComplete()
     }
     else
     {
-        page.number = -1;
         Clear();
         page.Clear();
     }
@@ -310,7 +365,7 @@ void PAN3060::Firmware::Clear()
 
 uint8 PAN3060::Packet::CalculateNumberPage(uint16 number_chain_full) const
 {
-    return (uint8)(number_chain_full / 8);
+    return (uint8)(number_chain_full / CHAINS_IN_PAGE);
 }
 
 
@@ -356,9 +411,11 @@ void PAN3060::FuncDraw()
 
     y += dy;
 
-    Text<>("Received").Write(x1, y);
+    Text<>("Filled").Write(x1, y);
 
     char buffer[32];
+
+    Text<>(SU::IntToASCII(firmware.FilledPages(), buffer)).Write(x2, y);
 
     y += dy;
 
@@ -376,6 +433,8 @@ void PAN3060::FuncDraw()
 
 void PAN3060::Page::Clear()
 {
+    number = -1;
+
     for (int i = 0; i < CHAINS_IN_PAGE; i++)
     {
         received[i] = false;
