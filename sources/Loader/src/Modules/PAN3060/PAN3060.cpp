@@ -164,7 +164,15 @@ void PAN3060::Update()
 
             if (packet.length == 2 + 128 + 4)            // Принимаем 128 байт прошивки
             {
-                packet.ReceiveChain();
+                if (packet.IsValid())
+                {
+                    chains_is_ok++;
+                    packet.ReceiveChain();
+                }
+                else
+                {
+                    chains_is_fail++;
+                }
 
                 rf_init();
                 rf_set_default_para();
@@ -172,7 +180,15 @@ void PAN3060::Update()
             }
             else if (packet.length == 2 + 4 + 4)         // Принимаем завершающий пакет
             {
-                packet.ReceiveFinish();
+                if (packet.IsValid())
+                {
+                    chains_is_ok++;
+                    packet.ReceiveFinish();
+                }
+                else
+                {
+                    chains_is_fail++;
+                }
 
                 rf_init();
                 rf_set_default_para();
@@ -200,14 +216,6 @@ bool PAN3060::Packet::IsValid() const
 
 void PAN3060::Packet::ReceiveChain()
 {
-    if (!IsValid())
-    {
-        chains_is_fail++;
-        return;
-    }
-
-    chains_is_ok++;
-
     uint16 number_chain = Struct16(buffer).u16;
 
     if (prev_page != NumberPage(number_chain))
@@ -280,11 +288,6 @@ void PAN3060::Packet::ReceiveChain()
 
 void PAN3060::Packet::ReceiveFinish()
 {
-    if (!IsValid())
-    {
-        return;
-    }
-
     main_crc = Struct32(buffer + 2).u32;
 
     CheckForCompletion();
