@@ -114,7 +114,7 @@ void Display::Update()
 
     if (!PAN3060::IsEnabled() && Source::GetCountReceived() == 0 && !PCF8563::IsAlarmed())
     {
-        ModeClock::Set(ModeClock::Low);
+//        ModeClock::Set(ModeClock::Low);
     }
 }
 
@@ -200,7 +200,7 @@ void Display::EndScene(int num_parts)
             }
         }
 
-        ModeClock::Set(ModeClock::Hi);
+//        ModeClock::Set(ModeClock::Hi);
 
         ST7735::Enable();
 

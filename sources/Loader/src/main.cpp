@@ -4,6 +4,7 @@
 #include "Modules/PAN3060/PAN3060.h"
 #include "Modules/LED/LED.h"
 #include "Hardware/Keyboard.h"
+#include "Upgrader.h"
 
 
 #ifndef WIN32
@@ -14,8 +15,6 @@
 
 
 static void JumpToMainApplication();
-
-bool NeedUpgrade();
 
 
 int main()
@@ -28,21 +27,9 @@ int main()
 
     Keyboard::Init();
 
-    while (1)
-    {
-//    if (NeedUpgrade())
-//    {
-//        Upgrader::Run();
-//    }
+    Upgrader::Run();
 
-        JumpToMainApplication();
-    }
-}
-
-
-bool NeedUpgrade()
-{
-    return Keyboard::NeedUpgrade();
+    JumpToMainApplication();
 }
 
 

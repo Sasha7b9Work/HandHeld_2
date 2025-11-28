@@ -15,7 +15,7 @@ struct ModeClock
         Count
     };
 
-    static void Set(E);
+    static void _Set(E);
 
     static void LeaveDeepSleep();
 

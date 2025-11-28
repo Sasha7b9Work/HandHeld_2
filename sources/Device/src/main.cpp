@@ -44,7 +44,7 @@ int main()
 
     Vibrato::Init();
 
-    ModeClock::Set(ModeClock::Hi);
+//    ModeClock::Set(ModeClock::Hi);
 
     PAN3060::Init();
 
@@ -84,7 +84,7 @@ void Update()
 
     if (!recv_enabled && keyboard_more_time && num_sources == 0 && !is_alarmed)
     {
-        ModeClock::Set(ModeClock::DeepSleep);
+//        ModeClock::Set(ModeClock::DeepSleep);
     }
 
     ModeClock::LeaveDeepSleep();

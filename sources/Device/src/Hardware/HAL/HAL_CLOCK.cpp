@@ -23,10 +23,8 @@ namespace HAL_CLOCK
 }
 
 
-void ModeClock::Set(E v)
+void ModeClock::_Set(E v)
 {
-    return;
-
     if (v == ModeClock::DeepSleep)
     {
         if (!ModeClock::IsDeepSleep())
@@ -65,7 +63,7 @@ void ModeClock::LeaveDeepSleep()
     {
         HAL_CLOCK::in_sleep_mode = false;
 
-        ModeClock::Set(Source::ExistReceived() ? ModeClock::Hi : ModeClock::Low);
+//        ModeClock::Set(Source::ExistReceived() ? ModeClock::Hi : ModeClock::Low);
     }
 }
 
