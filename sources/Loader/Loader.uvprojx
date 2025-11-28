@@ -10,7 +10,7 @@
       <TargetName>Debug</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>6180000::V6.18::.\ARMCLANG_537_6_18</pArmCC>
+      <pArmCC>6180000::V6.18::.\ARMCLANG537</pArmCC>
       <pCCUsed>6180000::V6.18::.\ARMCLANG537</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
@@ -278,7 +278,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x10000</Size>
+                <Size>0x2000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -773,7 +773,7 @@
       <TargetName>Release</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>6180000::V6.18::.\ARMCLANG_537_6_18</pArmCC>
+      <pArmCC>6180000::V6.18::.\ARMCLANG537</pArmCC>
       <pCCUsed>6180000::V6.18::.\ARMCLANG537</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
@@ -1041,7 +1041,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x10000</Size>
+                <Size>0x2000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
