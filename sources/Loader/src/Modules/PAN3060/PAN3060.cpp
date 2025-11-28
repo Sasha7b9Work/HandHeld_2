@@ -46,8 +46,6 @@ namespace PAN3060
     // ѕреобразует сквозной номер чайна в номер чайна на странице
     static int NumberChainInPage(uint full_number_chain);
 
-    static void ErasePage(int num_page);
-
     static void WritePage(int num_page, uint8 buffer[1024]);
 
     // ¬се ли чайны прин€ты
@@ -68,6 +66,7 @@ namespace PAN3060
         void ReceiveChain();
         void ReceiveFinish();
         uint8 GetNumberPage() const;  // –ассчитывает номер страницы, которой принадлежит чайн
+        void ErasePage();
     };
 }
 
@@ -256,7 +255,7 @@ void PAN3060::Packet::ReceiveChain()
 
             if (need_erase_page)
             {
-                ErasePage(number_page);
+                ErasePage();
             }
         }
 
@@ -321,9 +320,9 @@ uint8 PAN3060::Packet::GetNumberPage() const
 }
 
 
-void PAN3060::ErasePage(int num_page)
+void PAN3060::Packet::ErasePage()
 {
-    HAL_ROM::ErasePage(begin_firmware + (uint)(num_page * 1024));
+    HAL_ROM::ErasePage(begin_firmware + (uint)(number_page * 1024));
 }
 
 
