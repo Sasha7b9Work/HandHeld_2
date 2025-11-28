@@ -11,5 +11,5 @@ namespace HAL
 namespace HAL_ROM
 {
     void ErasePage(uint address);
-    void WritePage(uint addres, uint8[1024]);
+    void WritePage(uint addres, const uint8[1024]);
 }

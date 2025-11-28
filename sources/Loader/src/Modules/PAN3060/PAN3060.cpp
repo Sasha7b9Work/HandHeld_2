@@ -21,42 +21,17 @@ namespace PAN3060
 
     static const uint NUM_PAGES = 54;
     static const uint BEGIN_FIRMWARE = 0x8002000;
-    static const uint SIZE_FIRMWARE = NUM_PAGES * 1024;
     static const uint SIZE_CHAIN = 128;
     static const int CHAINS_IN_PAGE = 8;
 
-    // Здесь хранятся контрольные суммы для каждого пакета
-    static const uint ALL_CHAINS = SIZE_FIRMWARE / SIZE_CHAIN;
-    static uint crc[ALL_CHAINS];                                    // Здесь будут храниться контрольные суммы для всех чайнов
-    static uint crc_page[CHAINS_IN_PAGE];                           // А здесь для чайнов текущей принимаемой страницы
-
-    static uint8 page[1024];                                        // Здесь будет принятая страница, котору мы целиком запишем в память
-
     static int chains_is_ok = 0;
     static int chains_is_fail = 0;
-    static uint main_crc = 0;
-    static int prev_page = -1;                                      // На этой странице находился предыдущий принятый чайн
-
-    static void Reset();
-
-    // Эту функцию вызываем, когда контрольная сумма в eeprom не совпала
-    static void FullReset();
-
-    // Cтолько чайнов принято
-    static int ReceivedChains();
-
-    // Все ли чайны приняты
-    static bool AllChaninsReceived();
-
-    // Проверить на завершение - всё принято и всё соотвествует
-    static void CheckForCompletion();
 
     // Структура используется для приёма пакетов
     struct Packet
     {
         uint8 buffer[200];
         uint8 length;
-        uint16 number_chain_full;   // Сквозной номер чайна
         uint8 number_chain_in_page; // Номер чайна в странице, которой он принадлежит
         uint8 number_page;          // Этой странице принадлежит чайн. Нумерация с 0
 
@@ -64,22 +39,21 @@ namespace PAN3060
 
         void ReceiveChain();
         void ReceiveFinish();
-        uint8 CalcualteNumberPage() const;          // Рассчитывает номер страницы, которой принадлежит чайн
-        uint8 CalculateChainInPage() const;         // Преобразует сквозной номер чайна в номер чайна на странице
-
-
-        // Стирает страницу в EEPROM, содержащую данный пакет
-        void ErasePageEEPROM() const;
-
-        // Записывает page[1024] в EEPROM
-        void WritePageEEPROM() const;
+        uint8 CalculateNumberPage(uint16 number_chain_full) const;          // Рассчитывает номер страницы, которой принадлежит чайн
+        uint8 CalculateChainInPage(uint16 number_chain_full) const;         // Преобразует сквозной номер чайна в номер чайна на странице
     };
 
     // Эта структура описывает все данные прошивки
     struct Firmware
     {
         bool pages[NUM_PAGES];      // true означает, что страница принята и сохранена в EEPROM
-        uint crc;
+        uint crc = 0;
+
+        void CheckForComplete();
+
+        bool IsFilled() const;
+
+        void Clear();
     };
 
     // Описывает одну страницу
@@ -88,12 +62,24 @@ namespace PAN3060
         struct Chain
         {
             uint8 buffer[SIZE_CHAIN];
-            uint  crc = 0;
         };
 
         Chain chains[CHAINS_IN_PAGE];
 
-        int num_page = -1;
+        bool received[CHAINS_IN_PAGE];
+
+        int number = -1;
+
+        void Clear();
+
+        // true, если страница полностью заполнена
+        bool IsFilled() const;
+
+        // Стирает страницу в EEPROM, содержащую данный пакет
+        void ErasePageEEPROM() const;
+
+        // Записывает page[1024] в EEPROM
+        void WritePageEEPROM() const;
     };
 
     // Принимаемая прошивка
@@ -119,32 +105,9 @@ void PAN3060::Init()
 
     rf_enter_continous_rx();
 
-    FullReset();
-}
+    page.Clear();
 
-
-void PAN3060::FullReset()
-{
-    // Эту процедуру делаем только один раз. Если какой-то пакет будет принят с ошибкой, то в последующих циклах обновления его просто
-    // добавим сюда
-    for (uint i = 0; i < ALL_CHAINS; i++)
-    {
-        crc[i] = 0;
-    }
-
-    main_crc = 0;
-    chains_is_ok = 0;
-    chains_is_fail = 0;
-    prev_page = -1;
-
-    Reset();
-}
-
-
-void PAN3060::Reset()
-{
-    std::memset(page, 0xFF, 1024);
-    std::memset(crc_page, 0x00, CHAINS_IN_PAGE * 4);
+    firmware.Clear();
 }
 
 
@@ -249,127 +212,82 @@ bool PAN3060::Packet::IsValid() const
 
 void PAN3060::Packet::ReceiveChain()
 {
-    number_chain_full = Struct16(buffer).u16;
+    uint16 number_chain_full = Struct16(buffer).u16;
 
-    number_page = CalcualteNumberPage();
+    number_page = CalculateNumberPage(number_chain_full);
 
-    if (prev_page != number_page)
+    number_chain_in_page = CalculateChainInPage(number_chain_full);
+
+    if (number_chain_in_page == 0)          // Первый чайн в странице, готовимся к приёму новой страницы
     {
-        Reset();
+        page.Clear();
+        page.number = number_page;
     }
 
-    number_chain_in_page = CalculateChainInPage();
-
-    if (crc_page[number_chain_in_page] == 0)
+    if (page.number != number_page)
     {
-        crc_page[number_chain_in_page] = Struct32(buffer + 2 + 128).u32;
-
-        std::memcpy(page + (uint)number_chain_in_page * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
+        return;
     }
 
-    // Если чайн последний в странице: 7, 15, 23 и т.д., то нужно сохранить страницу в ПЗУ.
-    // Передатчик делает для этого паузу
-    if (((number_chain_full + 1) % CHAINS_IN_PAGE) == 0)
+    std::memcpy(page.chains[number_chain_in_page].buffer, buffer + 2, SIZE_CHAIN);
+    page.received[number_chain_in_page] = true;
+
+    if (number_chain_in_page == CHAINS_IN_PAGE - 1)
     {
-        uint *crc_full = crc + number_page * CHAINS_IN_PAGE;
-        uint *crc_part = crc_page;
+        if (!firmware.pages[number_page])               // Если данная страница ещё не записана в EEPROM
+        {
+            firmware.pages[number_page] = true;
 
-        {                                                   // Стираем страницу, если запись в неё ещё ни разу не производилась
-            bool need_erase_page = true;
+            page.ErasePageEEPROM();
 
-            for (int i = 0; i < CHAINS_IN_PAGE; i++)
-            {
-                if (*(crc_full + i))                        // Если уже есть контрольная сумма, то эту страницу мы уже записывали в ПЗУ
-                {
-                    need_erase_page = false;
-                    break;
-                }
-            }
+            page.WritePageEEPROM();
 
-            if (need_erase_page)
-            {
-                ErasePageEEPROM();
-            }
+            firmware.CheckForComplete();
         }
-
-        {                                                   // Сохраняем страницу в ПЗУ, если нужно
-            bool need_write_to_eeprom = false;
-
-            for (int i = 0; i < CHAINS_IN_PAGE; i++)
-            {
-                if (*(crc_part + i))                        // Если принят этот чайн
-                {
-                    if (*(crc_full + i) == 0)               // И ранее он не принят
-                    {
-                        need_write_to_eeprom = true;
-
-                        *(crc_full + i) = *(crc_part + i);
-                    }
-                }
-            }
-
-            if (need_write_to_eeprom)
-            {
-                WritePageEEPROM();
-            }
-        }
-
-        CheckForCompletion();
     }
-
-    prev_page = number_page;
 }
 
 
 void PAN3060::Packet::ReceiveFinish()
 {
-    main_crc = Struct32(buffer + 2).u32;
+    firmware.crc = Struct32(buffer + 2).u32;
 
-    CheckForCompletion();
+    firmware.CheckForComplete();
 }
 
 
-void PAN3060::CheckForCompletion()
+void PAN3060::Firmware::CheckForComplete()
 {
-    if (main_crc && AllChaninsReceived())
+    if (!IsFilled())
     {
-        uint crc_firmware = SU::CalculateCRC32((const void *)BEGIN_FIRMWARE, SIZE_FIRMWARE);
+        return;
+    }
 
-        if (crc_firmware == main_crc)
-        {
-            in_process_upgrade = false;
-        }
-        else
-        {
-            FullReset();
-        }
+    uint crc_real = SU::CalculateCRC32((const void *)BEGIN_FIRMWARE, NUM_PAGES * 1024);
+
+    if (crc_real == crc)
+    {
+        in_process_upgrade = false;
+    }
+    else
+    {
+        page.number = -1;
+        Clear();
+        page.Clear();
     }
 }
 
 
-uint8 PAN3060::Packet::CalcualteNumberPage() const
+bool PAN3060::Firmware::IsFilled() const
 {
-    return (uint8)(number_chain_full / 8);
-}
-
-
-void PAN3060::Packet::ErasePageEEPROM() const
-{
-    HAL_ROM::ErasePage(BEGIN_FIRMWARE + (uint)(number_page * 1024));
-}
-
-
-void PAN3060::Packet::WritePageEEPROM() const
-{
-    HAL_ROM::WritePage(BEGIN_FIRMWARE + (uint)(number_page * 1024), page);
-}
-
-
-bool PAN3060::AllChaninsReceived()
-{
-    for (uint i = 0; i < ALL_CHAINS; i++)
+    if (crc == 0)
     {
-        if (crc[i] == 0)
+        return false;
+    }
+
+    for (uint i = 0; i < NUM_PAGES; i++)
+    {
+        if (!pages[i])
         {
             return false;
         }
@@ -379,25 +297,38 @@ bool PAN3060::AllChaninsReceived()
 }
 
 
-uint8 PAN3060::Packet::CalculateChainInPage() const
+void PAN3060::Firmware::Clear()
 {
-    return (uint8)(number_chain_full % CHAINS_IN_PAGE);
+    crc = 0;
+
+    for (uint i = 0; i < NUM_PAGES; i++)
+    {
+        pages[i] = false;
+    }
 }
 
 
-int PAN3060::ReceivedChains()
+uint8 PAN3060::Packet::CalculateNumberPage(uint16 number_chain_full) const
 {
-    int counter = 0;
+    return (uint8)(number_chain_full / 8);
+}
 
-    for (uint i = 0; i < ALL_CHAINS; i++)
-    {
-        if (crc[i] != 0)
-        {
-            counter++;
-        }
-    }
 
-    return counter;
+void PAN3060::Page::ErasePageEEPROM() const
+{
+    HAL_ROM::ErasePage(BEGIN_FIRMWARE + (uint)(number * 1024));
+}
+
+
+void PAN3060::Page::WritePageEEPROM() const
+{
+    HAL_ROM::WritePage(BEGIN_FIRMWARE + (uint)(number * 1024), &chains[0].buffer[0]);
+}
+
+
+uint8 PAN3060::Packet::CalculateChainInPage(uint16 number_chain_full) const
+{
+    return (uint8)(number_chain_full % CHAINS_IN_PAGE);
 }
 
 
@@ -417,7 +348,7 @@ void PAN3060::FuncDraw()
 {
     int x1 = 5;
     int x2 = 50;
-    int x3 = 100;
+//    int x3 = 100;
     int y = 5;
     int dy = 10;
 
@@ -428,10 +359,6 @@ void PAN3060::FuncDraw()
     Text<>("Received").Write(x1, y);
 
     char buffer[32];
-
-    Text<>(SU::IntToASCII(ReceivedChains(), buffer)).Write(x2, y);
-
-    Text<>(SU::IntToASCII((int)ALL_CHAINS, buffer)).Write(x3, y);
 
     y += dy;
 
@@ -444,4 +371,27 @@ void PAN3060::FuncDraw()
     Text<>("Bad").Write(x1, y);
 
     Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(x2, y);
+}
+
+
+void PAN3060::Page::Clear()
+{
+    for (int i = 0; i < CHAINS_IN_PAGE; i++)
+    {
+        received[i] = false;
+    }
+}
+
+
+bool PAN3060::Page::IsFilled() const
+{
+    for (int i = 0; i < CHAINS_IN_PAGE; i++)
+    {
+        if (!received[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
 }

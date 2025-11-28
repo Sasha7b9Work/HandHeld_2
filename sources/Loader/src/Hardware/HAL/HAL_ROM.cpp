@@ -121,7 +121,7 @@ void HAL_ROM::ErasePage(uint address_page)
 }
 
 
-void HAL_ROM::WritePage(uint address, uint8 bytes[1024])
+void HAL_ROM::WritePage(uint address, const uint8 bytes[1024])
 {
     Unlock();
 
