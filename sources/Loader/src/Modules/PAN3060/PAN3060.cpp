@@ -210,7 +210,7 @@ void PAN3060::ReceiveChainPacket(uint8 buffer[256])
     {
         crc_page[chain_in_page] = Struct32(buffer + 2 + 128).u32;
 
-        std::memcpy(page + chain_in_page * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
+        std::memcpy(page + (uint)chain_in_page * SIZE_CHAIN, buffer + 2, SIZE_CHAIN);
     }
 
     // Если чайн последний в странице: 7, 15, 23 и т.д., то нужно сохранить страницу в ПЗУ.
@@ -306,13 +306,13 @@ int PAN3060::NumberPage(int full_number_chain)
 
 void PAN3060::ErasePage(int num_page)
 {
-    HAL_ROM::ErasePage(begin_firmware + num_page * 1024);
+    HAL_ROM::ErasePage(begin_firmware + (uint)(num_page * 1024));
 }
 
 
 void PAN3060::WritePage(int num_page, uint8 buffer[1024])
 {
-    HAL_ROM::WritePage(begin_firmware + num_page * 1024, buffer);
+    HAL_ROM::WritePage(begin_firmware + (uint)(num_page * 1024), buffer);
 }
 
 
