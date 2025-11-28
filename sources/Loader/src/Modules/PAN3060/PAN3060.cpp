@@ -46,8 +46,6 @@ namespace PAN3060
     // Преобразует сквозной номер чайна в номер чайна на странице
     static int NumberChainInPage(uint full_number_chain);
 
-    static int NumberPage(int full_number_chain);
-
     static void ErasePage(int num_page);
 
     static void WritePage(int num_page, uint8 buffer[1024]);
@@ -62,11 +60,14 @@ namespace PAN3060
     {
         uint8 buffer[200];
         uint8 length;
+        uint16 number_chain;        // Сквозной номер чайна
+        uint8 number_page;          // Этой странице принадлежит чайн. Нумерация с 0
 
         bool IsValid() const;
 
         void ReceiveChain();
         void ReceiveFinish();
+        uint8 GetNumberPage() const;  // Рассчитывает номер страницы, которой принадлежит чайн
     };
 }
 
@@ -216,9 +217,11 @@ bool PAN3060::Packet::IsValid() const
 
 void PAN3060::Packet::ReceiveChain()
 {
-    uint16 number_chain = Struct16(buffer).u16;
+    number_chain = Struct16(buffer).u16;
 
-    if (prev_page != NumberPage(number_chain))
+    number_page = GetNumberPage();
+
+    if (prev_page != number_page)
     {
         Reset();
     }
@@ -236,7 +239,7 @@ void PAN3060::Packet::ReceiveChain()
     // Передатчик делает для этого паузу
     if (((number_chain + 1) % CHAINS_IN_PAGE) == 0)
     {
-        uint *crc_full = crc + NumberPage(number_chain) * CHAINS_IN_PAGE;
+        uint *crc_full = crc + number_page * CHAINS_IN_PAGE;
         uint *crc_part = crc_page;
 
         {                                                   // Стираем страницу, если запись в неё ещё ни разу не производилась
@@ -253,7 +256,7 @@ void PAN3060::Packet::ReceiveChain()
 
             if (need_erase_page)
             {
-                ErasePage(NumberPage(number_chain));
+                ErasePage(number_page);
             }
         }
 
@@ -275,14 +278,14 @@ void PAN3060::Packet::ReceiveChain()
 
             if (need_write_to_eeprom)
             {
-                WritePage(NumberPage(number_chain), page);
+                WritePage(number_page, page);
             }
         }
 
         CheckForCompletion();
     }
 
-    prev_page = NumberPage(number_chain);
+    prev_page = number_page;
 }
 
 
@@ -312,9 +315,9 @@ void PAN3060::CheckForCompletion()
 }
 
 
-int PAN3060::NumberPage(int full_number_chain)
+uint8 PAN3060::Packet::GetNumberPage() const
 {
-    return full_number_chain / 8;
+    return (uint8)(number_chain / 8);
 }
 
 
