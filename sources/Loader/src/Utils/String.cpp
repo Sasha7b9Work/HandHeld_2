@@ -12,6 +12,25 @@ char *SU::IntToASCII(int value, char buffer[32])
 {
     buffer[31] = '\0';
 
+    char *pointer = buffer + 31;
+
+    while (pointer > buffer)
+    {
+        char digit = (char)(value % 10);
+
+        *pointer-- = (char)(digit | 0x30);
+
+        value /= 10;
+    }
+
+    for (int i = 0; i < 32; i++)
+    {
+        if (buffer[i] != '\0')
+        {
+            std::memmove(buffer, buffer + i, (size_t)(32 - i));
+        }
+    }
+
     return buffer;
 }
 
