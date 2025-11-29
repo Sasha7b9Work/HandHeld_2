@@ -21,10 +21,6 @@ void HAL::Init()
 
     rcu_periph_clock_enable(RCU_TIMER2);        // Для звука
     nvic_irq_enable(TIMER2_IRQn, 0);            // Для звука
-
-//    HAL_ADC::Init();
-
-    HAL_I2C::Init();
 }
 
 
