@@ -6,6 +6,7 @@
 #include "Display/Text.h"
 #include "Hardware/HAL/HAL.h"
 #include "Utils/String.h"
+#include "Hardware/Timer.h"
 #include <gd32e23x.h>
 
 
@@ -388,13 +389,17 @@ bool PAN3060::InProcessUpgrade()
 
 void PAN3060::FuncDraw()
 {
+    static TimeMeterMS meter;
+
     char buffer[32];
 
     Text<>(SU::IntToASCII(firmware.FilledPages(), buffer)).Write(0, 0);
 
-    Text<>(SU::IntToASCII(chains_is_ok, buffer)).Write(40, 0);
+    Text<>(SU::IntToASCII(chains_is_ok, buffer)).Write(30, 0);
 
-    Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(80, 0);
+    Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(60, 0);
+
+    Text<>(SU::IntToASCII(meter.ElapsedTime() / 1000, buffer)).Write(90, 0);
 }
 
 
