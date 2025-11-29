@@ -6,7 +6,6 @@
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
 #include "Utils/StringUtils.h"
-#include "Hardware/Power.h"
 #include "Utils/Math.h"
 #include "Display/Text.h"
 

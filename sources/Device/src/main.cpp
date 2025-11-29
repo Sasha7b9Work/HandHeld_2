@@ -3,7 +3,6 @@
 #include "Hardware/HAL/HAL.h"
 #include "Display/Display7735.h"
 #include "Hardware/Timer.h"
-#include "Hardware/Power.h"
 #include <cstdlib>
 
 

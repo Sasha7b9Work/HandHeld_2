@@ -615,16 +615,6 @@
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\Timer.h</FilePath>
             </File>
-            <File>
-              <FileName>Power.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\Power.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Power.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\Power.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -1422,16 +1412,6 @@
               <FileName>Timer.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\Timer.h</FilePath>
-            </File>
-            <File>
-              <FileName>Power.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\Power.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Power.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\Power.h</FilePath>
             </File>
           </Files>
         </Group>
