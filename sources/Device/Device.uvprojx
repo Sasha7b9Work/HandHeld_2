@@ -685,21 +685,6 @@
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
             </File>
-            <File>
-              <FileName>HAL_ADC.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_ROM.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ROM.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_CLOCK.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_CLOCK.cpp</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -1482,21 +1467,6 @@
               <FileName>systick.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_ADC.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_ROM.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ROM.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_CLOCK.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_CLOCK.cpp</FilePath>
             </File>
           </Files>
         </Group>

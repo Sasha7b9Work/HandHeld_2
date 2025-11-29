@@ -37,15 +37,6 @@ namespace HAL
 }
 
 
-// Уровень батареи
-namespace HAL_ADC
-{
-    void _Init();
-
-    float GetVoltage(bool force);
-}
-
-
 // Для дисплея
 namespace HAL_I2C
 {
@@ -54,27 +45,4 @@ namespace HAL_I2C
     bool Write(uint8 command, uint8 *data, int size);
 
     bool Read(uint8 reg, uint8 *buf, uint16 len);
-}
-
-
-namespace HAL_ROM
-{
-    static const uint ADDRESS_BEGIN = 0x8000000;
-    static const uint SIZE_PAGE = 1024;
-    static const uint NUM_PAGES = 64;
-
-    static const int PAGE_FOR_JOURNAL = 63;
-
-    void Init();
-
-    // Стиреть страницу от 0 до 63
-    void ErasePage(int);
-
-    uint AddressPage(int);
-
-    // address должен быть кратен 4
-    void WriteBuffer(uint address, const void *buffer, int size);
-
-    // address должен быть кратен 4
-    void ReadBuffer(uint address, void *buffer, int size);
 }
