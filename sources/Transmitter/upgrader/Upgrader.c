@@ -54,7 +54,7 @@ static bool in_process_update = false;
 static int chains_transmitted = 0;
 
 static uint32_t time_big = 125;
-static uint32_t time_small = 100;
+static uint32_t time_small = 125;
 
 //----------------------------------------------------------------------------------------------------------------------------------
 
@@ -95,11 +95,16 @@ void upg_init()
 
 // ≈сли true - можно передавать следующий пакет
 static bool need_transmit = true;
+static uint32_t time_tx = 0;
 
 
 void upg_on_tx_irq()
 {
     need_transmit = true;
+
+    time_tx = Timer_ElapsedMS(TIM_TX);
+
+    Timer_Reset(TIM_TX);
 }
 
 
@@ -279,7 +284,7 @@ void upg_func_display(void)
     myLCD_str8x16(IM_NOMALE, 0, 5, "                              ");
     myLCD_str8x16(IM_NOMALE, 0, 6, "                              ");
 
-    myLCD_str8x16(IM_NOMALE, 0, 5, "%u sec      %u/%u ms", Timer_ElapsedMS(TIM_ELAPSED_UPGRADE) / 1000, time_small, time_big);
+    myLCD_str8x16(IM_NOMALE, 0, 5, "%u s   %u     %u/%u", Timer_ElapsedMS(TIM_ELAPSED_UPGRADE) / 1000, time_tx, time_small, time_big);
 
     myLCD_str8x16(IM_NOMALE, 0, 6, "%d/%d chains, %.0f %%", chains_transmitted, upg_chains_all(), ((float)chains_transmitted / (float)upg_chains_all()) * 100.0f);
 }

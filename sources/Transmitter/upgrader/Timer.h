@@ -5,6 +5,7 @@
 
 static const int TIM_PACKETS = 0;           // Ётот таймер контролирует промежутки между пакетами
 static const int TIM_ELAPSED_UPGRADE = 1;   // —только времени прошло с начала обновлени€
+static const int TIM_TX = 2;
 
 #define TIME_MS Timer_CurrentTime()
 
