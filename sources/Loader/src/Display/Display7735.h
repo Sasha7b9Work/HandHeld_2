@@ -14,8 +14,6 @@ namespace Display
 
     void Update();
 
-    void CallbackOnIRQ();
-
     uint TimeEnabled();
 
     namespace Buffer

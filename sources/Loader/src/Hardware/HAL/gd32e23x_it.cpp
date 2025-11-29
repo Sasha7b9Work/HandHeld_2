@@ -3,7 +3,6 @@
 #include "systick.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include "Hardware/Timer.h"
-#include "Display/Display7735.h"
 
 
 #ifdef __cplusplus
@@ -76,7 +75,6 @@ void EXTI4_15_IRQHandler(void)
         exti_interrupt_flag_clear(EXTI_8);
 
         PAN3060::CallbackOnIRQ();
-        Display::CallbackOnIRQ();
     }
 }
 
