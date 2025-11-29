@@ -5,7 +5,6 @@
 #include "Display/Display7735.h"
 #include "Hardware/Timer.h"
 #include "Keyboard/Keyboard.h"
-#include "Menu/Menu.h"
 #include "Hardware/Vibrato.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include "Storage/Storage.h"
@@ -35,8 +34,6 @@ int main()
     Timer::Init();
 
     Keyboard::Init();
-
-    Menu::Init();
 
     Vibrato::Init();
 
@@ -82,8 +79,6 @@ void Update()
     ModeClock::LeaveDeepSleep();
 
     PCF8563::Update();
-
-    Menu::Update();
 
     PAN3060::Update();
 

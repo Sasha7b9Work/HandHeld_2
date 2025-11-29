@@ -808,71 +808,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Menu</GroupName>
-          <Files>
-            <File>
-              <FileName>Menu.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\Menu.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Menu.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Menu\Menu.h</FilePath>
-            </File>
-            <File>
-              <FileName>MenuItems.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\MenuItems.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>MenuItems.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Menu\MenuItems.h</FilePath>
-            </File>
-            <File>
-              <FileName>Menu.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Menu\Menu.txt</FilePath>
-            </File>
-            <File>
-              <FileName>MenuItemDef.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Menu\MenuItemDef.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Menu/Pages</GroupName>
-          <Files>
-            <File>
-              <FileName>Pages.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Menu\Pages\Pages.h</FilePath>
-            </File>
-            <File>
-              <FileName>PageAlarm.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\Pages\PageAlarm.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>PageJournal.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\Pages\PageJournal.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>PageWatch.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\Pages\PageWatch.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Pages.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\Pages\Pages.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Modules/Beeper/Sounds</GroupName>
           <Files>
             <File>
@@ -1336,7 +1271,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0xa000</Size>
+                <Size>0x9000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -1862,71 +1797,6 @@
               <FileName>Keyboard.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Keyboard\Keyboard.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Menu</GroupName>
-          <Files>
-            <File>
-              <FileName>Menu.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\Menu.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Menu.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Menu\Menu.h</FilePath>
-            </File>
-            <File>
-              <FileName>MenuItems.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\MenuItems.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>MenuItems.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Menu\MenuItems.h</FilePath>
-            </File>
-            <File>
-              <FileName>Menu.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Menu\Menu.txt</FilePath>
-            </File>
-            <File>
-              <FileName>MenuItemDef.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Menu\MenuItemDef.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Menu/Pages</GroupName>
-          <Files>
-            <File>
-              <FileName>Pages.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Menu\Pages\Pages.h</FilePath>
-            </File>
-            <File>
-              <FileName>PageAlarm.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\Pages\PageAlarm.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>PageJournal.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\Pages\PageJournal.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>PageWatch.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\Pages\PageWatch.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Pages.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Menu\Pages\Pages.cpp</FilePath>
             </File>
           </Files>
         </Group>

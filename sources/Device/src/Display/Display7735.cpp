@@ -7,7 +7,6 @@
 #include "Keyboard/Keyboard.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
-#include "Menu/Menu.h"
 #include "Utils/FPS.h"
 #include "Utils/StringUtils.h"
 #include "Hardware/Power.h"
@@ -269,12 +268,6 @@ void Display::DrawScene(int num_part)
     }
     else
     {
-        if (Menu::IsShown())
-        {
-            Menu::Draw();
-        }
-        else
-        {
             Font::SetSize(5);
 
             PCF8563::GetDateTime().DrawTime(30, 23, Color::WHITE);
@@ -286,9 +279,6 @@ void Display::DrawScene(int num_part)
             Font::SetSize(1);
 
             Power::Draw();
-
-//            FPS::DrawTimeFrame(0, 75);
-        }
     }
 }
 
