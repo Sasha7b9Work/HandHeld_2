@@ -73,7 +73,7 @@ void Display::Update()
     need_exit = false;
 
 #ifndef DEBUG
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 2; i++)
     {
         if (need_exit)
         {
