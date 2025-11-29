@@ -68,14 +68,6 @@ struct TypeFont
 };
 
 
-struct FontDef
-{
-    const uint8 width;      // Font width in pixels
-    uint8 height;           // Font height in pixels
-    const uint16 *data;     // Pointer to data font data array
-};
-
-
 namespace Font
 {
     void SetType(TypeFont::E);

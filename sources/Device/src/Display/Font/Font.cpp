@@ -2,18 +2,14 @@
 #include "defines.h"
 #include "Display/Font/Font.h"
 #include "Display/Font/font5.inc"
-#include "Display/Font/font8.inc"
 #include "Display/Text.h"
-#include "Display/Font/font10_7.inc"
 #include "Display/Display7735.h"
 
 //static const DFont *fonts[DTypeFont::Count] = { &font5, &font8 };
 
 
 
-static const DFont *dfont = &font8;
-
-static FontDef font_10x7 = { 7, 10, Font10x7 };
+static const DFont *dfont = &font5;
 
 namespace Font
 {
@@ -42,10 +38,6 @@ void Font::SetType(TypeFont::E _type)
     if (_type == TypeFont::_5)
     {
         dfont = &font5;
-    }
-    else if (_type == TypeFont::_7)
-    {
-        dfont = &font8;
     }
 }
 
@@ -97,28 +89,6 @@ int Char::Write(int x, int y, const Color &color) const
         }
 
         return x + width * Font::size;
-    }
-    else if (Font::type == TypeFont::_10)
-    {
-        if (symbol < 32 || symbol > 126)
-        {
-            return 0;
-        }
-
-        for (int i = 0; i < font_10x7.height; i++)
-        {
-            int b = font_10x7.data[(symbol - 32) * font_10x7.height + i];
-
-            for (int j = 0; j < font_10x7.width; j++)
-            {
-                if ((b << j) & 0x8000)
-                {
-                    Rect(Font::size, Font::size).Fill(x + j * Font::size, y + i * Font::size);
-                }
-            }
-        }
-
-        return x + font_10x7.width * Font::size;
     }
 
     return x;
