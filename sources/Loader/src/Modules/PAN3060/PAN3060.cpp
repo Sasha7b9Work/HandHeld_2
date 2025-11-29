@@ -171,6 +171,10 @@ void PAN3060::CallbackOnIRQ()
 
         if (packet.length == 2 + 128 + 4)            // Принимаем 128 байт прошивки
         {
+            rf_init();
+            rf_set_default_para();
+            rf_enter_continous_rx();
+
             if (packet.IsValid())
             {
                 chains_is_ok++;
@@ -180,13 +184,13 @@ void PAN3060::CallbackOnIRQ()
             {
                 chains_is_fail++;
             }
-
-            rf_init();
-            rf_set_default_para();
-            rf_enter_continous_rx();
         }
         else if (packet.length == 2 + 4 + 4)         // Принимаем завершающий пакет
         {
+            rf_init();
+            rf_set_default_para();
+            rf_enter_continous_rx();
+
             if (packet.IsValid())
             {
                 chains_is_ok++;
@@ -196,10 +200,6 @@ void PAN3060::CallbackOnIRQ()
             {
                 chains_is_fail++;
             }
-
-            rf_init();
-            rf_set_default_para();
-            rf_enter_continous_rx();
         }
     }
 }
