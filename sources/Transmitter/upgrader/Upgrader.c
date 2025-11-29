@@ -53,7 +53,7 @@ static bool in_process_update = false;
 
 static int chains_transmitted = 0;
 
-static uint32_t time_big = 500;
+static uint32_t time_big = 125;
 static uint32_t time_small = 100;
 
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -93,9 +93,24 @@ void upg_init()
 }
 
 
+// ≈сли true - можно передавать следующий пакет
+static bool need_transmit = true;
+
+
+void upg_on_tx_irq()
+{
+    need_transmit = true;
+}
+
+
 void upg_update()
 {
     if (!in_process_update)
+    {
+        return;
+    }
+
+    if (!need_transmit)
     {
         return;
     }
@@ -192,6 +207,8 @@ void SendPacketFinish()
 
 void SendRawPacket(const uint8_t *data, int size)
 {
+    need_transmit = false;
+
     rfTxPacket_ts packet;
     memcpy(packet.payload, data, size);
     packet.len = size;

@@ -528,6 +528,7 @@ void rfRx_callback(uint8_t status, rfRxPacket_ts packet)
     break;
     case TX_STA_SECCESS:
     {
+        upg_on_tx_irq();
         LED1_ON_ONE();
         if (rfCtrlMode == UI_PAGE_ID_TX_PACKET)
         {

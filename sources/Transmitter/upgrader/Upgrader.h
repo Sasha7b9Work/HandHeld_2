@@ -7,6 +7,9 @@ void upg_init(void);
 
 void upg_update(void);
 
+// Вызывается передатчиком после передачи пакета
+void upg_on_tx_irq(void);
+
 void upg_start_update(void);
 void upg_stop_update(void);
 
