@@ -5,7 +5,6 @@
 #include "Display/Font/Font.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
-#include "Utils/StringUtils.h"
 #include "Display/Text.h"
 
 

@@ -43,7 +43,6 @@ file(GLOB HARDWARE                src/Hardware/*.*)
 file(GLOB HARDWARE_CMSIS          src/Hardware/CMSIS/*.*)
 file(GLOB HARDWARE_HAL            src/Hardware/HAL/*.*)
 file(GLOB MODULES_ST7735          src/Modules/ST7735/*.*)
-file(GLOB UTILS                   src/Utils/*.*)
 
 source_group(GD32E23x               FILES ${GD32E23x})
 source_group(src                    FILES ${SRC})
@@ -53,7 +52,6 @@ source_group(Hardware               FILES ${HARDWARE})
 source_group(Hardware/CMSIS         FILES ${HARDWARE_CMSIS})
 source_group(Hardware/HAL           FILES ${HARDWARE_HAL})
 source_group(Modules/ST7735         FILES ${MODULES_ST7735})
-source_group(Utils                  FILES ${UTILS})
 
 set_source_files_properties(
     ${GD32E23x}
@@ -71,5 +69,4 @@ add_library(${PROJECT_NAME}
     ${HARDWARE_CMSIS}
     ${HARDWARE_HAL}
     ${MODULES_ST7735}
-    ${UTILS}
 )
