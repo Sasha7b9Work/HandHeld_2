@@ -12,7 +12,7 @@ char *SU::IntToASCII(int value, char buffer[32])
 {
     buffer[31] = '\0';
 
-    char *pointer = buffer + 31;
+    char *pointer = buffer + 30;
 
     while (pointer > buffer)
     {

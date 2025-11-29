@@ -409,25 +409,25 @@ void PAN3060::FuncDraw()
 
     Text<>("Upgrade").Write(x1, y);
 
-//    y += dy;
-//
-//    Text<>("Filled").Write(x1, y);
-//
-//    char buffer[32];
-//
-//    Text<>(SU::IntToASCII(firmware.FilledPages(), buffer)).Write(x2, y);
-//
-//    y += dy;
-//
-//    Text<>("Good").Write(x1, y);
-//
-//    Text<>(SU::IntToASCII(chains_is_ok, buffer)).Write(x2, y);
-//
-//    y += dy;
-//
-//    Text<>("Bad").Write(x1, y);
-//
-//    Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(x2, y);
+    y += dy;
+
+    Text<>("Filled").Write(x1, y);
+
+    char buffer[32];
+
+    Text<>(SU::IntToASCII(firmware.FilledPages(), buffer)).Write(x2, y);
+
+    y += dy;
+
+    Text<>("Good").Write(x1, y);
+
+    Text<>(SU::IntToASCII(chains_is_ok, buffer)).Write(x2, y);
+
+    y += dy;
+
+    Text<>("Bad").Write(x1, y);
+
+    Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(x2, y);
 }
 
 
