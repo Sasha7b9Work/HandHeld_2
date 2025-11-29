@@ -5,7 +5,6 @@
 #include "Hardware/HAL/systick.h"
 #include "Keyboard/Keyboard.h"
 #include "Display/Display7735.h"
-#include "Modules/PAN3060/PAN3060.h"
 #include <gd32e23x.h>
 
 
@@ -84,8 +83,6 @@ void ModeClock::LeaveDeepSleep()
 void HAL_CLOCK::SetDeepSleep()
 {
     Display::PrepareToSleep();
-
-    PAN3060::PrepareToSleep();
 
 //    HAL::DeInit();
 

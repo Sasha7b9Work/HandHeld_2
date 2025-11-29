@@ -4,7 +4,6 @@
 #include "Keyboard/Keyboard.h"
 #include "Hardware/Timer.h"
 #include "Hardware/HAL/HAL_PINS.h"
-#include "Modules/PAN3060/PAN3060.h"
 
 
 namespace Keyboard
@@ -111,8 +110,6 @@ void EXTI4_15_IRQHandler(void)
     if (SET == exti_interrupt_flag_get(EXTI_8))
     {
         exti_interrupt_flag_clear(EXTI_8);
-
-        PAN3060::CallbackOnIRQ();
     }
 
     if (SET == exti_interrupt_flag_get(EXTI_7))

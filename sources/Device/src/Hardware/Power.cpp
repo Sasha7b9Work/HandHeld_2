@@ -4,7 +4,6 @@
 #include "Hardware/Timer.h"
 #include "Hardware/Power.h"
 #include "Hardware/HAL/HAL_PINS.h"
-#include "Modules/PCF8563/PCF8563.h"
 #include "Display/Display7735.h"
 
 
@@ -28,14 +27,10 @@ void Power::Init()
 
     if (voltage < 3.0f)
     {
-        PCF8563::AlarmFlagEnable(false);
-
         PowerDown();
     }
     else if (voltage < 3.5f)
     {
-        PCF8563::AlarmFlagEnable(false);
-
         TimeMeterMS meter;
 
         while (meter.ElapsedTime() < 3000)
@@ -46,13 +41,6 @@ void Power::Init()
         PowerDown();
     }
 
-    PCF8563::Update();
-
-    if (PCF8563::IsAlarmed())
-    {
-        PCF8563::AlarmFlagEnable(false);
-    }
-    else
     {
 //        while (pinPWR_CTRL.IsLow())
 //        {

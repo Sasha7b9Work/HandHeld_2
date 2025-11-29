@@ -10,8 +10,6 @@
 #include "Utils/StringUtils.h"
 #include "Hardware/Power.h"
 #include "Utils/Math.h"
-#include "Modules/PCF8563/PCF8563.h"
-#include "Modules/PAN3060/PAN3060.h"
 #include "Display/Text.h"
 
 
@@ -96,24 +94,6 @@ void Display::PrepareToSleep()
 
 void Display::Update()
 {
-    if (PCF8563::IsAlarmed() || !Keyboard::ToMoreTime())
-    {
-        FPS::BeginFrame();
-
-        for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
-        {
-            BeginScene(i);      // 0 ms
-            DrawScene(i);       // 20 ms
-            EndScene(i);        // 68 ms
-        }
-
-        FPS::EndFrame();
-    }
-
-    if (!PAN3060::IsEnabled() && !PCF8563::IsAlarmed())
-    {
-//        ModeClock::Set(ModeClock::Low);
-    }
 }
 
 
@@ -170,10 +150,6 @@ void Display::BeginScene(int num_part)
 
     Color color = Color::BLACK;
 
-    if (PCF8563::IsAlarmed())
-    {
-    }
-
     Buffer::Fill(color);
 }
 
@@ -186,10 +162,6 @@ void Display::EndScene(int num_parts)
     {
         if (!ModeClock::IsHi())
         {
-            while (PAN3060::IsEnabled())
-            {
-                PAN3060::Update();
-            }
         }
 
 //        ModeClock::Set(ModeClock::Hi);
@@ -199,32 +171,6 @@ void Display::EndScene(int num_parts)
         Buffer::crc[Buffer::current_part] = crc;
 
         ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
-    }
-}
-
-
-void Display::DrawScene(int num_part)
-{
-    (void)num_part;
-
-    if (PCF8563::IsAlarmed())
-    {
-        Font::SetSize(2);
-        Font::SetSize(1);
-    }
-    else
-    {
-            Font::SetSize(5);
-
-            PCF8563::GetDateTime().DrawTime(30, 23, Color::WHITE);
-
-            Font::SetSize(2);
-
-            PCF8563::GetDateTime().DrawDate(46, 66);
-
-            Font::SetSize(1);
-
-            Power::Draw();
     }
 }
 
@@ -303,17 +249,6 @@ void Pixel::Set(int x, int y, const Color &color) const
 }
 
 
-void RTCDateTime::DrawTime(int x, int y, const Color &color) const
-{
-    Text<>("%02d:%02d:%03d", Hour, Minute, Second).Write(x, y, color);
-}
-
-
-void RTCDateTime::DrawDate(int x, int y, const Color &color) const
-{
-    Text<>("%02d/%02d/%02d", Day, Month, Year).Write(x, y, color);
-}
-
 template<int capacity>
 int Text<capacity>::Write(int x, int y, const Color &color) const
 {
@@ -373,16 +308,11 @@ void Display::DrawSceneDebug(int)
 
     y += dy;
 
-    static RTCDateTime time;
-
     static int counter = 0;
 
     if ((counter++ % 2) == 0)
     {
-        time = PCF8563::GetDateTime();
     }
-
-    time.DrawTime(x, y);
 
     meter_draw.Pause();
 }
