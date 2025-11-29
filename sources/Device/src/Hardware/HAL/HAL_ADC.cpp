@@ -2,7 +2,6 @@
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
-#include "Hardware/Vibrato.h"
 #include <gd32e23x.h>
 
 
@@ -48,38 +47,11 @@ void HAL_ADC::_Init()
 }
 
 
-float HAL_ADC::GetVoltage(bool force)
+float HAL_ADC::GetVoltage(bool /*force*/)
 {
     static float voltage = 5.0f;
 
     static TimeMeterMS meter;
 
-    if ((!Vibrato::IsRunning() && meter.ElapsedTime() > 1000) || force)
-    {
-        meter.Reset();
-
-        adc_flag_clear(ADC_FLAG_EOC);
-
-        while (SET != adc_flag_get(ADC_FLAG_EOC)) {}
-
-        voltage = ConversionRawToVoltageBattery(ADC_RDATA);
-    }
-
     return voltage;
-}
-
-
-float HAL_ADC::ConversionRawToVoltageADC(uint raw)
-{
-    static const float MAX_VOLTAGE = 3.3f;
-
-    return MAX_VOLTAGE / (1 << 12) * (float)raw;
-}
-
-
-float HAL_ADC::ConversionRawToVoltageBattery(uint raw)
-{
-    float voltageADC = ConversionRawToVoltageADC(raw);
-
-    return voltageADC * 2.0f;
 }

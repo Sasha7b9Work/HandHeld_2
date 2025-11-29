@@ -3,8 +3,6 @@
 #include "Hardware/HAL/HAL.h"
 #include "Display/Display7735.h"
 #include "Hardware/Timer.h"
-#include "Keyboard/Keyboard.h"
-#include "Hardware/Vibrato.h"
 #include "Hardware/Power.h"
 #include <cstdlib>
 
@@ -29,10 +27,6 @@ int main()
     //    Power::Init();
 
     Timer::Init();
-
-    Keyboard::Init();
-
-    Vibrato::Init();
 
 //    ModeClock::Set(ModeClock::Hi);
 

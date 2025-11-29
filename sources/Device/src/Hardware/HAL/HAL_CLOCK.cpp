@@ -3,7 +3,6 @@
 #include "Hardware/HAL/HAL.h"
 #include "Modules/ST7735/ST7735.h"
 #include "Hardware/HAL/systick.h"
-#include "Keyboard/Keyboard.h"
 #include "Display/Display7735.h"
 #include <gd32e23x.h>
 
