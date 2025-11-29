@@ -6,7 +6,6 @@
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
 #include "Utils/StringUtils.h"
-#include "Utils/Math.h"
 #include "Display/Text.h"
 
 
@@ -26,11 +25,6 @@ namespace Display
         bool MatchesCRC(uint _crc)
         {
             return _crc == crc[current_part];
-        }
-
-        static uint CalcualteCRC()
-        {
-            return Math::CalculateCRC32(buffer, SIZE);
         }
 
         static void Fill(const Color &color)
@@ -153,22 +147,9 @@ void Display::BeginScene(int num_part)
 
 void Display::EndScene(int num_parts)
 {
-    uint crc = Buffer::CalcualteCRC();
+    ST7735::Enable();
 
-//    if (!Buffer::MatchesCRC(crc))
-    {
-        if (!ModeClock::IsHi())
-        {
-        }
-
-//        ModeClock::Set(ModeClock::Hi);
-
-        ST7735::Enable();
-
-        Buffer::crc[Buffer::current_part] = crc;
-
-        ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
-    }
+    ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
 }
 
 
