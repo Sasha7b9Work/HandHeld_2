@@ -14,7 +14,7 @@ char *SU::IntToASCII(int value, char buffer[32])
 
     char *pointer = buffer + 30;
 
-    while (pointer > buffer)
+    while (pointer >= buffer)
     {
         char digit = (char)(value % 10);
 
@@ -23,15 +23,14 @@ char *SU::IntToASCII(int value, char buffer[32])
         value /= 10;
     }
 
-    for (int i = 0; i < 32; i++)
+    char *result = buffer;
+
+    while (*result == '0' && *result != '\0')
     {
-        if (buffer[i] != '\0')
-        {
-            std::memmove(buffer, buffer + i, (size_t)(32 - i));
-        }
+        result++;
     }
 
-    return buffer;
+    return *result == '\0' ? (result - 1) : result;
 }
 
 

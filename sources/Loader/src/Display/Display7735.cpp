@@ -5,6 +5,7 @@
 #include "Display/Font/Font.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include "Display/Text.h"
+#include "Hardware/Timer.h"
 
 
 template int Text<64>::Write(int x, int y) const;
@@ -53,6 +54,15 @@ uint Display::TimeEnabled()
 
 void Display::Update()
 {
+    static TimeMeterMS meter;
+
+    if (meter.ElapsedTime() < 1000)
+    {
+        return;
+    }
+
+    meter.Reset();
+
 #ifndef DEBUG
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
     {
