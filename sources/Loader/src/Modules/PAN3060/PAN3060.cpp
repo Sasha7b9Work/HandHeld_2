@@ -90,9 +90,6 @@ namespace PAN3060
         // true, если страница полностью заполнена
         bool IsFilled() const;
 
-        // Стирает страницу в EEPROM, содержащую данный пакет
-        void ErasePageEEPROM() const;
-
         // Записывает page[1024] в EEPROM
         void WritePageEEPROM() const;
     };
@@ -222,39 +219,8 @@ bool PAN3060::Packet::IsValid() const
 
 void PAN3060::Packet::ReceiveChain()
 {
-    static uint16 prev_number_chain_full = 0;
     uint16 number_chain_full = Struct16(buffer).u16;
-    
-    if(number_chain_full == 271 ||
-        number_chain_full == 119 ||
-        number_chain_full == 7)
-    {
-        number_chain_full = number_chain_full;
-    }
-
-    if(number_chain_full == 270 ||
-    number_chain_full == 118 ||
-    number_chain_full == 6)
-    {
-        number_chain_full = number_chain_full;
-    }
-
-    if(number_chain_full == 269 ||
-        number_chain_full == 117 ||
-        number_chain_full == 5)
-    {
-        number_chain_full = number_chain_full;
-    }
-    
-    if(number_chain_full == 268 ||
-        number_chain_full == 116 ||
-        number_chain_full == 4)
-    {
-        number_chain_full = number_chain_full;
-    }
-    
-    prev_number_chain_full = number_chain_full;
-
+      
     number_page = CalculateNumberPage(number_chain_full);
 
     number_chain_in_page = CalculateChainInPage(number_chain_full);
@@ -273,22 +239,11 @@ void PAN3060::Packet::ReceiveChain()
     std::memcpy(page.chains[number_chain_in_page].buffer, buffer + 2, SIZE_CHAIN);
     page.received[number_chain_in_page] = true;
 
-    int filled = firmware.FilledPages();
-
-    if (number_chain_in_page == CHAINS_IN_PAGE - 2)
-    {
-        filled = filled;
-    }
-
-    filled = filled;
-
     if (number_chain_in_page == CHAINS_IN_PAGE - 1)
     {
         if (!firmware.pages[number_page])               // Если данная страница ещё не записана в EEPROM
         {
             firmware.pages[number_page] = true;
-
-            page.ErasePageEEPROM();
 
             page.WritePageEEPROM();
 
@@ -348,6 +303,11 @@ bool PAN3060::Firmware::IsFilled() const
 
 void PAN3060::Firmware::Clear()
 {
+    for (uint i = 0; i < NUM_PAGES; i++)
+    {
+        HAL_ROM::ErasePage(BEGIN_FIRMWARE + (uint)(i * 1024));
+    }
+
     crc = 0;
 
     for (uint i = 0; i < NUM_PAGES; i++)
@@ -360,12 +320,6 @@ void PAN3060::Firmware::Clear()
 uint8 PAN3060::Packet::CalculateNumberPage(uint16 number_chain_full) const
 {
     return (uint8)(number_chain_full / CHAINS_IN_PAGE);
-}
-
-
-void PAN3060::Page::ErasePageEEPROM() const
-{
-    HAL_ROM::ErasePage(BEGIN_FIRMWARE + (uint)(number * 1024));
 }
 
 
@@ -399,7 +353,7 @@ void PAN3060::FuncDraw()
 
     Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(60, 0);
 
-    Text<>(SU::IntToASCII(meter.ElapsedTime() / 1000, buffer)).Write(90, 0);
+    Text<>(SU::IntToASCII((int)(meter.ElapsedTime() / 1000), buffer)).Write(90, 0);
 }
 
 
