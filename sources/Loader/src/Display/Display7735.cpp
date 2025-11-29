@@ -32,6 +32,13 @@ namespace Display
 
     static void BeginScene(int num_part);
     static void EndScene(int num_parts);
+
+    static bool need_exit = false;
+
+    void CallbackOnIRQ()
+    {
+        need_exit = true;
+    }
 }
 
 
@@ -63,14 +70,31 @@ void Display::Update()
 
     meter.Reset();
 
+    need_exit = false;
+
 #ifndef DEBUG
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
     {
+        if (need_exit)
+        {
+            break;
+        }
         BeginScene(i);      // 0 ms
+
+        if (need_exit)
+        {
+            break;
+        }
         PAN3060::FuncDraw();
+        if (need_exit)
+        {
+            break;
+        }
         EndScene(i);        // 68 ms
     }
 #endif
+
+    need_exit = false;
 }
 
 
