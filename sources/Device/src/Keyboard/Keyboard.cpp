@@ -2,7 +2,6 @@
 #include "defines.h"
 #include "Keyboard/Keyboard.h"
 #include "Hardware/Timer.h"
-#include "Settings/Settings.h"
 #include <cstring>
 #include <gd32e23x.h>
 
@@ -96,14 +95,6 @@ void Keyboard::CallbackFromInterrupt(Key::E key)
     }
 
     ms_for_disable = TIME_BLANK_DISPLAY;
-
-    if (!Source::GetCountReceived())
-    {
-        if (meter.ElapsedTime() < 200)
-        {
-            return;
-        }
-    }
 
     if (key != Key::Count)
     {

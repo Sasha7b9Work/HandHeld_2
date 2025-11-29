@@ -2,7 +2,6 @@
 #include "defines.h"
 #include "Display/Display7735.h"
 #include "Modules/ST7735/ST7735.h"
-#include "Settings/Settings.h"
 #include "Display/Font/Font.h"
 #include "Keyboard/Keyboard.h"
 #include "Hardware/HAL/HAL.h"
@@ -97,7 +96,7 @@ void Display::PrepareToSleep()
 
 void Display::Update()
 {
-    if (PCF8563::IsAlarmed() || Source::GetCountReceived() || !Keyboard::ToMoreTime())
+    if (PCF8563::IsAlarmed() || !Keyboard::ToMoreTime())
     {
         FPS::BeginFrame();
 
@@ -111,7 +110,7 @@ void Display::Update()
         FPS::EndFrame();
     }
 
-    if (!PAN3060::IsEnabled() && Source::GetCountReceived() == 0 && !PCF8563::IsAlarmed())
+    if (!PAN3060::IsEnabled() && !PCF8563::IsAlarmed())
     {
 //        ModeClock::Set(ModeClock::Low);
     }
@@ -171,14 +170,8 @@ void Display::BeginScene(int num_part)
 
     Color color = Color::BLACK;
 
-    if (Source::GetCountReceived())
-    {
-        color = gset.sources[Source::Current()].color;
-    }
-
     if (PCF8563::IsAlarmed())
     {
-        color = gset.alarm.color;
     }
 
     Buffer::Fill(color);
@@ -217,54 +210,7 @@ void Display::DrawScene(int num_part)
     if (PCF8563::IsAlarmed())
     {
         Font::SetSize(2);
-        Text<>("¡”ƒ»À‹Õ» ").WriteInCenter(0, 30, Display::WIDTH, Color(Color::Contrast(gset.alarm.color)));
         Font::SetSize(1);
-    }
-    else if (Source::GetCountReceived())
-    {
-        Color color = Color::Contrast(gset.sources[Source::Current()].color);
-
-        color.SetAsCurrent();
-
-        int y = 40;
-
-        if (Source::GetCountReceived() == 1)
-        {
-            y = 30;
-        }
-        else
-        {
-            for (int i = 0; i < Source::Count; i++)
-            {
-                if (Source::IsReceived((Source::E)i))
-                {
-                    Source((Source::E)i).DrawIcon(11 + i * 30, 8);
-                }
-            }
-        }
-
-        Font::SetSize(2);
-
-        pchar name = Source::Name(Source::Current());
-
-        int num_words = SU::NumWordsInString(name);
-
-        if (num_words == 1)
-        {
-            Text<>(name).WriteInCenter(0, y, Display::WIDTH);
-        }
-        else if (num_words == 2)
-        {
-            char buffer[32];
-
-            Text<>(SU::GetWordFromString(name, 1, buffer)).WriteInCenter(0, y - 10, Display::WIDTH);
-
-            Text<>(SU::GetWordFromString(name, 2, buffer)).WriteInCenter(0, y + 15, Display::WIDTH);
-        }
-
-        Font::SetSize(1);
-
-//        FPS::DrawTimeFrame(0, 75);
     }
     else
     {

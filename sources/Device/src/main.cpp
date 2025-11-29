@@ -7,7 +7,6 @@
 #include "Keyboard/Keyboard.h"
 #include "Hardware/Vibrato.h"
 #include "Modules/PAN3060/PAN3060.h"
-#include "Storage/Storage.h"
 #include "Hardware/Power.h"
 #include <cstdlib>
 
@@ -41,8 +40,6 @@ int main()
 
     PAN3060::Init();
 
-    Storage::Init();
-    
     PCF8563::Init();
 
     RTCDateTime time
@@ -61,37 +58,6 @@ int main()
     {
         Update2();
     }
-}
-
-
-void Update()
-{
-    bool recv_enabled = PAN3060::IsEnabled();
-    bool keyboard_more_time = Keyboard::ToMoreTime();
-    int num_sources = Source::GetCountReceived();
-    bool is_alarmed = PCF8563::IsAlarmed();
-
-    if (!recv_enabled && keyboard_more_time && num_sources == 0 && !is_alarmed)
-    {
-//        ModeClock::Set(ModeClock::DeepSleep);
-    }
-
-    ModeClock::LeaveDeepSleep();
-
-    PCF8563::Update();
-
-    PAN3060::Update();
-
-    if (Source::GetCountReceived() || !Keyboard::ToMoreTime())
-    {
-        Display::Update();
-    }
-
-    Vibrato::Update();
-
-    Source::Update();
-
-    Power::Update();
 }
 
 

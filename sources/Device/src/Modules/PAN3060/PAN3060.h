@@ -1,6 +1,5 @@
 // 2024/03/01 22:46:16 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Settings/Settings.h"
 
 
 namespace PAN3060
@@ -13,8 +12,6 @@ namespace PAN3060
     bool IsEnabled();
 
     void PrepareToSleep();
-
-    uint _GetCode(Source::E);
 
     void CallbackOnIRQ();
 }

@@ -1,7 +1,6 @@
 // 2024/03/01 22:46:05 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Hardware/HAL/HAL_PINS.h"
-#include "Settings/Settings.h"
 #include "Hardware/Timer.h"
 #include "Hardware/HAL/HAL.h"
 #include "Modules/PAN3060/PAN3060.h"
@@ -167,12 +166,4 @@ bool PAN3060::IsEnabled()
     }
 
     return result;
-}
-
-
-uint PAN3060::_GetCode(Source::E source)
-{
-    static const uint packets[Source::Count] = { 0x7E9E, 0x7EA6, 0x7ED5, 0x7EB9, 0x7ECA, 0x7EED };
-
-    return packets[source];
 }

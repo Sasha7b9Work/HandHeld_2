@@ -14,7 +14,6 @@
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
 #include "Hardware/HAL/HAL_PINS.h"
-#include "Settings/Settings.h"
 #include "Hardware/Vibrato.h"
 #include "Keyboard/Keyboard.h"
  
@@ -258,10 +257,6 @@ void PCF8563::Init()
     uint8 status2 = 0;
 
     HAL_I2C::Read(PCF8563_REG_CONTROL_STATUS2, &status2, 1);
-
-    gset.alarm.enabled = (status2 & (1 << PCF8563_CONTROL2_AIE)) == 0 ? 0U : 1U;    // —читываем, включЄн ли будильник
-
-    gset.alarm.time = GetTimeAlarm();                                                // —читываем врем€ будильника
 }
 
 

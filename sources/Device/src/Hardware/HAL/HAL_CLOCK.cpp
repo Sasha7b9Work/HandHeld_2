@@ -4,7 +4,6 @@
 #include "Modules/ST7735/ST7735.h"
 #include "Hardware/HAL/systick.h"
 #include "Keyboard/Keyboard.h"
-#include "Settings/Source.h"
 #include "Display/Display7735.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include <gd32e23x.h>

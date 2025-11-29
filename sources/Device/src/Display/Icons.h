@@ -1,6 +1,6 @@
 // 2024/03/23 13:37:23 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Settings/Settings.h"
+#include "Display/Colors.h"
 
 
 struct Icon
@@ -37,6 +37,3 @@ struct IconSourceSensor : public Icon
 {
     virtual void Draw(int x, int y, const Color &) const override;
 };
-
-
-extern Icon *sourceIcons[Source::Count];

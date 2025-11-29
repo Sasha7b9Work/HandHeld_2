@@ -5,7 +5,6 @@
 #include "Hardware/Power.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Modules/PCF8563/PCF8563.h"
-#include "Storage/Storage.h"
 #include "Display/Display7735.h"
 
 
@@ -67,28 +66,11 @@ void Power::Init()
 
 void Power::Disable()
 {
-    while (Source::GetCountReceived())
-    {
-        Source::CancelFirst();
-    }
-
-    TimeMeterMS meter;
-
-    while (meter.ElapsedTime() < 1500)
-    {
-        Display::DrawPowerOff();
-    }
-
-    PowerDown();
 }
 
 
 void Power::PowerDown()
 {
-    Storage::Save();
-
-//    pinPWR.ToLow();
-
     while(true) { }
 }
 
