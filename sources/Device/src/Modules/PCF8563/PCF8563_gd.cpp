@@ -15,9 +15,7 @@
 #include "Hardware/Timer.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Settings/Settings.h"
-#include "Modules/Beeper/Beeper.h"
 #include "Hardware/Vibrato.h"
-#include "Modules/LED/LED.h"
 #include "Keyboard/Keyboard.h"
  
 
@@ -347,7 +345,5 @@ void PCF8563::DisableAlarm()
 {
     time_alarm = 0;
 
-    Beeper::Stop();
     Vibrato::Disable();
-    LED::Disable();
 }

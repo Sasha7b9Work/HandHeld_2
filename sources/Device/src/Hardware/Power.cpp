@@ -5,7 +5,6 @@
 #include "Hardware/Power.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Modules/PCF8563/PCF8563.h"
-#include "Modules/LED/driverLED.h"
 #include "Storage/Storage.h"
 #include "Display/Display7735.h"
 
@@ -89,8 +88,6 @@ void Power::PowerDown()
     Storage::Save();
 
 //    pinPWR.ToLow();
-
-    LED::Driver::On();
 
     while(true) { }
 }

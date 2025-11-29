@@ -45,11 +45,6 @@ file(GLOB HARDWARE_HAL            src/Hardware/HAL/*.*)
 file(GLOB KEYBOARD                src/Keyboard/*.*)
 file(GLOB MENU                    src/Menu/*.*)
 file(GLOB MENU_PAGES              src/Menu/Pages/*.*)
-file(GLOB MODULES_BEEPER          src/Modules/Beeper/*.*)
-file(GLOB MODULES_BEEPER_SOUNDS   src/Modules/Beeper/Sounds/*.*)
-file(GLOB MODULES_LED             src/Modules/LED/*.h
-                                  src/Modules/LED/LED.cpp
-                                  src/Modules/LED/driverLED_7735.cpp)
 file(GLOB MODULES_PAN3060         src/Modules/PAN3060/*.*)
 file(GLOB MODULES_PCF8563         src/Modules/PCF8563/*.*)
 file(GLOB MODULES_ST7735          src/Modules/ST7735/*.*)
@@ -67,9 +62,6 @@ source_group(Hardware/HAL           FILES ${HARDWARE_HAL})
 source_group(Keyboard               FILES ${KEYBOARD})
 source_group(Menu                   FILES ${MENU})
 source_group(Menu/Pages             FILES ${MENU_PAGES})
-source_group(Modules/Beeper         FILES ${MODULES_BEEPER})
-source_group(Modules/Beeper/Sounds  FILES ${MODULES_BEEPER_SOUNDS})
-source_group(Modules/LED            FILES ${MODULES_LED})
 source_group(Modules/PAN3060        FILES ${MODULES_PAN3060})
 source_group(Modules/PCF8563        FILES ${MODULES_PCF8563})
 source_group(Modules/ST7735         FILES ${MODULES_ST7735})
@@ -95,9 +87,6 @@ add_library(${PROJECT_NAME}
     ${MENU}
     ${MENU_PAGES}
     ${KEYBOARD}
-    ${MODULES_BEEPER}
-    ${MODULES_BEEPER_SOUNDS}
-    ${MODULES_LED}
     ${MODULES_PAN3060}
     ${MODULES_PCF8563}
     ${MODULES_ST7735}

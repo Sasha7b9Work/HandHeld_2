@@ -3,8 +3,6 @@
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
 #include "Hardware/Vibrato.h"
-#include "Modules/LED/LED.h"
-#include "Modules/Beeper/Beeper.h"
 #include <gd32e23x.h>
 
 
@@ -56,7 +54,7 @@ float HAL_ADC::GetVoltage(bool force)
 
     static TimeMeterMS meter;
 
-    if ((!LED::IsFired() && !Vibrato::IsRunning() && !Beeper::IsRunning() && meter.ElapsedTime() > 1000) || force)
+    if ((!Vibrato::IsRunning() && meter.ElapsedTime() > 1000) || force)
     {
         meter.Reset();
 

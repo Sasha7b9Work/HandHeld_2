@@ -3,7 +3,6 @@
 #include "systick.h"
 #include "Keyboard/Keyboard.h"
 #include "Hardware/Timer.h"
-#include "Modules/Beeper/Beeper.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Modules/PAN3060/PAN3060.h"
 
@@ -130,8 +129,6 @@ void TIMER2_IRQHandler(void)
     if (timer_interrupt_flag_get(TIMER2, TIMER_INT_FLAG_CH2))
     {
         timer_interrupt_flag_clear(TIMER2, TIMER_INT_FLAG_CH2);
-
-        Beeper::CallbackOnTimer();
     }
 }
 

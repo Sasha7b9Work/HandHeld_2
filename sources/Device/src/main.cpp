@@ -6,10 +6,8 @@
 #include "Hardware/Timer.h"
 #include "Keyboard/Keyboard.h"
 #include "Menu/Menu.h"
-#include "Modules/LED/LED.h"
 #include "Hardware/Vibrato.h"
 #include "Modules/PAN3060/PAN3060.h"
-#include "Modules/Beeper/Beeper.h"
 #include "Storage/Storage.h"
 #include "Hardware/Power.h"
 #include <cstdlib>
@@ -40,20 +38,14 @@ int main()
 
     Menu::Init();
 
-    LED::Init();
-
     Vibrato::Init();
 
 //    ModeClock::Set(ModeClock::Hi);
 
     PAN3060::Init();
 
-    Beeper::Init();
-
     Storage::Init();
     
-    Beeper::Play(TypeSound::_4, 2);
-
     PCF8563::Init();
 
     RTCDateTime time
@@ -100,11 +92,7 @@ void Update()
         Display::Update();
     }
 
-    LED::Update();
-
     Vibrato::Update();
-
-    Beeper::Update();
 
     Source::Update();
 
@@ -114,8 +102,6 @@ void Update()
 
 void Update2()
 {
-    Beeper::Update();
-
     PAN3060::Update();
 
     PCF8563::Update();
@@ -139,7 +125,5 @@ void UpdateLED()
         color++;
 
         color &= 0x07;
-
-        LED::Enable((ColorLED::E)color);
     }
 }

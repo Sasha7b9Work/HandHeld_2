@@ -5,8 +5,6 @@
 #include "Hardware/Timer.h"
 #include "Hardware/Vibrato.h"
 #include "Storage/Storage.h"
-#include "Modules/LED/LED.h"
-#include "Modules/Beeper/Beeper.h"
 #include "Keyboard/Keyboard.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include <cstring>
@@ -204,8 +202,6 @@ void Source::Update()
     if (!enabled && !PCF8563::IsAlarmed())
     {
         Vibrato::Disable();
-        LED::Disable();
-        Beeper::Stop();
     }
 }
 
@@ -233,7 +229,6 @@ void Source::Queue::Push(Source::E type)
 
     if (ModeIndication::ConsistSound(source.mode_indication))
     {
-        Beeper::Play((TypeSound::E)source.melody, (uint8)source.volume);
     }
 
     if (ModeIndication::ConsistVibro(source.mode_indication))
@@ -243,7 +238,6 @@ void Source::Queue::Push(Source::E type)
 
     if (ModeIndication::ConsistLED(source.mode_indication))
     {
-        LED::Enable();
     }
 
 }
