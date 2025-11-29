@@ -17,14 +17,10 @@ void Upgrader::Run()
     while (!PAN3060::InProcessUpgrade())
     {
         Display::Update();
-
-        PAN3060::Update();
     }
 
     while (PAN3060::InProcessUpgrade())
     {
         Display::Update();
-
-        PAN3060::Update();
     }
 }

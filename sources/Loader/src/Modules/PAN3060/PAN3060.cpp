@@ -11,8 +11,6 @@
 
 namespace PAN3060
 {
-    static bool need_recv = false;
-
     static bool in_process_upgrade = false;
 
     static void InitIRQ();
@@ -149,63 +147,58 @@ void PAN3060::InitSPI()
 }
 
 
-void PAN3060::Update()
+void PAN3060::CallbackOnIRQ()
 {
-    if (need_recv)
+    in_process_upgrade = true;
+
+    uint8 irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
+
+    if (irq & REG_IRQ_RX_TIMEOUT)
     {
-        need_recv = false;
+        rf_clr_irq();
+    }
 
-        in_process_upgrade = true;
+    if (irq & REG_IRQ_RX_DONE)
+    {
+        Packet packet;
 
-        uint8 irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
+        packet.length = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
 
-        if (irq & REG_IRQ_RX_TIMEOUT)
+        rf_read_fifo(REG_FIFO_ACC_ADDR, packet.buffer, packet.length);
+
+        rf_clr_irq();
+
+        if (packet.length == 2 + 128 + 4)            // Принимаем 128 байт прошивки
         {
-            rf_clr_irq();
+            if (packet.IsValid())
+            {
+                chains_is_ok++;
+                packet.ReceiveChain();
+            }
+            else
+            {
+                chains_is_fail++;
+            }
+
+            rf_init();
+            rf_set_default_para();
+            rf_enter_continous_rx();
         }
-
-        if (irq & REG_IRQ_RX_DONE)
+        else if (packet.length == 2 + 4 + 4)         // Принимаем завершающий пакет
         {
-            Packet packet;
-
-            packet.length = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
-
-            rf_read_fifo(REG_FIFO_ACC_ADDR, packet.buffer, packet.length);
-
-            rf_clr_irq();
-
-            if (packet.length == 2 + 128 + 4)            // Принимаем 128 байт прошивки
+            if (packet.IsValid())
             {
-                if (packet.IsValid())
-                {
-                    chains_is_ok++;
-                    packet.ReceiveChain();
-                }
-                else
-                {
-                    chains_is_fail++;
-                }
-
-                rf_init();
-                rf_set_default_para();
-                rf_enter_continous_rx();
+                chains_is_ok++;
+                packet.ReceiveFinish();
             }
-            else if (packet.length == 2 + 4 + 4)         // Принимаем завершающий пакет
+            else
             {
-                if (packet.IsValid())
-                {
-                    chains_is_ok++;
-                    packet.ReceiveFinish();
-                }
-                else
-                {
-                    chains_is_fail++;
-                }
-
-                rf_init();
-                rf_set_default_para();
-                rf_enter_continous_rx();
+                chains_is_fail++;
             }
+
+            rf_init();
+            rf_set_default_para();
+            rf_enter_continous_rx();
         }
     }
 }
@@ -387,12 +380,6 @@ uint8 PAN3060::Packet::CalculateChainInPage(uint16 number_chain_full) const
 }
 
 
-void PAN3060::CallbackOnIRQ()
-{
-    need_recv = true;
-}
-
-
 bool PAN3060::InProcessUpgrade()
 {
     return in_process_upgrade;
@@ -401,29 +388,13 @@ bool PAN3060::InProcessUpgrade()
 
 void PAN3060::FuncDraw()
 {
-    int x1 = 0;
-    int x2 = 50;
-//    int x3 = 100;
-    int y = 0;
-    int dy = 7;
-
-    Text<>("Filled").Write(x1, y);
-
     char buffer[32];
 
-    Text<>(SU::IntToASCII(firmware.FilledPages(), buffer)).Write(x2, y);
+    Text<>(SU::IntToASCII(firmware.FilledPages(), buffer)).Write(0, 0);
 
-    y += dy;
+    Text<>(SU::IntToASCII(chains_is_ok, buffer)).Write(40, 0);
 
-    Text<>("Good").Write(x1, y);
-
-    Text<>(SU::IntToASCII(chains_is_ok, buffer)).Write(x2, y);
-
-    y += dy;
-
-    Text<>("Bad").Write(x1, y);
-
-    Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(x2, y);
+    Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(80, 0);
 }
 
 

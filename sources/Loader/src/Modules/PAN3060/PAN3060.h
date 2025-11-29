@@ -6,8 +6,6 @@ namespace PAN3060
 {
     void Init();
 
-    void Update();
-
     void FuncDraw();
 
     void CallbackOnIRQ();
