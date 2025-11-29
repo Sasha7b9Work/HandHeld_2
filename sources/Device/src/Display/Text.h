@@ -20,12 +20,9 @@ private:
 template<int capacity = 64>
 struct Text
 {
-    Text(pchar format, ...)
+    Text(pchar _text)
     {
-        std::va_list args;
-        va_start(args, format);
-        std::vsprintf(text, format, args);
-        va_end(args);
+        std::strcpy(text, _text);
     }
     int Write(int x, int y, const Color &color = Color::NUMBER) const;
     void WriteInCenter(int x, int y, int width, const Color &color = Color::NUMBER) const

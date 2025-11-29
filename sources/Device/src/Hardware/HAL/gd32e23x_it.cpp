@@ -5,12 +5,6 @@
 #include "Hardware/HAL/HAL_PINS.h"
 
 
-namespace Keyboard
-{
-    int ms_for_disable = TIME_BLANK_DISPLAY;
-}
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -69,55 +63,7 @@ void SysTick_Handler(void)
 {
     timer_counter++;
 
-    Keyboard::ms_for_disable--;
-
     delay_decrement();
-}
-
-
-void EXTI0_1_IRQHandler(void)
-{
-    if (SET == exti_interrupt_flag_get(EXTI_0))
-    {
-        exti_interrupt_flag_clear(EXTI_0);
-    }
-
-    if (SET == exti_interrupt_flag_get(EXTI_1))
-    {
-        exti_interrupt_flag_clear(EXTI_1);
-    }
-}
-
-void EXTI2_3_IRQHandler(void)
-{
-    if (SET == exti_interrupt_flag_get(EXTI_2))
-    {
-        exti_interrupt_flag_clear(EXTI_2);
-    }
-}
-
-
-void EXTI4_15_IRQHandler(void)
-{
-    // Получено прерывание от приёмника
-    if (SET == exti_interrupt_flag_get(EXTI_8))
-    {
-        exti_interrupt_flag_clear(EXTI_8);
-    }
-
-    if (SET == exti_interrupt_flag_get(EXTI_7))
-    {
-        exti_interrupt_flag_clear(EXTI_7);
-    }
-}
-
-
-void TIMER2_IRQHandler(void)
-{
-    if (timer_interrupt_flag_get(TIMER2, TIMER_INT_FLAG_CH2))
-    {
-        timer_interrupt_flag_clear(TIMER2, TIMER_INT_FLAG_CH2);
-    }
 }
 
 

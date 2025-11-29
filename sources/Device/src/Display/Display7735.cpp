@@ -263,25 +263,23 @@ void Display::DrawSceneDebug(int)
     int y = 10;
     int dy = 10;
 
-    Text<64>("begin scene : %u ms", time_begin_scene).Write(x, y, Color::WHITE);
+    Text<64>("begin scene").Write(x, y, Color::WHITE);
 
     y += dy;
 
-    Text<64>("draw scene : %u ms", time_draw).Write(x, y, Color::WHITE);
+    Text<64>("draw scene").Write(x, y, Color::WHITE);
 
     y += dy;
 
-    Text<64>("end scene : %u ms", time_end_scene).Write(x, y);
+    Text<64>("end scene").Write(x, y);
 
     y += dy;
 
-    Text<64>("time full : %u ms", time_full).Write(x, y);
+    Text<64>("time full").Write(x, y);
 
     y += dy;
 
-    uint sum_time = time_begin_scene + time_draw + time_end_scene;
-
-    Text<64>("sum time : %u ms", sum_time).Write(x, y);
+    Text<64>("sum time").Write(x, y);
 
     y += dy;
 
