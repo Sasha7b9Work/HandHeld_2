@@ -140,7 +140,7 @@ const uint8_t *DataNext()
 
     data += SIZE_CHAIN;
 
-    return data < DATA_END ? result : 0;
+    return result < DATA_END ? result : 0;
 }
 
 

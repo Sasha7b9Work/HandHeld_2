@@ -401,11 +401,11 @@ bool PAN3060::InProcessUpgrade()
 
 void PAN3060::FuncDraw()
 {
-    int x1 = 5;
+    int x1 = 0;
     int x2 = 50;
 //    int x3 = 100;
-    int y = 5;
-    int dy = 8;
+    int y = 0;
+    int dy = 7;
 
     Text<>("Filled").Write(x1, y);
 
