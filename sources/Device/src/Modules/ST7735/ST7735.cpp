@@ -33,11 +33,11 @@ namespace ST7735
     {
         if (cond)
         {
-            SDA_TO_LOW;
+            SDA_TO_HI;
         }
         else
         {
-            SDA_TO_HI;
+            SDA_TO_LOW;
         }
 
         ONE_CLOCK;
@@ -46,14 +46,14 @@ namespace ST7735
 
     static void SendByte(uint8 byte)
     {
-        SendBit((byte & 0x80) == 0);
-        SendBit((byte & 0x40) == 0);
-        SendBit((byte & 0x20) == 0);
-        SendBit((byte & 0x10) == 0);
-        SendBit((byte & 0x08) == 0);
-        SendBit((byte & 0x04) == 0);
-        SendBit((byte & 0x02) == 0);
-        SendBit((byte & 0x01) == 0);
+        SendBit(byte & 0x80);
+        SendBit(byte & 0x40);
+        SendBit(byte & 0x20);
+        SendBit(byte & 0x10);
+        SendBit(byte & 0x08);
+        SendBit(byte & 0x04);
+        SendBit(byte & 0x02);
+        SendBit(byte & 0x01);
     }
 
 
