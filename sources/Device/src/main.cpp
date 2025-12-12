@@ -30,7 +30,7 @@ int main()
 
     Display::Init();
 
-    Power::Init();
+//    Power::Init();
 
     Timer::Init();
 
@@ -88,5 +88,5 @@ void Update()
 
     Source::Update();
 
-    Power::Update();
+//    Power::Update();
 }
