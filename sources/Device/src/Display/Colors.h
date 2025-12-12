@@ -47,9 +47,9 @@ struct Color
 };
 
 
+#ifdef BOARD_NEW
+    #define MAKE_COLOR(r, g, b)  (uint16)((0x1f - (b)) + ((0x3f - (g)) << 5) + ((0x1f - (r)) << 11))
+#else
+    #define MAKE_COLOR(r, g, b)  (uint16)((b) + ((g) << 5) + ((r) << 11))
+#endif
 
-#define MAKE_COLOR(r, g, b)  (uint16)((b) + ((g) << 5) + ((r) << 11))
-
-#define RED_FROM_COLOR(color)   (((color) >> 11) & 0x1f)
-#define GREEN_FROM_COLOR(color) (((color) >> 5) & 0x3f)
-#define BLUE_FROM_COLOR(color)  ((color) & 0x1f)
