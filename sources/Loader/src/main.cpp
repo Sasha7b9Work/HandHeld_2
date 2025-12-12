@@ -19,7 +19,7 @@ int main()
 {
     HAL::Init();
 
-    Upgrader::Run();
+//    Upgrader::Run();
 
     JumpToMainApplication();
 }
