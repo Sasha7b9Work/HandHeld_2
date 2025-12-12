@@ -9,26 +9,124 @@
 
 namespace ST7735
 {
-    namespace _SPI
-    {
-        static void Init();
-
-        static void SendByte(uint8);
-        static void SendUInt16(uint16);
-    }
-
     static bool is_enabled = false;
 
     static PinOut pinDC_RS(GPIOB, GPIO_PIN_11);   // PB11 22
     static PinOut pinRES(GPIOB, GPIO_PIN_10);     // PB10 21
     static PinOut pinBKG(GPIOA, GPIO_PIN_4);      // PA4  14
+    static PinOut pinSCL(GPIOA, GPIO_PIN_5);      // PA5  15
+    static PinOut pinSDA(GPIOA, GPIO_PIN_7);      // PA7  17
     static PinOut pinON(GPIOB, GPIO_PIN_2);       // PB2  20
+
+#define SDA_TO_LOW GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_7
+#define SDA_TO_HI  GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_7
+
+#define SCL_TO_HI  GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_5
+#define SCL_TO_LOW GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_5
+
+#define ONE_CLOCK   \
+        SCL_TO_HI;  \
+        SCL_TO_LOW
+
+
+    static void SendByte(uint8 byte)
+    {
+        if ((byte & 0x80) == 0)
+        {
+            SDA_TO_LOW;
+        }
+        else
+        {
+            SDA_TO_HI;
+        }
+
+        ONE_CLOCK;
+
+        if ((byte & 0x40) == 0)
+        {
+            SDA_TO_LOW;
+        }
+        else
+        {
+            SDA_TO_HI;
+        }
+
+        ONE_CLOCK;
+
+        if ((byte & 0x20) == 0)
+        {
+            SDA_TO_LOW;
+        }
+        else
+        {
+            SDA_TO_HI;
+        }
+
+        ONE_CLOCK;
+
+        if ((byte & 0x10) == 0)
+        {
+            SDA_TO_LOW;
+        }
+        else
+        {
+            SDA_TO_HI;
+        }
+
+        ONE_CLOCK;
+
+        if ((byte & 0x08) == 0)
+        {
+            SDA_TO_LOW;
+        }
+        else
+        {
+            SDA_TO_HI;
+        }
+
+        ONE_CLOCK;
+
+        if ((byte & 0x04) == 0)
+        {
+            SDA_TO_LOW;
+        }
+        else
+        {
+            SDA_TO_HI;
+        }
+
+        ONE_CLOCK;
+
+        if ((byte & 0x02) == 0)
+        {
+            SDA_TO_LOW;
+        }
+        else
+        {
+            SDA_TO_HI;
+        }
+
+        ONE_CLOCK;
+
+        if ((byte & 0x01) == 0)
+        {
+            SDA_TO_LOW;
+        }
+        else
+        {
+            SDA_TO_HI;
+        }
+
+        ONE_CLOCK;
+    }
+
 
     static void SendData16(uint16 word)
     {
         pinDC_RS.ToHi();
 
-        _SPI::SendUInt16(word);
+        SendByte((uint8)(word >> 8));
+        SendByte((uint8)word);
     }
 
     void SetWindow(int startX, int startY, int stopX, int stopY);
@@ -37,7 +135,7 @@ namespace ST7735
     {
         pinDC_RS.ToLow();
 
-        _SPI::SendByte(CMD);
+        SendByte(CMD);
     }
 
     static void SendCommand(uint8 command)
@@ -49,7 +147,7 @@ namespace ST7735
     {
         pinDC_RS.ToHi();
 
-        _SPI::SendByte(CMDP);
+        SendByte(CMDP);
     }
 
     static void SendData8(uint8 byte)
@@ -111,16 +209,16 @@ uint ST7735::TimeEnabled()
 
 void ST7735::Init()
 {
-    _SPI::Init();
-
     pinON.Init();
     pinDC_RS.Init();
     pinRES.Init();
     pinBKG.Init();
+    pinSCL.Init();
+    pinSDA.Init();
 
     pinON.ToLow();
 
-//    pinSCL.ToLow();
+    pinSCL.ToLow();
 
     pinBKG.ToHi();
 
@@ -321,53 +419,13 @@ void ST7735::WriteBuffer(int y0)
 {
     LCD_SetPos_Horizontal(0, Display::WIDTH - 1, (uint)y0, (uint)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
 
-    pinDC_RS.ToHi();
-
     for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
     {
         uint8 *points = Display::Buffer::GetLine(y);
 
         for (int i = 0; i < Display::WIDTH; i++)
         {
-            _SPI::SendUInt16(Color::colors[*points++]);
-
-//            SendData16(Color::colors[*points++]);
+            SendData16(Color::colors[*points++]);
         }
     }
-}
-
-
-void ST7735::_SPI::Init()
-{
-    gpio_af_set(GPIOA, GPIO_AF_0, GPIO_PIN_5 | GPIO_PIN_7);
-    gpio_mode_set(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO_PIN_5 | GPIO_PIN_7);
-    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_5 | GPIO_PIN_7);
-
-    spi_parameter_struct  spi_init_struct;
-    spi_i2s_deinit(SPI0);
-    spi_struct_para_init(&spi_init_struct);
-
-    /* configure SPI0 parameter */
-    spi_init_struct.trans_mode = SPI_TRANSMODE_BDTRANSMIT;
-    spi_init_struct.device_mode = SPI_MASTER;
-    spi_init_struct.frame_size = SPI_FRAMESIZE_8BIT;
-    spi_init_struct.clock_polarity_phase = SPI_CK_PL_HIGH_PH_1EDGE;
-    spi_init_struct.nss = SPI_NSS_SOFT;
-    spi_init_struct.prescale = SPI_PSC_2;
-    spi_init_struct.endian = SPI_ENDIAN_MSB;
-    spi_init(SPI0, &spi_init_struct);
-
-    spi_enable(SPI0);
-}
-
-
-void ST7735::_SPI::SendByte(uint8 byte)
-{
-    spi_i2s_data_transmit(SPI0, byte);
-}
-
-
-void ST7735::_SPI::SendUInt16(uint16 word)
-{
-    spi_i2s_data_transmit(SPI0, word);
 }

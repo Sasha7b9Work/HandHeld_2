@@ -1,5 +1,6 @@
 *.uvoptx
 *uvgui*
+archive.zip
 
 sources/Loader/*.scvd
 sources/Loader/*.bin
