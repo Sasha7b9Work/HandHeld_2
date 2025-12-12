@@ -419,7 +419,7 @@ void Display::DrawSceneDebug(int)
 
     y += dy;
 
-    Text<64>("draw scene : %u ms", time_draw).Write(x, y, Color::WHITE);
+    Text<64>("draw scene : %u ms", time_draw).Write(x, y, Color::MAGENTA);
 
     y += dy;
 
