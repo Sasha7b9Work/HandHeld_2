@@ -24,11 +24,6 @@ namespace ST7735
 #define SCL_TO_HI  GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_5
 #define SCL_TO_LOW GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_5
 
-#define ONE_CLOCK   \
-        SCL_TO_HI;  \
-        SCL_TO_LOW
-
-
     static void SendBit(bool cond)
     {
         if (cond)
@@ -40,7 +35,8 @@ namespace ST7735
             SDA_TO_LOW;
         }
 
-        ONE_CLOCK;
+        SCL_TO_HI;
+        SCL_TO_LOW;
     }
 
 
