@@ -29,95 +29,31 @@ namespace ST7735
         SCL_TO_LOW
 
 
+    static void SendBit(bool cond)
+    {
+        if (cond)
+        {
+            SDA_TO_LOW;
+        }
+        else
+        {
+            SDA_TO_HI;
+        }
+
+        ONE_CLOCK;
+    }
+
+
     static void SendByte(uint8 byte)
     {
-        if ((byte & 0x80) == 0)
-        {
-            SDA_TO_LOW;
-        }
-        else
-        {
-            SDA_TO_HI;
-        }
-
-        ONE_CLOCK;
-
-        if ((byte & 0x40) == 0)
-        {
-            SDA_TO_LOW;
-        }
-        else
-        {
-            SDA_TO_HI;
-        }
-
-        ONE_CLOCK;
-
-        if ((byte & 0x20) == 0)
-        {
-            SDA_TO_LOW;
-        }
-        else
-        {
-            SDA_TO_HI;
-        }
-
-        ONE_CLOCK;
-
-        if ((byte & 0x10) == 0)
-        {
-            SDA_TO_LOW;
-        }
-        else
-        {
-            SDA_TO_HI;
-        }
-
-        ONE_CLOCK;
-
-        if ((byte & 0x08) == 0)
-        {
-            SDA_TO_LOW;
-        }
-        else
-        {
-            SDA_TO_HI;
-        }
-
-        ONE_CLOCK;
-
-        if ((byte & 0x04) == 0)
-        {
-            SDA_TO_LOW;
-        }
-        else
-        {
-            SDA_TO_HI;
-        }
-
-        ONE_CLOCK;
-
-        if ((byte & 0x02) == 0)
-        {
-            SDA_TO_LOW;
-        }
-        else
-        {
-            SDA_TO_HI;
-        }
-
-        ONE_CLOCK;
-
-        if ((byte & 0x01) == 0)
-        {
-            SDA_TO_LOW;
-        }
-        else
-        {
-            SDA_TO_HI;
-        }
-
-        ONE_CLOCK;
+        SendBit((byte & 0x80) == 0);
+        SendBit((byte & 0x40) == 0);
+        SendBit((byte & 0x20) == 0);
+        SendBit((byte & 0x10) == 0);
+        SendBit((byte & 0x08) == 0);
+        SendBit((byte & 0x04) == 0);
+        SendBit((byte & 0x02) == 0);
+        SendBit((byte & 0x01) == 0);
     }
 
 
