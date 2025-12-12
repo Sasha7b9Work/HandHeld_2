@@ -121,14 +121,6 @@ namespace ST7735
     }
 
 
-    static void SendData16(uint16 word)
-    {
-        pinDC_RS.ToHi();
-
-        SendByte((uint8)(word >> 8));
-        SendByte((uint8)word);
-    }
-
     void SetWindow(int startX, int startY, int stopX, int stopY);
 
     static void Write_Cmd(unsigned char CMD)
@@ -375,11 +367,16 @@ void ST7735::Fill(uint16 color)
 {
     LCD_SetPos_Vertical(0, 159, 0, 79);
 
+    pinDC_RS.ToHi();
+
     for (uint w = 0; w < 160; w++)
     {
         for (uint u = 0; u < 80; u++)
         {
-            SendData16(color);
+            uint16 word = color;
+
+            SendByte((uint8)(word >> 8));
+            SendByte((uint8)word);
         }
     }
 }
@@ -419,13 +416,18 @@ void ST7735::WriteBuffer(int y0)
 {
     LCD_SetPos_Horizontal(0, Display::WIDTH - 1, (uint)y0, (uint)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
 
+    pinDC_RS.ToHi();
+
     for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
     {
         uint8 *points = Display::Buffer::GetLine(y);
 
         for (int i = 0; i < Display::WIDTH; i++)
         {
-            SendData16(Color::colors[*points++]);
+            uint16 word = Color::colors[*points++];
+
+            SendByte((uint8)(word >> 8));
+            SendByte((uint8)word);
         }
     }
 }
