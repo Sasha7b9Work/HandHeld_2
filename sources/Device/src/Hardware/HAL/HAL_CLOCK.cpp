@@ -1,12 +1,9 @@
 // 2024/04/18 15:19:44 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
-#include "Modules/ST7735/ST7735.h"
 #include "Hardware/HAL/systick.h"
-#include "Keyboard/Keyboard.h"
-#include "Settings/Source.h"
-#include "Display/Display7735.h"
 #include "Modules/PAN3060/PAN3060.h"
+#include "Display/Display.h"
 #include <gd32e23x.h>
 
 

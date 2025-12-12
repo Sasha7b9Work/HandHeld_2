@@ -4,8 +4,7 @@
 #include "Menu/MenuItemDef.h"
 #include "Storage/Storage.h"
 #include "Display/Font/Font.h"
-#include "Hardware/HAL/HAL.h"
-#include "Display/Display7735.h"
+#include "Display/Display.h"
 
 
 namespace PageJournal

@@ -7,7 +7,7 @@
 #include "Modules/PCF8563/PCF8563.h"
 #include "Modules/LED/driverLED.h"
 #include "Storage/Storage.h"
-#include "Display/Display7735.h"
+#include "Display/Display.h"
 
 
 namespace Power

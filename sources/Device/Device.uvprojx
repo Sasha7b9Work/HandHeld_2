@@ -746,19 +746,19 @@
               <FilePath>.\src\Display\Icons.h</FilePath>
             </File>
             <File>
-              <FileName>Display7735.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Display\Display7735.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Display7735.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Display7735.h</FilePath>
-            </File>
-            <File>
               <FileName>Text.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Text.h</FilePath>
+            </File>
+            <File>
+              <FileName>Display.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Display.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Display.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Display.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1014,11 +1014,6 @@
               <FileName>PCF8563.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PCF8563\PCF8563.h</FilePath>
-            </File>
-            <File>
-              <FileName>PCF8563_gd.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Modules\PCF8563\PCF8563_gd.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -1442,7 +1437,7 @@
             <v6LangP>6</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
-            <v6Lto>0</v6Lto>
+            <v6Lto>1</v6Lto>
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
@@ -1854,19 +1849,19 @@
               <FilePath>.\src\Display\Icons.h</FilePath>
             </File>
             <File>
-              <FileName>Display7735.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Display\Display7735.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Display7735.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Display7735.h</FilePath>
-            </File>
-            <File>
               <FileName>Text.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Text.h</FilePath>
+            </File>
+            <File>
+              <FileName>Display.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Display.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Display.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Display.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -2122,11 +2117,6 @@
               <FileName>PCF8563.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PCF8563\PCF8563.h</FilePath>
-            </File>
-            <File>
-              <FileName>PCF8563_gd.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Modules\PCF8563\PCF8563_gd.cpp</FilePath>
             </File>
           </Files>
         </Group>

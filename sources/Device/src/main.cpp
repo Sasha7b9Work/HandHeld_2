@@ -2,7 +2,6 @@
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
 #include "Modules/PCF8563/PCF8563.h"
-#include "Display/Display7735.h"
 #include "Hardware/Timer.h"
 #include "Keyboard/Keyboard.h"
 #include "Menu/Menu.h"
@@ -12,6 +11,7 @@
 #include "Modules/Beeper/Beeper.h"
 #include "Storage/Storage.h"
 #include "Hardware/Power.h"
+#include "Display/Display.h"
 #include <cstdlib>
 
 

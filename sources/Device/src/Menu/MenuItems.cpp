@@ -6,9 +6,7 @@
 #include "Utils/Math.h"
 #include "Settings/Settings.h"
 #include "Utils/StringUtils.h"
-#include "Hardware/HAL/HAL.h"
-#include "Hardware/Timer.h"
-#include "Display/Display7735.h"
+#include "Display/Display.h"
 
 
 void Item::Draw() const

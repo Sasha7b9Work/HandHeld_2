@@ -34,7 +34,7 @@ add_compile_options(
 file(GLOB GD32E23x                ../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include/*.*
                                   ../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Source/*.*)
 file(GLOB SRC                     src/*.*)
-file(GLOB DISPLAY                 src/Display/Display7735.*
+file(GLOB DISPLAY                 src/Display/Display.*
                                   src/Display/Icons.*
                                   src/Display/Colors.*
                                   src/Display/Text.*)

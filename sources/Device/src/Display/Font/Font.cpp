@@ -5,10 +5,7 @@
 #include "Display/Font/font8.inc"
 #include "Display/Text.h"
 #include "Display/Font/font10_7.inc"
-#include "Display/Display7735.h"
-
-//static const DFont *fonts[DTypeFont::Count] = { &font5, &font8 };
-
+#include "Display/Display.h"
 
 
 static const DFont *dfont = &font8;

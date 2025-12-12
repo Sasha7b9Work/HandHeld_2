@@ -4,8 +4,7 @@
 #include "Menu/MenuItems.h"
 #include "Menu/Pages/Pages.h"
 #include "Keyboard/Keyboard.h"
-#include "Display/Display7735.h"
-#include "Modules/ST7735/ST7735.h"
+#include "Display/Display.h"
 
 
 namespace Menu

@@ -3,7 +3,7 @@
 #include "Modules/ST7735/ST7735.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Hardware/Timer.h"
-#include "Display/Display7735.h"
+#include "Display/Display.h"
 #include <gd32e23x.h>
 
 
