@@ -42,14 +42,13 @@ namespace ST7735
 
     static void SendByte(uint8 byte)
     {
-        SendBit(byte & 0x80);
-        SendBit(byte & 0x40);
-        SendBit(byte & 0x20);
-        SendBit(byte & 0x10);
-        SendBit(byte & 0x08);
-        SendBit(byte & 0x04);
-        SendBit(byte & 0x02);
-        SendBit(byte & 0x01);
+        uint8 mask = 0x80;
+
+        for (int i = 0; i < 8; i++)
+        {
+            SendBit(byte & mask);
+            mask >>= 1;
+        }
     }
 
 
