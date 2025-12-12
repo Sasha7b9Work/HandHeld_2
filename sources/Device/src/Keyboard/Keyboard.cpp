@@ -42,11 +42,17 @@ namespace Keyboard
         exti_line_enum exti;
     };
 
+    /*
+    *   SW_DWN    41    PB5      Down
+    *   SW_UP     33    PA12     Up
+    *   SW_LEFT   38    PA15     Menu
+    *   SW_RIGHT  13    PA3      Cancel
+    */
 
-    static Button btnMenu(GPIOA, GPIO_PIN_3, EXTI2_3_IRQn, EXTI_SOURCE_GPIOB, EXTI_SOURCE_PIN2, EXTI_2);
-    static Button btnCancel(GPIOA, GPIO_PIN_15, EXTI0_1_IRQn, EXTI_SOURCE_GPIOB, EXTI_SOURCE_PIN0, EXTI_0);
-    static Button btnUp(GPIOA, GPIO_PIN_12, EXTI4_15_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN7, EXTI_7);
-    static Button btnDown(GPIOB, GPIO_PIN_5, EXTI0_1_IRQn, EXTI_SOURCE_GPIOB, EXTI_SOURCE_PIN1, EXTI_1);
+    static Button btnMenu(GPIOA, GPIO_PIN_3, EXTI2_3_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN3, EXTI_3);
+    static Button btnCancel(GPIOA, GPIO_PIN_15, EXTI4_15_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN15, EXTI_15);
+    static Button btnUp(GPIOA, GPIO_PIN_12, EXTI4_15_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN12, EXTI_12);
+    static Button btnDown(GPIOB, GPIO_PIN_5, EXTI4_15_IRQn, EXTI_SOURCE_GPIOB, EXTI_SOURCE_PIN5, EXTI_5);
 
     struct ButtonStruct
     {

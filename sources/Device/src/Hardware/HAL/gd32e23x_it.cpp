@@ -78,31 +78,17 @@ void SysTick_Handler(void)
 }
 
 
-void EXTI0_1_IRQHandler(void)
-{
-    if (SET == exti_interrupt_flag_get(EXTI_0))
-    {
-        Keyboard::CallbackFromInterrupt(Key::Cancel);
-
-        exti_interrupt_flag_clear(EXTI_0);
+#define CALLBACK_ON_KEY(ext, key)               \
+    if (SET == exti_interrupt_flag_get(ext))    \
+    {                                           \
+        Keyboard::CallbackFromInterrupt(key);   \
+        exti_interrupt_flag_clear(ext);         \
     }
 
-    if (SET == exti_interrupt_flag_get(EXTI_1))
-    {
-        Keyboard::CallbackFromInterrupt(Key::Down);
-
-        exti_interrupt_flag_clear(EXTI_1);
-    }
-}
 
 void EXTI2_3_IRQHandler(void)
 {
-    if (SET == exti_interrupt_flag_get(EXTI_2))
-    {
-        Keyboard::CallbackFromInterrupt(Key::Menu);
-
-        exti_interrupt_flag_clear(EXTI_2);
-    }
+    CALLBACK_ON_KEY(EXTI_3, Key::Menu)
 }
 
 
@@ -116,12 +102,11 @@ void EXTI4_15_IRQHandler(void)
         PAN3060::CallbackOnIRQ();
     }
 
-    if (SET == exti_interrupt_flag_get(EXTI_7))
-    {
-        Keyboard::CallbackFromInterrupt(Key::Up);
+    CALLBACK_ON_KEY(EXTI_5, Key::Down)
 
-        exti_interrupt_flag_clear(EXTI_7);
-    }
+    CALLBACK_ON_KEY(EXTI_12, Key::Up)
+
+    CALLBACK_ON_KEY(EXTI_15, Key::Cancel)
 }
 
 
