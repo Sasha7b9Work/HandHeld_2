@@ -5,6 +5,7 @@
 #include "Menu/Pages/Pages.h"
 #include "Keyboard/Keyboard.h"
 #include "Display/Display.h"
+#include "Utils/FPS.h"
 
 
 namespace Menu
@@ -71,6 +72,8 @@ void Menu::Update()
 void Menu::Draw()
 {
     current_item->Draw();
+
+    FPS::DrawTimeFrame(0, 0);
 }
 
 

@@ -31,24 +31,13 @@ namespace ST7735
 
     static void SendBit(bool cond)
     {
-        static bool prev_hi = false;    // ¬ цел€х уменьшени€ количеств переключени€ SDA будем мен€ть его состо€ние только когда его надо мен€ть.
-                                        // ƒл€ этого будем использовать prev_hi.
-
         if (cond)
         {
-            if (!prev_hi)
-            {
-                prev_hi = true;
-                SDA_TO_HI;
-            }
+            SDA_TO_HI;
         }
         else
         {
-            if (prev_hi)
-            {
-                SDA_TO_LOW;
-                prev_hi = false;
-            }
+            SDA_TO_LOW;
         }
 
         ONE_CLOCK;
