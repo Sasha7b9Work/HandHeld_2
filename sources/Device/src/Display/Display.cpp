@@ -30,11 +30,6 @@ namespace Display
 
         static int current_part = 0;                            // Эту часть сейчас отрисовываем
 
-        bool MatchesCRC(uint _crc)
-        {
-            return _crc == crc[current_part];
-        }
-
         static uint CalcualteCRC()
         {
             return Math::CalculateCRC32(buffer, SIZE);
@@ -54,20 +49,6 @@ namespace Display
     static void BeginScene(int num_part);
     static void DrawScene(int num_part);
     static void EndScene(int num_parts);
-
-    static void BeginSceneDebug(int num_part);
-    static void DrawSceneDebug(int num_part);
-    static void EndSceneDebug(int num_part);
-
-    static TimeMeterMS meter_begin_scene;
-    static TimeMeterMS meter_draw;
-    static TimeMeterMS meter_end_scene;
-    static TimeMeterMS meter_full;
-
-    static uint time_begin_scene = 0;
-    static uint time_draw = 0;
-    static uint time_end_scene = 0;
-    static uint time_full = 0;
 }
 
 
@@ -190,7 +171,7 @@ void Display::EndScene(int num_parts)
 {
     uint crc = Buffer::CalcualteCRC();
 
-//    if (!Buffer::MatchesCRC(crc))
+//    if (crc != Buffer::crc[Buffer::current_part])
     {
         if (!ModeClock::IsHi())
         {
@@ -200,7 +181,7 @@ void Display::EndScene(int num_parts)
             }
         }
 
-//        ModeClock::Set(ModeClock::Hi);
+        ModeClock::Set(ModeClock::Hi);
 
         ST7735::Enable();
 
@@ -392,101 +373,4 @@ int Text<capacity>::Write(int x, int y, const Color &color) const
     }
 
     return x;
-}
-
-
-void Display::BeginSceneDebug(int num_part)
-{
-    meter_begin_scene.Resume();
-
-    Buffer::current_part = num_part;
-
-    Buffer::Fill(Color::BLACK);
-
-    meter_begin_scene.Pause();
-}
-
-
-void Display::DrawSceneDebug(int)
-{
-    meter_draw.Resume();
-
-    int x = 10;
-    int y = 10;
-    int dy = 10;
-
-    Text<64>("begin scene : %u ms", time_begin_scene).Write(x, y, Color::WHITE);
-
-    y += dy;
-
-    Text<64>("draw scene : %u ms", time_draw).Write(x, y, Color::MAGENTA);
-
-    y += dy;
-
-    Text<64>("end scene : %u ms", time_end_scene).Write(x, y);
-
-    y += dy;
-
-    Text<64>("time full : %u ms", time_full).Write(x, y);
-
-    y += dy;
-
-    uint sum_time = time_begin_scene + time_draw + time_end_scene;
-
-    Text<64>("sum time : %u ms", sum_time).Write(x, y);
-
-    y += dy;
-
-    static RTCDateTime time;
-
-    static int counter = 0;
-
-    if ((counter++ % 2) == 0)
-    {
-        time = PCF8563::GetDateTime();
-    }
-
-    time.DrawTime(x, y);
-
-    meter_draw.Pause();
-}
-
-
-void Display::EndSceneDebug(int num_part)
-{
-    meter_end_scene.Resume();
-
-    ST7735::Enable();
-
-    ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_part);
-
-    meter_end_scene.Pause();
-}
-
-
-void Display::UpdateDebug()
-{
-    meter_begin_scene.Reset();
-    meter_begin_scene.Pause();
-
-    meter_draw.Reset();
-    meter_draw.Pause();
-
-    meter_end_scene.Reset();
-    meter_end_scene.Pause();
-
-    meter_full.Reset();
-
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
-    {
-        BeginSceneDebug(i);
-        DrawSceneDebug(i);
-        EndSceneDebug(i);
-    }
-
-    time_begin_scene = meter_begin_scene.ElapsedTime();
-    time_draw = meter_draw.ElapsedTime();
-    time_end_scene = meter_end_scene.ElapsedTime();
-
-    time_full = meter_full.ElapsedTime();
 }
