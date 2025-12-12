@@ -46,7 +46,7 @@ namespace HAL_ADC
 }
 
 
-// Для дисплея
+// Для часов
 namespace HAL_I2C
 {
     void Init();
