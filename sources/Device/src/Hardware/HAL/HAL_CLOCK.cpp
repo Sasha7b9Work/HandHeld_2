@@ -23,7 +23,7 @@ namespace HAL_CLOCK
 }
 
 
-void ModeClock::_Set(E v)
+void ModeClock::Set(E v)
 {
     if (v == ModeClock::DeepSleep)
     {

@@ -19,20 +19,18 @@
 
 
 
-void Update();
-
-static void Update2();
-
-static void UpdateLED();
+static void Update();
 
 
 int main()
 {
     HAL::Init();
 
+    PCF8563::Init();
+
     Display::Init();
 
-    //    Power::Init();
+    Power::Init();
 
     Timer::Init();
 
@@ -44,33 +42,15 @@ int main()
 
     Vibrato::Init();
 
-//    ModeClock::Set(ModeClock::Hi);
-
     PAN3060::Init();
 
     Beeper::Init();
 
     Storage::Init();
     
-    Beeper::Play(TypeSound::_4, 2);
-
-    PCF8563::Init();
-
-    RTCDateTime time
+    while(true)
     {
-        (uint8)(std::rand() % 100),
-        (uint8)((std::rand() % 10) + 1),
-        (uint8)(std::rand() % 30),
-        (uint8)(std::rand() % 12),
-        (uint8)(std::rand() % 60),
-        (uint8)(std::rand() % 60)
-    };
-
-    PCF8563::SetDateTime(&time);
-
-    while (true)
-    {
-        Update2();
+        Update();
     }
 }
 
@@ -84,7 +64,7 @@ void Update()
 
     if (!recv_enabled && keyboard_more_time && num_sources == 0 && !is_alarmed)
     {
-//        ModeClock::Set(ModeClock::DeepSleep);
+        ModeClock::Set(ModeClock::DeepSleep);
     }
 
     ModeClock::LeaveDeepSleep();
@@ -109,37 +89,4 @@ void Update()
     Source::Update();
 
     Power::Update();
-}
-
-
-void Update2()
-{
-    Beeper::Update();
-
-    PAN3060::Update();
-
-    PCF8563::Update();
-
-    UpdateLED();
-
-    Display::UpdateDebug();
-}
-
-
-void UpdateLED()
-{
-    static TimeMeterMS meter;
-
-    if (meter.ElapsedTime() > 1000)
-    {
-        meter.Reset();
-
-        static int color = 0;
-
-        color++;
-
-        color &= 0x07;
-
-        LED::Enable((ColorLED::E)color);
-    }
 }
