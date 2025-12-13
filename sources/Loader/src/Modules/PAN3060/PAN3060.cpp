@@ -349,13 +349,13 @@ void PAN3060::FuncDraw()
 
     char buffer[32];
 
-    Text<>(SU::IntToASCII(firmware.FilledPages(), buffer)).Write(0, 0);
+    Text<>(SU::IntToASCII(firmware.FilledPages(), buffer)).Write(1, 1);
 
-    Text<>(SU::IntToASCII(chains_is_ok, buffer)).Write(30, 0);
+    Text<>(SU::IntToASCII(chains_is_ok, buffer)).Write(30, 1);
 
-    Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(60, 0);
+    Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(60, 1);
 
-    Text<>(SU::IntToASCII((int)(meter.ElapsedTime() / 1000), buffer)).Write(90, 0);
+    Text<>(SU::IntToASCII((int)(meter.ElapsedTime() / 1000), buffer)).Write(90, 1);
 }
 
 

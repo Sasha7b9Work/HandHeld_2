@@ -72,6 +72,6 @@ add_library(
     ${HARDWARE_HAL}
     ${MODULES_LED}
     ${MODULES_PAN3060}
-    ${MODUELS_ST7735}
+    ${MODULES_ST7735}
     ${UTILS}
 )
