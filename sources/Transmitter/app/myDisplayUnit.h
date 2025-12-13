@@ -15,8 +15,7 @@ typedef enum
     UI_PAGE_ID_RF_CONTINUOUS,
     UI_PAGE_ID_SETTING,
     UI_PAGE_ID_DEVICE_INFOR,
-    UI_PAGE_ID_UPGRADE_FIRMWARE,        // Кнопка доступа к меню обновления
-    UI_PAGE_ID_BELL,                    // Кнопка доступа к меню "ЗВОНОК"
+    UI_PAGE_ID_UPGRADE_FIRMWARE,
     UI_PAGE_ID_MAX,
 }uiPageIndex_te;
 typedef enum
@@ -124,4 +123,3 @@ void myDisplay_ui_deviceInfor_setModule(char *moduleName);
 void uiTimerFlash_callBack(void);
 
 void myDisplay_ui_upgradeFirmware(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr);
-void myDisplay_ui_simulateBell(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr);
