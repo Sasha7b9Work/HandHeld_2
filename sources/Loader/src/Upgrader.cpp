@@ -14,7 +14,7 @@ void Upgrader::Run()
 
     while (!PAN3060::InProcessUpgrade())    // Æä¸ì, êîãäà íà÷í¸òñÿ ïğîöåññ îáíîâëåíèÿ
     {
-        if (meter.ElapsedTime() > 3000)
+        if (meter.ElapsedTime() > 1000)
         {
             return;
         }
