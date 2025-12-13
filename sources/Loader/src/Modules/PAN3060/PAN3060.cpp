@@ -116,10 +116,6 @@ void PAN3060::Init()
     rf_set_default_para();
 
     rf_enter_continous_rx();
-
-    page.Clear();
-
-    firmware.Clear();
 }
 
 
@@ -147,6 +143,12 @@ void PAN3060::InitSPI()
 
 void PAN3060::CallbackOnIRQ()
 {
+    if (!in_process_upgrade)
+    {
+        page.Clear();
+        firmware.Clear();
+    }
+
     in_process_upgrade = true;
 
     uint8 irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);

@@ -7,19 +7,24 @@
 
 
 void Upgrader::Run()
-{
+{   
     PAN3060::Init();
-
+    
     Display::Init();
 
     TimeMeterMS meter;
+    
+    int counter = 10;
 
-    while (!PAN3060::InProcessUpgrade())
+    while (!PAN3060::InProcessUpgrade())        // Ждём, когда начнётся процесс обновления
     {
-        Display::Update();
+        if(counter-- < 0)
+        {
+            break;
+        }
     }
 
-    while (PAN3060::InProcessUpgrade())
+    while (PAN3060::InProcessUpgrade())         // Если после выхода из предыдущего цикла PAN3060 не вошёл в режим обновления, то цикл выполняться не будет
     {
         Display::Update();
     }
