@@ -12,7 +12,8 @@
 
 namespace PAN3060
 {
-    static bool in_process_upgrade = false;
+    static bool in_process_upgrade = false;     // Обновление в процессе
+    static bool is_finished = false;            // Обновление завершено
 
     static void InitIRQ();
 
@@ -143,6 +144,11 @@ void PAN3060::InitSPI()
 
 void PAN3060::CallbackOnIRQ()
 {
+    if (is_finished)
+    {
+        return;
+    }
+
     if (!in_process_upgrade)
     {
         page.Clear();
@@ -275,6 +281,7 @@ void PAN3060::Firmware::CheckForComplete()
     if (crc_real == crc)
     {
         in_process_upgrade = false;
+        is_finished = true;
     }
     else
     {
@@ -339,6 +346,11 @@ uint8 PAN3060::Packet::CalculateChainInPage(uint16 number_chain_full) const
 
 bool PAN3060::InProcessUpgrade()
 {
+    if (is_finished)
+    {
+        return false;
+    }
+
     return in_process_upgrade;
 }
 
