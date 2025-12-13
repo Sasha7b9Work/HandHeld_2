@@ -12,11 +12,16 @@
 
 namespace PAN3060
 {
-    bool in_process_upgrade = false;
+    static bool in_process_upgrade = false;
 
     static void InitIRQ();
 
     static void InitSPI();
+
+    static const uint NUM_PAGES = 54;
+    static const uint BEGIN_FIRMWARE = 0x8002000;
+    static const uint SIZE_CHAIN = 128;
+    static const int CHAINS_IN_PAGE = 8;
 
     static int chains_is_ok = 0;
     static int chains_is_fail = 0;
@@ -37,9 +42,63 @@ namespace PAN3060
         uint8 CalculateChainInPage(uint16 number_chain_full) const;         // ѕреобразует сквозной номер чайна в номер чайна на странице
     };
 
-    Firmware firmware;
+    // Ёта структура описывает все данные прошивки
+    struct Firmware
+    {
+        bool pages[NUM_PAGES];      // true означает, что страница прин€та и сохранена в EEPROM
+        uint crc = 0;
 
-    Page page;
+        void CheckForComplete();
+
+        bool IsFilled() const;
+
+        void Clear();
+
+        int FilledPages() const
+        {
+            int result = 0;
+
+            for (uint i = 0; i < NUM_PAGES; i++)
+            {
+                if (pages[i])
+                {
+                    result++;
+                }
+            }
+
+            return result;
+        }
+
+    };
+
+    // ќписывает одну страницу
+    struct Page
+    {
+        struct Chain
+        {
+            uint8 buffer[SIZE_CHAIN];
+        };
+
+        Chain chains[CHAINS_IN_PAGE];
+
+        bool received[CHAINS_IN_PAGE];
+
+        int number = -1;
+
+        void Clear();
+
+        // true, если страница полностью заполнена
+        bool IsFilled() const;
+
+        // «аписывает page[1024] в EEPROM
+        void WritePageEEPROM() const;
+    };
+
+    // ѕринимаема€ прошивка
+    static Firmware firmware;
+
+    // ѕринимаема€ страница
+    static Page page;
 }
 
 
@@ -179,10 +238,10 @@ void PAN3060::Packet::ReceiveChain()
         return;
     }
 
-    std::memcpy(page.chains[number_chain_in_page].buffer, buffer + 2, Page::Chain::SIZE_CHAIN);
+    std::memcpy(page.chains[number_chain_in_page].buffer, buffer + 2, SIZE_CHAIN);
     page.received[number_chain_in_page] = true;
 
-    if (number_chain_in_page == Page::CHAINS_IN_PAGE - 1)
+    if (number_chain_in_page == CHAINS_IN_PAGE - 1)
     {
         if (!firmware.pages[number_page])               // ≈сли данна€ страница ещЄ не записана в EEPROM
         {
@@ -201,6 +260,27 @@ void PAN3060::Packet::ReceiveFinish()
     firmware.crc = Struct32(buffer + 2).u32;
 
     firmware.CheckForComplete();
+}
+
+
+void PAN3060::Firmware::CheckForComplete()
+{
+    if (!IsFilled())
+    {
+        return;
+    }
+
+    uint crc_real = SU::CalculateCRC32((const void *)BEGIN_FIRMWARE, NUM_PAGES * 1024);
+
+    if (crc_real == crc)
+    {
+        in_process_upgrade = false;
+    }
+    else
+    {
+        Clear();
+        page.Clear();
+    }
 }
 
 
@@ -241,19 +321,19 @@ void PAN3060::Firmware::Clear()
 
 uint8 PAN3060::Packet::CalculateNumberPage(uint16 number_chain_full) const
 {
-    return (uint8)(number_chain_full / Page::CHAINS_IN_PAGE);
+    return (uint8)(number_chain_full / CHAINS_IN_PAGE);
 }
 
 
 void PAN3060::Page::WritePageEEPROM() const
 {
-    HAL_ROM::WritePage(Firmware::BEGIN_FIRMWARE + (uint)(number * 1024), &chains[0].buffer[0]);
+    HAL_ROM::WritePage(BEGIN_FIRMWARE + (uint)(number * 1024), &chains[0].buffer[0]);
 }
 
 
 uint8 PAN3060::Packet::CalculateChainInPage(uint16 number_chain_full) const
 {
-    return (uint8)(number_chain_full % Page::CHAINS_IN_PAGE);
+    return (uint8)(number_chain_full % CHAINS_IN_PAGE);
 }
 
 
