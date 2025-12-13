@@ -21,7 +21,7 @@ namespace Display
 
         static void Fill()
         {
-            std::memset(buffer, 0x00, SIZE);
+            std::memset(buffer, 0xFF, SIZE);
         }
 
         uint8 *GetLine(int y)
@@ -32,6 +32,18 @@ namespace Display
 
     static void BeginScene(int num_part);
     static void EndScene(int num_parts);
+
+    static void Clear();
+}
+
+
+void Display::Clear()
+{
+    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    {
+        BeginScene(i);
+        EndScene(i);
+    }
 }
 
 
@@ -40,6 +52,8 @@ void Display::Init()
 #ifndef DEBUG
 
     ST7735::Init();
+
+    Clear();
 
     Font::SetType(TypeFont::_5);
 #endif
@@ -150,7 +164,7 @@ void Pixel::Set(int x, int y) const
         return;
     }
 
-    Display::Buffer::buffer[y * Display::WIDTH + x] = 0xFF;
+    Display::Buffer::buffer[y * Display::WIDTH + x] = 0x00;
 }
 
 
