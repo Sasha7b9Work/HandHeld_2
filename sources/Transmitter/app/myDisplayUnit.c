@@ -305,6 +305,7 @@ void myDisplay_ui_selectMode(bool flashFlag, int agr0, void *agr1_ptr, void *agr
     myLCD_str8x16(agr0 == 5 && flashFlag ? IM_INVERSE : IM_NOMALE,
         10, 6, "Upgrade Firmware");
 }
+
 void myDisplay_ui_upgradeFirmware(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr)
 {
     if (uiPageIdAddress != UI_PAGE_ID_UPGRADE_FIRMWARE)
@@ -326,6 +327,17 @@ void myDisplay_ui_upgradeFirmware(bool flashFlag, int agr0, void *arg1_ptr, void
 
     upg_func_display();
 }
+
+void myDisplay_ui_simulateBell(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr)
+{
+    if (uiPageIdAddress != UI_PAGE_ID_BELL)
+    {
+        myLCD_clearFull();
+    }
+
+    uiPageIdAddress = UI_PAGE_ID_BELL;
+}
+
 void myDisplay_ui_rf_rx_packet(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
 {
     int i;
@@ -826,8 +838,12 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[5] = UI_PAGE_ID_UPGRADE_FIRMWARE + 1;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[5] = TYPE_NEXT_LINK;
 
+    // ¬тора€ страница меню ------------------------------------------------------------------------------------------------------
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[6] = UI_PAGE_ID_BELL + 1;
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[6] = TYPE_NEXT_LINK;
+
     uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCounting = 0;
-    uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCount = 6;
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCount = 7;
 
     // Upgrade Firmware ----------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].id = UI_PAGE_ID_UPGRADE_FIRMWARE + 1;
@@ -838,6 +854,16 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].writeStaTab[0] = 0;
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].cursorCounting = 0;
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].cursorCount = 1;
+
+    // —имул€ци€ вызова звонка  -------------------------------------------------------------------------------------------------
+    uiPageParams[UI_PAGE_ID_BELL].id = UI_PAGE_ID_BELL + 1;
+    uiPageParams[UI_PAGE_ID_BELL].uiDriver = myDisplay_ui_simulateBell;
+    uiPageParams[UI_PAGE_ID_BELL].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
+    uiPageParams[UI_PAGE_ID_BELL].nextPageIdTab[0] = 0;
+    uiPageParams[UI_PAGE_ID_BELL].itemTypeTab[0] = TYPE_WRITE_TEXT;
+    uiPageParams[UI_PAGE_ID_BELL].writeStaTab[0] = 0;
+    uiPageParams[UI_PAGE_ID_BELL].cursorCounting = 0;
+    uiPageParams[UI_PAGE_ID_BELL].cursorCount = 1;
 
     // Enter RF Receiver ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_RX_PACKET].id = UI_PAGE_ID_RX_PACKET + 1;
