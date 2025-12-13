@@ -78,7 +78,7 @@ void Display::Update()
     meter.Reset();
 
 #ifndef DEBUG
-    for (int i = 0; i < 1; i++)
+    for (int i = 3; i < 4; i++)
     {
         BeginScene(i);      // 0 ms
         PAN3060::FuncDraw();

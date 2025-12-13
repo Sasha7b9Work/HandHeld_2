@@ -1236,7 +1236,7 @@
           </BeforeMake>
           <AfterMake>
             <RunUserProg1>0</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>D:\Keil_v542a\ARM\ARMCLANG\bin\fromelf.exe --bin Objects\HandHeld.axf --output HandHeld.bin</UserProg1Name>
             <UserProg2Name>C:\Keil_v5\ARM\ARMCLANG\bin\fromelf.exe --bin Objects\HandHeld.axf --output HandHeld.bin</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
