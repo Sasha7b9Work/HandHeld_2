@@ -350,7 +350,7 @@ void Pixel::Set(int x, int y, const Color &color) const
 
 void RTCDateTime::DrawTime(int x, int y, const Color &color) const
 {
-    Text<>("%02d:%02d:%03d", Hour, Minute, Second).Write(x, y, color);
+    Text<>("%02d:%02d", Hour, Minute).Write(x, y, color);
 }
 
 
