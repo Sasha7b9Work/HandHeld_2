@@ -147,11 +147,3 @@ bool PAN3060::IsEnabled()
 
     return result;
 }
-
-
-uint PAN3060::_GetCode(Source::E source)
-{
-    static const uint packets[Source::Count] = { 0x7E9E, 0x7EA6, 0x7ED5, 0x7EB9, 0x7ECA, 0x7EED };
-
-    return packets[source];
-}

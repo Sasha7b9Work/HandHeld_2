@@ -14,7 +14,5 @@ namespace PAN3060
 
     void PrepareToSleep();
 
-    uint _GetCode(Source::E);
-
     void CallbackOnIRQ();
 }
