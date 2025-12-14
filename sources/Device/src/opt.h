@@ -11,5 +11,5 @@
 #define BOARD_NEW
 
 
-//#define SOUND_ENABELD
+#define SOUND_ENABELD
 
