@@ -95,20 +95,19 @@ void PAN3060::Update()
                 _buffer[1] &= 0x7F;
                 if (_buffer[1] & VIBROLINE_DEVICE_DOORBELL)
                 {
-
+                    Source::Receive(Source::DoorBell);
                 }
-                if (_buffer[1] & VIBROLINE_DEVICE_PHONE)
+                else if (_buffer[1] & VIBROLINE_DEVICE_PHONE)
                 {
-
+                    Source::Receive(Source::Mobile);
                 }
-
-                if (_buffer[1] & VIBROLINE_DEVICE_INTERCOM)
+                else if (_buffer[1] & VIBROLINE_DEVICE_INTERCOM)
                 {
-
+                    Source::Receive(Source::Intercom);
                 }
                 if (_buffer[1] & VIBROLINE_DEVICE_BABYCRY)
                 {
-
+                    Source::Receive(Source::Microphone);
                 }
 
                 rf_init();
