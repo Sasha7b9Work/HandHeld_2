@@ -16,34 +16,31 @@ namespace HAL_ADC
 }
 
 
-void HAL_ADC::_Init()
+void HAL_ADC::Init()
 {
     rcu_periph_clock_enable(RCU_ADC);
 
     rcu_adc_clock_config(RCU_ADCCK_APB2_DIV6);
 
-    gpio_mode_set(GPIOC, GPIO_MODE_ANALOG, GPIO_PUPD_PULLDOWN, GPIO_PIN_13);
+    gpio_mode_set(GPIOA, GPIO_MODE_ANALOG, GPIO_PUPD_PULLDOWN, GPIO_PIN_2);
 
-    /* ADC contineous function enable */
     adc_special_function_config(ADC_CONTINUOUS_MODE, ENABLE);
-    /* ADC trigger config */
+
     adc_external_trigger_source_config(ADC_REGULAR_CHANNEL, ADC_EXTTRIG_REGULAR_NONE);
-    /* ADC data alignment config */
+
     adc_data_alignment_config(ADC_DATAALIGN_RIGHT);
-    /* ADC channel length config */
+
     adc_channel_length_config(ADC_REGULAR_CHANNEL, 1U);
 
-    /* ADC regular channel config */
-    adc_regular_channel_config(0U, ADC_CHANNEL_1, ADC_SAMPLETIME_239POINT5);
+    adc_regular_channel_config(0U, ADC_CHANNEL_2, ADC_SAMPLETIME_239POINT5);
     adc_external_trigger_config(ADC_REGULAR_CHANNEL, ENABLE);
 
-    /* ADC resolusion 6B */
     adc_resolution_config(ADC_RESOLUTION_12B);
 
-    /* enable ADC interface */
     adc_enable();
+
     Timer::Delay(1U);
-    /* ADC calibration and reset calibration */
+
     adc_calibration_enable();
 
     adc_software_trigger_enable(ADC_REGULAR_CHANNEL);
@@ -52,8 +49,6 @@ void HAL_ADC::_Init()
 
 float HAL_ADC::GetVoltage(bool force)
 {
-    return 0.0f;
-
     static float voltage = 5.0f;
 
     static TimeMeterMS meter;
