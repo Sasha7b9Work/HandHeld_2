@@ -22,7 +22,7 @@ void HAL_ADC::_Init()
 
     rcu_adc_clock_config(RCU_ADCCK_APB2_DIV6);
 
-    gpio_mode_set(GPIOA, GPIO_MODE_ANALOG, GPIO_PUPD_PULLDOWN, GPIO_PIN_1);
+    gpio_mode_set(GPIOC, GPIO_MODE_ANALOG, GPIO_PUPD_PULLDOWN, GPIO_PIN_13);
 
     /* ADC contineous function enable */
     adc_special_function_config(ADC_CONTINUOUS_MODE, ENABLE);
@@ -53,7 +53,7 @@ void HAL_ADC::_Init()
 float HAL_ADC::GetVoltage(bool force)
 {
     return 0.0f;
-    
+
     static float voltage = 5.0f;
 
     static TimeMeterMS meter;

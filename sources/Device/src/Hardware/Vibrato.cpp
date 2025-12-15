@@ -9,18 +9,19 @@
 
 namespace Vibrato
 {
-    static uint PIN = GPIO_PIN_10;
+    static uint PIN = GPIO_PIN_4;
+    static uint PORT = GPIOB;
 
     namespace Driver
     {
         static void On()
         {
-            gpio_bit_set(GPIOA, PIN);
+            gpio_bit_set(PORT, PIN);
         }
 
         static void Off()
         {
-            gpio_bit_reset(GPIOA, PIN);
+            gpio_bit_reset(PORT, PIN);
         }
     }
 
@@ -31,8 +32,8 @@ namespace Vibrato
 
 void Vibrato::Init()
 {
-    gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, PIN);
-    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PIN);
+    gpio_mode_set(PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, PIN);
+    gpio_output_options_set(PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PIN);
 
     Driver::Off();
 }
@@ -54,7 +55,7 @@ void Vibrato::Disable()
 
 bool Vibrato::IsRunning()
 {
-    return gpio_input_bit_get(GPIOA, PIN) != RESET;
+    return gpio_input_bit_get(PORT, PIN) != RESET;
 }
 
 

@@ -1,2 +1,27 @@
-SOUND   18  PB0
-MUTE    19  PB1
++ SOUND    18 PB0   Звук
+  MUTE     19 PB1   Включение/выключение динамика
+  TFT_ON   20 PB2   Включение/выключение дисплея
+  CHRG_CPU 39 PB3
++ VIBRO    40 PB4   Вибратор
+  SW_DWN   41 PB5
+  TFT_RES  21 PB10
+  TFT_RS   22 PB11
+  NSS      25 PB12
+  SCK      26 PB13
+  MISO     27 PB14
+  MOSI     28 PB15
+  I2C_SCK  10 PA0
+  I2C_SDA  11 PA1
+  ADC      12 PA2
+  SW_RGHT  13 PA3
+  TFT_BKG  14 PA4
+  TFT_SCL  15 PA5
+  TFT_SDA  17 PA7
+  IRQ      29 PA8
+  LEDR     30 PA9
+  LEDG     31 PA10
+  LEDB     32 PA11
+  SW_UP    33 PA12
+  SW_LEFT  38 PA15
+  PWR_CTRL  2 PC13
+  
