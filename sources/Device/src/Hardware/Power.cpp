@@ -3,7 +3,6 @@
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
 #include "Hardware/Power.h"
-#include "Hardware/HAL/HAL_PINS.h"
 #include "Modules/PCF8563/PCF8563.h"
 #include "Modules/LED/driverLED.h"
 #include "Storage/Storage.h"
@@ -15,16 +14,14 @@ namespace Power
     static const int WIDTH = 38;
     static const int HEIGHT = 14;
 
-    static void PowerDown();
+    // Отклюсить питание
+    static void Shutdown();
 }
 
 
 void Power::Init()
 {
-//    pinPWR.Init();
 //    pinPWR_CTRL.Init();
-
-//    pinPWR.ToHi();
 
     float voltage = HAL_ADC::GetVoltage(true);
 
@@ -32,7 +29,7 @@ void Power::Init()
     {
         PCF8563::AlarmFlagEnable(false);
 
-        PowerDown();
+        Shutdown();
     }
     else if (voltage < 3.5f)
     {
@@ -45,7 +42,7 @@ void Power::Init()
             Display::DrawLowVoltage();
         }
 
-        PowerDown();
+        Shutdown();
     }
 
     PCF8563::Update();
@@ -80,15 +77,13 @@ void Power::Disable()
         Display::DrawPowerOff();
     }
 
-    PowerDown();
+    Shutdown();
 }
 
 
-void Power::PowerDown()
+void Power::Shutdown()
 {
     Storage::Save();
-
-//    pinPWR.ToLow();
 
     LED::Driver::On();
 

@@ -44,9 +44,6 @@ struct PinOut : public Pin
 };
 
 
-//extern PinOut _pinPWR;               // Управление включением - 1 - вкл
-//extern PinIn  _pinPWR_CTRL;          // Сигнал включения - 0 - нажата кнопка или будильник сработал
-
 extern PinOut pinSPI1_NSS;
 extern PinOut pinSPI1_CLK;
 extern PinOut pinSPI1_MOSI;
