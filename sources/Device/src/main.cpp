@@ -10,9 +10,8 @@
 #include "Modules/PAN3060/PAN3060.h"
 #include "Modules/Beeper/Beeper.h"
 #include "Storage/Storage.h"
-#include "Hardware/Power.h"
 #include "Display/Display.h"
-#include <cstdlib>
+#include "Modules/PMS150G/PMS150G.h"
 
 
 // Ammyy      95 243 113     32766
@@ -51,6 +50,8 @@ int main()
     Beeper::Init();
 
     Storage::Init();
+
+    PMS150G::Init();
     
     while(true)
     {

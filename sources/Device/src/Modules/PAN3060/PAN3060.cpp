@@ -1,13 +1,10 @@
 // 2024/03/01 22:46:05 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Hardware/HAL/HAL_PINS.h"
-#include "Settings/Settings.h"
 #include "Hardware/Timer.h"
-#include "Hardware/HAL/HAL.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include "Modules/PAN3060/chirp_rf.h"
 #include <gd32e23x.h>
-#include <cstring>
 
 
 namespace PAN3060
@@ -129,12 +126,6 @@ void PAN3060::PrepareToSleep()
 }
 
 
-void PAN3060::CallbackOnIRQ()
-{
-    need_rx = true;
-}
-
-
 bool PAN3060::IsEnabled()
 {
     bool result = TIME_MS - time_enable < 700;      // \todo здесь должно быть 610
@@ -145,4 +136,16 @@ bool PAN3060::IsEnabled()
     }
 
     return result;
+}
+
+
+void PAN3060::CallbackOnIRQ()
+{
+    need_rx = true;
+}
+
+
+void PAN3060::CallbackOnWakeUp()
+{
+    int i = 0;
 }

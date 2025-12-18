@@ -14,5 +14,9 @@ namespace PAN3060
 
     void PrepareToSleep();
 
+    // Вызывается по прерыванию на приём данных
     void CallbackOnIRQ();
+
+    // Вызывается по прерыванию от сопроцессора PMS150G
+    void CallbackOnWakeUp();
 }

@@ -4,7 +4,6 @@
 #include "Keyboard/Keyboard.h"
 #include "Hardware/Timer.h"
 #include "Modules/Beeper/Beeper.h"
-#include "Hardware/HAL/HAL_PINS.h"
 #include "Modules/PAN3060/PAN3060.h"
 
 
@@ -97,9 +96,16 @@ void EXTI4_15_IRQHandler(void)
     // Получено прерывание от приёмника
     if (SET == exti_interrupt_flag_get(EXTI_8))
     {
-        exti_interrupt_flag_clear(EXTI_8);
-
         PAN3060::CallbackOnIRQ();
+
+        exti_interrupt_flag_clear(EXTI_8);
+    }
+
+    if (SET == exti_interrupt_flag_get(EXTI_13))
+    {
+        exti_interrupt_flag_clear(EXTI_13);
+
+        PAN3060::CallbackOnWakeUp();
     }
 
     CALLBACK_ON_KEY(EXTI_5, Key::Down)
