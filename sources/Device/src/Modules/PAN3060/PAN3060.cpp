@@ -147,5 +147,4 @@ void PAN3060::CallbackOnIRQ()
 
 void PAN3060::CallbackOnWakeUp()
 {
-    int i = 0;
 }

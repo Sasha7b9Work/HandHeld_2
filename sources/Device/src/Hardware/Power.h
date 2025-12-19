@@ -4,11 +4,5 @@
 
 namespace Power
 {
-    void Update();
-
-    void Init();
-
-    void Disable();
-
     void Draw();
 }
