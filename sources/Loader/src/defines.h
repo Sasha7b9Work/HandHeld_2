@@ -3,7 +3,7 @@
 #include <cstring>
 
 
-#define BOARD_NEW
+//#define BOARD_NEW
 
 
 #ifndef WIN32
