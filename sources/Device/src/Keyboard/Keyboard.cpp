@@ -49,8 +49,12 @@ namespace Keyboard
     *   SW_RIGHT  13    PA3      Cancel
     */
 
-    static Button btnMenu(GPIOA, GPIO_PIN_3, EXTI2_3_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN3, EXTI_3);
+    static Button btnMenu(GPIOA, GPIO_PIN_3, EXTI2_3_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN3, EXTI_3); 
+#ifdef BOARD_NEW
     static Button btnCancel(GPIOA, GPIO_PIN_15, EXTI4_15_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN15, EXTI_15);
+#else
+    static Button btnCancel(GPIOB, GPIO_PIN_3, EXTI2_3_IRQn, EXTI_SOURCE_GPIOB, EXTI_SOURCE_PIN3, EXTI_3);
+#endif
     static Button btnUp(GPIOA, GPIO_PIN_12, EXTI4_15_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN12, EXTI_12);
     static Button btnDown(GPIOB, GPIO_PIN_5, EXTI4_15_IRQn, EXTI_SOURCE_GPIOB, EXTI_SOURCE_PIN5, EXTI_5);
 
