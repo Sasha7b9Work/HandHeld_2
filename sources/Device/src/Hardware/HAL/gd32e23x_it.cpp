@@ -147,6 +147,7 @@ void EXTI4_15_IRQHandler(void)
     {
         exti_interrupt_flag_clear(EXTI_13);
 
+        // Хотя это прерывание случается на PC13 от PMS150G, но вызываем приёмник - пора слушать эфир
         PAN3060::CallbackOnWakeUp();
     }
 
