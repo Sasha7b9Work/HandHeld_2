@@ -48,7 +48,7 @@ void ModeClock::Set(E v)
         {
             current = ModeClock::Hi;
 
-            HAL_CLOCK::SetHi();
+//            HAL_CLOCK::SetHi();
         }
     }
 }
