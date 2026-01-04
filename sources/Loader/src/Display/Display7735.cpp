@@ -6,6 +6,7 @@
 #include "Modules/PAN3060/PAN3060.h"
 #include "Display/Text.h"
 #include "Hardware/Timer.h"
+#include "Utils/String.h"
 
 
 template int Text<64>::Write(int x, int y) const;
@@ -81,7 +82,16 @@ void Display::Update()
     for (int i = 3; i < 4; i++)
     {
         BeginScene(i);      // 0 ms
-        PAN3060::FuncDraw();
+        if (PAN3060::InProcessUpgrade())
+        {
+            PAN3060::FuncDraw();
+        }
+        else
+        {
+            static int counter = 0;
+            char buffer[30];
+            Text<>(SU::IntToASCII(counter++, buffer)).Write(10, 30);
+        }
         EndScene(i);        // 68 ms
     }
 #endif
