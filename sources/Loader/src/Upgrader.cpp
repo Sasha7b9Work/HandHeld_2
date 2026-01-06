@@ -12,15 +12,6 @@ void Upgrader::Run()
 
     TimeMeterMS meter;
 
-    Display::Init();
-
-    while (meter.ElapsedTime() < 3000)
-    {
-        Display::Update();
-    }
-
-    meter.Reset();
-
     while (!PAN3060::InProcessUpgrade())    // Ждём, когда начнётся процесс обновления
     {
         if (meter.ElapsedTime() > 1000)
@@ -28,6 +19,8 @@ void Upgrader::Run()
             return;
         }
     }
+
+    Display::Init();
 
     while (PAN3060::InProcessUpgrade())     // Если после выхода из предыдущего цикла PAN3060 не вошёл в режим обновления, то цикл выполняться не будет
     {
