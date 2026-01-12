@@ -9,46 +9,20 @@
 
 namespace ST7735
 {
+    /*
+    *   TFT_SCK - 15 : PA5     AF0 SPI0_SCK
+    *   TFT_SDA - 17 : PA7     AF0 SPI0_MOSI
+    */
     static bool is_enabled = false;
 
     static PinOut pinDC_RS(GPIOB, GPIO_PIN_11);   // PB11 22
     static PinOut pinRES(GPIOB, GPIO_PIN_10);     // PB10 21
     static PinOut pinBKG(GPIOA, GPIO_PIN_4);      // PA4  14
-    static PinOut pinSCL(GPIOA, GPIO_PIN_5);      // PA5  15
-    static PinOut pinSDA(GPIOA, GPIO_PIN_7);      // PA7  17
     static PinOut pinON(GPIOB, GPIO_PIN_2);       // PB2  20
-
-#define SDA_TO_LOW GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_7
-#define SDA_TO_HI  GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_7
-
-#define SCL_TO_HI  GPIO_BOP(GPIOA) = (uint32_t)GPIO_PIN_5
-#define SCL_TO_LOW GPIO_BC(GPIOA) = (uint32_t)GPIO_PIN_5
-
-    static void SendBit(bool cond)
-    {
-        if (cond)
-        {
-            SDA_TO_HI;
-        }
-        else
-        {
-            SDA_TO_LOW;
-        }
-
-        SCL_TO_HI;
-        SCL_TO_LOW;
-    }
-
 
     static void SendByte(uint8 byte)
     {
-        uint8 mask = 0x80;
-
-        for (int i = 0; i < 8; i++)
-        {
-            SendBit(byte & mask);
-            mask >>= 1;
-        }
+        spi_i2s_data_transmit(SPI0, byte);
     }
 
 
@@ -132,16 +106,35 @@ uint ST7735::TimeEnabled()
 
 void ST7735::Init()
 {
+    {
+        gpio_af_set(GPIOA, GPIO_AF_0, GPIO_PIN_5 | GPIO_PIN_7);
+        gpio_mode_set(GPIOA, GPIO_MODE_AF, GPIO_PUPD_PULLDOWN, GPIO_PIN_5 | GPIO_PIN_7);
+        gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_5 | GPIO_PIN_7);
+    }
+
+    {
+        spi_parameter_struct spi_is;
+        spi_i2s_deinit(SPI0);
+        spi_struct_para_init(&spi_is);
+
+        spi_is.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
+        spi_is.device_mode = SPI_MASTER;
+        spi_is.frame_size = SPI_FRAMESIZE_8BIT;
+        spi_is.clock_polarity_phase = SPI_CK_PL_HIGH_PH_1EDGE;
+        spi_is.nss = SPI_NSS_SOFT;
+        spi_is.prescale = SPI_PSC_2;
+        spi_is.endian = SPI_ENDIAN_MSB;
+        spi_init(SPI0, &spi_is);
+    }
+
+    spi_enable(SPI0);
+
     pinON.Init();
     pinDC_RS.Init();
     pinRES.Init();
     pinBKG.Init();
-    pinSCL.Init();
-    pinSDA.Init();
 
     pinON.ToLow();
-
-    pinSCL.ToLow();
 
     pinBKG.ToHi();
 
