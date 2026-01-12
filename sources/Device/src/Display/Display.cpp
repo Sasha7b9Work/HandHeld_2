@@ -81,7 +81,7 @@ void Display::Update()
 {
     if (PCF8563::IsAlarmed() || Source::GetCountReceived() || !Keyboard::ToMoreTime())
     {
-        FPS::BeginFrame();
+//        FPS::BeginFrame();
 
         for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
         {
@@ -90,7 +90,7 @@ void Display::Update()
             EndScene(i);        // 68 ms
         }
 
-        FPS::EndFrame();
+//        FPS::EndFrame();
     }
 
     if (!PAN3060::IsEnabled() && Source::GetCountReceived() == 0 && !PCF8563::IsAlarmed())
@@ -300,9 +300,20 @@ void HLine::Draw(int x, int y, const Color &color) const
 {
     color.SetAsCurrent();
 
+    uint8 *pixel = nullptr;
+
     for (int i = 0; i < width; i++)
     {
-        Pixel().Set(x++, y);
+        if (pixel)
+        {
+            pixel++;
+            *pixel = (uint8)Color::current.value;
+            x++;
+        }
+        else
+        {
+            pixel = Pixel().Set(x++, y);
+        }
     }
 }
 
@@ -318,33 +329,35 @@ void VLine::Draw(int x, int y, const Color &color) const
 }
 
 
-void Pixel::Set(int x, int y, const Color &color) const
+uint8 *Pixel::Set(int x, int y, const Color &color) const
 {
     color.SetAsCurrent();
 
     if (x < 0)
     {
-        return;
+        return nullptr;
     }
 
     if (x >= Display::WIDTH)
     {
-        return;
+        return nullptr;
     }
 
     y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
 
     if (y < 0)
     {
-        return;
+        return nullptr;
     }
 
     if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
     {
-        return;
+        return nullptr;
     }
 
     Display::Buffer::buffer[y * Display::WIDTH + x] = (uint8)Color::current.value;
+
+    return Display::Buffer::buffer + (y * Display::WIDTH + x);
 }
 
 

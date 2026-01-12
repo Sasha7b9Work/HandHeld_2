@@ -4,6 +4,7 @@
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Hardware/Timer.h"
 #include "Display/Display.h"
+#include "Utils/FPS.h"
 #include <gd32e23x.h>
 
 
@@ -340,6 +341,8 @@ void ST7735::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned 
 
 void ST7735::WriteBuffer(int y0)
 {
+    FPS::BeginFrame();
+
     LCD_SetPos_Horizontal(0, Display::WIDTH - 1, (uint)y0, (uint)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
 
     pinDC_RS.ToHi();
@@ -368,7 +371,10 @@ void ST7735::WriteBuffer(int y0)
             __asm("nop");
             __asm("nop");
             __asm("nop");
+            __asm("nop");
             SPI_DATA(SPI0) = (uint)((uint8)word);
         }
     }
+
+    FPS::EndFrame();
 }

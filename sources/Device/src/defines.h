@@ -52,6 +52,10 @@ typedef unsigned long long uint64;
 
 #define BINARY_U8( bits ) _bitset(0##bits)
 
+#ifdef WIN32
+    #define __asm(x)
+#endif
+
 #define _GET_BIT(value, bit) ((value >> bit) & 0x01)
 #define _SET_BIT(value, bit) (value |= (1 << bit))
 
