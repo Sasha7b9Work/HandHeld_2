@@ -37,7 +37,7 @@ static const uint8_t *DataNext(void);
 
 static uint32_t CalculateCRC32(const void *buffer, int size);
 
-static uint32_t CalculateFirmwareCRC32();
+static uint32_t CalculateFirmwareCRC32(void);
 
 // ѕослать пакет прошивки
 // ≈сли возвращает false, послать не удалось - нулевой указатель
