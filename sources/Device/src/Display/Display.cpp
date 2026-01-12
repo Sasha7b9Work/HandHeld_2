@@ -296,28 +296,6 @@ void Rect::Draw(int x, int y, const Color &color) const
 }
 
 
-void HLine::Draw(int x, int y, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    uint8 *pixel = nullptr;
-
-    for (int i = 0; i < width; i++)
-    {
-        if (pixel)
-        {
-            pixel++;
-            *pixel = (uint8)Color::current.value;
-            x++;
-        }
-        else
-        {
-            pixel = Pixel().Set(x++, y);
-        }
-    }
-}
-
-
 void VLine::Draw(int x, int y, const Color &color) const
 {
     color.SetAsCurrent();
@@ -329,35 +307,63 @@ void VLine::Draw(int x, int y, const Color &color) const
 }
 
 
-uint8 *Pixel::Set(int x, int y, const Color &color) const
+void HLine::Draw(int x, int y, const Color &color) const
 {
     color.SetAsCurrent();
 
-    if (x < 0)
-    {
-        return nullptr;
-    }
-
     if (x >= Display::WIDTH)
     {
-        return nullptr;
+        return;
     }
 
     y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
 
     if (y < 0)
     {
-        return nullptr;
+        return;
     }
 
     if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
     {
-        return nullptr;
+        return;
+    }
+
+    uint8 *pixel = Display::Buffer::buffer + y * Display::WIDTH + x;
+
+    for (int i = 0; i < width; i++)
+    {
+        *pixel++ = (uint8)Color::current.value;
+    }
+}
+
+
+void Pixel::Set(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    if (x < 0)
+    {
+        return;
+    }
+
+    if (x >= Display::WIDTH)
+    {
+        return;
+    }
+
+    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
+
+    if (y < 0)
+    {
+        return;
+    }
+
+    if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
+    {
+        return;
     }
 
     Display::Buffer::buffer[y * Display::WIDTH + x] = (uint8)Color::current.value;
-
-    return Display::Buffer::buffer + (y * Display::WIDTH + x);
 }
 
 

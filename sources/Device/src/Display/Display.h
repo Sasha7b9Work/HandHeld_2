@@ -41,8 +41,7 @@ namespace Display
 
 struct Pixel
 {
-    // ¬озвращает указатель на установленный пиксель
-    uint8 *Set(int x, int y, const Color &color = Color::NUMBER) const;
+    void Set(int x, int y, const Color &color = Color::NUMBER) const;
 };
 
 
