@@ -23,6 +23,8 @@ namespace ST7735
     static void SendByte(uint8 byte)
     {
         spi_i2s_data_transmit(SPI0, byte);
+
+//        SPI_DATA(SPI0) = (uint32_t)((uint16_t)byte);
     }
 
 
@@ -350,8 +352,8 @@ void ST7735::WriteBuffer(int y0)
         {
             uint16 word = Color::colors[*points++];
 
-            SendByte((uint8)(word >> 8));
-            SendByte((uint8)word);
+            SPI_DATA(SPI0) = (uint)(word >> 8);
+            spi_i2s_data_transmit(SPI0, (uint8)word);
         }
     }
 }
