@@ -353,7 +353,22 @@ void ST7735::WriteBuffer(int y0)
             uint16 word = Color::colors[*points++];
 
             SPI_DATA(SPI0) = (uint)(word >> 8);
-            spi_i2s_data_transmit(SPI0, (uint8)word);
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            SPI_DATA(SPI0) = (uint)((uint8)word);
         }
     }
 }
