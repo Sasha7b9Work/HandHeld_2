@@ -12,11 +12,7 @@
     1. Вся прошивка 54 кБ делится на куски 128, которыми и будем передавать. Каждый кусок передаётся в таком виде:
         2 байта     номер куска
         128 байт    кусок
-        4 байта     CRC предыдущих байт пакета
-    2. В конце передаётся пакет такой структуры:
-        2 байта     0xFFFF
         4 байта     CRC всей прошивки
-        4 байта     CRC предыдущих байт пакета
 */
 
 #ifdef WIN32
@@ -41,12 +37,11 @@ static const uint8_t *DataNext(void);
 
 static uint32_t CalculateCRC32(const void *buffer, int size);
 
+static uint32_t CalculateFirmwareCRC32();
+
 // Послать пакет прошивки
 // Если возвращает false, послать не удалось - нулевой указатель
 static bool SendPacketFirmware(const uint8_t *);
-
-// Послать завершающий пакет
-static void SendPacketFinish(void);
 
 // Заслать пакет непосредственно в передатчик
 static void SendRawPacket(const uint8_t *, int size);
@@ -133,8 +128,6 @@ void upg_update()
 
     if (!SendPacketFirmware(DataNext()))
     {
-        SendPacketFinish();
-
         Timer_DelayMS(2000);
 
         Reset();
@@ -181,7 +174,7 @@ bool SendPacketFirmware(const uint8_t *packet)
 
     memcpy(raw + 2, packet, SIZE_CHAIN);
 
-    uint32_t crc = CalculateCRC32(raw, SIZE_CHAIN + 2);
+    uint32_t crc = CalculateFirmwareCRC32();
 
     memcpy(raw + 2 + SIZE_CHAIN, &crc, 4);
 
@@ -193,22 +186,18 @@ bool SendPacketFirmware(const uint8_t *packet)
 }
 
 
-void SendPacketFinish()
+uint32_t CalculateFirmwareCRC32()
 {
-#undef SIZE_PACKET
-#define SIZE_PACKET (2 + 4 + 4)
+    static uint32_t crc32 = 0;
+    static bool first = true;
 
-    uint8_t raw[SIZE_PACKET] = { 0xFF, 0xFF };
+    if (first)
+    {
+        first = false;
+        crc32 = CalculateCRC32(DATA_BEGIN, DATA_SIZE);
+    }
 
-    uint32_t crc_firmware = CalculateCRC32(DATA_BEGIN, DATA_SIZE);
-
-    memcpy(raw + 2, &crc_firmware, 4);
-
-    uint32_t crc = CalculateCRC32(raw, 6);
-
-    memcpy(raw + 6, &crc, 4);
-
-    SendRawPacket(raw, SIZE_PACKET);
+    return crc32;
 }
 
 
