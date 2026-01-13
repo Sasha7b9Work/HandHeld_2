@@ -50,8 +50,8 @@ static bool in_process_update = false;
 
 static int chains_transmitted = 0;
 
-static uint32_t time_big = 125;
-static uint32_t time_small = 125;
+static uint32_t time_big = 60;
+static uint32_t time_small = 60;
 
 //----------------------------------------------------------------------------------------------------------------------------------
 
