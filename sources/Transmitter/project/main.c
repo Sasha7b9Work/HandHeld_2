@@ -14,6 +14,7 @@
 #include "myUart.h"
 #include "myUart3.h"
 #include "myRadio.h"
+#include "radio/radio.h"
 
 #define SOFT_VERSION 0x13
 #define SET_RF_FREQ_HZ(base, ch,step) base+ch*step*10*1000
@@ -528,7 +529,7 @@ void rfRx_callback(uint8_t status, rfRxPacket_ts packet)
     break;
     case TX_STA_SECCESS:
     {
-        upg_on_tx_irq();
+//        upg_on_tx_irq();
 //        LED1_ON_ONE();
 //        if (rfCtrlMode == UI_PAGE_ID_TX_PACKET)
 //        {
@@ -850,6 +851,12 @@ int main(void)
 
         keyPressValue = keyScan();
         myRadio_process();
+
+        if (rf_get_transmit_flag() == RADIO_FLAG_TXDONE)
+        {
+            rf_set_transmit_flag(RADIO_FLAG_IDLE);
+            upg_on_tx_irq();
+        }
 
         upg_update();
     }
