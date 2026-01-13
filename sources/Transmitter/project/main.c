@@ -366,7 +366,7 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
         {
         case 0://signle pcaket tx
         case 1:// pcaket tx and wait ack
-        case 2://packet tx unitl max count
+        case 2://packet tx unitl max count 
         {
             setEvent(status ? EVENT_RF_PACKET_TX : EVENT_RF_IDLE,
                 status ? true : false,
@@ -529,42 +529,42 @@ void rfRx_callback(uint8_t status, rfRxPacket_ts packet)
     case TX_STA_SECCESS:
     {
         upg_on_tx_irq();
-        LED1_ON_ONE();
-        if (rfCtrlMode == UI_PAGE_ID_TX_PACKET)
-        {
-            switch (packetTxMode)
-            {
-            case 0://signle pcaket tx
-            {
-                setEvent(EVENT_RF_PACKET_TX, false, 50);
-            }break;
-            case 1:// pcaket tx and wait ack
-            {
-                setEvent(EVENT_RF_PACKET_TX, false, (uint32_t)((float)(rfTxAndGetAckTime_ms > 100 ? rfTxAndGetAckTime_ms : 100) * 1.5));
-                myRadio_receiver();
-            }break;
-            case 2://packet tx unitl max count
-            {
-                if (rfTxCount < deviceInfor.sendPacketCounts)
-                {
-                    setEvent(EVENT_RF_PACKET_TX, false, 50);
-                }
-                else
-                {
-                    event_clear(EVENT_RF_PACKET_TX);
-                }
-
-            }
-            break;
-            default:
-                break;
-            }
-            myDisplay_ui_rf_tx_packet_consumeTime(rfTxAndGetAckTime_ms);
-        }
-        else
-        {
-            myRadio_receiver();
-        }
+//        LED1_ON_ONE();
+//        if (rfCtrlMode == UI_PAGE_ID_TX_PACKET)
+//        {
+//            switch (packetTxMode)
+//            {
+//            case 0://signle pcaket tx
+//            {
+//                setEvent(EVENT_RF_PACKET_TX, false, 50);
+//            }break;
+//            case 1:// pcaket tx and wait ack
+//            {
+//                setEvent(EVENT_RF_PACKET_TX, false, (uint32_t)((float)(rfTxAndGetAckTime_ms > 100 ? rfTxAndGetAckTime_ms : 100) * 1.5));
+//                myRadio_receiver();
+//            }break;
+//            case 2://packet tx unitl max count
+//            {
+//                if (rfTxCount < deviceInfor.sendPacketCounts)
+//                {
+//                    setEvent(EVENT_RF_PACKET_TX, false, 50);
+//                }
+//                else
+//                {
+//                    event_clear(EVENT_RF_PACKET_TX);
+//                }
+//
+//            }
+//            break;
+//            default:
+//                break;
+//            }
+//            myDisplay_ui_rf_tx_packet_consumeTime(rfTxAndGetAckTime_ms);
+//        }
+//        else
+//        {
+//            myRadio_receiver();
+//        }
     }
     break;
     default:
