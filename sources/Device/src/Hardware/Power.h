@@ -4,5 +4,7 @@
 
 namespace Power
 {
+    void Init();
+
     void Draw();
 }

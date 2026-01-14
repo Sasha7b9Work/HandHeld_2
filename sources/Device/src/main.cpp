@@ -12,6 +12,7 @@
 #include "Storage/Storage.h"
 #include "Display/Display.h"
 #include "Modules/PMS150G/PMS150G.h"
+#include "Hardware/Power.h"
 
 
 // Ammyy      95 243 113     32766
@@ -52,6 +53,8 @@ int main()
     Storage::Init();
 
     PMS150G::Init();
+
+    Power::Init();
     
     while(true)
     {
