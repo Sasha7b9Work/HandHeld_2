@@ -194,7 +194,7 @@ uint32_t CalculateFirmwareCRC32()
     if (first)
     {
         first = false;
-        crc32 = CalculateCRC32(DATA_BEGIN, DATA_SIZE);
+        crc32 = CalculateCRC32(DATA_BEGIN, DATA_SIZE - 4);
     }
 
     return crc32;
