@@ -39,7 +39,7 @@ void ModeClock::Set(E v)
         {
             current = ModeClock::Low;
 
-            HAL_CLOCK::SetLow();
+//            HAL_CLOCK::SetLow();
         }
     }
     else if (v == ModeClock::Hi)
@@ -47,6 +47,8 @@ void ModeClock::Set(E v)
         if (!ModeClock::IsHi())
         {
             current = ModeClock::Hi;
+
+            HAL_CLOCK::SetHi();
 
 //            HAL_CLOCK::SetHi();
         }
