@@ -55,7 +55,7 @@ int main()
     PMS150G::Init();
 
     Power::Init();
-    
+
     while(true)
     {
         Update();

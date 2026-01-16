@@ -39,7 +39,7 @@ void ModeClock::Set(E v)
         {
             current = ModeClock::Low;
 
-//            HAL_CLOCK::SetLow();
+            HAL_CLOCK::SetLow();
         }
     }
     else if (v == ModeClock::Hi)
@@ -49,8 +49,6 @@ void ModeClock::Set(E v)
             current = ModeClock::Hi;
 
             HAL_CLOCK::SetHi();
-
-//            HAL_CLOCK::SetHi();
         }
     }
 }
@@ -101,47 +99,6 @@ void HAL_CLOCK::SetLow()
 {
     SystemCoreClock = 3250000;
 
-    /* enable IRC8M */
-    RCU_CTL0 |= RCU_CTL0_IRC8MEN;
-    while (0U == (RCU_CTL0 & RCU_CTL0_IRC8MSTB)) {
-    }
-
-#ifndef WIN32
-    RCU_MODIFY(0x80);
-#endif
-    RCU_CFG0 &= ~RCU_CFG0_SCS;
-    RCU_CTL0 &= ~(RCU_CTL0_HXTALEN | RCU_CTL0_CKMEN | RCU_CTL0_PLLEN | RCU_CTL0_HXTALBPS);
-    /* reset RCU */
-    RCU_CFG0 &= ~(RCU_CFG0_SCS | RCU_CFG0_AHBPSC | RCU_CFG0_APB1PSC | RCU_CFG0_APB2PSC | \
-        RCU_CFG0_ADCPSC | RCU_CFG0_CKOUTSEL | RCU_CFG0_CKOUTDIV | RCU_CFG0_PLLDV);
-    RCU_CFG0 &= ~(RCU_CFG0_PLLSEL | RCU_CFG0_PLLMF | RCU_CFG0_PLLMF4 | RCU_CFG0_PLLDV);
-    RCU_CFG1 &= ~(RCU_CFG1_PREDV);
-    RCU_CFG2 &= ~(RCU_CFG2_USART0SEL | RCU_CFG2_ADCSEL);
-    RCU_CFG2 &= ~RCU_CFG2_IRC28MDIV;
-    RCU_CFG2 &= ~RCU_CFG2_ADCPSC2;
-    RCU_CTL1 &= ~RCU_CTL1_IRC28MEN;
-    RCU_INT = 0x00000000U;
-
-    uint32_t timeout = 0U;
-    uint32_t stab_flag = 0U;
-
-    /* enable HXTAL */
-    RCU_CTL0 |= RCU_CTL0_HXTALEN;
-
-    /* wait until HXTAL is stable or the startup time is longer than HXTAL_STARTUP_TIMEOUT */
-    do {
-        timeout++;
-        stab_flag = (RCU_CTL0 & RCU_CTL0_HXTALSTB);
-    } while ((0U == stab_flag) && (HXTAL_STARTUP_TIMEOUT != timeout));
-    /* if fail */
-    if (0U == (RCU_CTL0 & RCU_CTL0_HXTALSTB)) {
-        while (1) {
-        }
-    }
-
-    FMC_WS = (FMC_WS & (~FMC_WS_WSCNT)) | WS_WSCNT_2;
-
-    /* HXTAL is stable */
     /* AHB = SYSCLK */
     RCU_CFG0 |= RCU_AHB_CKSYS_DIV1;
     /* APB2 = AHB */
@@ -149,26 +106,13 @@ void HAL_CLOCK::SetLow()
     /* APB1 = AHB */
     RCU_CFG0 |= RCU_APB1_CKAHB_DIV1;
 
-    /* PLL = HXTAL * 3 = 78 MHz */
-    RCU_CFG0 &= ~(RCU_CFG0_PLLSEL | RCU_CFG0_PLLMF | RCU_CFG0_PLLDV);
-    RCU_CFG0 |= (RCU_PLLSRC_HXTAL | RCU_PLL_MUL2);
-
-    rcu_hxtal_prediv_config(RCU_PLL_PREDV16);
-    RCU_CFG0 |= RCU_CFG0_PLLDV;         // Должно быть то же, что и в PREDV2[0]
-
-    /* enable PLL */
-    RCU_CTL0 |= RCU_CTL0_PLLEN;
-
-    /* wait until PLL is stable */
-    while (0U == (RCU_CTL0 & RCU_CTL0_PLLSTB)) {
-    }
-
-    /* select PLL as system clock */
+    /* select IRC8M as system clock */
     RCU_CFG0 &= ~RCU_CFG0_SCS;
-    RCU_CFG0 |= RCU_CKSYSSRC_PLL;
+    RCU_CFG0 |= RCU_CKSYSSRC_IRC8M;
 
-    /* wait until PLL is selected as system clock */
-    while (RCU_SCSS_PLL != (RCU_CFG0 & RCU_CFG0_SCSS)) {
+    /* wait until IRC8M is selected as system clock */
+    while (RCU_SCSS_IRC8M != (RCU_CFG0 & RCU_CFG0_SCSS))
+    {
     }
 
     systick_config();
@@ -186,59 +130,40 @@ void HAL_CLOCK::SetHi()
 
     /* enable IRC8M */
     RCU_CTL0 |= RCU_CTL0_IRC8MEN;
-    while (0U == (RCU_CTL0 & RCU_CTL0_IRC8MSTB)) {
-    }
 
-#ifndef WIN32
-    RCU_MODIFY(0x80);
-#endif
-    RCU_CFG0 &= ~RCU_CFG0_SCS;
-    RCU_CTL0 &= ~(RCU_CTL0_HXTALEN | RCU_CTL0_CKMEN | RCU_CTL0_PLLEN | RCU_CTL0_HXTALBPS);
-    /* reset RCU */
-    RCU_CFG0 &= ~(RCU_CFG0_SCS | RCU_CFG0_AHBPSC | RCU_CFG0_APB1PSC | RCU_CFG0_APB2PSC | \
-        RCU_CFG0_ADCPSC | RCU_CFG0_CKOUTSEL | RCU_CFG0_CKOUTDIV | RCU_CFG0_PLLDV);
-    RCU_CFG0 &= ~(RCU_CFG0_PLLSEL | RCU_CFG0_PLLMF | RCU_CFG0_PLLMF4 | RCU_CFG0_PLLDV);
-    RCU_CFG1 &= ~(RCU_CFG1_PREDV);
-    RCU_CFG2 &= ~(RCU_CFG2_USART0SEL | RCU_CFG2_ADCSEL);
-    RCU_CFG2 &= ~RCU_CFG2_IRC28MDIV;
-    RCU_CFG2 &= ~RCU_CFG2_ADCPSC2;
-    RCU_CTL1 &= ~RCU_CTL1_IRC28MEN;
-    RCU_INT = 0x00000000U;
-
-
-    /* enable HXTAL */
-    RCU_CTL0 |= RCU_CTL0_HXTALEN;
-
-    /* wait until HXTAL is stable or the startup time is longer than HXTAL_STARTUP_TIMEOUT */
-    do {
+    /* wait until IRC8M is stable or the startup time is longer than IRC8M_STARTUP_TIMEOUT */
+    do
+    {
         timeout++;
-        stab_flag = (RCU_CTL0 & RCU_CTL0_HXTALSTB);
-    } while ((0U == stab_flag) && (HXTAL_STARTUP_TIMEOUT != timeout));
+        stab_flag = (RCU_CTL0 & RCU_CTL0_IRC8MSTB);
+    } while ((0U == stab_flag) && (IRC8M_STARTUP_TIMEOUT != timeout));
+
     /* if fail */
-    if (0U == (RCU_CTL0 & RCU_CTL0_HXTALSTB)) {
-        while (1) {
+    if (0U == (RCU_CTL0 & RCU_CTL0_IRC8MSTB))
+    {
+        while (1)
+        {
         }
     }
 
     FMC_WS = (FMC_WS & (~FMC_WS_WSCNT)) | WS_WSCNT_2;
 
-    /* HXTAL is stable */
     /* AHB = SYSCLK */
     RCU_CFG0 |= RCU_AHB_CKSYS_DIV1;
     /* APB2 = AHB */
     RCU_CFG0 |= RCU_APB2_CKAHB_DIV1;
     /* APB1 = AHB */
     RCU_CFG0 |= RCU_APB1_CKAHB_DIV1;
-
-    /* PLL = HXTAL * 3 = 78 MHz */
-    RCU_CFG0 &= ~(RCU_CFG0_PLLSEL | RCU_CFG0_PLLMF | RCU_CFG0_PLLDV);
-    RCU_CFG0 |= (RCU_PLLSRC_HXTAL | RCU_PLL_MUL3);
+    /* PLL = (IRC8M/2) * 18 = 72 MHz */
+    RCU_CFG0 &= ~(RCU_CFG0_PLLSEL | RCU_CFG0_PLLMF);
+    RCU_CFG0 |= (RCU_PLLSRC_IRC8M_DIV2 | RCU_PLL_MUL18);
 
     /* enable PLL */
     RCU_CTL0 |= RCU_CTL0_PLLEN;
 
     /* wait until PLL is stable */
-    while (0U == (RCU_CTL0 & RCU_CTL0_PLLSTB)) {
+    while (0U == (RCU_CTL0 & RCU_CTL0_PLLSTB))
+    {
     }
 
     /* select PLL as system clock */
@@ -246,7 +171,8 @@ void HAL_CLOCK::SetHi()
     RCU_CFG0 |= RCU_CKSYSSRC_PLL;
 
     /* wait until PLL is selected as system clock */
-    while (RCU_SCSS_PLL != (RCU_CFG0 & RCU_CFG0_SCSS)) {
+    while (RCU_SCSS_PLL != (RCU_CFG0 & RCU_CFG0_SCSS))
+    {
     }
 
     systick_config();
