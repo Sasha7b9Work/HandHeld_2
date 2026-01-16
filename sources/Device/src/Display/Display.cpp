@@ -172,16 +172,8 @@ void Display::EndScene(int num_parts)
 {
     uint crc = Buffer::CalcualteCRC();
 
-//    if (crc != Buffer::crc[Buffer::current_part])
+    if (crc != Buffer::crc[Buffer::current_part])
     {
-        if (!ModeClock::IsHi())
-        {
-            while (PAN3060::IsEnabled())
-            {
-                PAN3060::Update();
-            }
-        }
-
         ST7735::Enable();
 
         Buffer::crc[Buffer::current_part] = crc;
