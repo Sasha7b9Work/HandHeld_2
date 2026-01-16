@@ -13,6 +13,7 @@
 #include "Modules/PCF8563/PCF8563.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include "Display/Text.h"
+#include "Utils/FPS.h"
 
 
 template int Text<64>::Write(int x, int y, const Color &color) const;
@@ -81,7 +82,7 @@ void Display::Update()
 
     if (PCF8563::IsAlarmed() || Source::GetCountReceived() || !Keyboard::ToMoreTime())
     {
-//        FPS::BeginFrame();
+        FPS::BeginFrame();
 
         for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
         {
@@ -90,15 +91,13 @@ void Display::Update()
             EndScene(i);        // 68 ms
         }
 
-//        FPS::EndFrame();
+        FPS::EndFrame();
     }
 
     if (!PAN3060::IsEnabled() && Source::GetCountReceived() == 0 && !PCF8563::IsAlarmed())
     {
-//        ModeClock::Set(ModeClock::Low);
+        ModeClock::Set(ModeClock::Low);
     }
-
-    ModeClock::Set(ModeClock::Low);
 }
 
 
@@ -182,8 +181,6 @@ void Display::EndScene(int num_parts)
                 PAN3060::Update();
             }
         }
-
-        ModeClock::Set(ModeClock::Hi);
 
         ST7735::Enable();
 

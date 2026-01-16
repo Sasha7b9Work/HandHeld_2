@@ -341,8 +341,6 @@ void ST7735::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned 
 
 void ST7735::WriteBuffer(int y0)
 {
-    FPS::BeginFrame();
-
     LCD_SetPos_Horizontal(0, Display::WIDTH - 1, (uint)y0, (uint)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
 
     pinDC_RS.ToHi();
@@ -375,6 +373,4 @@ void ST7735::WriteBuffer(int y0)
             SPI_DATA(SPI0) = (uint)((uint8)word);
         }
     }
-
-    FPS::EndFrame();
 }
