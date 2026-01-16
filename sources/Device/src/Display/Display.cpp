@@ -6,9 +6,7 @@
 #include "Display/Font/Font.h"
 #include "Keyboard/Keyboard.h"
 #include "Hardware/HAL/HAL.h"
-#include "Hardware/Timer.h"
 #include "Menu/Menu.h"
-#include "Utils/FPS.h"
 #include "Utils/StringUtils.h"
 #include "Hardware/Power.h"
 #include "Utils/Math.h"
@@ -79,6 +77,8 @@ void Display::PrepareToSleep()
 
 void Display::Update()
 {
+    ModeClock::Set(ModeClock::Hi);
+
     if (PCF8563::IsAlarmed() || Source::GetCountReceived() || !Keyboard::ToMoreTime())
     {
 //        FPS::BeginFrame();
@@ -97,6 +97,8 @@ void Display::Update()
     {
 //        ModeClock::Set(ModeClock::Low);
     }
+
+    ModeClock::Set(ModeClock::Low);
 }
 
 

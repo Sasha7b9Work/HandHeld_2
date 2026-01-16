@@ -97,7 +97,7 @@ void HAL_CLOCK::SetDeepSleep()
 
 void HAL_CLOCK::SetLow()
 {
-    SystemCoreClock = 3250000;
+    SystemCoreClock = 8000000;
 
     /* AHB = SYSCLK */
     RCU_CFG0 |= RCU_AHB_CKSYS_DIV1;
