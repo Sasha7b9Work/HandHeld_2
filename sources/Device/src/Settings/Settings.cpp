@@ -7,7 +7,7 @@
 #include <cstdlib>
 
 
-Settings gset =
+static const Settings def_set =
 {
     { {Melody::_9,  Volume::Hi, Color::Red,     ModeIndication::All},
       {Melody::_10, Volume::Hi, Color::Cyan,    ModeIndication::All},
@@ -27,6 +27,9 @@ Settings gset =
 };
 
 
+Settings gset = def_set;
+
+
 pchar Melody::Name(E v)
 {
     static const pchar names[Count] =
@@ -44,4 +47,16 @@ pchar Melody::Name(E v)
     };
 
     return names[v];
+}
+
+
+void Settings::Load()
+{
+
+}
+
+
+void Settings::Save()
+{
+
 }

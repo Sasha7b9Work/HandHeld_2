@@ -64,8 +64,7 @@ namespace HAL_ROM
     static const uint NUM_PAGES = 64;
 
     static const int PAGE_FOR_JOURNAL = 63;
-
-    void Init();
+    static const int PAGE_FOR_SETTINGS = 62;
 
     // Стиреть страницу от 0 до 63
     void ErasePage(int);

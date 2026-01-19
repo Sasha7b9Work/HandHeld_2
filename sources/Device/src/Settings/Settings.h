@@ -63,6 +63,9 @@ struct Settings
 {
     SettingsSource sources[Source::Count];
     SettingsAlarm alarm;
+
+    static void Save();
+    static void Load();
 };
 
 
