@@ -70,12 +70,15 @@ void Settings::Save()
     {
         if (set == *this)
         {
-            int i = 0;
         }
         else
         {
             HAL_ROM::SaveSettings(this);
         }
+    }
+    else
+    {
+        HAL_ROM::SaveSettings(this);
     }
 }
 
