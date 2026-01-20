@@ -96,15 +96,19 @@ void PAN3060::Update()
                 }
                 else if (_buffer[1] & VIBROLINE_DEVICE_PHONE)
                 {
-                    Source::Receive(Source::Mobile);
+                    Source::Receive(Source::PhoneHome);
                 }
                 else if (_buffer[1] & VIBROLINE_DEVICE_INTERCOM)
                 {
                     Source::Receive(Source::Intercom);
                 }
-                if (_buffer[1] & VIBROLINE_DEVICE_BABYCRY)
+                else if (_buffer[1] & VIBROLINE_DEVICE_BABYCRY)
                 {
                     Source::Receive(Source::Microphone);
+                }
+                else if (_buffer[1] & VIBROLINE_DEVICE_MOBILE)
+                {
+                    Source::Receive(Source::Mobile);
                 }
 
                 rf_init();
