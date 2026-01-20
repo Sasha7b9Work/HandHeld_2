@@ -5,6 +5,9 @@
 #define SPI_PAN3060 SPI1
 
 
+struct Settings;
+
+
 struct ModeClock
 {
     enum E
@@ -76,4 +79,8 @@ namespace HAL_ROM
 
     // address должен быть кратен 4
     void ReadBuffer(uint address, void *buffer, int size);
+
+    bool LoadSettings(Settings *);
+
+    void SaveSettings(Settings *);
 }

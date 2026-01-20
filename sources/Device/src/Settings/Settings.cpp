@@ -1,14 +1,14 @@
 // 2024/03/02 19:47:20 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Settings/Settings.h"
-#include "Hardware/Timer.h"
-#include "Hardware/Vibrato.h"
-#include "Display/Icons.h"
-#include <cstdlib>
+#include "Hardware/HAL/HAL.h"
+#include "Utils/GlobalFunctions.h"
+#include "Utils/Math.h"
 
 
 static const Settings def_set =
 {
+    0,      // crc32
     { {Melody::_9,  Volume::Hi, Color::Red,     ModeIndication::All},
       {Melody::_10, Volume::Hi, Color::Cyan,    ModeIndication::All},
       {Melody::_3,  Volume::Hi, Color::Yellow,  ModeIndication::All},
@@ -23,7 +23,8 @@ static const Settings def_set =
         ModeIndication::All,
         { 0, 0, 0, 0, 0, 0 },
         1
-    }
+    },
+    0       // empty
 };
 
 
@@ -52,11 +53,54 @@ pchar Melody::Name(E v)
 
 void Settings::Load()
 {
+    Settings set;
 
+    if (HAL_ROM::LoadSettings(&set))
+    {
+        *this = set;
+    }
 }
 
 
 void Settings::Save()
 {
+    Settings set;
 
+    if (HAL_ROM::LoadSettings(&set))
+    {
+        if (set == *this)
+        {
+            int i = 0;
+        }
+        else
+        {
+            HAL_ROM::SaveSettings(this);
+        }
+    }
+}
+
+
+bool Settings::operator==(const Settings &rhs) const
+{
+    return GF::MemCmp(BeginData(), rhs.BeginData(), SizeData());
+}
+
+
+uint Settings::CalculateCRC32() const
+{
+    return Math::CalculateCRC32(BeginData(), SizeData());
+}
+
+
+const void *Settings::BeginData() const
+{
+    const uint *begin = (const uint *)this;
+
+    return (const void *)(begin + 1);
+}
+
+
+int Settings::SizeData() const
+{
+    return sizeof(*this) - 4;
 }

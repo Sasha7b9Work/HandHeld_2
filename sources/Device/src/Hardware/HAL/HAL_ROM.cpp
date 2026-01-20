@@ -1,6 +1,7 @@
 // 2024/03/20 20:10:46 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
+#include "Settings/Settings.h"
 #include <gd32e23x.h>
 
 
@@ -132,4 +133,30 @@ void HAL_ROM::ReadBuffer(uint address, void *buffer, int size)
 
         address += 4;
     }
+}
+
+
+bool HAL_ROM::LoadSettings(Settings *set)
+{
+    ReadBuffer(AddressPage(PAGE_FOR_SETTINGS), set, sizeof(*set));
+
+    return set->crc32 == set->CalculateCRC32();
+}
+
+
+void HAL_ROM::SaveSettings(Settings *set)
+{
+    Settings control_set;
+
+    do
+    {
+        set->crc32 = set->CalculateCRC32();
+
+        set->empty = 0;
+
+        ErasePage(PAGE_FOR_SETTINGS);
+
+        WriteBuffer(AddressPage(PAGE_FOR_SETTINGS), set, sizeof(*set));
+
+    } while (!LoadSettings(&control_set));
 }

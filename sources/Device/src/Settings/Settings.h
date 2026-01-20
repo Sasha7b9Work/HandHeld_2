@@ -61,11 +61,18 @@ struct SettingsAlarm
 
 struct Settings
 {
+    uint crc32;
     SettingsSource sources[Source::Count];
     SettingsAlarm alarm;
+    uint empty;                 // Используется для контроля записи. Должно быть ноль
 
-    static void Save();
-    static void Load();
+    void Save();
+    void Load();
+    uint CalculateCRC32() const;
+    const void *BeginData() const;  // Указывает на начало реальных данных (без учёта контрольной суммы, расположенной в начале)
+    int SizeData() const;           // Размер реальных данных (без учёта контрольной суммы, расположенной в начале)
+
+    bool operator ==(const Settings &rhs) const;
 };
 
 

@@ -1121,6 +1121,16 @@
               <FileType>5</FileType>
               <FilePath>.\src\Settings\Source.h</FilePath>
             </File>
+            <File>
+              <FileName>GlobalFunctions.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Utils\GlobalFunctions.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>GlobalFunctions.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Utils\GlobalFunctions.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1179,7 +1189,7 @@
       <TargetName>Release</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pArmCC>6180000::V6.18::.\ARMCLANG_537_6_18</pArmCC>
+      <pArmCC>6180000::V6.18::.\ARMCLANG537</pArmCC>
       <pCCUsed>6180000::V6.18::.\ARMCLANG537</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
@@ -2289,6 +2299,16 @@
               <FileName>Source.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Settings\Source.h</FilePath>
+            </File>
+            <File>
+              <FileName>GlobalFunctions.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Utils\GlobalFunctions.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>GlobalFunctions.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Utils\GlobalFunctions.h</FilePath>
             </File>
           </Files>
         </Group>

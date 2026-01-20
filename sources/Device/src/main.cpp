@@ -25,10 +25,14 @@
 
 static void Update();
 
+static void SaveSettings();
+
 
 int main()
 {
     HAL::Init();
+
+    gset.Load();
 
     PCF8563::Init();
 
@@ -96,5 +100,20 @@ void Update()
 
     Source::Update();
 
+    SaveSettings();
+
 //    Power::Update();
+}
+
+
+void SaveSettings()
+{
+    static TimeMeterMS meter;
+
+    if (meter.ElapsedTime() > 5000)
+    {
+        meter.Reset();
+
+        gset.Save();
+    }
 }
