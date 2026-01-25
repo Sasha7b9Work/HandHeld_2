@@ -62,7 +62,7 @@ void ModeClock::LeaveSleepMode()
 
         ModeClock::Set(Source::ExistReceived() ? ModeClock::Hi : ModeClock::Low);
 
-        PAN3060::Init();
+        PAN3060::InitRF();
     }
 }
 

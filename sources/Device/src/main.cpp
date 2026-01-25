@@ -50,7 +50,7 @@ int main()
 
     Vibrato::Init();
 
-    PAN3060::Init();
+    PAN3060::InitFull();
 
     Beeper::Init();
 

@@ -25,7 +25,7 @@ namespace PAN3060
 }
 
 
-void PAN3060::Init()
+void PAN3060::InitFull()
 {
     pinSPI1_NSS.Init();
     pinSPI1_NSS.ToHi();
@@ -34,6 +34,12 @@ void PAN3060::Init()
 
     InitSPI();
 
+    InitRF();
+}
+
+
+void PAN3060::InitRF()
+{
     rf_init();
 
     rf_set_default_para();
@@ -120,7 +126,7 @@ void PAN3060::Update()
 
 void PAN3060::PrepareToSleep()
 {
-    rf_deepsleep();
+    rf_sleep();
 }
 
 
