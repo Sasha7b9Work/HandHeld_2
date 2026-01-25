@@ -17,8 +17,6 @@ namespace PAN3060
     *   MOSI - PB15     SPI1_MOSI   AF_0
     */
 
-    static uint time_enable = 0;        // Время, когда начались клоки
-
     static bool need_rx = false;
 
     static void InitIRQ();
@@ -122,24 +120,7 @@ void PAN3060::Update()
 
 void PAN3060::PrepareToSleep()
 {
-#ifdef WIN32
-#else
-    EXTI_PD = EXTI_8;
-    EXTI_INTEN |= EXTI_8;
-#endif
-}
-
-
-bool PAN3060::IsEnabled()
-{
-    bool result = TIME_MS - time_enable < 700;      // \todo здесь должно быть 610
-
-    if (!result)
-    {
-        PrepareToSleep();
-    }
-
-    return result;
+    rf_deepsleep();
 }
 
 

@@ -69,17 +69,16 @@ int main()
 
 void Update()
 {
-    bool recv_enabled = PAN3060::IsEnabled();
     bool keyboard_more_time = Keyboard::ToMoreTime();
     int num_sources = Source::GetCountReceived();
     bool is_alarmed = PCF8563::IsAlarmed();
 
-    if (!recv_enabled && keyboard_more_time && num_sources == 0 && !is_alarmed)
+    if (keyboard_more_time && num_sources == 0 && !is_alarmed)
     {
-        ModeClock::Set(ModeClock::DeepSleep);
+        ModeClock::Set(ModeClock::Sleep);
     }
 
-    ModeClock::LeaveDeepSleep();
+    ModeClock::LeaveSleepMode();
 
     PCF8563::Update();
 

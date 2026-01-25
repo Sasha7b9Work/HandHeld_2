@@ -94,7 +94,7 @@ void Display::Update()
         FPS::EndFrame();
     }
 
-    if (!PAN3060::IsEnabled() && Source::GetCountReceived() == 0 && !PCF8563::IsAlarmed())
+    if (Source::GetCountReceived() == 0 && !PCF8563::IsAlarmed())
     {
         ModeClock::Set(ModeClock::Low);
     }

@@ -156,11 +156,6 @@ bool Source::IsReceived(E type)
 
 void Source::Update()
 {
-    if (PAN3060::IsEnabled())
-    {
-        return;
-    }
-
     for (int i = 0; i < Source::Count; i++)
     {
         if (need_received[i])

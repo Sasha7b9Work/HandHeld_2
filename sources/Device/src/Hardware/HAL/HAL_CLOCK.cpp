@@ -12,7 +12,7 @@ ModeClock::E ModeClock::current = ModeClock::Low;
 
 namespace HAL_CLOCK
 {
-    static void SetDeepSleep();
+    static void SetSleepMode();
     static void SetLow();
     static void SetHi();
 
@@ -22,15 +22,15 @@ namespace HAL_CLOCK
 
 void ModeClock::Set(E v)
 {
-    if (v == ModeClock::DeepSleep)
+    if (v == ModeClock::Sleep)
     {
-        if (!ModeClock::IsDeepSleep())
+        if (!ModeClock::IsSleep())
         {
-            current = ModeClock::DeepSleep;
+            current = ModeClock::Sleep;
 
             HAL_CLOCK::in_sleep_mode = true;
 
-            HAL_CLOCK::SetDeepSleep();
+            HAL_CLOCK::SetSleepMode();
         }
     }
     else if (v == ModeClock::Low)
@@ -54,13 +54,13 @@ void ModeClock::Set(E v)
 }
 
 
-void ModeClock::LeaveDeepSleep()
+void ModeClock::LeaveSleepMode()
 {
     if (HAL_CLOCK::in_sleep_mode)
     {
         HAL_CLOCK::in_sleep_mode = false;
 
-//        ModeClock::Set(Source::ExistReceived() ? ModeClock::Hi : ModeClock::Low);
+        ModeClock::Set(Source::ExistReceived() ? ModeClock::Hi : ModeClock::Low);
     }
 }
 
@@ -79,7 +79,7 @@ void ModeClock::LeaveDeepSleep()
 
 
 
-void HAL_CLOCK::SetDeepSleep()
+void HAL_CLOCK::SetSleepMode()
 {
     Display::PrepareToSleep();
 

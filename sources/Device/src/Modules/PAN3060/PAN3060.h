@@ -9,9 +9,6 @@ namespace PAN3060
 
     void Update();
 
-    // Идут ли клоки
-    bool IsEnabled();
-
     void PrepareToSleep();
 
     // Вызывается по прерыванию на приём данных
