@@ -126,7 +126,7 @@ void PAN3060::Update()
 
 void PAN3060::PrepareToSleep()
 {
-    rf_sleep();
+    rf_deepsleep();
 }
 
 
