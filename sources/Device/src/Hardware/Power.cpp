@@ -79,8 +79,10 @@ void Power::PowerDown()
 {
     Storage::Save();
 
-    gpio_mode_set(GPIOC, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLDOWN, GPIO_PIN_13);
-    gpio_output_options_set(GPIOC, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13);
+    PinOut pinPWR_CTRL(GPIOC, GPIO_PIN_13);
+    pinPWR_CTRL.Init();
+
+    pinPWR_CTRL.ToHi();
 
     while(true) { }
 }

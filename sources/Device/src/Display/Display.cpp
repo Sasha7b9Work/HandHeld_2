@@ -139,9 +139,9 @@ void Display::DrawLowVoltage()
 
         Font::SetSize(2);
 
-        Text<>("Õ»« Œ≈").WriteInCenter(0, 20, Display::WIDTH, Color::WHITE);
+        Text<>("Õ»« Œ≈").WriteInCenter(0, 20, Display::WIDTH, Color::RED);
 
-        Text<>("Õ¿œ–ﬂ∆≈Õ»≈").WriteInCenter(0, 50, Display::WIDTH, Color::WHITE);
+        Text<>("Õ¿œ–ﬂ∆≈Õ»≈").WriteInCenter(0, 50, Display::WIDTH, Color::RED);
 
         EndScene(i);
     }
