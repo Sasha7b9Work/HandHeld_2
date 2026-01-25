@@ -236,8 +236,6 @@ void Display::DrawScene(int num_part)
         }
 
         Font::SetSize(1);
-
-//        FPS::DrawTimeFrame(0, 75);
     }
     else
     {
@@ -258,8 +256,6 @@ void Display::DrawScene(int num_part)
             Font::SetSize(1);
 
             Power::Draw();
-
-//            FPS::DrawTimeFrame(0, 75);
         }
     }
 }

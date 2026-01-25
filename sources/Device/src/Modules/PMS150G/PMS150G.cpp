@@ -12,6 +12,7 @@ namespace PMS150G
 
 void PMS150G::Init()
 {
+    // PWR_CTRL
     // Инициализируем пин клоков от приёмника на прерывание
     gpio_mode_set(GPIOC, GPIO_MODE_INPUT, GPIO_PUPD_PULLDOWN, GPIO_PIN_13);
     nvic_irq_enable(EXTI4_15_IRQn, 2);

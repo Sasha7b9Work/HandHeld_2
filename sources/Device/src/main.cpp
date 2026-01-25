@@ -38,7 +38,7 @@ int main()
 
     Display::Init();
 
-//    Power::Init();
+    Power::Init();
 
     Timer::Init();
 
@@ -102,7 +102,7 @@ void Update()
 
     SaveSettings();
 
-//    Power::Update();
+    Power::Update();
 }
 
 

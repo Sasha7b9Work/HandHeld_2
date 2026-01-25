@@ -79,7 +79,8 @@ void Power::PowerDown()
 {
     Storage::Save();
 
-    LED::Driver::On();
+    gpio_mode_set(GPIOC, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLDOWN, GPIO_PIN_13);
+    gpio_output_options_set(GPIOC, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13);
 
     while(true) { }
 }
