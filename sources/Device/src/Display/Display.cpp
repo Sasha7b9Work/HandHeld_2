@@ -11,7 +11,7 @@
 #include "Hardware/Power.h"
 #include "Utils/Math.h"
 #include "Modules/PCF8563/PCF8563.h"
-#include "Modules/PAN3060/PAN3060.h"
+#include "Hardware/Timer.h"
 #include "Display/Text.h"
 #include "Utils/FPS.h"
 
@@ -78,6 +78,15 @@ void Display::PrepareToSleep()
 
 void Display::Update()
 {
+    static TimeMeterMS meter;
+
+    if (meter.ElapsedTime() < 50)
+    {
+        return;
+    }
+
+    meter.Reset();
+
     ModeClock::Set(ModeClock::Hi);
 
     if (PCF8563::IsAlarmed() || Source::GetCountReceived() || !Keyboard::ToMoreTime())

@@ -73,7 +73,7 @@ void Menu::Draw()
 {
     current_item->Draw();
 
-    FPS::DrawTimeFrame(0, 0);
+//    FPS::DrawTimeFrame(0, 0);
 }
 
 
