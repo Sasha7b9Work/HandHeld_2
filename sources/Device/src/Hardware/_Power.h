@@ -6,9 +6,5 @@ namespace Power
 {
     void Init();
 
-    void Update();
-
-    void Disable();
-
     void Draw();
 }
