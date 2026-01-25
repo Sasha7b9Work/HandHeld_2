@@ -61,6 +61,8 @@ void ModeClock::LeaveSleepMode()
         HAL_CLOCK::in_sleep_mode = false;
 
         ModeClock::Set(Source::ExistReceived() ? ModeClock::Hi : ModeClock::Low);
+
+        PAN3060::Init();
     }
 }
 
