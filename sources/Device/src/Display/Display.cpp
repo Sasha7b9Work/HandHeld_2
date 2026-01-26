@@ -11,6 +11,12 @@
 #include "Menu/Menu.h"
 #include "Utils/FPS.h"
 #include "Hardware/Power.h"
+#ifdef MODEL7735
+    #include "Modules/ST7735/ST7735.h"
+#endif
+#ifdef MODEL7789
+    #include "Modules/ST7789/ST7789.h"
+#endif
 
 
 template int Text<64>::Write(int x, int y, const Color &color) const;
@@ -307,4 +313,16 @@ void RTCDateTime::DrawTime(int x, int y, const Color &color) const
 void RTCDateTime::DrawDate(int x, int y, const Color &color) const
 {
     Text<>("%02d/%02d/%02d", Day, Month, Year).Write(x, y, color);
+}
+
+
+uint Display::TimeEnabled()
+{
+#ifdef MODEL7735
+    return ST7735::TimeEnabled();
+#endif
+
+#ifdef MODEL7789
+    return ST7789::TimeEnabled();
+#endif
 }

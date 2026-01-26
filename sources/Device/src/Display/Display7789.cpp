@@ -25,12 +25,6 @@ void Display::DrawLowVoltage()
 }
 
 
-uint Display::TimeEnabled()
-{
-    return ST7789::TimeEnabled();
-}
-
-
 void Display::PrepareToSleep()
 {
 

@@ -45,12 +45,6 @@ void Display::Init()
 }
 
 
-uint Display::TimeEnabled()
-{
-    return ST7735::TimeEnabled();
-}
-
-
 void Display::PrepareToSleep()
 {
     ST7735::Disable();
