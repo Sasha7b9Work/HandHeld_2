@@ -9,8 +9,19 @@
 
 namespace Display
 {
+#ifdef MODEL7735
+
     static const int WIDTH = 160;
     static const int HEIGHT = 80;
+
+#endif
+
+#ifdef MODEL7789
+
+    static const int WIDTH = 320;
+    static const int HEIGHT = 240;
+
+#endif
 
     static const int NUMBER_PARTS_HEIGHT = 8;          // На столько частей разбит дислей. Столько раз будем отрисовывать изображение,
                                                 // чтобы получить полную картинку
