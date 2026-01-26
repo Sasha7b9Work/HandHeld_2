@@ -5,21 +5,3 @@
 
 
 // GD32F303CCT6
-
-
-namespace Display
-{
-    void EndScene(int num_parts);
-}
-
-
-void Display::PrepareToSleep()
-{
-
-}
-
-
-void Display::EndScene(int /*num_parts*/)
-{
-
-}

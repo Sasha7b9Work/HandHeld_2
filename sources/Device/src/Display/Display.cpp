@@ -11,6 +11,7 @@
 #include "Menu/Menu.h"
 #include "Utils/FPS.h"
 #include "Hardware/Power.h"
+#include "Utils/Math.h"
 #ifdef MODEL7735
     #include "Modules/ST7735/ST7735.h"
 #endif
@@ -29,6 +30,14 @@ namespace Display
         uint8 buffer[SIZE];
 
         int current_part = 0;                            // Эту часть сейчас отрисовываем
+
+        static uint crc[NUMBER_PARTS_HEIGHT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        static uint CalcualteCRC()
+        {
+            return Math::CalculateCRC32(buffer, SIZE);
+        }
+
 
         uint8 *GetLine(int y)
         {
@@ -353,6 +362,65 @@ void Display::DrawLowVoltage()
         Text<>("НИЗКОЕ").WriteInCenter(0, 20, Display::WIDTH, Color::RED);
 
         Text<>("НАПРЯЖЕНИЕ").WriteInCenter(0, 50, Display::WIDTH, Color::RED);
+
+        EndScene(i);
+    }
+}
+
+
+void Display::PrepareToSleep()
+{
+#ifdef MODEL7735
+    ST7735::Disable();
+#endif
+
+#ifdef MODEL7789
+    ST7789::Disable();
+#endif
+
+    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    {
+        Buffer::crc[i] = 0;                         // Без этого не будет выходить по кнопке из сна
+    }
+}
+
+
+void Display::EndScene(int num_parts)
+{
+    uint crc = Buffer::CalcualteCRC();
+
+    if (crc != Buffer::crc[Buffer::current_part])
+    {
+#ifdef MODEL7735
+        ST7735::Enable();
+#endif
+
+#ifdef MODEL7789
+        ST7789::Enable();
+#endif
+
+        Buffer::crc[Buffer::current_part] = crc;
+
+#ifdef MODEL7735
+        ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
+#endif
+
+#ifdef MODEL7789
+        ST7789::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
+#endif
+    }
+}
+
+
+void Display::DrawPowerOn()
+{
+    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    {
+        BeginScene(i);
+
+        Font::SetSize(2);
+
+        Text<>("ВКЛЮЧЕНИЕ").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
 
         EndScene(i);
     }

@@ -7,4 +7,11 @@ namespace ST7789
     void Init();
 
     uint TimeEnabled();
+
+    void Disable();
+
+    void Enable();
+
+    // Записывает буфер дисплея в строки, начиная с y
+    void WriteBuffer(int y);
 }

@@ -13,3 +13,21 @@ uint ST7789::TimeEnabled()
 {
     return 0;
 }
+
+
+void ST7789::Disable()
+{
+
+}
+
+
+void ST7789::Enable()
+{
+
+}
+
+
+void ST7789::WriteBuffer(int /*y*/)
+{
+
+}
