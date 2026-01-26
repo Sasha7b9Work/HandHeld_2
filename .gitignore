@@ -7,10 +7,14 @@ sources/Loader/*.bin
 sources/Device/*.bin
 
 sources/generated
-sources/Device/Objects
-sources/Device/Objects-Debug
-sources/Device/Listings
-sources/Device/Listings-Debug
+sources/Device/Objects7735
+sources/Device/Objects-Debug7735
+sources/Device/Listings7735
+sources/Device/Listings-Debug7735
+sources/Device/Objects7789
+sources/Device/Objects-Debug7789
+sources/Device/Listings7789
+sources/Device/Listings-Debug7789
 
 sources/Loader/DebugConfig
 sources/Loader/Objects
