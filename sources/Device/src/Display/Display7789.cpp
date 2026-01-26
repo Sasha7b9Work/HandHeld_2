@@ -19,12 +19,6 @@ void Display::Init()
 }
 
 
-void Display::Update()
-{
-
-}
-
-
 void Display::DrawLowVoltage()
 {
 

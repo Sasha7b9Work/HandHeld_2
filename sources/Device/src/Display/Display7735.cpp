@@ -33,7 +33,6 @@ namespace Display
     }
 
     extern void BeginScene(int num_part);
-    static void DrawScene(int num_part);
     void EndScene(int num_parts);
 }
 
@@ -59,40 +58,6 @@ void Display::PrepareToSleep()
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
     {
         Buffer::crc[i] = 0;                         // Ѕез этого не будет выходить по кнопке из сна
-    }
-}
-
-
-void Display::Update()
-{
-    static TimeMeterMS meter;
-
-    if (meter.ElapsedTime() < 50)
-    {
-        return;
-    }
-
-    meter.Reset();
-
-    ModeClock::Set(ModeClock::Hi);
-
-    if (PCF8563::IsAlarmed() || Source::GetCountReceived() || !Keyboard::ToMoreTime())
-    {
-        FPS::BeginFrame();
-
-        for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
-        {
-            BeginScene(i);      // 0 ms
-            DrawScene(i);       // 20 ms
-            EndScene(i);        // 68 ms
-        }
-
-        FPS::EndFrame();
-    }
-
-    if (Source::GetCountReceived() == 0 && !PCF8563::IsAlarmed())
-    {
-        ModeClock::Set(ModeClock::Low);
     }
 }
 
@@ -129,84 +94,6 @@ void Display::DrawLowVoltage()
 }
 
 
-void Display::DrawScene(int num_part)
-{
-    (void)num_part;
-
-    if (PCF8563::IsAlarmed())
-    {
-        Font::SetSize(2);
-        Text<>("Ѕ”ƒ»Ћ№Ќ» ").WriteInCenter(0, 30, Display::WIDTH, Color(Color::Contrast(gset.alarm.color)));
-        Font::SetSize(1);
-    }
-    else if (Source::GetCountReceived())
-    {
-        Color color = Color::Contrast(gset.sources[Source::Current()].color);
-
-        color.SetAsCurrent();
-
-        int y = 40;
-
-        if (Source::GetCountReceived() == 1)
-        {
-            y = 30;
-        }
-        else
-        {
-            for (int i = 0; i < Source::Count; i++)
-            {
-                if (Source::IsReceived((Source::E)i))
-                {
-                    Source((Source::E)i).DrawIcon(11 + i * 30, 8);
-                }
-            }
-        }
-
-        Font::SetSize(2);
-
-        pchar name = Source::Name(Source::Current());
-
-        int num_words = SU::NumWordsInString(name);
-
-        if (num_words == 1)
-        {
-            Text<>(name).WriteInCenter(0, y, Display::WIDTH);
-        }
-        else if (num_words == 2)
-        {
-            char buffer[32];
-
-            Text<>(SU::GetWordFromString(name, 1, buffer)).WriteInCenter(0, y - 10, Display::WIDTH);
-
-            Text<>(SU::GetWordFromString(name, 2, buffer)).WriteInCenter(0, y + 15, Display::WIDTH);
-        }
-
-        Font::SetSize(1);
-    }
-    else
-    {
-        if (Menu::IsShown())
-        {
-            Menu::Draw();
-        }
-        else
-        {
-            Font::SetSize(5);
-
-            PCF8563::GetDateTime().DrawTime(30, 23, Color::WHITE);
-
-            Font::SetSize(2);
-
-            PCF8563::GetDateTime().DrawDate(46, 66);
-
-            Font::SetSize(1);
-
-            Power::Draw();
-        }
-    }
-}
-
-
 void Display::EndScene(int num_parts)
 {
     uint crc = Buffer::CalcualteCRC();
@@ -219,16 +106,4 @@ void Display::EndScene(int num_parts)
 
         ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
     }
-}
-
-
-void RTCDateTime::DrawTime(int x, int y, const Color &color) const
-{
-    Text<>("%02d:%02d", Hour, Minute).Write(x, y, color);
-}
-
-
-void RTCDateTime::DrawDate(int x, int y, const Color &color) const
-{
-    Text<>("%02d/%02d/%02d", Day, Month, Year).Write(x, y, color);
 }
