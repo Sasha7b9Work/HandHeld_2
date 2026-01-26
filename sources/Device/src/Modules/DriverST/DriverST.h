@@ -2,7 +2,7 @@
 #pragma once
 
 
-namespace ST7735
+namespace DriverST
 {
     void Init();
 

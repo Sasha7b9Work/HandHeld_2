@@ -1,6 +1,6 @@
 // 2024/03/01 22:47:19 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Modules/ST7735/ST7735.h"
+#include "Modules/DriverST/DriverST.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Hardware/Timer.h"
 #include "Display/Display.h"
@@ -8,7 +8,7 @@
 #include "system.h"
 
 
-namespace ST7735
+namespace DriverST
 {
     /*
     *   TFT_SCK - 15 : PA5     AF0 SPI0_SCK
@@ -63,7 +63,7 @@ namespace ST7735
 }
 
 
-void ST7735::Enable()
+void DriverST::Enable()
 {
     if (is_enabled)
     {
@@ -80,7 +80,7 @@ void ST7735::Enable()
 }
 
 
-void ST7735::Disable()
+void DriverST::Disable()
 {
     if (!is_enabled)
     {
@@ -95,19 +95,19 @@ void ST7735::Disable()
 }
 
 
-bool ST7735::IsEnabled()
+bool DriverST::IsEnabled()
 {
     return is_enabled;
 }
 
 
-uint ST7735::TimeEnabled()
+uint DriverST::TimeEnabled()
 {
     return TIME_MS - time_enable;
 }
 
 
-void ST7735::Init()
+void DriverST::Init()
 {
     {
         gpio_af_set(GPIOA, GPIO_AF_0, GPIO_PIN_5 | GPIO_PIN_7);
@@ -250,7 +250,7 @@ void ST7735::Init()
 }
 
 
-void ST7735::LCD_SetPos_Vertical(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
+void DriverST::LCD_SetPos_Vertical(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
 {
     unsigned char YSH, YSL, YEH, YEL;
     x0 += 0; x1 += 26; y0 += 26; y1 += 26;
@@ -275,7 +275,7 @@ void ST7735::LCD_SetPos_Vertical(unsigned char x0, unsigned char x1, unsigned in
 }
 
 
-void ST7735::SetWindow(int x, int y, int width, int height)
+void DriverST::SetWindow(int x, int y, int width, int height)
 {
     SendCommand(0x2A);      // CASET
     SendData8(0x00);
@@ -290,7 +290,7 @@ void ST7735::SetWindow(int x, int y, int width, int height)
 }
 
 
-void ST7735::Fill(uint16 color)
+void DriverST::Fill(uint16 color)
 {
     LCD_SetPos_Vertical(0, 159, 0, 79);
 
@@ -309,7 +309,7 @@ void ST7735::Fill(uint16 color)
 }
 
 
-void ST7735::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
+void DriverST::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
 {
     unsigned char YSH, YSL, YEH, YEL;
 
@@ -339,7 +339,7 @@ void ST7735::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned 
 }
 
 
-void ST7735::WriteBuffer(int y0)
+void DriverST::WriteBuffer(int y0)
 {
     LCD_SetPos_Horizontal(0, Display::WIDTH - 1, (uint)y0, (uint)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
 

@@ -859,6 +859,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Modules/DriverST</GroupName>
+          <Files>
+            <File>
+              <FileName>DriverST.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\DriverST\DriverST.h</FilePath>
+            </File>
+            <File>
+              <FileName>ST7789.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\DriverST\ST7789.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Modules/LED</GroupName>
           <Files>
             <File>
@@ -935,21 +950,6 @@
               <FileName>PMS150G.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PMS150G\PMS150G.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Modules/ST7789</GroupName>
-          <Files>
-            <File>
-              <FileName>ST7789.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Modules\ST7789\ST7789.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ST7789.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Modules\ST7789\ST7789.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1842,6 +1842,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Modules/DriverST</GroupName>
+          <Files>
+            <File>
+              <FileName>DriverST.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\DriverST\DriverST.h</FilePath>
+            </File>
+            <File>
+              <FileName>ST7789.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\DriverST\ST7789.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Modules/LED</GroupName>
           <Files>
             <File>
@@ -1918,21 +1933,6 @@
               <FileName>PMS150G.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PMS150G\PMS150G.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Modules/ST7789</GroupName>
-          <Files>
-            <File>
-              <FileName>ST7789.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Modules\ST7789\ST7789.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ST7789.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Modules\ST7789\ST7789.h</FilePath>
             </File>
           </Files>
         </Group>

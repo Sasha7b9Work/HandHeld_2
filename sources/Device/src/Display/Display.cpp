@@ -12,12 +12,7 @@
 #include "Utils/FPS.h"
 #include "Hardware/Power.h"
 #include "Utils/Math.h"
-#ifdef MODEL7735
-    #include "Modules/ST7735/ST7735.h"
-#endif
-#ifdef MODEL7789
-    #include "Modules/ST7789/ST7789.h"
-#endif
+#include "Modules/DriverST/DriverST.h"
 
 
 template int Text<64>::Write(int x, int y, const Color &color) const;
@@ -75,13 +70,7 @@ int Text<capacity>::Write(int x, int y, const Color &color) const
 
 void Display::Init()
 {
-#ifdef MODEL7735
-    ST7735::Init();
-#endif
-
-#ifdef MODEL7789
-    ST7789::Init();
-#endif
+    DriverST::Init();
 
     Font::SetType(TypeFont::_7);
 }
@@ -341,13 +330,7 @@ void RTCDateTime::DrawDate(int x, int y, const Color &color) const
 
 uint Display::TimeEnabled()
 {
-#ifdef MODEL7735
-    return ST7735::TimeEnabled();
-#endif
-
-#ifdef MODEL7789
-    return ST7789::TimeEnabled();
-#endif
+    return DriverST::TimeEnabled();
 }
 
 
@@ -370,13 +353,7 @@ void Display::DrawLowVoltage()
 
 void Display::PrepareToSleep()
 {
-#ifdef MODEL7735
-    ST7735::Disable();
-#endif
-
-#ifdef MODEL7789
-    ST7789::Disable();
-#endif
+    DriverST::Disable();
 
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
     {
@@ -391,23 +368,11 @@ void Display::EndScene(int num_parts)
 
     if (crc != Buffer::crc[Buffer::current_part])
     {
-#ifdef MODEL7735
-        ST7735::Enable();
-#endif
-
-#ifdef MODEL7789
-        ST7789::Enable();
-#endif
+        DriverST::Enable();
 
         Buffer::crc[Buffer::current_part] = crc;
 
-#ifdef MODEL7735
-        ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
-#endif
-
-#ifdef MODEL7789
-        ST7789::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
-#endif
+        DriverST::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
     }
 }
 
