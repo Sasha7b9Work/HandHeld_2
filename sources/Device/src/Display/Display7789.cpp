@@ -19,12 +19,6 @@ void Display::Init()
 }
 
 
-void Display::DrawLowVoltage()
-{
-
-}
-
-
 void Display::PrepareToSleep()
 {
 

@@ -71,23 +71,6 @@ void Display::DrawPowerOn()
 }
 
 
-void Display::DrawLowVoltage()
-{
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
-    {
-        BeginScene(i);
-
-        Font::SetSize(2);
-
-        Text<>("Õ»« Œ≈").WriteInCenter(0, 20, Display::WIDTH, Color::RED);
-
-        Text<>("Õ¿œ–ﬂ∆≈Õ»≈").WriteInCenter(0, 50, Display::WIDTH, Color::RED);
-
-        EndScene(i);
-    }
-}
-
-
 void Display::EndScene(int num_parts)
 {
     uint crc = Buffer::CalcualteCRC();
