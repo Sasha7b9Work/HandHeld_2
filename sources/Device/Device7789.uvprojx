@@ -871,6 +871,21 @@
               <FileType>8</FileType>
               <FilePath>.\src\Modules\DriverST\ST7789.cpp</FilePath>
             </File>
+            <File>
+              <FileName>driver_st7789.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\DriverST\driver_st7789.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>driver_st7789.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\DriverST\driver_st7789.h</FilePath>
+            </File>
+            <File>
+              <FileName>driver_st7789_font.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\DriverST\driver_st7789_font.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1853,6 +1868,21 @@
               <FileName>ST7789.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Modules\DriverST\ST7789.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>driver_st7789.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\DriverST\driver_st7789.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>driver_st7789.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\DriverST\driver_st7789.h</FilePath>
+            </File>
+            <File>
+              <FileName>driver_st7789_font.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\DriverST\driver_st7789_font.h</FilePath>
             </File>
           </Files>
         </Group>

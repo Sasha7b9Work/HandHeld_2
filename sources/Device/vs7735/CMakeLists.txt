@@ -59,7 +59,7 @@ file(GLOB MODULES_LED             ../src/Modules/LED/*.h
 file(GLOB MODULES_PAN3060         ../src/Modules/PAN3060/*.*)
 file(GLOB MODULES_PCF8563         ../src/Modules/PCF8563/*.*)
 file(GLOB MODULES_PMS150G         ../src/Modules/PMS150G/*.*)
-file(GLOB MODULES_DRIVERST        ../src/Modules/DriverST/*.h
+file(GLOB MODULES_DRIVERST        ../src/Modules/DriverST/DriverST.h
                                   ../src/Modules/DriverST/ST7735.cpp)
 file(GLOB SETTINGS                ../src/Settings/*.*)
 file(GLOB STORAGE                 ../src/Storage/*.*)
