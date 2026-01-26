@@ -14,7 +14,7 @@ include_directories(
     ../../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include
 )
 
-add_definitions(-DGD32E230)
+add_definitions(-DGD32E230 -DMODEL7735)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
 
