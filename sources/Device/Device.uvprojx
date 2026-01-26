@@ -807,14 +807,14 @@
               <FilePath>.\src\Display\Text.h</FilePath>
             </File>
             <File>
-              <FileName>Display.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Display\Display.cpp</FilePath>
-            </File>
-            <File>
               <FileName>Display.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Display.h</FilePath>
+            </File>
+            <File>
+              <FileName>Display7735.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Display7735.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -1246,7 +1246,7 @@
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pArmCC>6180000::V6.18::.\ARMCLANG537</pArmCC>
-      <pCCUsed>6180000::V6.18::.\ARMCLANG_537_6_18</pCCUsed>
+      <pCCUsed>6180000::V6.18::.\ARMCLANG537</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -1991,14 +1991,14 @@
               <FilePath>.\src\Display\Text.h</FilePath>
             </File>
             <File>
-              <FileName>Display.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Display\Display.cpp</FilePath>
-            </File>
-            <File>
               <FileName>Display.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Display.h</FilePath>
+            </File>
+            <File>
+              <FileName>Display7735.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Display7735.cpp</FilePath>
             </File>
           </Files>
         </Group>
