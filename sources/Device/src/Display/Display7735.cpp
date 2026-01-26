@@ -30,16 +30,11 @@ namespace Display
         {
             return Math::CalculateCRC32(buffer, SIZE);
         }
-
-        static void Fill(const Color &color)
-        {
-            std::memset(buffer, color.value, SIZE);
-        }
     }
 
-    static void BeginScene(int num_part);
+    extern void BeginScene(int num_part);
     static void DrawScene(int num_part);
-    static void EndScene(int num_parts);
+    void EndScene(int num_parts);
 }
 
 
@@ -102,21 +97,6 @@ void Display::Update()
 }
 
 
-void Display::DrawPowerOff()
-{
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
-    {
-        BeginScene(i);
-
-        Font::SetSize(2);
-
-        Text<>("¬€ Àﬁ◊≈Õ»≈").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
-
-        EndScene(i);
-    }
-}
-
-
 void Display::DrawPowerOn()
 {
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
@@ -145,41 +125,6 @@ void Display::DrawLowVoltage()
         Text<>("Õ¿œ–ﬂ∆≈Õ»≈").WriteInCenter(0, 50, Display::WIDTH, Color::RED);
 
         EndScene(i);
-    }
-}
-
-
-void Display::BeginScene(int num_part)
-{
-    Buffer::current_part = num_part;
-
-    Color color = Color::BLACK;
-
-    if (Source::GetCountReceived())
-    {
-        color = gset.sources[Source::Current()].color;
-    }
-
-    if (PCF8563::IsAlarmed())
-    {
-        color = gset.alarm.color;
-    }
-
-    Buffer::Fill(color);
-}
-
-
-void Display::EndScene(int num_parts)
-{
-    uint crc = Buffer::CalcualteCRC();
-
-    if (crc != Buffer::crc[Buffer::current_part])
-    {
-        ST7735::Enable();
-
-        Buffer::crc[Buffer::current_part] = crc;
-
-        ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
     }
 }
 
@@ -258,6 +203,21 @@ void Display::DrawScene(int num_part)
 
             Power::Draw();
         }
+    }
+}
+
+
+void Display::EndScene(int num_parts)
+{
+    uint crc = Buffer::CalcualteCRC();
+
+    if (crc != Buffer::crc[Buffer::current_part])
+    {
+        ST7735::Enable();
+
+        Buffer::crc[Buffer::current_part] = crc;
+
+        ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
     }
 }
 

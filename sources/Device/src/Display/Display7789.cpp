@@ -7,6 +7,12 @@
 // GD32F303CCT6
 
 
+namespace Display
+{
+    void EndScene(int num_parts);
+}
+
+
 void Display::Init()
 {
 
@@ -25,12 +31,6 @@ void Display::DrawLowVoltage()
 }
 
 
-void Display::DrawPowerOff()
-{
-
-}
-
-
 uint Display::TimeEnabled()
 {
     return ST7789::TimeEnabled();
@@ -38,6 +38,12 @@ uint Display::TimeEnabled()
 
 
 void Display::PrepareToSleep()
+{
+
+}
+
+
+void Display::EndScene(int /*num_parts*/)
 {
 
 }

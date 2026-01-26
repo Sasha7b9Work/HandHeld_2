@@ -2,6 +2,8 @@
 #include "defines.h"
 #include "Display/Display.h"
 #include "Display/Text.h"
+#include "Settings/Source.h"
+#include "Settings/Settings.h"
 
 
 template int Text<64>::Write(int x, int y, const Color &color) const;
@@ -19,7 +21,15 @@ namespace Display
         {
             return buffer + y * Display::WIDTH;
         }
+
+        static void Fill(const Color &color)
+        {
+            std::memset(buffer, color.value, SIZE);
+        }
     }
+
+    void BeginScene(int num_part);
+    extern void EndScene(int num_parts);
 }
 
 
@@ -130,4 +140,39 @@ void Rect::Fill(int x0, int y0, const Color &color) const
     {
         HLine(width).Draw(x0, y);
     }
+}
+
+
+void Display::DrawPowerOff()
+{
+    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    {
+        BeginScene(i);
+
+        Font::SetSize(2);
+
+        Text<>("¬€ Àﬁ◊≈Õ»≈").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
+
+        EndScene(i);
+    }
+}
+
+
+void Display::BeginScene(int num_part)
+{
+    Buffer::current_part = num_part;
+
+    Color color = Color::BLACK;
+
+    if (Source::GetCountReceived())
+    {
+        color = gset.sources[Source::Current()].color;
+    }
+
+    if (PCF8563::IsAlarmed())
+    {
+        color = gset.alarm.color;
+    }
+
+    Buffer::Fill(color);
 }
