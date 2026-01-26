@@ -552,16 +552,6 @@
           <GroupName>Hardware/HAL</GroupName>
           <Files>
             <File>
-              <FileName>gd32e23x_it.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_it.h</FilePath>
-            </File>
-            <File>
-              <FileName>gd32e23x_libopt.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_libopt.h</FilePath>
-            </File>
-            <File>
               <FileName>systick.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\HAL\systick.h</FilePath>
@@ -620,6 +610,16 @@
               <FileName>HAL_ROM_303.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\GD303\HAL_ROM_303.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_it.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\GD303\gd32f30x_it.h</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_libopt.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\GD303\gd32f30x_libopt.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -935,6 +935,21 @@
               <FileName>PMS150G.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PMS150G\PMS150G.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Modules/ST7789</GroupName>
+          <Files>
+            <File>
+              <FileName>ST7789.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\ST7789\ST7789.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ST7789.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\ST7789\ST7789.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1520,16 +1535,6 @@
           <GroupName>Hardware/HAL</GroupName>
           <Files>
             <File>
-              <FileName>gd32e23x_it.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_it.h</FilePath>
-            </File>
-            <File>
-              <FileName>gd32e23x_libopt.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_libopt.h</FilePath>
-            </File>
-            <File>
               <FileName>systick.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\HAL\systick.h</FilePath>
@@ -1588,6 +1593,16 @@
               <FileName>HAL_ROM_303.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\GD303\HAL_ROM_303.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_it.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\GD303\gd32f30x_it.h</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_libopt.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\GD303\gd32f30x_libopt.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1903,6 +1918,21 @@
               <FileName>PMS150G.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PMS150G\PMS150G.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Modules/ST7789</GroupName>
+          <Files>
+            <File>
+              <FileName>ST7789.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\ST7789\ST7789.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ST7789.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\ST7789\ST7789.h</FilePath>
             </File>
           </Files>
         </Group>

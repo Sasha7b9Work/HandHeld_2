@@ -59,6 +59,7 @@ file(GLOB MODULES_LED             ../src/Modules/LED/*.h
 file(GLOB MODULES_PAN3060         ../src/Modules/PAN3060/*.*)
 file(GLOB MODULES_PCF8563         ../src/Modules/PCF8563/*.*)
 file(GLOB MODULES_PMS150G         ../src/Modules/PMS150G/*.*)
+file(GLOB MODULES_ST7789          ../src/Modules/ST7789/*.*)
 file(GLOB SETTINGS                ../src/Settings/*.*)
 file(GLOB STORAGE                 ../src/Storage/*.*)
 file(GLOB UTILS                   ../src/Utils/*.*)
@@ -79,6 +80,7 @@ source_group(Modules/LED            FILES ${MODULES_LED})
 source_group(Modules/PAN3060        FILES ${MODULES_PAN3060})
 source_group(Modules/PCF8563        FILES ${MODULES_PCF8563})
 source_group(Modules/PMS150G        FILES ${MODULES_PMS150G})
+source_group(Modules/ST7789         FILES ${MODULES_ST7789})
 source_group(Settings               FILES ${SETTINGS})
 source_group(Storage                FILES ${STORAGE})
 source_group(Utils                  FILES ${UTILS})
@@ -107,6 +109,7 @@ add_library(${PROJECT_NAME}
     ${MODULES_PAN3060}
     ${MODULES_PCF8563}
     ${MODULES_PMS150G}
+    ${MODULES_ST7789}
     ${SETTINGS}
     ${STORAGE}
     ${UTILS}
