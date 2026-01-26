@@ -10,7 +10,7 @@
 //extern SPI_HandleTypeDef ST7789_SPI_PORT;
 
 /* choose whether use DMA or not */
-#define USE_DMA
+//#define USE_DMA
 
 /* If u need CS control, comment below*/
 //#define CFG_NO_CS
@@ -214,14 +214,25 @@
 #define ST7789_COLOR_MODE_18bit 0x66    //  RGB666 (18bit)
 
 /* Basic operations */
-#define ST7789_RST_Clr() HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_RESET)
-#define ST7789_RST_Set() HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_SET)
+//#define ST7789_RST_Clr() HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_RESET)
+#define ST7789_RST_Clr()
 
-#define ST7789_DC_Clr() HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_RESET)
-#define ST7789_DC_Set() HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_SET)
+//#define ST7789_RST_Set() HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_SET)
+#define ST7789_RST_Set()
+
+//#define ST7789_DC_Clr() HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_RESET)
+#define ST7789_DC_Clr()
+
+//#define ST7789_DC_Set() HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_SET)
+#define ST7789_DC_Set()
+
 #ifndef CFG_NO_CS
-#define ST7789_Select() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_RESET)
-#define ST7789_UnSelect() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_SET)
+//#define ST7789_Select() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_RESET)
+#define ST7789_Select()
+
+//#define ST7789_UnSelect() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_SET)
+#define ST7789_UnSelect()
+
 #else
 #define ST7789_Select() asm("nop")
 #define ST7789_UnSelect() asm("nop")
@@ -231,31 +242,31 @@
 
 /* Basic functions. */
 void ST7789_Init(void);
-void ST7789_SetRotation(uint8_t m);
-void ST7789_Fill_Color(uint16_t color);
-void ST7789_DrawPixel(uint16_t x, uint16_t y, uint16_t color);
-void ST7789_Fill(uint16_t xSta, uint16_t ySta, uint16_t xEnd, uint16_t yEnd, uint16_t color);
-void ST7789_DrawPixel_4px(uint16_t x, uint16_t y, uint16_t color);
+void ST7789_SetRotation(uint8 m);
+void ST7789_Fill_Color(uint16 color);
+void ST7789_DrawPixel(int16 x, int16 y, uint16 color);
+void ST7789_Fill(int16 xSta, int16 ySta, int16 xEnd, int16 yEnd, uint16 color);
+void ST7789_DrawPixel_4px(uint16 x, uint16 y, uint16 color);
 
 /* Graphical functions. */
-void ST7789_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
-void ST7789_DrawRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
-void ST7789_DrawCircle(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color);
-void ST7789_DrawImage(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint16_t *data);
-void ST7789_InvertColors(uint8_t invert);
+void ST7789_DrawLine(uint16 x1, uint16 y1, uint16 x2, uint16 y2, uint16 color);
+void ST7789_DrawRectangle(uint16 x1, uint16 y1, uint16 x2, uint16 y2, uint16 color);
+void ST7789_DrawCircle(int16 x0, int16 y0, uint8 r, uint16 color);
+void ST7789_DrawImage(uint16 x, uint16 y, uint16 w, uint16 h, const uint16 *data);
+void ST7789_InvertColors(uint8 invert);
 
 /* Text functions. */
-void ST7789_WriteChar(uint16_t x, uint16_t y, char ch, FontDef font, uint16_t color, uint16_t bgcolor);
-void ST7789_WriteString(uint16_t x, uint16_t y, const char *str, FontDef font, uint16_t color, uint16_t bgcolor);
+//void ST7789_WriteChar(uint16 x, uint16 y, char ch, FontDef font, uint16 color, uint16 bgcolor);
+//void ST7789_WriteString(uint16 x, uint16 y, const char *str, FontDef font, uint16 color, uint16 bgcolor);
 
 /* Extented Graphical functions. */
-void ST7789_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color);
-void ST7789_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color);
-void ST7789_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color);
-void ST7789_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
+void ST7789_DrawFilledRectangle(uint16 x, uint16 y, uint16 w, uint16 h, uint16 color);
+void ST7789_DrawTriangle(uint16 x1, uint16 y1, uint16 x2, uint16 y2, uint16 x3, uint16 y3, uint16 color);
+void ST7789_DrawFilledTriangle(uint16 x1, uint16 y1, uint16 x2, uint16 y2, uint16 x3, uint16 y3, uint16 color);
+void ST7789_DrawFilledCircle(int16 x0, int16 y0, int16 r, uint16 color);
 
 /* Command functions */
-void ST7789_TearEffect(uint8_t tear);
+void ST7789_TearEffect(uint8 tear);
 
 /* Simple test function. */
 void ST7789_Test(void);
