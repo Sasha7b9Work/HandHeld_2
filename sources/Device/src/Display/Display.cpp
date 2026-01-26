@@ -85,3 +85,33 @@ void Pixel::Set(int x, int y, const Color &color) const
 
     Display::Buffer::buffer[y * Display::WIDTH + x] = (uint8)Color::current.value;
 }
+
+
+void HLine::Draw(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    if (x >= Display::WIDTH)
+    {
+        return;
+    }
+
+    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
+
+    if (y < 0)
+    {
+        return;
+    }
+
+    if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
+    {
+        return;
+    }
+
+    uint8 *pixel = Display::Buffer::buffer + y * Display::WIDTH + x;
+
+    for (int i = 0; i < width; i++)
+    {
+        *pixel++ = (uint8)Color::current.value;
+    }
+}
