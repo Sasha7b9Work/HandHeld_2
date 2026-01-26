@@ -15,4 +15,4 @@
 #define SOUND_ENABELD
 
 // "Стационарная" версия - с более большим дисплеем и мощным прощессором
-#define STATIONARY
+//#define STATIONARY

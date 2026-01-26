@@ -16,6 +16,9 @@
 #include "Utils/FPS.h"
 
 
+#ifndef STATIONARY
+
+
 template int Text<64>::Write(int x, int y, const Color &color) const;
 
 
@@ -389,3 +392,6 @@ int Text<capacity>::Write(int x, int y, const Color &color) const
 
     return x;
 }
+
+
+#endif
