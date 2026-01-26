@@ -35,11 +35,6 @@ namespace Display
         {
             std::memset(buffer, color.value, SIZE);
         }
-
-        uint8 *GetLine(int y)
-        {
-            return buffer + y * Display::WIDTH;
-        }
     }
 
     static void BeginScene(int num_part);

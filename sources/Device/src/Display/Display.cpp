@@ -14,6 +14,11 @@ namespace Display
         uint8 buffer[SIZE];
 
         int current_part = 0;                            // Эту часть сейчас отрисовываем
+
+        uint8 *GetLine(int y)
+        {
+            return buffer + y * Display::WIDTH;
+        }
     }
 }
 

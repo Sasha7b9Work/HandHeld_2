@@ -40,9 +40,3 @@ void Display::PrepareToSleep()
 {
 
 }
-
-
-uint8 *Display::Buffer::GetLine(int /*y*/)
-{
-    return nullptr;
-}
