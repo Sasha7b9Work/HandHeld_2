@@ -38,15 +38,6 @@
 #include "driver_st7789.h"
 #include "driver_st7789_font.h"
 
-#ifdef WIN32
-    #pragma warning(disable:4242 4244 4365)
-#else
-    #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-        #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
-        #pragma clang diagnostic ignored "-Wimplicit-int-conversion"
-    #endif
-#endif
-
  /**
   * @brief chip information definition
   */
@@ -468,7 +459,7 @@ uint8_t st7789_set_gamma(st7789_handle_t *handle, uint8_t gamma)
 
         return 1;                                                              /* return error */
     }
-    if (a_st7789_write_byte(handle, gamma & 0x0F, ST7789_DATA) != 0)           /* write gamma data */
+    if (a_st7789_write_byte(handle, (uint8)(gamma & 0x0F), ST7789_DATA) != 0)  /* write gamma data */
     {
         handle->debug_print("st7789: write data failed.\n");                   /* write data failed */
 
@@ -585,10 +576,10 @@ uint8_t st7789_set_column_address(st7789_handle_t *handle, uint16_t start_addres
 
         return 1;                                                              /* return error */
     }
-    buf[0] = (start_address >> 8) & 0xFF;                                      /* start address msb */
-    buf[1] = (start_address >> 0) & 0xFF;                                      /* start address lsb */
-    buf[2] = (end_address >> 8) & 0xFF;                                        /* end address msb */
-    buf[3] = (end_address >> 0) & 0xFF;                                        /* end address lsb */
+    buf[0] = (uint8)((start_address >> 8) & 0xFF);                             /* start address msb */
+    buf[1] = (uint8)((start_address >> 0) & 0xFF);                             /* start address lsb */
+    buf[2] = (uint8)((end_address >> 8) & 0xFF);                               /* end address msb */
+    buf[3] = (uint8)((end_address >> 0) & 0xFF);                               /* end address lsb */
     if (a_st7789_write_bytes(handle, buf, 4, ST7789_DATA) != 0)                /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                   /* write data failed */
@@ -644,10 +635,10 @@ uint8_t st7789_set_row_address(st7789_handle_t *handle, uint16_t start_address, 
 
         return 1;                                                              /* return error */
     }
-    buf[0] = (start_address >> 8) & 0xFF;                                      /* start address msb */
-    buf[1] = (start_address >> 0) & 0xFF;                                      /* start address lsb */
-    buf[2] = (end_address >> 8) & 0xFF;                                        /* end address msb */
-    buf[3] = (end_address >> 0) & 0xFF;                                        /* end address lsb */
+    buf[0] = (uint8)((start_address >> 8) & 0xFF);                             /* start address msb */
+    buf[1] = (uint8)((start_address >> 0) & 0xFF);                             /* start address lsb */
+    buf[2] = (uint8)((end_address >> 8) & 0xFF);                               /* end address msb */
+    buf[3] = (uint8)((end_address >> 0) & 0xFF);                               /* end address lsb */
     if (a_st7789_write_bytes(handle, buf, 4, ST7789_DATA) != 0)                /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                   /* write data failed */
@@ -728,10 +719,10 @@ uint8_t st7789_set_partial_areas(st7789_handle_t *handle, uint16_t start_row, ui
 
         return 1;                                                              /* return error */
     }
-    buf[0] = (start_row >> 8) & 0xFF;                                          /* start row msb */
-    buf[1] = (start_row >> 0) & 0xFF;                                          /* start row lsb */
-    buf[2] = (end_row >> 8) & 0xFF;                                            /* end row msb */
-    buf[3] = (end_row >> 0) & 0xFF;                                            /* end row lsb */
+    buf[0] = (uint8)((start_row >> 8) & 0xFF);                                 /* start row msb */
+    buf[1] = (uint8)((start_row >> 0) & 0xFF);                                 /* start row lsb */
+    buf[2] = (uint8)((end_row >> 8) & 0xFF);                                   /* end row msb */
+    buf[3] = (uint8)((end_row >> 0) & 0xFF);                                   /* end row lsb */
     if (a_st7789_write_bytes(handle, buf, 4, ST7789_DATA) != 0)                /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                   /* write data failed */
@@ -775,12 +766,12 @@ uint8_t st7789_set_vertical_scrolling(st7789_handle_t *handle, uint16_t top_fixe
 
         return 1;                                                              /* return error */
     }
-    buf[0] = (top_fixed_area >> 8) & 0xFF;                                     /* top fixed area msb */
-    buf[1] = (top_fixed_area >> 0) & 0xFF;                                     /* top fixed area lsb */
-    buf[2] = (scrolling_area >> 8) & 0xFF;                                     /* scrolling area msb */
-    buf[3] = (scrolling_area >> 0) & 0xFF;                                     /* scrolling area lsb */
-    buf[4] = (bottom_fixed_area >> 8) & 0xFF;                                  /* bottom fixed area msb */
-    buf[5] = (bottom_fixed_area >> 0) & 0xFF;                                  /* bottom fixed area lsb */
+    buf[0] = (uint8)((top_fixed_area >> 8) & 0xFF);                            /* top fixed area msb */
+    buf[1] = (uint8)((top_fixed_area >> 0) & 0xFF);                            /* top fixed area lsb */
+    buf[2] = (uint8)((scrolling_area >> 8) & 0xFF);                            /* scrolling area msb */
+    buf[3] = (uint8)((scrolling_area >> 0) & 0xFF);                            /* scrolling area lsb */
+    buf[4] = (uint8)((bottom_fixed_area >> 8) & 0xFF);                         /* bottom fixed area msb */
+    buf[5] = (uint8)((bottom_fixed_area >> 0) & 0xFF);                         /* bottom fixed area lsb */
     if (a_st7789_write_bytes(handle, buf, 6, ST7789_DATA) != 0)                /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                   /* write data failed */
@@ -850,7 +841,7 @@ uint8_t st7789_tearing_effect_line_on(st7789_handle_t *handle, st7789_tearing_ef
 
         return 1;                                                             /* return error */
     }
-    if (a_st7789_write_byte(handle, effect, ST7789_DATA) != 0)                /* write data */
+    if (a_st7789_write_byte(handle, (uint8)effect, ST7789_DATA) != 0)                /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                  /* write data failed */
 
@@ -935,8 +926,8 @@ uint8_t st7789_set_vertical_scroll_start_address(st7789_handle_t *handle, uint16
 
         return 1;                                                                 /* return error */
     }
-    buf[0] = (start_address >> 8) & 0xFF;                                         /* start address msb */
-    buf[1] = (start_address >> 0) & 0xFF;                                         /* start address lsb */
+    buf[0] = (uint8)((start_address >> 8) & 0xFF);                                /* start address msb */
+    buf[1] = (uint8)((start_address >> 0) & 0xFF);                                /* start address lsb */
     if (a_st7789_write_bytes(handle, buf, 2, ST7789_DATA) != 0)                   /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1042,7 +1033,7 @@ uint8_t st7789_set_interface_pixel_format(st7789_handle_t *handle, st7789_rgb_in
         return 1;                                                               /* return error */
     }
 
-    data = (rgb << 4) | (control << 0);                                         /* set pixel format */
+    data = (uint8)((rgb << 4) | (control << 0));                                /* set pixel format */
     if (a_st7789_write_byte(handle, data, ST7789_DATA) != 0)                    /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                    /* write data failed */
@@ -1123,8 +1114,8 @@ uint8_t st7789_set_tear_scanline(st7789_handle_t *handle, uint16_t l)
 
         return 1;                                                               /* return error */
     }
-    buf[0] = (l >> 8) & 0xFF;                                                   /* start line msb */
-    buf[1] = (l >> 0) & 0xFF;                                                   /* start line lsb */
+    buf[0] = (uint8)((l >> 8) & 0xFF);                                          /* start line msb */
+    buf[1] = (uint8)((l >> 0) & 0xFF);                                          /* start line lsb */
     if (a_st7789_write_bytes(handle, buf, 2, ST7789_DATA) != 0)                 /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                    /* write data failed */
@@ -1208,8 +1199,8 @@ uint8_t st7789_set_display_control(st7789_handle_t *handle, st7789_bool_t bright
         return 1;                                                               /* return error */
     }
 
-    data = (brightness_control_block << 5) | (display_dimming << 3)
-        | (backlight_control << 2);                                         /* set control data */
+    data = (uint8)((brightness_control_block << 5) | (display_dimming << 3)
+        | (backlight_control << 2));                                            /* set control data */
     if (a_st7789_write_byte(handle, data, ST7789_DATA) != 0)                    /* write control */
     {
         handle->debug_print("st7789: write data failed.\n");                    /* write data failed */
@@ -1254,7 +1245,7 @@ uint8_t st7789_set_brightness_control_and_color_enhancement(st7789_handle_t *han
         return 1;                                                               /* return error */
     }
 
-    data = (color_enhancement << 7) | (level << 4) | (mode << 0);               /* set control data */
+    data = (uint8)((color_enhancement << 7) | (level << 4) | (mode << 0));      /* set control data */
     if (a_st7789_write_byte(handle, data, ST7789_DATA) != 0)                    /* write control */
     {
         handle->debug_print("st7789: write data failed.\n");                    /* write data failed */
@@ -1345,9 +1336,9 @@ uint8_t st7789_set_ram_control(st7789_handle_t *handle,
 
         return 1;                                                                 /* return error */
     }
-    buf[0] = (ram_mode << 4) | (display_mode << 0);                               /* set param1 */
-    buf[1] = (frame_type << 4) | (data_mode << 3) |
-        (bus_width << 2) | (pixel_type << 0);                                /* set param2 */
+    buf[0] = (uint8)((ram_mode << 4) | (display_mode << 0));                      /* set param1 */
+    buf[1] = (uint8)((frame_type << 4) | (data_mode << 3) |
+        (bus_width << 2) | (pixel_type << 0));                                    /* set param2 */
     if (a_st7789_write_bytes(handle, buf, 2, ST7789_DATA) != 0)                   /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1418,10 +1409,10 @@ uint8_t st7789_set_rgb_interface_control(st7789_handle_t *handle,
 
         return 1;                                                                 /* return error */
     }
-    buf[0] = (rgb_mode << 7) | (rgb_if_mode << 5) |
-        (vspl << 3) | (hspl << 2) | (dpl << 1) | (epl << 0);                 /* set param1 */
-    buf[1] = vbp & 0x7F;                                                          /* set param2 */
-    buf[2] = hbp & 0x1F;                                                          /* set param3 */
+    buf[0] = (uint8)((rgb_mode << 7) | (rgb_if_mode << 5) |
+        (vspl << 3) | (hspl << 2) | (dpl << 1) | (epl << 0));                     /* set param1 */
+    buf[1] = (uint8)(vbp & 0x7F);                                                 /* set param2 */
+    buf[2] = (uint8)(hbp & 0x1F);                                                 /* set param3 */
     if (a_st7789_write_bytes(handle, buf, 3, ST7789_DATA) != 0)                   /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1524,9 +1515,9 @@ uint8_t st7789_set_porch(st7789_handle_t *handle,
     }
     buf[0] = back_porch_normal;                                                   /* set param1 */
     buf[1] = front_porch_normal;                                                  /* set param2 */
-    buf[2] = separate_porch_enable;                                               /* set param3 */
-    buf[3] = (back_porch_idle & 0xF) << 4 | (front_porch_idle & 0xF);             /* set param4 */
-    buf[4] = (back_porch_partial & 0xF) << 4 | (front_porch_partial & 0xF);       /* set param5 */
+    buf[2] = (uint8)separate_porch_enable;                                        /* set param3 */
+    buf[3] = (uint8)((back_porch_idle & 0xF) << 4 | (front_porch_idle & 0xF));    /* set param4 */
+    buf[4] = (uint8)((back_porch_partial & 0xF) << 4 | (front_porch_partial & 0xF));/* set param5 */
     if (a_st7789_write_bytes(handle, buf, 5, ST7789_DATA) != 0)                   /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1593,9 +1584,9 @@ uint8_t st7789_set_frame_rate_control(st7789_handle_t *handle,
 
         return 1;                                                                 /* return error */
     }
-    buf[0] = (separate_fr_control << 4) | (div_control << 0);                     /* set param1 */
-    buf[1] = (idle_mode << 5) | ((idle_frame_rate & 0x1F) << 0);                  /* set param2 */
-    buf[2] = (partial_mode << 5) | ((partial_frame_rate & 0x1F) << 0);            /* set param3 */
+    buf[0] = (uint8)((separate_fr_control << 4) | (div_control << 0));            /* set param1 */
+    buf[1] = (uint8)((idle_mode << 5) | ((idle_frame_rate & 0x1F) << 0));         /* set param2 */
+    buf[2] = (uint8)((partial_mode << 5) | ((partial_frame_rate & 0x1F) << 0));   /* set param3 */
     if (a_st7789_write_bytes(handle, buf, 3, ST7789_DATA) != 0)                   /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1641,7 +1632,7 @@ uint8_t st7789_set_partial_mode_control(st7789_handle_t *handle,
 
         return 1;                                                                 /* return error */
     }
-    reg = (level << 7) | (mode << 4) | (frequency << 0);                          /* set param */
+    reg = (uint8)((level << 7) | (mode << 4) | (frequency << 0));                 /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1683,7 +1674,7 @@ uint8_t st7789_set_gate_control(st7789_handle_t *handle, st7789_vghs_t vghs, st7
 
         return 1;                                                                 /* return error */
     }
-    reg = (vghs << 4) | (vgls << 0);                                              /* set param */
+    reg = (uint8)((vghs << 4) | (vgls << 0));                                     /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1751,9 +1742,9 @@ uint8_t st7789_set_gate_on_timing_adjustment(st7789_handle_t *handle,
     }
     buf[0] = 0x2A;                                                                /* set param1 */
     buf[1] = 0x2B;                                                                /* set param2 */
-    buf[2] = gate_on_timing_adjustment & 0x3F;                                    /* set param3 */
-    buf[3] = ((gate_off_timing_adjustment_rgb & 0xF) << 4) |
-        ((gate_off_timing_adjustment & 0xF) << 0);                           /* set param4 */
+    buf[2] = (uint8)(gate_on_timing_adjustment & 0x3F);                           /* set param3 */
+    buf[3] = (uint8)(((gate_off_timing_adjustment_rgb & 0xF) << 4) |
+        ((gate_off_timing_adjustment & 0xF) << 0));                               /* set param4 */
     if (a_st7789_write_bytes(handle, buf, 4, ST7789_DATA) != 0)                   /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1794,7 +1785,7 @@ uint8_t st7789_set_digital_gamma(st7789_handle_t *handle, st7789_bool_t enable)
 
         return 1;                                                                 /* return error */
     }
-    reg = enable << 2;                                                            /* set param */
+    reg = (uint8)(enable << 2);                                                   /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1842,7 +1833,7 @@ uint8_t st7789_set_vcoms(st7789_handle_t *handle, uint8_t vcoms)
 
         return 1;                                                                 /* return error */
     }
-    reg = vcoms & 0x3F;                                                           /* set param */
+    reg = (uint8)(vcoms & 0x3F);                                                  /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1950,8 +1941,8 @@ uint8_t st7789_set_lcm_control(st7789_handle_t *handle,
 
         return 1;                                                                 /* return error */
     }
-    reg = (xmy << 6) | (xbgr << 5) | (xinv << 4) | (xmx << 3) |
-        (xmh << 2) | (xmv << 1) | (xgs << 0);                                   /* set param */
+    reg = (uint8)((xmy << 6) | (xbgr << 5) | (xinv << 4) | (xmx << 3) |
+        (xmh << 2) | (xmv << 1) | (xgs << 0));                                    /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2030,7 +2021,7 @@ uint8_t st7789_set_vdv_vrh_from(st7789_handle_t *handle, st7789_vdv_vrh_from_t f
 
         return 1;                                                                 /* return error */
     }
-    buf[0] = from;                                                                /* set param1 */
+    buf[0] = (uint8)from;                                                         /* set param1 */
     buf[1] = 0xFF;                                                                /* set param2 */
     if (a_st7789_write_bytes(handle, buf, 2, ST7789_DATA) != 0)                   /* write data */
     {
@@ -2079,7 +2070,7 @@ uint8_t st7789_set_vrhs(st7789_handle_t *handle, uint8_t vrhs)
 
         return 1;                                                                 /* return error */
     }
-    reg = vrhs & 0x3F;                                                            /* set param */
+    reg = (uint8)(vrhs & 0x3F);                                                   /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2181,7 +2172,7 @@ uint8_t st7789_set_vdv(st7789_handle_t *handle, uint8_t vdv)
 
         return 1;                                                                 /* return error */
     }
-    reg = vdv & 0x3F;                                                             /* set param */
+    reg = (uint8)(vdv & 0x3F);                                                    /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2283,7 +2274,7 @@ uint8_t st7789_set_vcoms_offset(st7789_handle_t *handle, uint8_t offset)
 
         return 1;                                                                 /* return error */
     }
-    reg = offset & 0x3F;                                                          /* set param */
+    reg = (uint8)(offset & 0x3F);                                                 /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2379,7 +2370,7 @@ uint8_t st7789_set_frame_rate(st7789_handle_t *handle, st7789_inversion_selectio
 
         return 1;                                                                 /* return error */
     }
-    reg = (selection << 5) | (rate << 0);                                         /* set param */
+    reg = (uint8)((selection << 5) | (rate << 0));                                /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2427,8 +2418,8 @@ uint8_t st7789_set_cabc_control(st7789_handle_t *handle,
 
         return 1;                                                                 /* return error */
     }
-    reg = (led_on << 3) | (led_pwm_init << 2) |
-        (led_pwm_fix << 1) | (led_pwm_polarity << 0);                           /* set param */
+    reg = (uint8)((led_on << 3) | (led_pwm_init << 2) |
+        (led_pwm_fix << 1) | (led_pwm_polarity << 0));                            /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2469,7 +2460,7 @@ uint8_t st7789_set_pwm_frequency(st7789_handle_t *handle, st7789_pwm_frequency_t
 
         return 1;                                                                 /* return error */
     }
-    reg = frequency;                                                              /* set param */
+    reg = (uint8)frequency;                                                       /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2513,7 +2504,7 @@ uint8_t st7789_set_power_control_1(st7789_handle_t *handle, st7789_avdd_t avdd, 
         return 1;                                                                 /* return error */
     }
     buf[0] = 0xA4;                                                                /* set param 1 */
-    buf[1] = (avdd << 6) | (avcl << 4) | (vds << 0);                              /* set param 2 */
+    buf[1] = (uint8)((avdd << 6) | (avcl << 4) | (vds << 0));                     /* set param 2 */
     if (a_st7789_write_bytes(handle, buf, 2, ST7789_DATA) != 0)                   /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2597,7 +2588,7 @@ uint8_t st7789_set_command_2_enable(st7789_handle_t *handle, st7789_bool_t enabl
     buf[0] = 0x5A;                                                                /* set param 1 */
     buf[1] = 0x69;                                                                /* set param 2 */
     buf[2] = 0x02;                                                                /* set param 3 */
-    buf[3] = enable;                                                              /* set param 4 */
+    buf[3] = (uint8)enable;                                                       /* set param 4 */
     if (a_st7789_write_bytes(handle, buf, 4, ST7789_DATA) != 0)                   /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2814,7 +2805,7 @@ uint8_t st7789_set_gate(st7789_handle_t *handle,
     }
     buf[0] = gate_line_number;                                                    /* set param 1 */
     buf[1] = first_scan_line_number;                                              /* set param 2 */
-    buf[2] = 0x10 | (mode << 2) | (direction << 0);                               /* set param 3 */
+    buf[2] = (uint8)(0x10 | (mode << 2) | (direction << 0));                      /* set param 3 */
     if (a_st7789_write_bytes(handle, buf, 3, ST7789_DATA) != 0)                   /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2910,7 +2901,7 @@ uint8_t st7789_set_spi2_enable(st7789_handle_t *handle, st7789_bool_t date_lane,
 
         return 1;                                                                 /* return error */
     }
-    reg = (date_lane << 4) | (command_table_2 << 0);                              /* set param */
+    reg = (uint8)((date_lane << 4) | (command_table_2 << 0));                     /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2952,7 +2943,7 @@ uint8_t st7789_set_power_control_2(st7789_handle_t *handle, st7789_sbclk_div_t s
 
         return 1;                                                                 /* return error */
     }
-    reg = (sbclk << 4) | (stp14ck << 0);                                          /* set param */
+    reg = (uint8)((sbclk << 4) | (stp14ck << 0));                                 /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
