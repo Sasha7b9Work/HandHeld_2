@@ -19,9 +19,6 @@
 #ifndef STATIONARY
 
 
-template int Text<64>::Write(int x, int y, const Color &color) const;
-
-
 namespace Display
 {
     namespace Buffer
@@ -375,22 +372,6 @@ void RTCDateTime::DrawTime(int x, int y, const Color &color) const
 void RTCDateTime::DrawDate(int x, int y, const Color &color) const
 {
     Text<>("%02d/%02d/%02d", Day, Month, Year).Write(x, y, color);
-}
-
-template<int capacity>
-int Text<capacity>::Write(int x, int y, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    pchar pointer = text;
-
-    while (*pointer)
-    {
-        x = Char(*pointer++).Write(x, y);
-        x += Font::GetSize(); //-V1026
-    }
-
-    return x;
 }
 
 

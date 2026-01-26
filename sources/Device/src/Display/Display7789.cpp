@@ -3,4 +3,62 @@
 #include "Display/Display.h"
 
 
+#ifdef STATIONARY
 
+
+void Display::Init()
+{
+
+}
+
+
+void Display::Update()
+{
+
+}
+
+
+void Display::DrawLowVoltage()
+{
+
+}
+
+
+void Display::DrawPowerOff()
+{
+
+}
+
+
+uint Display::TimeEnabled()
+{
+    return 0;
+}
+
+
+void Display::PrepareToSleep()
+{
+
+}
+
+
+uint8 *Display::Buffer::GetLine(int y)
+{
+    return nullptr;
+}
+
+
+void Rect::Fill(int /*x*/, int /*y*/, const Color &/*color*/ /* = Color::NUMBER */) const
+{
+
+}
+
+
+void Rect::Draw(int /*x*/, int /*y*/, const Color &/*color*/ /* = Color::NUMBER */) const
+{
+
+}
+
+
+
+#endif
