@@ -1,12 +1,13 @@
 #ifndef __ST7789_H
 #define __ST7789_H
 
-#include "fonts.h"
-#include "main.h"
+//#include "fonts.h"
+//#include "main.h"
 
 /* choose a Hardware SPI port to use. */
 #define ST7789_SPI_PORT hspi1
-extern SPI_HandleTypeDef ST7789_SPI_PORT;
+
+//extern SPI_HandleTypeDef ST7789_SPI_PORT;
 
 /* choose whether use DMA or not */
 #define USE_DMA
@@ -37,8 +38,8 @@ extern SPI_HandleTypeDef ST7789_SPI_PORT;
  * X_SHIFT & Y_SHIFT are used to adapt different display's resolution
  */
 
-/* Choose a type you are using */
-//#define USING_135X240
+ /* Choose a type you are using */
+ //#define USING_135X240
 #define USING_240X240
 //#define USING_170X320
 
@@ -50,86 +51,86 @@ extern SPI_HandleTypeDef ST7789_SPI_PORT;
 
 #ifdef USING_135X240
 
-    #if ST7789_ROTATION == 0
-        #define ST7789_WIDTH 135
-        #define ST7789_HEIGHT 240
-        #define X_SHIFT 53
-        #define Y_SHIFT 40
-    #endif
+#if ST7789_ROTATION == 0
+#define ST7789_WIDTH 135
+#define ST7789_HEIGHT 240
+#define X_SHIFT 53
+#define Y_SHIFT 40
+#endif
 
-    #if ST7789_ROTATION == 1
-        #define ST7789_WIDTH 240
-        #define ST7789_HEIGHT 135
-        #define X_SHIFT 40
-        #define Y_SHIFT 52
-    #endif
+#if ST7789_ROTATION == 1
+#define ST7789_WIDTH 240
+#define ST7789_HEIGHT 135
+#define X_SHIFT 40
+#define Y_SHIFT 52
+#endif
 
-    #if ST7789_ROTATION == 2
-        #define ST7789_WIDTH 135
-        #define ST7789_HEIGHT 240
-        #define X_SHIFT 52
-        #define Y_SHIFT 40
-    #endif
+#if ST7789_ROTATION == 2
+#define ST7789_WIDTH 135
+#define ST7789_HEIGHT 240
+#define X_SHIFT 52
+#define Y_SHIFT 40
+#endif
 
-    #if ST7789_ROTATION == 3
-        #define ST7789_WIDTH 240
-        #define ST7789_HEIGHT 135
-        #define X_SHIFT 40
-        #define Y_SHIFT 53
-    #endif
+#if ST7789_ROTATION == 3
+#define ST7789_WIDTH 240
+#define ST7789_HEIGHT 135
+#define X_SHIFT 40
+#define Y_SHIFT 53
+#endif
 
 #endif
 
 #ifdef USING_240X240
 
-    #define ST7789_WIDTH 240
-    #define ST7789_HEIGHT 240
+#define ST7789_WIDTH 240
+#define ST7789_HEIGHT 240
 
-		#if ST7789_ROTATION == 0
-			#define X_SHIFT 0
-			#define Y_SHIFT 80
-		#elif ST7789_ROTATION == 1
-			#define X_SHIFT 80
-			#define Y_SHIFT 0
-		#elif ST7789_ROTATION == 2
-			#define X_SHIFT 0
-			#define Y_SHIFT 0
-		#elif ST7789_ROTATION == 3
-			#define X_SHIFT 0
-			#define Y_SHIFT 0
-		#endif
+#if ST7789_ROTATION == 0
+#define X_SHIFT 0
+#define Y_SHIFT 80
+#elif ST7789_ROTATION == 1
+#define X_SHIFT 80
+#define Y_SHIFT 0
+#elif ST7789_ROTATION == 2
+#define X_SHIFT 0
+#define Y_SHIFT 0
+#elif ST7789_ROTATION == 3
+#define X_SHIFT 0
+#define Y_SHIFT 0
+#endif
 
 #endif
 
 #ifdef USING_170X320
 
-	#if ST7789_ROTATION == 0
-        #define ST7789_WIDTH 170
-        #define ST7789_HEIGHT 320
-        #define X_SHIFT 35
-        #define Y_SHIFT 0
-    #endif
+#if ST7789_ROTATION == 0
+#define ST7789_WIDTH 170
+#define ST7789_HEIGHT 320
+#define X_SHIFT 35
+#define Y_SHIFT 0
+#endif
 
-    #if ST7789_ROTATION == 1
-        #define ST7789_WIDTH 320
-        #define ST7789_HEIGHT 170
-        #define X_SHIFT 0
-        #define Y_SHIFT 35
-    #endif
+#if ST7789_ROTATION == 1
+#define ST7789_WIDTH 320
+#define ST7789_HEIGHT 170
+#define X_SHIFT 0
+#define Y_SHIFT 35
+#endif
 
-    #if ST7789_ROTATION == 2
-        #define ST7789_WIDTH 170
-        #define ST7789_HEIGHT 320
-        #define X_SHIFT 35
-        #define Y_SHIFT 0
-    #endif
+#if ST7789_ROTATION == 2
+#define ST7789_WIDTH 170
+#define ST7789_HEIGHT 320
+#define X_SHIFT 35
+#define Y_SHIFT 0
+#endif
 
-    #if ST7789_ROTATION == 3
-        #define ST7789_WIDTH 320
-        #define ST7789_HEIGHT 170
-        #define X_SHIFT 0
-        #define Y_SHIFT 35
-    #endif
+#if ST7789_ROTATION == 3
+#define ST7789_WIDTH 320
+#define ST7789_HEIGHT 170
+#define X_SHIFT 0
+#define Y_SHIFT 35
+#endif
 
 #endif
 
@@ -161,7 +162,7 @@ extern SPI_HandleTypeDef ST7789_SPI_PORT;
 #define LGRAYBLUE   0XA651
 #define LBBLUE      0X2B12
 
-/* Control Registers and constant codes */
+ /* Control Registers and constant codes */
 #define ST7789_NOP     0x00
 #define ST7789_SWRESET 0x01
 #define ST7789_RDDID   0x04
@@ -192,7 +193,7 @@ extern SPI_HandleTypeDef ST7789_SPI_PORT;
  *
  */
 
-/* Page Address Order ('0': Top to Bottom, '1': the opposite) */
+ /* Page Address Order ('0': Top to Bottom, '1': the opposite) */
 #define ST7789_MADCTL_MY  0x80
 /* Column Address Order ('0': Left to Right, '1': the opposite) */
 #define ST7789_MADCTL_MX  0x40
@@ -260,7 +261,7 @@ void ST7789_TearEffect(uint8_t tear);
 void ST7789_Test(void);
 
 #ifndef ST7789_ROTATION
-    #error You should at least choose a display rotation!
+#error You should at least choose a display rotation!
 #endif
 
 #endif
