@@ -64,6 +64,20 @@ int Text<capacity>::Write(int x, int y, const Color &color) const
 }
 
 
+void Display::Init()
+{
+#ifdef MODEL7735
+    ST7735::Init();
+#endif
+
+#ifdef MODEL7789
+    ST7789::Init();
+#endif
+
+    Font::SetType(TypeFont::_7);
+}
+
+
 void Rect::Draw(int x, int y, const Color &color) const
 {
     color.SetAsCurrent();

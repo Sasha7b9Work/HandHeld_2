@@ -37,14 +37,6 @@ namespace Display
 }
 
 
-void Display::Init()
-{
-    ST7735::Init();
-
-    Font::SetType(TypeFont::_7);
-}
-
-
 void Display::PrepareToSleep()
 {
     ST7735::Disable();

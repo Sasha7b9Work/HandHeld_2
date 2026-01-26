@@ -4,5 +4,7 @@
 
 namespace ST7789
 {
+    void Init();
+
     uint TimeEnabled();
 }

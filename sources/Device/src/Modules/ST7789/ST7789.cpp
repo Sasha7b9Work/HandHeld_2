@@ -3,6 +3,12 @@
 #include "Modules/ST7789/ST7789.h"
 
 
+void ST7789::Init()
+{
+
+}
+
+
 uint ST7789::TimeEnabled()
 {
     return 0;

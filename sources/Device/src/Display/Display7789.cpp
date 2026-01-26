@@ -13,12 +13,6 @@ namespace Display
 }
 
 
-void Display::Init()
-{
-
-}
-
-
 void Display::PrepareToSleep()
 {
 
