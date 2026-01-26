@@ -2,7 +2,7 @@
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
 #include "Settings/Settings.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 namespace HAL_ROM

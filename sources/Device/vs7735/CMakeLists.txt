@@ -43,11 +43,14 @@ file(GLOB DISPLAY                 ../src/Display/Display.h
 file(GLOB DISPLAY_FONT            ../src/Display/Font/*.*)
 file(GLOB HARDWARE                ../src/Hardware/*.*)
 file(GLOB HARDWARE_CMSIS          ../src/Hardware/CMSIS/*.*)
-file(GLOB HARDWARE_HAL            ../src/Hardware/HAL/*.*)
+file(GLOB HARDWARE_HAL            ../src/Hardware/HAL/*.h
+                                  ../src/Hardware/HAL/*_23.cpp)
 file(GLOB KEYBOARD                ../src/Keyboard/*.*)
 file(GLOB MENU                    ../src/Menu/*.*)
 file(GLOB MENU_PAGES              ../src/Menu/Pages/*.*)
-file(GLOB MODULES_BEEPER          ../src/Modules/Beeper/*.*)
+file(GLOB MODULES_BEEPER          ../src/Modules/Beeper/*.h
+                                  ../src/Modules/Beeper/Beeper.cpp
+                                  ../src/Modules/Beeper/*_23.cpp)
 file(GLOB MODULES_BEEPER_SOUNDS   ../src/Modules/Beeper/Sounds/*.*)
 file(GLOB MODULES_LED             ../src/Modules/LED/*.h
                                   ../src/Modules/LED/LED.cpp

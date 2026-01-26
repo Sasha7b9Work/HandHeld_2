@@ -5,7 +5,7 @@
 #include "Hardware/Timer.h"
 #include "Display/Display.h"
 #include "Utils/FPS.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 namespace ST7735

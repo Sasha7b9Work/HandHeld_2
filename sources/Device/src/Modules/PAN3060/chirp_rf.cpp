@@ -2,7 +2,7 @@
 #include "Modules/PAN3060/chirp_rf.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Hardware/HAL/HAL.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 static volatile uint8 rf_reply = 0;

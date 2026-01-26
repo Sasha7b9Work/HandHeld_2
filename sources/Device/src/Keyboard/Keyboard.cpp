@@ -4,7 +4,7 @@
 #include "Hardware/Timer.h"
 #include "Settings/Settings.h"
 #include <cstring>
-#include <gd32e23x.h>
+#include "system.h"
 
 
 namespace Keyboard
@@ -17,11 +17,15 @@ namespace Keyboard
 
         void Init()
         {
+#ifdef MODEL7735
+
             gpio_mode_set(port, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, pin);
             nvic_irq_enable((IRQn_Type)irqn, 2);
             syscfg_exti_line_config(exti_source_port, exti_source_pin);
             exti_init(exti, EXTI_INTERRUPT, EXTI_TRIG_BOTH);
             exti_interrupt_flag_clear(exti);
+
+#endif
         }
 
         bool IsDown()
@@ -49,6 +53,8 @@ namespace Keyboard
     *   SW_RIGHT  13    PA3      Cancel
     */
 
+#ifdef MODEL7735
+
     static Button btnMenu(GPIOA, GPIO_PIN_3, EXTI2_3_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN3, EXTI_3); 
 #ifdef BOARD_NEW
     static Button btnCancel(GPIOA, GPIO_PIN_15, EXTI4_15_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN15, EXTI_15);
@@ -57,6 +63,17 @@ namespace Keyboard
 #endif
     static Button btnUp(GPIOA, GPIO_PIN_12, EXTI4_15_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN12, EXTI_12);
     static Button btnDown(GPIOB, GPIO_PIN_5, EXTI4_15_IRQn, EXTI_SOURCE_GPIOB, EXTI_SOURCE_PIN5, EXTI_5);
+
+#endif
+
+#ifdef MODEL7789
+
+    static Button btnMenu(GPIOA, GPIO_PIN_3, EXTI5_9_IRQn, 0, 0, EXTI_3);
+    static Button btnCancel(GPIOA, GPIO_PIN_15, EXTI5_9_IRQn, 0, 0, EXTI_15);
+    static Button btnUp(GPIOA, GPIO_PIN_12, EXTI5_9_IRQn, 0, 0, EXTI_12);
+    static Button btnDown(GPIOB, GPIO_PIN_5, EXTI5_9_IRQn, 0, 0, EXTI_5);
+
+#endif
 
     struct ButtonStruct
     {

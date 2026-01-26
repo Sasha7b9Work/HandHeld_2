@@ -3,7 +3,7 @@
 #include "Modules/Beeper/driverBeeper.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Hardware/Timer.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 namespace Beeper

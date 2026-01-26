@@ -2,7 +2,7 @@
 #include "defines.h"
 #include "Hardware/Timer.h"
 #include "Hardware/HAL/systick.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 uint timer_counter = 0;
@@ -10,6 +10,8 @@ uint timer_counter = 0;
 
 void Timer::Init()
 {
+#ifdef MODEL7735
+
     rcu_periph_clock_enable(RCU_TIMER13);
     timer_deinit(TIMER13);                          // Будем использовать для подсчёта микросекунд
 
@@ -24,6 +26,8 @@ void Timer::Init()
     };
 
     timer_init(TIMER13, &timer_initpara);
+
+#endif
 }
 
 

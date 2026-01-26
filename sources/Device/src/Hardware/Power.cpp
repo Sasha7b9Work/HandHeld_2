@@ -7,7 +7,7 @@
 #include "Display/Display.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/HAL/HAL_PINS.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 namespace Power

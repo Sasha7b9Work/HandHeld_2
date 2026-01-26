@@ -727,19 +727,9 @@
               <FilePath>.\src\Hardware\HAL\systick.h</FilePath>
             </File>
             <File>
-              <FileName>HAL_PINS.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_PINS.cpp</FilePath>
-            </File>
-            <File>
               <FileName>HAL_PINS.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\HAL\HAL_PINS.h</FilePath>
-            </File>
-            <File>
-              <FileName>HAL.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL.h</FileName>
@@ -747,34 +737,54 @@
               <FilePath>.\src\Hardware\HAL\HAL.h</FilePath>
             </File>
             <File>
-              <FileName>HAL_I2C.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_I2C.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>gd32e23x_it.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_it.cpp</FilePath>
-            </File>
-            <File>
               <FileName>systick.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_ADC.cpp</FileName>
+              <FileName>gd32e23x_it_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\gd32e23x_it_23.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_ROM.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ROM.cpp</FilePath>
+              <FileName>gd32f30x_libopt.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\gd32f30x_libopt.h</FilePath>
             </File>
             <File>
-              <FileName>HAL_CLOCK.cpp</FileName>
+              <FileName>HAL_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_CLOCK.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\HAL_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_ADC_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_ADC_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_CLOCK_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_CLOCK_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_I2C_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_I2C_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_PINS_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_PINS_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_ROM_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_ROM_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>system.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\system.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -947,14 +957,14 @@
               <FilePath>.\src\Modules\Beeper\Beeper.h</FilePath>
             </File>
             <File>
-              <FileName>driverBeeper.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Modules\Beeper\driverBeeper.cpp</FilePath>
-            </File>
-            <File>
               <FileName>driverBeeper.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\Beeper\driverBeeper.h</FilePath>
+            </File>
+            <File>
+              <FileName>driverBeeper_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\Beeper\driverBeeper_23.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -1916,19 +1926,9 @@
               <FilePath>.\src\Hardware\HAL\systick.h</FilePath>
             </File>
             <File>
-              <FileName>HAL_PINS.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_PINS.cpp</FilePath>
-            </File>
-            <File>
               <FileName>HAL_PINS.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\HAL\HAL_PINS.h</FilePath>
-            </File>
-            <File>
-              <FileName>HAL.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL.h</FileName>
@@ -1936,34 +1936,54 @@
               <FilePath>.\src\Hardware\HAL\HAL.h</FilePath>
             </File>
             <File>
-              <FileName>HAL_I2C.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_I2C.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>gd32e23x_it.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_it.cpp</FilePath>
-            </File>
-            <File>
               <FileName>systick.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_ADC.cpp</FileName>
+              <FileName>gd32e23x_it_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\gd32e23x_it_23.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_ROM.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ROM.cpp</FilePath>
+              <FileName>gd32f30x_libopt.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\gd32f30x_libopt.h</FilePath>
             </File>
             <File>
-              <FileName>HAL_CLOCK.cpp</FileName>
+              <FileName>HAL_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_CLOCK.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\HAL_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_ADC_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_ADC_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_CLOCK_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_CLOCK_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_I2C_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_I2C_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_PINS_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_PINS_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_ROM_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_ROM_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>system.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\system.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -2136,14 +2156,14 @@
               <FilePath>.\src\Modules\Beeper\Beeper.h</FilePath>
             </File>
             <File>
-              <FileName>driverBeeper.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Modules\Beeper\driverBeeper.cpp</FilePath>
-            </File>
-            <File>
               <FileName>driverBeeper.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\Beeper\driverBeeper.h</FilePath>
+            </File>
+            <File>
+              <FileName>driverBeeper_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\Beeper\driverBeeper_23.cpp</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,7 +1,7 @@
 // 2024/03/01 22:10:32 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Hardware/HAL/HAL_PINS.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 PinOut pinSPI1_NSS(GPIOB, GPIO_PIN_12);

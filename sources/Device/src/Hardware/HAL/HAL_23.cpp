@@ -3,7 +3,7 @@
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/HAL/systick.h"
 //#include "Hardware/HAL/HAL_PINS.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 void HAL::Init()

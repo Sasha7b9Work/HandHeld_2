@@ -4,7 +4,7 @@
 #include "Hardware/Timer.h"
 #include "Settings/Source.h"
 #include "Modules/PCF8563/PCF8563.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 namespace Vibrato
@@ -32,8 +32,12 @@ namespace Vibrato
 
 void Vibrato::Init()
 {
+#ifdef MODEL7735
+
     gpio_mode_set(PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, PIN);
     gpio_output_options_set(PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PIN);
+
+#endif
 
     Driver::Off();
 }

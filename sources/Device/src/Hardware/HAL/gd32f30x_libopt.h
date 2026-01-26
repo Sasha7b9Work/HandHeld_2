@@ -1,6 +1,6 @@
 /*!
-    \file    systick.c
-    \brief   the systick configuration file
+    \file    gd32e23x_libopt.h
+    \brief   library optional for gd32e23x
     
     \version 2023-02-27, V1.2.0, firmware for GD32E23x
 */
@@ -32,66 +32,32 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 OF SUCH DAMAGE.
 */
 
+#ifndef GD32E23X_LIBOPT_H
+#define GD32E23X_LIBOPT_H
+
 #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-    #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-    #pragma clang diagnostic ignored "-Wdeprecated-register"
+    #pragma clang diagnostic ignored "-Wold-style-cast"
+#else
 #endif
 
-#include "system.h"
-#include "systick.h"
+#include "gd32f30x_adc.h"
+#include "gd32f30x_crc.h"
+#include "gd32f30x_dbg.h"
+#include "gd32f30x_dma.h"
+#include "gd32f30x_exti.h"
+#include "gd32f30x_fmc.h"
+#include "gd32f30x_gpio.h"
+//#include "gd32f30x_syscfg.h"
+#include "gd32f30x_i2c.h"
+#include "gd32f30x_fwdgt.h"
+#include "gd32f30x_pmu.h"
+#include "gd32f30x_rcu.h"
+#include "gd32f30x_rtc.h"
+#include "gd32f30x_spi.h"
+#include "gd32f30x_timer.h"
+#include "gd32f30x_usart.h"
+#include "gd32f30x_wwdgt.h"
+#include "gd32f30x_misc.h"
+//#include "gd32f30x_cmp.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-volatile static uint32_t delay;
-
-/*!
-    \brief      configure systick
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-void systick_config(void)
-{
-    /* setup systick timer for 1000Hz interrupts */
-    if(SysTick_Config(SystemCoreClock / 1000U)){
-        /* capture error */
-        while(1){
-        }
-    }
-    /* configure the systick handler priority */
-    NVIC_SetPriority(SysTick_IRQn, 0x00U);
-}
-
-/*!
-    \brief      delay a time in milliseconds
-    \param[in]  count: count in milliseconds
-    \param[out] none
-    \retval     none
-*/
-void delay_1ms(uint32_t count)
-{
-    delay = count;
-
-    while(0U != delay){
-    }
-}
-
-/*!
-    \brief      delay decrement
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-void delay_decrement(void)
-{
-    if(0U != delay){
-        delay--;
-    }
-}
-
-
-#ifdef __cplusplus
-}
-#endif
+#endif /* GD32E23X_LIBOPT_H */

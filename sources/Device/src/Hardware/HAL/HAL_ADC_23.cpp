@@ -5,7 +5,7 @@
 #include "Hardware/Vibrato.h"
 #include "Modules/LED/LED.h"
 #include "Modules/Beeper/Beeper.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 namespace HAL_ADC

@@ -1,6 +1,6 @@
 /*!
-    \file    systick.c
-    \brief   the systick configuration file
+    \file    gd32e23x_it.h
+    \brief   the header file of the ISR
     
     \version 2023-02-27, V1.2.0, firmware for GD32E23x
 */
@@ -32,66 +32,45 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 OF SUCH DAMAGE.
 */
 
-#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-    #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-    #pragma clang diagnostic ignored "-Wdeprecated-register"
-#endif
+#ifndef GD32E23X_IT_H
+#define GD32E23X_IT_H
 
-#include "system.h"
-#include "systick.h"
+#include "gd32f30x.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-volatile static uint32_t delay;
+/* function declarations */
+/* this function handles NMI exception */
+void NMI_Handler(void);
+/* this function handles HardFault exception */
+void HardFault_Handler(void);
+/* this function handles MemManage exception */
+void MemManage_Handler(void);
+/* this function handles BusFault exception */
+void BusFault_Handler(void);
+/* this function handles UsageFault exception */
+void UsageFault_Handler(void);
+/* this function handles SVC exception */
+void SVC_Handler(void);
+/* this function handles DebugMon exception */
+void DebugMon_Handler(void);
+/* this function handles PendSV exception */
+void PendSV_Handler(void);
+/* this function handles SysTick exception */
+void SysTick_Handler(void);
 
-/*!
-    \brief      configure systick
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-void systick_config(void)
-{
-    /* setup systick timer for 1000Hz interrupts */
-    if(SysTick_Config(SystemCoreClock / 1000U)){
-        /* capture error */
-        while(1){
-        }
-    }
-    /* configure the systick handler priority */
-    NVIC_SetPriority(SysTick_IRQn, 0x00U);
-}
+void EXTI0_1_IRQHandler(void);
 
-/*!
-    \brief      delay a time in milliseconds
-    \param[in]  count: count in milliseconds
-    \param[out] none
-    \retval     none
-*/
-void delay_1ms(uint32_t count)
-{
-    delay = count;
+void EXTI2_3_IRQHandler(void);
 
-    while(0U != delay){
-    }
-}
+void EXTI4_15_IRQHandler(void);
 
-/*!
-    \brief      delay decrement
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-void delay_decrement(void)
-{
-    if(0U != delay){
-        delay--;
-    }
-}
-
+void TIMER2_IRQHandler(void);
 
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* GD32E23X_IT_H */

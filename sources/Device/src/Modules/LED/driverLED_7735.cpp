@@ -2,7 +2,7 @@
 #include "defines.h"
 #include "Modules/LED/driverLED.h"
 #include "Hardware/HAL/HAL_PINS.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 /*

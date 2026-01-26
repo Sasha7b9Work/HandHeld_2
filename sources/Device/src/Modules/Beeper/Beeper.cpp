@@ -10,7 +10,7 @@
 #ifdef GUI
     #include "GUI/Controls/PainterMelody.h"
 #endif
-#include <gd32e23x.h>
+#include "system.h"
 
 
 struct Note

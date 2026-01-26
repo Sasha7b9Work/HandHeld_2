@@ -4,7 +4,7 @@
 #include "Hardware/Timer.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include "Modules/PAN3060/chirp_rf.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 namespace PAN3060
@@ -50,12 +50,16 @@ void PAN3060::InitRF()
 
 void PAN3060::InitIRQ()
 {
+#ifdef MODEL7735
+
     // Инициализируем пин клоков от приёмника на прерывание
     gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_8);
     nvic_irq_enable(EXTI4_15_IRQn, 2);
     syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
     exti_init(EXTI_8, EXTI_INTERRUPT, EXTI_TRIG_RISING);
     exti_interrupt_flag_clear(EXTI_8);
+
+#endif
 }
 
 

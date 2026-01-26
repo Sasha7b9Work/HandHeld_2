@@ -1,7 +1,7 @@
 // 2025/12/18 17:21:24 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Modules/PMS150G/PMS150G.h"
-#include <gd32e23x.h>
+#include "system.h"
 
 
 namespace PMS150G
@@ -12,6 +12,8 @@ namespace PMS150G
 
 void PMS150G::Init()
 {
+#ifdef MODEL7735
+
     // PWR_CTRL
     // Инициализируем пин клоков от приёмника на прерывание
     gpio_mode_set(GPIOC, GPIO_MODE_INPUT, GPIO_PUPD_PULLDOWN, GPIO_PIN_13);
@@ -19,4 +21,6 @@ void PMS150G::Init()
     syscfg_exti_line_config(EXTI_SOURCE_GPIOC, EXTI_SOURCE_PIN13);
     exti_init(EXTI_13, EXTI_INTERRUPT, EXTI_TRIG_RISING);
     exti_interrupt_flag_clear(EXTI_13);
+
+#endif
 }
