@@ -1,190 +1,266 @@
-// SPDX-License-Identifier: MIT
+#ifndef __ST7789_H
+#define __ST7789_H
 
-#pragma once
+#include "fonts.h"
+#include "main.h"
+
+/* choose a Hardware SPI port to use. */
+#define ST7789_SPI_PORT hspi1
+extern SPI_HandleTypeDef ST7789_SPI_PORT;
+
+/* choose whether use DMA or not */
+#define USE_DMA
+
+/* If u need CS control, comment below*/
+//#define CFG_NO_CS
+
+/* Pin connection*/
+#define ST7789_RST_PORT ST7789_RST_GPIO_Port
+#define ST7789_RST_PIN  ST7789_RST_Pin
+#define ST7789_DC_PORT  ST7789_DC_GPIO_Port
+#define ST7789_DC_PIN   ST7789_DC_Pin
+
+#ifndef CFG_NO_CS
+#define ST7789_CS_PORT  ST7789_CS_GPIO_Port
+#define ST7789_CS_PIN   ST7789_CS_Pin
+#endif
+
+/* If u need Backlight control, uncomment below */
+//#define BLK_PORT
+//#define BLK_PIN
 
 
-#include "driver/spi_master.h"
-#include "esp_err.h"
-
-
-#define ST7789_SPI_QUEUE_SIZE 2
-
-
-// System Function Command Table 1
-#define ST7789_CMD_NOP               0x00 // No operation
-#define ST7789_CMD_SWRESET           0x01 // Software reset
-#define ST7789_CMD_RDDID             0x04 // Read display ID
-#define ST7789_CMD_RDDST             0x09 // Read display status
-#define ST7789_CMD_RDDPM             0x0a // Read display power
-#define ST7789_CMD_RDDMADCTL         0x0b // Read display
-#define ST7789_CMD_RDDCOLMOD         0x0c // Read display pixel
-#define ST7789_CMD_RDDIM             0x0d // Read display image
-#define ST7789_CMD_RDDSM             0x0e // Read display signal
-#define ST7789_CMD_RDDSDR            0x0f // Read display self-diagnostic result
-#define ST7789_CMD_SLPIN             0x10 // Sleep in
-#define ST7789_CMD_SLPOUT            0x11 // Sleep out
-#define ST7789_CMD_PTLON             0x12 // Partial mode on
-#define ST7789_CMD_NORON             0x13 // Partial off (Normal)
-#define ST7789_CMD_INVOFF            0x20 // Display inversion off
-#define ST7789_CMD_INVON             0x21 // Display inversion on
-#define ST7789_CMD_GAMSET            0x26 // Gamma set
-#define ST7789_CMD_DISPOFF           0x28 // Display off
-#define ST7789_CMD_DISPON            0x29 // Display on
-#define ST7789_CMD_CASET             0x2a // Column address set
-#define ST7789_CMD_RASET             0x2b // Row address set
-#define ST7789_CMD_RAMWR             0x2c // Memory write
-#define ST7789_CMD_RAMRD             0x2e // Memory read
-#define ST7789_CMD_PTLAR             0x30 // Partial start/end address set
-#define ST7789_CMD_VSCRDEF           0x33 // Vertical scrolling definition
-#define ST7789_CMD_TEOFF             0x34 // Tearing line effect off
-#define ST7789_CMD_TEON              0x35 // Tearing line effect on
-#define ST7789_CMD_MADCTL            0x36 // Memory data access control
-#define ST7789_CMD_VSCRSADD          0x37 // Vertical address scrolling
-#define ST7789_CMD_IDMOFF            0x38 // Idle mode off
-#define ST7789_CMD_IDMON             0x39 // Idle mode on
-#define ST7789_CMD_COLMOD            0x3a // Interface pixel format
-#define ST7789_CMD_RAMWRC            0x3c // Memory write continue
-#define ST7789_CMD_RAMRDC            0x3e // Memory read continue
-#define ST7789_CMD_TESCAN            0x44 // Set tear scanline
-#define ST7789_CMD_RDTESCAN          0x45 // Get scanline
-#define ST7789_CMD_WRDISBV           0x51 // Write display brightness
-#define ST7789_CMD_RDDISBV           0x52 // Read display brightness value
-#define ST7789_CMD_WRCTRLD           0x53 // Write CTRL display
-#define ST7789_CMD_RDCTRLD           0x54 // Read CTRL value display
-#define ST7789_CMD_WRCACE            0x55 // Write content adaptive brightness control and Color enhancemnet
-#define ST7789_CMD_RDCABC            0x56 // Read content adaptive brightness control
-#define ST7789_CMD_WRCABCMB          0x5e // Write CABC minimum brightness
-#define ST7789_CMD_RDCABCMB          0x5f // Read CABC minimum brightness
-#define ST7789_CMD_RDABCSDR          0x68 // Read Automatic Brightness Control Self-Diagnostic Result
-#define ST7789_CMD_RDID1             0xda // Read ID1
-#define ST7789_CMD_RDID2             0xdb // Read ID2
-#define ST7789_CMD_RDID3             0xdc // Read ID3
-
-// System Function Command Table 2
-#define ST7789_CMD_RAMCTRL           0xb0 // RAM Control
-#define ST7789_CMD_RGBCTRL           0xb1 // RGB Control
-#define ST7789_CMD_PORCTRL           0xb2 // Porch control
-#define ST7789_CMD_FRCTRL1           0xb3 // Frame Rate Control 1
-#define ST7789_CMD_GCTRL             0xb7 // Gate control
-#define ST7789_CMD_DGMEN             0xba // Digital Gamma Enable
-#define ST7789_CMD_VCOMS             0xbb // VCOM Setting
-#define ST7789_CMD_LCMCTRL           0xc0 // LCM Control
-#define ST7789_CMD_IDSET             0xc1 // ID Setting
-#define ST7789_CMD_VDVVRHEN          0xc2 // VDV and VRH Command enable
-#define ST7789_CMD_VRHSET            0xc3 // VRH Set
-#define ST7789_CMD_VDVSET            0xc4 // VDV Set
-#define ST7789_CMD_VCMOFSET          0xc5 // VCOM Offset Set
-#define ST7789_CMD_FRCTR2            0xc6 // FR Control 2
-#define ST7789_CMD_CABCCTRL          0xc7 // CABC Control
-#define ST7789_CMD_REGSEL1           0xc8 // Register value selection 1
-#define ST7789_CMD_REGSEL2           0xca // Register value selection 2
-#define ST7789_CMD_PWMFRSEL          0xcc // PWM Frequency Selection
-#define ST7789_CMD_PWCTRL1           0xd0 // Power Control 1
-#define ST7789_CMD_VAPVANEN          0xd2 // Enable VAP/VAN signal output
-#define ST7789_CMD_CMD2EN            0xdf // Command 2 Enable
-#define ST7789_CMD_PVGAMCTRL         0xe0 // Positive Voltage Gamma Control
-#define ST7789_CMD_NVGAMCTRL         0xe1 // Negative voltage Gamma Control
-#define ST7789_CMD_DGMLUTR           0xe2 // Digital Gamma Look-up Table for Red
-#define ST7789_CMD_DGMLUTB           0xe3 // Digital Gamma Look-up Table for Blue
-#define ST7789_CMD_GATECTRL          0xe4 // Gate control
-#define ST7789_CMD_PWCTRL2           0xe8 // Power Control 2
-#define ST7789_CMD_EQCTRL            0xe9 // Equalize Time Control
-#define ST7789_CMD_PROMCTRL          0xec // Program Control
-#define ST7789_CMD_PROMEN            0xfa // Program Mode Enable
-#define ST7789_CMD_NVMSET            0xfc // NVM Setting
-#define ST7789_CMD_PROMACT           0xfe // Program Action
-
-#define ST7789_CMDLIST_END           0xff // End command (used for command list)
-
-struct st7789_driver;
-
-typedef struct st7789_transaction_data {
-	struct st7789_driver *driver;
-	bool data;
-} st7789_transaction_data_t;
-
-typedef uint16_t st7789_color_t;
-
-typedef struct st7789_driver {
-	int pin_reset;
-	int pin_dc;
-	int pin_mosi;
-	int pin_sclk;
-	int spi_host;
-	int dma_chan;
-	uint8_t queue_fill;
-	uint16_t display_width;
-	uint16_t display_height;
-	spi_device_handle_t spi;
-	size_t buffer_size;
-	st7789_transaction_data_t data;
-	st7789_transaction_data_t command;
-	st7789_color_t *buffer;
-	st7789_color_t *buffer_a;
-	st7789_color_t *buffer_b;
-	st7789_color_t *current_buffer;
-	spi_transaction_t trans_a;
-	spi_transaction_t trans_b;
-} st7789_driver_t;
-
-typedef struct st7789_command {
-	uint8_t command;
-	uint8_t wait_ms;
-	uint8_t data_size;
-	const uint8_t *data;
-} st7789_command_t;
-
-esp_err_t st7789_init(st7789_driver_t *driver);
-void st7789_reset(st7789_driver_t *driver);
-void st7789_lcd_init(st7789_driver_t *driver);
-void st7789_start_command(st7789_driver_t *driver);
-void st7789_start_data(st7789_driver_t *driver);
-void st7789_run_command(st7789_driver_t *driver, const st7789_command_t *command);
-void st7789_run_commands(st7789_driver_t *driver, const st7789_command_t *sequence);
-void st7789_clear(st7789_driver_t *driver, st7789_color_t color);
-void st7789_fill_area(st7789_driver_t *driver, st7789_color_t color, uint16_t start_x, uint16_t start_y, uint16_t width, uint16_t height);
-void st7789_fill_area(st7789_driver_t *driver, st7789_color_t color, uint16_t start_x, uint16_t start_y, uint16_t width, uint16_t height);
-void st7789_set_window(st7789_driver_t *driver, uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y);
-void st7789_write_pixels(st7789_driver_t *driver, st7789_color_t *pixels, size_t length);
-void st7789_wait_until_queue_empty(st7789_driver_t *driver);
-void st7789_swap_buffers(st7789_driver_t *driver);
 /*
-inline st7789_color_t st7789_rgb_to_color(uint8_t r, uint8_t g, uint8_t b) {
-	return (((uint16_t)r >> 3) << 11) | (((uint16_t)g >> 2) << 5) | ((uint16_t)b >> 3);
-}
-*/
-extern uint8_t st7789_dither_table[];
-void st7789_randomize_dither_table();
-#define st7789_rgb_to_color(r, g, b) ((((st7789_color_t)(r) >> 3) << 11) | (((st7789_color_t)(g) >> 2) << 5) | ((st7789_color_t)(b) >> 3))
-inline st7789_color_t __attribute__((always_inline)) st7789_rgb_to_color_dither(uint8_t r, uint8_t g, uint8_t b, uint16_t x, uint16_t y) {
-	const uint8_t pos = ((y << 8) + (y << 3) + x) & 0xff;
-	uint8_t rand_b = st7789_dither_table[pos];
-	const uint8_t rand_r = rand_b & 0x07;
-	rand_b >>= 3;
-	const uint8_t rand_g = rand_b & 0x03;
-	rand_b >>= 2;
+ * Comment one to use another.
+ * 3 parameters can be choosed
+ * 135x240(0.96 inch) & 240x240(1.3inch) & 170x320(1.9inch)
+ * X_SHIFT & Y_SHIFT are used to adapt different display's resolution
+ */
 
-	if (r < 249) {
-		r = r + rand_r;
-	}
-	if (g < 253) {
-		g = g + rand_g;
-	}
-	if (b < 249) {
-		b = b + rand_b;
-	}
-	return st7789_rgb_to_color(r, g, b);
-}
+/* Choose a type you are using */
+//#define USING_135X240
+#define USING_240X240
+//#define USING_170X320
 
-inline void __attribute__((always_inline)) st7789_color_to_rgb(st7789_color_t color, uint8_t *r, uint8_t *g, uint8_t *b) {
-	*b = (color << 3);
-	color >>= 5;
-	color <<= 2;
-	*g = color;
-	color >>= 8;
-	*r = color << 3;
-}
+/* Choose a display rotation you want to use: (0-3) */
+//#define ST7789_ROTATION 0
+//#define ST7789_ROTATION 1
+#define ST7789_ROTATION 2				//  use Normally on 240x240
+//#define ST7789_ROTATION 3
 
-//void st7789_color_to_rgb(st7789_color_t color, uint8_t *r, uint8_t *g, uint8_t *b);
-//st7789_color_t st7789_rgb_to_color_dither(uint8_t r, uint8_t g, uint8_t b, uint16_t x, uint16_t y);
-void st7789_draw_gray2_bitmap(uint8_t *src_buf, st7789_color_t *target_buf, uint8_t r, uint8_t g, uint8_t b, int x, int y, int src_w, int src_h, int target_w, int target_h);
+#ifdef USING_135X240
+
+    #if ST7789_ROTATION == 0
+        #define ST7789_WIDTH 135
+        #define ST7789_HEIGHT 240
+        #define X_SHIFT 53
+        #define Y_SHIFT 40
+    #endif
+
+    #if ST7789_ROTATION == 1
+        #define ST7789_WIDTH 240
+        #define ST7789_HEIGHT 135
+        #define X_SHIFT 40
+        #define Y_SHIFT 52
+    #endif
+
+    #if ST7789_ROTATION == 2
+        #define ST7789_WIDTH 135
+        #define ST7789_HEIGHT 240
+        #define X_SHIFT 52
+        #define Y_SHIFT 40
+    #endif
+
+    #if ST7789_ROTATION == 3
+        #define ST7789_WIDTH 240
+        #define ST7789_HEIGHT 135
+        #define X_SHIFT 40
+        #define Y_SHIFT 53
+    #endif
+
+#endif
+
+#ifdef USING_240X240
+
+    #define ST7789_WIDTH 240
+    #define ST7789_HEIGHT 240
+
+		#if ST7789_ROTATION == 0
+			#define X_SHIFT 0
+			#define Y_SHIFT 80
+		#elif ST7789_ROTATION == 1
+			#define X_SHIFT 80
+			#define Y_SHIFT 0
+		#elif ST7789_ROTATION == 2
+			#define X_SHIFT 0
+			#define Y_SHIFT 0
+		#elif ST7789_ROTATION == 3
+			#define X_SHIFT 0
+			#define Y_SHIFT 0
+		#endif
+
+#endif
+
+#ifdef USING_170X320
+
+	#if ST7789_ROTATION == 0
+        #define ST7789_WIDTH 170
+        #define ST7789_HEIGHT 320
+        #define X_SHIFT 35
+        #define Y_SHIFT 0
+    #endif
+
+    #if ST7789_ROTATION == 1
+        #define ST7789_WIDTH 320
+        #define ST7789_HEIGHT 170
+        #define X_SHIFT 0
+        #define Y_SHIFT 35
+    #endif
+
+    #if ST7789_ROTATION == 2
+        #define ST7789_WIDTH 170
+        #define ST7789_HEIGHT 320
+        #define X_SHIFT 35
+        #define Y_SHIFT 0
+    #endif
+
+    #if ST7789_ROTATION == 3
+        #define ST7789_WIDTH 320
+        #define ST7789_HEIGHT 170
+        #define X_SHIFT 0
+        #define Y_SHIFT 35
+    #endif
+
+#endif
+
+/**
+ *Color of pen
+ *If you want to use another color, you can choose one in RGB565 format.
+ */
+
+#define WHITE       0xFFFF
+#define BLACK       0x0000
+#define BLUE        0x001F
+#define RED         0xF800
+#define MAGENTA     0xF81F
+#define GREEN       0x07E0
+#define CYAN        0x7FFF
+#define YELLOW      0xFFE0
+#define GRAY        0X8430
+#define BRED        0XF81F
+#define GRED        0XFFE0
+#define GBLUE       0X07FF
+#define BROWN       0XBC40
+#define BRRED       0XFC07
+#define DARKBLUE    0X01CF
+#define LIGHTBLUE   0X7D7C
+#define GRAYBLUE    0X5458
+
+#define LIGHTGREEN  0X841F
+#define LGRAY       0XC618
+#define LGRAYBLUE   0XA651
+#define LBBLUE      0X2B12
+
+/* Control Registers and constant codes */
+#define ST7789_NOP     0x00
+#define ST7789_SWRESET 0x01
+#define ST7789_RDDID   0x04
+#define ST7789_RDDST   0x09
+
+#define ST7789_SLPIN   0x10
+#define ST7789_SLPOUT  0x11
+#define ST7789_PTLON   0x12
+#define ST7789_NORON   0x13
+
+#define ST7789_INVOFF  0x20
+#define ST7789_INVON   0x21
+#define ST7789_DISPOFF 0x28
+#define ST7789_DISPON  0x29
+#define ST7789_CASET   0x2A
+#define ST7789_RASET   0x2B
+#define ST7789_RAMWR   0x2C
+#define ST7789_RAMRD   0x2E
+
+#define ST7789_PTLAR   0x30
+#define ST7789_COLMOD  0x3A
+#define ST7789_MADCTL  0x36
+
+/**
+ * Memory Data Access Control Register (0x36H)
+ * MAP:     D7  D6  D5  D4  D3  D2  D1  D0
+ * param:   MY  MX  MV  ML  RGB MH  -   -
+ *
+ */
+
+/* Page Address Order ('0': Top to Bottom, '1': the opposite) */
+#define ST7789_MADCTL_MY  0x80
+/* Column Address Order ('0': Left to Right, '1': the opposite) */
+#define ST7789_MADCTL_MX  0x40
+/* Page/Column Order ('0' = Normal Mode, '1' = Reverse Mode) */
+#define ST7789_MADCTL_MV  0x20
+/* Line Address Order ('0' = LCD Refresh Top to Bottom, '1' = the opposite) */
+#define ST7789_MADCTL_ML  0x10
+/* RGB/BGR Order ('0' = RGB, '1' = BGR) */
+#define ST7789_MADCTL_RGB 0x00
+
+#define ST7789_RDID1   0xDA
+#define ST7789_RDID2   0xDB
+#define ST7789_RDID3   0xDC
+#define ST7789_RDID4   0xDD
+
+/* Advanced options */
+#define ST7789_COLOR_MODE_16bit 0x55    //  RGB565 (16bit)
+#define ST7789_COLOR_MODE_18bit 0x66    //  RGB666 (18bit)
+
+/* Basic operations */
+#define ST7789_RST_Clr() HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_RESET)
+#define ST7789_RST_Set() HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_SET)
+
+#define ST7789_DC_Clr() HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_RESET)
+#define ST7789_DC_Set() HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_SET)
+#ifndef CFG_NO_CS
+#define ST7789_Select() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_RESET)
+#define ST7789_UnSelect() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_SET)
+#else
+#define ST7789_Select() asm("nop")
+#define ST7789_UnSelect() asm("nop")
+#endif
+
+#define ABS(x) ((x) > 0 ? (x) : -(x))
+
+/* Basic functions. */
+void ST7789_Init(void);
+void ST7789_SetRotation(uint8_t m);
+void ST7789_Fill_Color(uint16_t color);
+void ST7789_DrawPixel(uint16_t x, uint16_t y, uint16_t color);
+void ST7789_Fill(uint16_t xSta, uint16_t ySta, uint16_t xEnd, uint16_t yEnd, uint16_t color);
+void ST7789_DrawPixel_4px(uint16_t x, uint16_t y, uint16_t color);
+
+/* Graphical functions. */
+void ST7789_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+void ST7789_DrawRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+void ST7789_DrawCircle(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color);
+void ST7789_DrawImage(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint16_t *data);
+void ST7789_InvertColors(uint8_t invert);
+
+/* Text functions. */
+void ST7789_WriteChar(uint16_t x, uint16_t y, char ch, FontDef font, uint16_t color, uint16_t bgcolor);
+void ST7789_WriteString(uint16_t x, uint16_t y, const char *str, FontDef font, uint16_t color, uint16_t bgcolor);
+
+/* Extented Graphical functions. */
+void ST7789_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color);
+void ST7789_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color);
+void ST7789_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color);
+void ST7789_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color);
+
+/* Command functions */
+void ST7789_TearEffect(uint8_t tear);
+
+/* Simple test function. */
+void ST7789_Test(void);
+
+#ifndef ST7789_ROTATION
+    #error You should at least choose a display rotation!
+#endif
+
+#endif

@@ -61,7 +61,7 @@ file(GLOB MODULES_PCF8563         ../src/Modules/PCF8563/*.*)
 file(GLOB MODULES_PMS150G         ../src/Modules/PMS150G/*.*)
 file(GLOB MODULES_DRIVERST        ../src/Modules/DriverST/DriverST.h
                                   ../src/Modules/DriverST/ST7789.cpp
-                                  ../src/Modules/DriverST/driver*.*)
+                                  ../src/Modules/DriverST/driver_st7789.*)
 file(GLOB SETTINGS                ../src/Settings/*.*)
 file(GLOB STORAGE                 ../src/Storage/*.*)
 file(GLOB UTILS                   ../src/Utils/*.*)

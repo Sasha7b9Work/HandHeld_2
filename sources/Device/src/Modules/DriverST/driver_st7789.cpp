@@ -1,366 +1,749 @@
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/param.h>
-
+#include "defines.h"
+#include "Modules/DriverST/driver_st7789.h"
 #include "st7789.h"
 
-#include "driver/gpio.h"
-#include "driver/spi_master.h"
-#include "esp_log.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "sdkconfig.h"
+#ifdef USE_DMA
+#include <string.h>
+uint16_t DMA_MIN_SIZE = 16;
+/* If you're using DMA, then u need a "framebuffer" to store datas to be displayed.
+ * If your MCU don't have enough RAM, please avoid using DMA(or set 5 to 1).
+ * And if your MCU have enough RAM(even larger than full-frame size),
+ * Then you can specify the framebuffer size to the full resolution below.
+ */
+ #define HOR_LEN 	5	//	Also mind the resolution of your screen!
+uint16_t disp_buf[ST7789_WIDTH * HOR_LEN];
+#endif
 
-
-const char *TAG = "st7789";
-
-
-static void st7789_pre_cb(spi_transaction_t *transaction) {
-	const st7789_transaction_data_t *data = (st7789_transaction_data_t *)transaction->user;
-	gpio_set_level(data->driver->pin_dc, data->data);
+/**
+ * @brief Write command to ST7789 controller
+ * @param cmd -> command to write
+ * @return none
+ */
+static void ST7789_WriteCommand(uint8_t cmd)
+{
+	ST7789_Select();
+	ST7789_DC_Clr();
+	HAL_SPI_Transmit(&ST7789_SPI_PORT, &cmd, sizeof(cmd), HAL_MAX_DELAY);
+	ST7789_UnSelect();
 }
 
+/**
+ * @brief Write data to ST7789 controller
+ * @param buff -> pointer of data buffer
+ * @param buff_size -> size of the data buffer
+ * @return none
+ */
+static void ST7789_WriteData(uint8_t *buff, size_t buff_size)
+{
+	ST7789_Select();
+	ST7789_DC_Set();
 
-esp_err_t st7789_init(st7789_driver_t *driver) {
-	driver->buffer = (st7789_color_t *)heap_caps_malloc(driver->buffer_size * 2 * sizeof(st7789_color_t), MALLOC_CAP_DMA);
-	if (driver->buffer == NULL) {
-		ESP_LOGE(TAG, "buffer not allocated");
-		return ESP_FAIL;
-	}
-	driver->buffer_a = driver->buffer;
-	driver->buffer_b = driver->buffer + driver->buffer_size;
-	driver->current_buffer = driver->buffer_a;
-	driver->queue_fill = 0;
+	// split data in small chunks because HAL can't send more than 64K at once
 
-	driver->data.driver = driver;
-	driver->data.data = true;
-	driver->command.driver = driver;
-	driver->command.data = false;
-
-	gpio_pad_select_gpio(driver->pin_reset);
-	gpio_pad_select_gpio(driver->pin_dc);
-	gpio_set_direction(driver->pin_reset, GPIO_MODE_OUTPUT);
-	gpio_set_direction(driver->pin_dc, GPIO_MODE_OUTPUT);
-
-	spi_bus_config_t buscfg = {
-		.mosi_io_num=driver->pin_mosi,
-		.miso_io_num=-1,
-		.sclk_io_num=driver->pin_sclk,
-		.quadwp_io_num=-1,
-		.quadhd_io_num=-1,
-		.max_transfer_sz=driver->buffer_size * 2 * sizeof(st7789_color_t), // 2 buffers with 2 bytes for pixel
-		.flags=SPICOMMON_BUSFLAG_NATIVE_PINS
-	};
-	spi_device_interface_config_t devcfg = {
-		.clock_speed_hz=SPI_MASTER_FREQ_40M,
-		.mode=3,
-		.spics_io_num=-1,
-		.queue_size=ST7789_SPI_QUEUE_SIZE,
-		.pre_cb=st7789_pre_cb,
-	};
-
-	if (spi_bus_initialize(driver->spi_host, &buscfg, driver->dma_chan) != ESP_OK) {
-		ESP_LOGE(TAG, "spi bus initialize failed");
-		return ESP_FAIL;
-	}
-	if (spi_bus_add_device(driver->spi_host, &devcfg, &driver->spi) != ESP_OK) {
-		ESP_LOGE(TAG, "spi bus add device failed");
-		return ESP_FAIL;
-	}
-	ESP_LOGI(TAG, "driver initialized");
-	return ESP_OK;
-}
-
-
-void st7789_reset(st7789_driver_t *driver) {
-	gpio_set_level(driver->pin_reset, 0);
-	vTaskDelay(20 / portTICK_PERIOD_MS);
-	gpio_set_level(driver->pin_reset, 1);
-	vTaskDelay(130 / portTICK_PERIOD_MS);
-}
-
-
-void st7789_lcd_init(st7789_driver_t *driver) {
-	const uint8_t caset[4] = {
-		0x00,
-		0x00,
-		(driver->display_width - 1) >> 8,
-		(driver->display_width - 1) & 0xff
-	};
-	const uint8_t raset[4] = {
-		0x00,
-		0x00,
-		(driver->display_height - 1) >> 8,
-		(driver->display_height - 1) & 0xff
-	};
-	const st7789_command_t init_sequence[] = {
-		// Sleep
-		{ST7789_CMD_SLPIN, 10, 0, NULL},                    // Sleep
-		{ST7789_CMD_SWRESET, 200, 0, NULL},                 // Reset
-		{ST7789_CMD_SLPOUT, 120, 0, NULL},                  // Sleep out
-
-		{ST7789_CMD_MADCTL, 0, 1, (const uint8_t *)"\x00"}, // Page / column address order
-		{ST7789_CMD_COLMOD, 0, 1, (const uint8_t *)"\x55"}, // 16 bit RGB
-		{ST7789_CMD_INVON, 0, 0, NULL},                     // Inversion on
-		{ST7789_CMD_CASET, 0, 4, (const uint8_t *)&caset},  // Set width
-		{ST7789_CMD_RASET, 0, 4, (const uint8_t *)&raset},  // Set height
-
-		// Porch setting
-		{ST7789_CMD_PORCTRL, 0, 5, (const uint8_t *)"\x0c\x0c\x00\x33\x33"},
-		// Set VGH to 12.54V and VGL to -9.6V
-		{ST7789_CMD_GCTRL, 0, 1, (const uint8_t *)"\x14"},
-		// Set VCOM to 1.475V
-		{ST7789_CMD_VCOMS, 0, 1, (const uint8_t *)"\x37"},
-		// Enable VDV/VRH control
-		{ST7789_CMD_VDVVRHEN, 0, 2, (const uint8_t *)"\x01\xff"},
-		// VAP(GVDD) = 4.45+(vcom+vcom offset+vdv)
-		{ST7789_CMD_VRHSET, 0, 1, (const uint8_t *)"\x12"},
-		// VDV = 0V
-		{ST7789_CMD_VDVSET, 0, 1, (const uint8_t *)"\x20"},
-		// AVDD=6.8V, AVCL=-4.8V, VDDS=2.3V
-		{ST7789_CMD_PWCTRL1, 0, 2, (const uint8_t *)"\xa4\xa1"},
-		// 60 fps
-		{ST7789_CMD_FRCTR2, 0, 1, (const uint8_t *)"\x0f"},
-		// Gama 2.2
-		{ST7789_CMD_GAMSET, 0, 1, (const uint8_t *)"\x01"},
-		// Gama curve
-		{ST7789_CMD_PVGAMCTRL, 0, 14, (const uint8_t *)"\xd0\x08\x11\x08\x0c\x15\x39\x33\x50\x36\x13\x14\x29\x2d"},
-		{ST7789_CMD_NVGAMCTRL, 0, 14, (const uint8_t *)"\xd0\x08\x10\x08\x06\x06\x39\x44\x51\x0b\x16\x14\x2f\x31"},
-
-		// Little endian
-		{ST7789_CMD_RAMCTRL, 0, 2, (const uint8_t *)"\x00\xc8"},
-		{ST7789_CMDLIST_END, 0, 0, NULL},                   // End of commands
-	};
-	st7789_run_commands(driver, init_sequence);
-	st7789_clear(driver, 0x0000);
-	const st7789_command_t init_sequence2[] = {
-		{ST7789_CMD_DISPON, 100, 0, NULL},                  // Display on
-		{ST7789_CMD_SLPOUT, 100, 0, NULL},                  // Sleep out
-		{ST7789_CMD_CASET, 0, 4, caset},
-		{ST7789_CMD_RASET, 0, 4, raset},
-		{ST7789_CMD_RAMWR, 0, 0, NULL},
-		{ST7789_CMDLIST_END, 0, 0, NULL},                   // End of commands
-	};
-	st7789_run_commands(driver, init_sequence2);
-}
-
-
-void st7789_start_command(st7789_driver_t *driver) {
-	gpio_set_level(driver->pin_dc, 0);
-}
-
-
-void st7789_start_data(st7789_driver_t *driver) {
-	gpio_set_level(driver->pin_dc, 1);
-}
-
-void st7789_run_command(st7789_driver_t *driver, const st7789_command_t *command) {
-	spi_transaction_t *rtrans;
-	st7789_wait_until_queue_empty(driver);
-	spi_transaction_t trans;
-	memset(&trans, 0, sizeof(trans));
-	trans.length = 8; // 8 bits
-	trans.tx_buffer = &command->command;
-	trans.user = &driver->command;
-	spi_device_queue_trans(driver->spi, &trans, portMAX_DELAY);
-	spi_device_get_trans_result(driver->spi, &rtrans, portMAX_DELAY);
-
-	if (command->data_size > 0) {
-		memset(&trans, 0, sizeof(trans));
-		trans.length = command->data_size * 8;
-		trans.tx_buffer = command->data;
-		trans.user = &driver->data;
-		spi_device_queue_trans(driver->spi, &trans, portMAX_DELAY);
-		spi_device_get_trans_result(driver->spi, &rtrans, portMAX_DELAY);
+	while (buff_size > 0) {
+		uint16_t chunk_size = buff_size > 65535 ? 65535 : buff_size;
+		#ifdef USE_DMA
+			if (DMA_MIN_SIZE <= buff_size)
+			{
+				HAL_SPI_Transmit_DMA(&ST7789_SPI_PORT, buff, chunk_size);
+				while (ST7789_SPI_PORT.hdmatx->State != HAL_DMA_STATE_READY)
+				{}
+			}
+			else
+				HAL_SPI_Transmit(&ST7789_SPI_PORT, buff, chunk_size, HAL_MAX_DELAY);
+		#else
+			HAL_SPI_Transmit(&ST7789_SPI_PORT, buff, chunk_size, HAL_MAX_DELAY);
+		#endif
+		buff += chunk_size;
+		buff_size -= chunk_size;
 	}
 
-	if (command->wait_ms > 0) {
-		vTaskDelay(command->wait_ms / portTICK_PERIOD_MS);
+	ST7789_UnSelect();
+}
+/**
+ * @brief Write data to ST7789 controller, simplify for 8bit data.
+ * data -> data to write
+ * @return none
+ */
+static void ST7789_WriteSmallData(uint8_t data)
+{
+	ST7789_Select();
+	ST7789_DC_Set();
+	HAL_SPI_Transmit(&ST7789_SPI_PORT, &data, sizeof(data), HAL_MAX_DELAY);
+	ST7789_UnSelect();
+}
+
+/**
+ * @brief Set the rotation direction of the display
+ * @param m -> rotation parameter(please refer it in st7789.h)
+ * @return none
+ */
+void ST7789_SetRotation(uint8_t m)
+{
+	ST7789_WriteCommand(ST7789_MADCTL);	// MADCTL
+	switch (m) {
+	case 0:
+		ST7789_WriteSmallData(ST7789_MADCTL_MX | ST7789_MADCTL_MY | ST7789_MADCTL_RGB);
+		break;
+	case 1:
+		ST7789_WriteSmallData(ST7789_MADCTL_MY | ST7789_MADCTL_MV | ST7789_MADCTL_RGB);
+		break;
+	case 2:
+		ST7789_WriteSmallData(ST7789_MADCTL_RGB);
+		break;
+	case 3:
+		ST7789_WriteSmallData(ST7789_MADCTL_MX | ST7789_MADCTL_MV | ST7789_MADCTL_RGB);
+		break;
+	default:
+		break;
 	}
 }
 
-void st7789_run_commands(st7789_driver_t *driver, const st7789_command_t *sequence) {
-	while (sequence->command != ST7789_CMDLIST_END) {
-		st7789_run_command(driver, sequence);
-		sequence++;
+/**
+ * @brief Set address of DisplayWindow
+ * @param xi&yi -> coordinates of window
+ * @return none
+ */
+static void ST7789_SetAddressWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
+{
+	ST7789_Select();
+	uint16_t x_start = x0 + X_SHIFT, x_end = x1 + X_SHIFT;
+	uint16_t y_start = y0 + Y_SHIFT, y_end = y1 + Y_SHIFT;
+	
+	/* Column Address set */
+	ST7789_WriteCommand(ST7789_CASET); 
+	{
+		uint8_t data[] = {x_start >> 8, x_start & 0xFF, x_end >> 8, x_end & 0xFF};
+		ST7789_WriteData(data, sizeof(data));
 	}
+
+	/* Row Address set */
+	ST7789_WriteCommand(ST7789_RASET);
+	{
+		uint8_t data[] = {y_start >> 8, y_start & 0xFF, y_end >> 8, y_end & 0xFF};
+		ST7789_WriteData(data, sizeof(data));
+	}
+	/* Write to RAM */
+	ST7789_WriteCommand(ST7789_RAMWR);
+	ST7789_UnSelect();
 }
 
-void st7789_clear(st7789_driver_t *driver, st7789_color_t color) {
-	st7789_fill_area(driver, color, 0, 0, driver->display_width, driver->display_height);
+/**
+ * @brief Initialize ST7789 controller
+ * @param none
+ * @return none
+ */
+void ST7789_Init(void)
+{
+	#ifdef USE_DMA
+		memset(disp_buf, 0, sizeof(disp_buf));
+	#endif
+	HAL_Delay(10);
+    ST7789_RST_Clr();
+    HAL_Delay(10);
+    ST7789_RST_Set();
+    HAL_Delay(20);
+
+    ST7789_WriteCommand(ST7789_COLMOD);		//	Set color mode
+    ST7789_WriteSmallData(ST7789_COLOR_MODE_16bit);
+  	ST7789_WriteCommand(0xB2);				//	Porch control
+	{
+		uint8_t data[] = {0x0C, 0x0C, 0x00, 0x33, 0x33};
+		ST7789_WriteData(data, sizeof(data));
+	}
+	ST7789_SetRotation(ST7789_ROTATION);	//	MADCTL (Display Rotation)
+	
+	/* Internal LCD Voltage generator settings */
+    ST7789_WriteCommand(0XB7);				//	Gate Control
+    ST7789_WriteSmallData(0x35);			//	Default value
+    ST7789_WriteCommand(0xBB);				//	VCOM setting
+    ST7789_WriteSmallData(0x19);			//	0.725v (default 0.75v for 0x20)
+    ST7789_WriteCommand(0xC0);				//	LCMCTRL	
+    ST7789_WriteSmallData (0x2C);			//	Default value
+    ST7789_WriteCommand (0xC2);				//	VDV and VRH command Enable
+    ST7789_WriteSmallData (0x01);			//	Default value
+    ST7789_WriteCommand (0xC3);				//	VRH set
+    ST7789_WriteSmallData (0x12);			//	+-4.45v (defalut +-4.1v for 0x0B)
+    ST7789_WriteCommand (0xC4);				//	VDV set
+    ST7789_WriteSmallData (0x20);			//	Default value
+    ST7789_WriteCommand (0xC6);				//	Frame rate control in normal mode
+    ST7789_WriteSmallData (0x0F);			//	Default value (60HZ)
+    ST7789_WriteCommand (0xD0);				//	Power control
+    ST7789_WriteSmallData (0xA4);			//	Default value
+    ST7789_WriteSmallData (0xA1);			//	Default value
+	/**************** Division line ****************/
+
+	ST7789_WriteCommand(0xE0);
+	{
+		uint8_t data[] = {0xD0, 0x04, 0x0D, 0x11, 0x13, 0x2B, 0x3F, 0x54, 0x4C, 0x18, 0x0D, 0x0B, 0x1F, 0x23};
+		ST7789_WriteData(data, sizeof(data));
+	}
+
+    ST7789_WriteCommand(0xE1);
+	{
+		uint8_t data[] = {0xD0, 0x04, 0x0C, 0x11, 0x13, 0x2C, 0x3F, 0x44, 0x51, 0x2F, 0x1F, 0x1F, 0x20, 0x23};
+		ST7789_WriteData(data, sizeof(data));
+	}
+    ST7789_WriteCommand (ST7789_INVON);		//	Inversion ON
+	ST7789_WriteCommand (ST7789_SLPOUT);	//	Out of sleep mode
+  	ST7789_WriteCommand (ST7789_NORON);		//	Normal Display on
+  	ST7789_WriteCommand (ST7789_DISPON);	//	Main screen turned on	
+
+	HAL_Delay(50);
+	ST7789_Fill_Color(BLACK);				//	Fill with Black.
 }
 
-void st7789_fill_area(st7789_driver_t *driver, st7789_color_t color, uint16_t start_x, uint16_t start_y, uint16_t width, uint16_t height) {
-	for (size_t i = 0; i < driver->buffer_size * 2; ++i) {
-		driver->buffer[i] = color;
-	}
-	st7789_set_window(driver, start_x, start_y, start_x + width - 1, start_y + height - 1);
+/**
+ * @brief Fill the DisplayWindow with single color
+ * @param color -> color to Fill with
+ * @return none
+ */
+void ST7789_Fill_Color(uint16_t color)
+{
+	uint16_t i;
+	ST7789_SetAddressWindow(0, 0, ST7789_WIDTH - 1, ST7789_HEIGHT - 1);
+	ST7789_Select();
 
-	size_t bytes_to_write = width * height * 2;
-	size_t transfer_size = driver->buffer_size * 2 * sizeof(st7789_color_t);
-
-	spi_transaction_t trans;
-	memset(&trans, 0, sizeof(trans));
-	trans.tx_buffer = driver->buffer;
-	trans.user = &driver->data;
-	trans.length = transfer_size * 8;
-	trans.rxlength = 0;
-
-	spi_transaction_t *rtrans;
-
-	while (bytes_to_write > 0) {
-		if (driver->queue_fill >= ST7789_SPI_QUEUE_SIZE) {
-			spi_device_get_trans_result(driver->spi, &rtrans, portMAX_DELAY);
-			driver->queue_fill--;
+	#ifdef USE_DMA
+		for (i = 0; i < ST7789_HEIGHT / HOR_LEN; i++)
+		{
+			memset(disp_buf, color, sizeof(disp_buf));
+			ST7789_WriteData(disp_buf, sizeof(disp_buf));
 		}
-		if (bytes_to_write < transfer_size) {
-			transfer_size = bytes_to_write;
+	#else
+		uint16_t j;
+		for (i = 0; i < ST7789_WIDTH; i++)
+				for (j = 0; j < ST7789_HEIGHT; j++) {
+					uint8_t data[] = {color >> 8, color & 0xFF};
+					ST7789_WriteData(data, sizeof(data));
+				}
+	#endif
+	ST7789_UnSelect();
+}
+
+/**
+ * @brief Draw a Pixel
+ * @param x&y -> coordinate to Draw
+ * @param color -> color of the Pixel
+ * @return none
+ */
+void ST7789_DrawPixel(uint16_t x, uint16_t y, uint16_t color)
+{
+	if ((x < 0) || (x >= ST7789_WIDTH) ||
+		 (y < 0) || (y >= ST7789_HEIGHT))	return;
+	
+	ST7789_SetAddressWindow(x, y, x, y);
+	uint8_t data[] = {color >> 8, color & 0xFF};
+	ST7789_Select();
+	ST7789_WriteData(data, sizeof(data));
+	ST7789_UnSelect();
+}
+
+/**
+ * @brief Fill an Area with single color
+ * @param xSta&ySta -> coordinate of the start point
+ * @param xEnd&yEnd -> coordinate of the end point
+ * @param color -> color to Fill with
+ * @return none
+ */
+void ST7789_Fill(uint16_t xSta, uint16_t ySta, uint16_t xEnd, uint16_t yEnd, uint16_t color)
+{
+	if ((xEnd < 0) || (xEnd >= ST7789_WIDTH) ||
+		 (yEnd < 0) || (yEnd >= ST7789_HEIGHT))	return;
+	ST7789_Select();
+	uint16_t i, j;
+	ST7789_SetAddressWindow(xSta, ySta, xEnd, yEnd);
+	for (i = ySta; i <= yEnd; i++)
+		for (j = xSta; j <= xEnd; j++) {
+			uint8_t data[] = {color >> 8, color & 0xFF};
+			ST7789_WriteData(data, sizeof(data));
 		}
-		spi_device_queue_trans(driver->spi, &trans, portMAX_DELAY);
-		driver->queue_fill++;
-		bytes_to_write -= transfer_size;
+	ST7789_UnSelect();
+}
+
+/**
+ * @brief Draw a big Pixel at a point
+ * @param x&y -> coordinate of the point
+ * @param color -> color of the Pixel
+ * @return none
+ */
+void ST7789_DrawPixel_4px(uint16_t x, uint16_t y, uint16_t color)
+{
+	if ((x <= 0) || (x > ST7789_WIDTH) ||
+		 (y <= 0) || (y > ST7789_HEIGHT))	return;
+	ST7789_Select();
+	ST7789_Fill(x - 1, y - 1, x + 1, y + 1, color);
+	ST7789_UnSelect();
+}
+
+/**
+ * @brief Draw a line with single color
+ * @param x1&y1 -> coordinate of the start point
+ * @param x2&y2 -> coordinate of the end point
+ * @param color -> color of the line to Draw
+ * @return none
+ */
+void ST7789_DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1,
+        uint16_t color) {
+	uint16_t swap;
+    uint16_t steep = ABS(y1 - y0) > ABS(x1 - x0);
+    if (steep) {
+		swap = x0;
+		x0 = y0;
+		y0 = swap;
+
+		swap = x1;
+		x1 = y1;
+		y1 = swap;
+        //_swap_int16_t(x0, y0);
+        //_swap_int16_t(x1, y1);
+    }
+
+    if (x0 > x1) {
+		swap = x0;
+		x0 = x1;
+		x1 = swap;
+
+		swap = y0;
+		y0 = y1;
+		y1 = swap;
+        //_swap_int16_t(x0, x1);
+        //_swap_int16_t(y0, y1);
+    }
+
+    int16_t dx, dy;
+    dx = x1 - x0;
+    dy = ABS(y1 - y0);
+
+    int16_t err = dx / 2;
+    int16_t ystep;
+
+    if (y0 < y1) {
+        ystep = 1;
+    } else {
+        ystep = -1;
+    }
+
+    for (; x0<=x1; x0++) {
+        if (steep) {
+            ST7789_DrawPixel(y0, x0, color);
+        } else {
+            ST7789_DrawPixel(x0, y0, color);
+        }
+        err -= dy;
+        if (err < 0) {
+            y0 += ystep;
+            err += dx;
+        }
+    }
+}
+
+/**
+ * @brief Draw a Rectangle with single color
+ * @param xi&yi -> 2 coordinates of 2 top points.
+ * @param color -> color of the Rectangle line
+ * @return none
+ */
+void ST7789_DrawRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color)
+{
+	ST7789_Select();
+	ST7789_DrawLine(x1, y1, x2, y1, color);
+	ST7789_DrawLine(x1, y1, x1, y2, color);
+	ST7789_DrawLine(x1, y2, x2, y2, color);
+	ST7789_DrawLine(x2, y1, x2, y2, color);
+	ST7789_UnSelect();
+}
+
+/** 
+ * @brief Draw a circle with single color
+ * @param x0&y0 -> coordinate of circle center
+ * @param r -> radius of circle
+ * @param color -> color of circle line
+ * @return  none
+ */
+void ST7789_DrawCircle(uint16_t x0, uint16_t y0, uint8_t r, uint16_t color)
+{
+	int16_t f = 1 - r;
+	int16_t ddF_x = 1;
+	int16_t ddF_y = -2 * r;
+	int16_t x = 0;
+	int16_t y = r;
+
+	ST7789_Select();
+	ST7789_DrawPixel(x0, y0 + r, color);
+	ST7789_DrawPixel(x0, y0 - r, color);
+	ST7789_DrawPixel(x0 + r, y0, color);
+	ST7789_DrawPixel(x0 - r, y0, color);
+
+	while (x < y) {
+		if (f >= 0) {
+			y--;
+			ddF_y += 2;
+			f += ddF_y;
+		}
+		x++;
+		ddF_x += 2;
+		f += ddF_x;
+
+		ST7789_DrawPixel(x0 + x, y0 + y, color);
+		ST7789_DrawPixel(x0 - x, y0 + y, color);
+		ST7789_DrawPixel(x0 + x, y0 - y, color);
+		ST7789_DrawPixel(x0 - x, y0 - y, color);
+
+		ST7789_DrawPixel(x0 + y, y0 + x, color);
+		ST7789_DrawPixel(x0 - y, y0 + x, color);
+		ST7789_DrawPixel(x0 + y, y0 - x, color);
+		ST7789_DrawPixel(x0 - y, y0 - x, color);
 	}
-
-	st7789_wait_until_queue_empty(driver);
+	ST7789_UnSelect();
 }
 
-void st7789_set_window(st7789_driver_t *driver, uint16_t start_x, uint16_t start_y, uint16_t end_x, uint16_t end_y) {
-	uint8_t caset[4];
-	uint8_t raset[4];
-	caset[0] = (uint8_t)(start_x >> 8);
-	caset[1] = (uint8_t)(start_x & 0xff);
-	caset[2] = (uint8_t)(end_x >> 8);
-	caset[3] = (uint8_t)(end_x & 0xff);
-	raset[0] = (uint8_t)(start_y >> 8);
-	raset[1] = (uint8_t)(start_y & 0xff);
-	raset[2] = (uint8_t)(end_y >> 8);
-	raset[3] = (uint8_t)(end_y & 0xff);
-	st7789_command_t sequence[] = {
-		{ST7789_CMD_CASET, 0, 4, caset},
-		{ST7789_CMD_RASET, 0, 4, raset},
-		{ST7789_CMD_RAMWR, 0, 0, NULL},
-		{ST7789_CMDLIST_END, 0, 0, NULL},
-	};
-	st7789_run_commands(driver, sequence);
+/**
+ * @brief Draw an Image on the screen
+ * @param x&y -> start point of the Image
+ * @param w&h -> width & height of the Image to Draw
+ * @param data -> pointer of the Image array
+ * @return none
+ */
+void ST7789_DrawImage(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint16_t *data)
+{
+	if ((x >= ST7789_WIDTH) || (y >= ST7789_HEIGHT))
+		return;
+	if ((x + w - 1) >= ST7789_WIDTH)
+		return;
+	if ((y + h - 1) >= ST7789_HEIGHT)
+		return;
+
+	ST7789_Select();
+	ST7789_SetAddressWindow(x, y, x + w - 1, y + h - 1);
+	ST7789_WriteData((uint8_t *)data, sizeof(uint16_t) * w * h);
+	ST7789_UnSelect();
 }
 
-void st7789_write_pixels(st7789_driver_t *driver, st7789_color_t *pixels, size_t length) {
-	st7789_wait_until_queue_empty(driver);
-
-	spi_transaction_t *trans = driver->current_buffer == driver->buffer_a ? &driver->trans_a : &driver->trans_b;
-	memset(trans, 0, sizeof(&trans));
-	trans->tx_buffer = driver->current_buffer;
-	trans->user = &driver->data;
-	trans->length = length * sizeof(st7789_color_t) * 8;
-	trans->rxlength = 0;
-
-	spi_device_queue_trans(driver->spi, trans, portMAX_DELAY);
-	driver->queue_fill++;
+/**
+ * @brief Invert Fullscreen color
+ * @param invert -> Whether to invert
+ * @return none
+ */
+void ST7789_InvertColors(uint8_t invert)
+{
+	ST7789_Select();
+	ST7789_WriteCommand(invert ? 0x21 /* INVON */ : 0x20 /* INVOFF */);
+	ST7789_UnSelect();
 }
 
-void st7789_wait_until_queue_empty(st7789_driver_t *driver) {
-	spi_transaction_t *rtrans;
-	while (driver->queue_fill > 0) {
-		spi_device_get_trans_result(driver->spi, &rtrans, portMAX_DELAY);
-		driver->queue_fill--;
+/** 
+ * @brief Write a char
+ * @param  x&y -> cursor of the start point.
+ * @param ch -> char to write
+ * @param font -> fontstyle of the string
+ * @param color -> color of the char
+ * @param bgcolor -> background color of the char
+ * @return  none
+ */
+void ST7789_WriteChar(uint16_t x, uint16_t y, char ch, FontDef font, uint16_t color, uint16_t bgcolor)
+{
+	uint32_t i, b, j;
+	ST7789_Select();
+	ST7789_SetAddressWindow(x, y, x + font.width - 1, y + font.height - 1);
+
+	for (i = 0; i < font.height; i++) {
+		b = font.data[(ch - 32) * font.height + i];
+		for (j = 0; j < font.width; j++) {
+			if ((b << j) & 0x8000) {
+				uint8_t data[] = {color >> 8, color & 0xFF};
+				ST7789_WriteData(data, sizeof(data));
+			}
+			else {
+				uint8_t data[] = {bgcolor >> 8, bgcolor & 0xFF};
+				ST7789_WriteData(data, sizeof(data));
+			}
+		}
 	}
+	ST7789_UnSelect();
 }
 
-void st7789_swap_buffers(st7789_driver_t *driver) {
-	st7789_write_pixels(driver, driver->current_buffer, driver->buffer_size);
-	driver->current_buffer = driver->current_buffer == driver->buffer_a ? driver->buffer_b : driver->buffer_a;
-}
+/** 
+ * @brief Write a string 
+ * @param  x&y -> cursor of the start point.
+ * @param str -> string to write
+ * @param font -> fontstyle of the string
+ * @param color -> color of the string
+ * @param bgcolor -> background color of the string
+ * @return  none
+ */
+void ST7789_WriteString(uint16_t x, uint16_t y, const char *str, FontDef font, uint16_t color, uint16_t bgcolor)
+{
+	ST7789_Select();
+	while (*str) {
+		if (x + font.width >= ST7789_WIDTH) {
+			x = 0;
+			y += font.height;
+			if (y + font.height >= ST7789_HEIGHT) {
+				break;
+			}
 
-
-uint8_t st7789_dither_table[256] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-void st7789_randomize_dither_table() {
-	uint16_t *dither_table = (uint16_t *)st7789_dither_table;
-	for (size_t i = 0; i < sizeof(st7789_dither_table) / 2; ++i) {
-		dither_table[i] = rand() & 0xffff;
+			if (*str == ' ') {
+				// skip spaces in the beginning of the new line
+				str++;
+				continue;
+			}
+		}
+		ST7789_WriteChar(x, y, *str, font, color, bgcolor);
+		x += font.width;
+		str++;
 	}
+	ST7789_UnSelect();
 }
 
+/** 
+ * @brief Draw a filled Rectangle with single color
+ * @param  x&y -> coordinates of the starting point
+ * @param w&h -> width & height of the Rectangle
+ * @param color -> color of the Rectangle
+ * @return  none
+ */
+void ST7789_DrawFilledRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color)
+{
+	ST7789_Select();
+	uint8_t i;
 
-void st7789_draw_gray2_bitmap(uint8_t *src_buf, st7789_color_t *target_buf, uint8_t r, uint8_t g, uint8_t b, int x, int y, int src_w, int src_h, int target_w, int target_h) {
-	if (x >= target_w || y >= target_h || x + src_w <= 0 || y + src_h <= 0) {
+	/* Check input parameters */
+	if (x >= ST7789_WIDTH ||
+		y >= ST7789_HEIGHT) {
+		/* Return error */
 		return;
 	}
 
-	const size_t src_size = src_w * src_h;
-	const size_t target_size = target_w * target_h;
-	const size_t line_w = MIN(src_w + x, target_w) - MAX(x, 0);
-	const size_t src_skip = src_w - line_w;
-	const size_t target_skip = target_w - line_w;
-	size_t src_pos = 0;
-	size_t target_pos = 0;
-	size_t x_pos = 0;
-	size_t y_pos = 0;
-
-	if (y < 0) {
-		src_pos = (-y) * src_w;
+	/* Check width and height */
+	if ((x + w) >= ST7789_WIDTH) {
+		w = ST7789_WIDTH - x;
 	}
-	if (x < 0) {
-		src_pos -= x;
-	}
-	if (y > 0) {
-		target_pos = y * target_w;
-	}
-	if (x > 0) {
-		target_pos += x;
+	if ((y + h) >= ST7789_HEIGHT) {
+		h = ST7789_HEIGHT - y;
 	}
 
-	while (src_pos < src_size && target_pos < target_size) {
-		uint8_t src_r, src_g, src_b;
-		uint8_t target_r, target_g, target_b;
-		st7789_color_to_rgb(target_buf[target_pos], &src_r, &src_g, &src_b);
-		uint8_t gray2_color = (src_buf[src_pos >> 2] >> ((src_pos & 0x03) << 1)) & 0x03;
-		/*
-		static const uint32_t src_weights = 0x002b5580;
-		static const uint32_t target_weights = 0x80552b00;
-		const uint32_t src_weight = (src_weights >> (gray2_color << 3)) & 0xff;
-		const uint32_t target_weight = (target_weights >> (gray2_color << 3)) & 0xff;
-		target_r = ((src_weight * src_r) + (target_weight * r)) >> 7;
-		target_g = ((src_weight * src_g) + (target_weight * g)) >> 7;
-		target_b = ((src_weight * src_b) + (target_weight * b)) >> 7;
-		target_buf[target_pos] = st7789_rgb_to_color_dither(target_r, target_g, target_b, x_pos, y_pos);
-		*/
-		switch(gray2_color) {
-			case 1:
-				target_r = r >> 1;
-				target_g = g >> 1;
-				target_b = b >> 1;
-				src_r = (src_r >> 1) + target_r;
-				src_g = (src_g >> 1) + target_g;
-				src_b = (src_b >> 1) + target_b;
-				target_buf[target_pos] = st7789_rgb_to_color_dither(src_r, src_g, src_b, x_pos, y_pos);
-				break;
-			case 2:
-				target_r = r >> 2;
-				target_g = g >> 2;
-				target_b = b >> 2;
-				src_r = (src_r >> 2) + target_r + target_r + target_r;
-				src_g = (src_g >> 2) + target_g + target_g + target_g;
-				src_b = (src_b >> 2) + target_b + target_b + target_b;
-				target_buf[target_pos] = st7789_rgb_to_color_dither(src_r, src_g, src_b, x_pos, y_pos);
-				break;
-			case 3:
-				target_buf[target_pos] = st7789_rgb_to_color_dither(r, g, b, x_pos, y_pos);
-				break;
-			default:
-				break;
+	/* Draw lines */
+	for (i = 0; i <= h; i++) {
+		/* Draw lines */
+		ST7789_DrawLine(x, y + i, x + w, y + i, color);
+	}
+	ST7789_UnSelect();
+}
+
+/** 
+ * @brief Draw a Triangle with single color
+ * @param  xi&yi -> 3 coordinates of 3 top points.
+ * @param color ->color of the lines
+ * @return  none
+ */
+void ST7789_DrawTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color)
+{
+	ST7789_Select();
+	/* Draw lines */
+	ST7789_DrawLine(x1, y1, x2, y2, color);
+	ST7789_DrawLine(x2, y2, x3, y3, color);
+	ST7789_DrawLine(x3, y3, x1, y1, color);
+	ST7789_UnSelect();
+}
+
+/** 
+ * @brief Draw a filled Triangle with single color
+ * @param  xi&yi -> 3 coordinates of 3 top points.
+ * @param color ->color of the triangle
+ * @return  none
+ */
+void ST7789_DrawFilledTriangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t x3, uint16_t y3, uint16_t color)
+{
+	ST7789_Select();
+	int16_t deltax = 0, deltay = 0, x = 0, y = 0, xinc1 = 0, xinc2 = 0,
+			yinc1 = 0, yinc2 = 0, den = 0, num = 0, numadd = 0, numpixels = 0,
+			curpixel = 0;
+
+	deltax = ABS(x2 - x1);
+	deltay = ABS(y2 - y1);
+	x = x1;
+	y = y1;
+
+	if (x2 >= x1) {
+		xinc1 = 1;
+		xinc2 = 1;
+	}
+	else {
+		xinc1 = -1;
+		xinc2 = -1;
+	}
+
+	if (y2 >= y1) {
+		yinc1 = 1;
+		yinc2 = 1;
+	}
+	else {
+		yinc1 = -1;
+		yinc2 = -1;
+	}
+
+	if (deltax >= deltay) {
+		xinc1 = 0;
+		yinc2 = 0;
+		den = deltax;
+		num = deltax / 2;
+		numadd = deltay;
+		numpixels = deltax;
+	}
+	else {
+		xinc2 = 0;
+		yinc1 = 0;
+		den = deltay;
+		num = deltay / 2;
+		numadd = deltax;
+		numpixels = deltay;
+	}
+
+	for (curpixel = 0; curpixel <= numpixels; curpixel++) {
+		ST7789_DrawLine(x, y, x3, y3, color);
+
+		num += numadd;
+		if (num >= den) {
+			num -= den;
+			x += xinc1;
+			y += yinc1;
 		}
-
-		x_pos++;
-
-		if (x_pos == line_w) {
-			x_pos = 0;
-			y_pos++;
-			src_pos += src_skip;
-			target_pos += target_skip;
-		}
-		src_pos++;
-		target_pos++;
+		x += xinc2;
+		y += yinc2;
 	}
+	ST7789_UnSelect();
+}
+
+/** 
+ * @brief Draw a Filled circle with single color
+ * @param x0&y0 -> coordinate of circle center
+ * @param r -> radius of circle
+ * @param color -> color of circle
+ * @return  none
+ */
+void ST7789_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
+{
+	ST7789_Select();
+	int16_t f = 1 - r;
+	int16_t ddF_x = 1;
+	int16_t ddF_y = -2 * r;
+	int16_t x = 0;
+	int16_t y = r;
+
+	ST7789_DrawPixel(x0, y0 + r, color);
+	ST7789_DrawPixel(x0, y0 - r, color);
+	ST7789_DrawPixel(x0 + r, y0, color);
+	ST7789_DrawPixel(x0 - r, y0, color);
+	ST7789_DrawLine(x0 - r, y0, x0 + r, y0, color);
+
+	while (x < y) {
+		if (f >= 0) {
+			y--;
+			ddF_y += 2;
+			f += ddF_y;
+		}
+		x++;
+		ddF_x += 2;
+		f += ddF_x;
+
+		ST7789_DrawLine(x0 - x, y0 + y, x0 + x, y0 + y, color);
+		ST7789_DrawLine(x0 + x, y0 - y, x0 - x, y0 - y, color);
+
+		ST7789_DrawLine(x0 + y, y0 + x, x0 - y, y0 + x, color);
+		ST7789_DrawLine(x0 + y, y0 - x, x0 - y, y0 - x, color);
+	}
+	ST7789_UnSelect();
+}
+
+
+/**
+ * @brief Open/Close tearing effect line
+ * @param tear -> Whether to tear
+ * @return none
+ */
+void ST7789_TearEffect(uint8_t tear)
+{
+	ST7789_Select();
+	ST7789_WriteCommand(tear ? 0x35 /* TEON */ : 0x34 /* TEOFF */);
+	ST7789_UnSelect();
+}
+
+
+/** 
+ * @brief A Simple test function for ST7789
+ * @param  none
+ * @return  none
+ */
+void ST7789_Test(void)
+{
+	ST7789_Fill_Color(WHITE);
+	HAL_Delay(1000);
+	ST7789_WriteString(10, 20, "Speed Test", Font_11x18, RED, WHITE);
+	HAL_Delay(1000);
+	ST7789_Fill_Color(CYAN);
+    HAL_Delay(500);
+	ST7789_Fill_Color(RED);
+    HAL_Delay(500);
+	ST7789_Fill_Color(BLUE);
+    HAL_Delay(500);
+	ST7789_Fill_Color(GREEN);
+    HAL_Delay(500);
+	ST7789_Fill_Color(YELLOW);
+    HAL_Delay(500);
+	ST7789_Fill_Color(BROWN);
+    HAL_Delay(500);
+	ST7789_Fill_Color(DARKBLUE);
+    HAL_Delay(500);
+	ST7789_Fill_Color(MAGENTA);
+    HAL_Delay(500);
+	ST7789_Fill_Color(LIGHTGREEN);
+    HAL_Delay(500);
+	ST7789_Fill_Color(LGRAY);
+    HAL_Delay(500);
+	ST7789_Fill_Color(LBBLUE);
+    HAL_Delay(500);
+	ST7789_Fill_Color(WHITE);
+	HAL_Delay(500);
+
+	ST7789_WriteString(10, 10, "Font test.", Font_16x26, GBLUE, WHITE);
+	ST7789_WriteString(10, 50, "Hello Steve!", Font_7x10, RED, WHITE);
+	ST7789_WriteString(10, 75, "Hello Steve!", Font_11x18, YELLOW, WHITE);
+	ST7789_WriteString(10, 100, "Hello Steve!", Font_16x26, MAGENTA, WHITE);
+	HAL_Delay(1000);
+
+	ST7789_Fill_Color(RED);
+	ST7789_WriteString(10, 10, "Rect./Line.", Font_11x18, YELLOW, BLACK);
+	ST7789_DrawRectangle(30, 30, 100, 100, WHITE);
+	HAL_Delay(1000);
+
+	ST7789_Fill_Color(RED);
+	ST7789_WriteString(10, 10, "Filled Rect.", Font_11x18, YELLOW, BLACK);
+	ST7789_DrawFilledRectangle(30, 30, 50, 50, WHITE);
+	HAL_Delay(1000);
+
+	ST7789_Fill_Color(RED);
+	ST7789_WriteString(10, 10, "Circle.", Font_11x18, YELLOW, BLACK);
+	ST7789_DrawCircle(60, 60, 25, WHITE);
+	HAL_Delay(1000);
+
+	ST7789_Fill_Color(RED);
+	ST7789_WriteString(10, 10, "Filled Cir.", Font_11x18, YELLOW, BLACK);
+	ST7789_DrawFilledCircle(60, 60, 25, WHITE);
+	HAL_Delay(1000);
+
+	ST7789_Fill_Color(RED);
+	ST7789_WriteString(10, 10, "Triangle", Font_11x18, YELLOW, BLACK);
+	ST7789_DrawTriangle(30, 30, 30, 70, 60, 40, WHITE);
+	HAL_Delay(1000);
+
+	ST7789_Fill_Color(RED);
+	ST7789_WriteString(10, 10, "Filled Tri", Font_11x18, YELLOW, BLACK);
+	ST7789_DrawFilledTriangle(30, 30, 30, 70, 60, 40, WHITE);
+	HAL_Delay(1000);
+
+	//	If FLASH cannot storage anymore datas, please delete codes below.
+	ST7789_Fill_Color(WHITE);
+	ST7789_DrawImage(0, 0, 128, 128, (uint16_t *)saber);
+	HAL_Delay(3000);
 }
