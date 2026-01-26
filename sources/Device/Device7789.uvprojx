@@ -817,6 +817,11 @@
               <FilePath>.\src\Display\Display7735.cpp</FilePath>
             </File>
             <File>
+              <FileName>Display7789.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Display7789.cpp</FilePath>
+            </File>
+            <File>
               <FileName>Display.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Display\Display.cpp</FilePath>
@@ -2004,6 +2009,11 @@
               <FileName>Display7735.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Display\Display7735.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Display7789.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Display7789.cpp</FilePath>
             </File>
             <File>
               <FileName>Display.cpp</FileName>

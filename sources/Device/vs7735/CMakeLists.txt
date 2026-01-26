@@ -1,17 +1,17 @@
 # (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 
-project (Device)
+project (Device7735)
 
 set(CMAKE_UNITY_BUILD OFF)
 
 message("------------------------------------------------------------------------ ${PROJECT_NAME}")
 
 include_directories(
-    ../common/VS_KEIL
-    src/Hardware/HAL
-    src
-    ../common/GD32E23x_Firmware_Library/Firmware/CMSIS/GD/GD32E23x/Include
-    ../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include
+    ../../common/VS_KEIL
+    ../src/Hardware/HAL
+    ../src
+    ../../common/GD32E23x_Firmware_Library/Firmware/CMSIS/GD/GD32E23x/Include
+    ../../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include
 )
 
 add_definitions(-DGD32E230)
@@ -31,32 +31,32 @@ add_compile_options(
     /wd5204
 )
 
-file(GLOB GD32E23x                ../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include/*.*
-                                  ../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Source/*.*)
-file(GLOB SRC                     src/*.*)
-file(GLOB DISPLAY                 src/Display/Display*.*
-                                  src/Display/Icons.*
-                                  src/Display/Colors.*
-                                  src/Display/Text.*)
-file(GLOB DISPLAY_FONT            src/Display/Font/*.*)
-file(GLOB HARDWARE                src/Hardware/*.*)
-file(GLOB HARDWARE_CMSIS          src/Hardware/CMSIS/*.*)
-file(GLOB HARDWARE_HAL            src/Hardware/HAL/*.*)
-file(GLOB KEYBOARD                src/Keyboard/*.*)
-file(GLOB MENU                    src/Menu/*.*)
-file(GLOB MENU_PAGES              src/Menu/Pages/*.*)
-file(GLOB MODULES_BEEPER          src/Modules/Beeper/*.*)
-file(GLOB MODULES_BEEPER_SOUNDS   src/Modules/Beeper/Sounds/*.*)
-file(GLOB MODULES_LED             src/Modules/LED/*.h
-                                  src/Modules/LED/LED.cpp
-                                  src/Modules/LED/driverLED_7735.cpp)
-file(GLOB MODULES_PAN3060         src/Modules/PAN3060/*.*)
-file(GLOB MODULES_PCF8563         src/Modules/PCF8563/*.*)
-file(GLOB MODULES_PMS150G         src/Modules/PMS150G/*.*)
-file(GLOB MODULES_ST7735          src/Modules/ST7735/*.*)
-file(GLOB SETTINGS                src/Settings/*.*)
-file(GLOB STORAGE                 src/Storage/*.*)
-file(GLOB UTILS                   src/Utils/*.*)
+file(GLOB GD32E23x                ../../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include/*.*
+                                  ../../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Source/*.*)
+file(GLOB SRC                     ../src/*.*)
+file(GLOB DISPLAY                 ../src/Display/Display*.*
+                                  ../src/Display/Icons.*
+                                  ../src/Display/Colors.*
+                                  ../src/Display/Text.*)
+file(GLOB DISPLAY_FONT            ../src/Display/Font/*.*)
+file(GLOB HARDWARE                ../src/Hardware/*.*)
+file(GLOB HARDWARE_CMSIS          ../src/Hardware/CMSIS/*.*)
+file(GLOB HARDWARE_HAL            ../src/Hardware/HAL/*.*)
+file(GLOB KEYBOARD                ../src/Keyboard/*.*)
+file(GLOB MENU                    ../src/Menu/*.*)
+file(GLOB MENU_PAGES              ../src/Menu/Pages/*.*)
+file(GLOB MODULES_BEEPER          ../src/Modules/Beeper/*.*)
+file(GLOB MODULES_BEEPER_SOUNDS   ../src/Modules/Beeper/Sounds/*.*)
+file(GLOB MODULES_LED             ../src/Modules/LED/*.h
+                                  ../src/Modules/LED/LED.cpp
+                                  ../src/Modules/LED/driverLED_7735.cpp)
+file(GLOB MODULES_PAN3060         ../src/Modules/PAN3060/*.*)
+file(GLOB MODULES_PCF8563         ../src/Modules/PCF8563/*.*)
+file(GLOB MODULES_PMS150G         ../src/Modules/PMS150G/*.*)
+file(GLOB MODULES_ST7735          ../src/Modules/ST7735/*.*)
+file(GLOB SETTINGS                ../src/Settings/*.*)
+file(GLOB STORAGE                 ../src/Storage/*.*)
+file(GLOB UTILS                   ../src/Utils/*.*)
 
 source_group(GD32E23x               FILES ${GD32E23x})
 source_group(src                    FILES ${SRC})
