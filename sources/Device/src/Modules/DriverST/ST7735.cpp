@@ -110,6 +110,8 @@ uint DriverST::TimeEnabled()
 void DriverST::Init()
 {
     {
+        // PA5 - TFT_SCL SPI0
+        // PA7 - TFT_SDA SPI0
         gpio_af_set(GPIOA, GPIO_AF_0, GPIO_PIN_5 | GPIO_PIN_7);
         gpio_mode_set(GPIOA, GPIO_MODE_AF, GPIO_PUPD_PULLDOWN, GPIO_PIN_5 | GPIO_PIN_7);
         gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_5 | GPIO_PIN_7);
