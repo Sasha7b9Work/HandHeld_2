@@ -46,9 +46,3 @@ uint8 *Display::Buffer::GetLine(int /*y*/)
 {
     return nullptr;
 }
-
-
-void Rect::Fill(int /*x*/, int /*y*/, const Color &/*color*/ /* = Color::NUMBER */) const
-{
-
-}

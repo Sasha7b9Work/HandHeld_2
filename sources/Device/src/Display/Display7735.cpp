@@ -267,17 +267,6 @@ void Display::DrawScene(int num_part)
 }
 
 
-void Rect::Fill(int x0, int y0, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    for (int y = y0; y < y0 + height; y++)
-    {
-        HLine(width).Draw(x0, y);
-    }
-}
-
-
 void RTCDateTime::DrawTime(int x, int y, const Color &color) const
 {
     Text<>("%02d:%02d", Hour, Minute).Write(x, y, color);
