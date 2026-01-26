@@ -7,6 +7,16 @@
 template int Text<64>::Write(int x, int y, const Color &color) const;
 
 
+namespace Display
+{
+    namespace Buffer
+    {
+        uint8 buffer[SIZE];
+
+        int current_part = 0;                            // Эту часть сейчас отрисовываем
+    }
+}
+
 
 template<int capacity>
 int Text<capacity>::Write(int x, int y, const Color &color) const
@@ -22,4 +32,56 @@ int Text<capacity>::Write(int x, int y, const Color &color) const
     }
 
     return x;
+}
+
+
+void Rect::Draw(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    HLine(width).Draw(x, y);
+    HLine(width).Draw(x, y + height - 1);
+    VLine(height).Draw(x, y);
+    VLine(height).Draw(x + width - 1, y);
+}
+
+
+void VLine::Draw(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    for (int i = 0; i < height; i++)
+    {
+        Pixel().Set(x, y++);
+    }
+}
+
+
+void Pixel::Set(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    if (x < 0)
+    {
+        return;
+    }
+
+    if (x >= Display::WIDTH)
+    {
+        return;
+    }
+
+    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
+
+    if (y < 0)
+    {
+        return;
+    }
+
+    if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
+    {
+        return;
+    }
+
+    Display::Buffer::buffer[y * Display::WIDTH + x] = (uint8)Color::current.value;
 }

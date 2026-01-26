@@ -52,9 +52,3 @@ void Rect::Fill(int /*x*/, int /*y*/, const Color &/*color*/ /* = Color::NUMBER 
 {
 
 }
-
-
-void Rect::Draw(int /*x*/, int /*y*/, const Color &/*color*/ /* = Color::NUMBER */) const
-{
-
-}
