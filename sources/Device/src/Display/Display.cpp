@@ -22,9 +22,9 @@ namespace Display
 {
     namespace Buffer
     {
-        uint8 buffer[SIZE];
+        static uint8 buffer[SIZE];
 
-        int current_part = 0;                            // Эту часть сейчас отрисовываем
+        static int current_part = 0;                            // Эту часть сейчас отрисовываем
 
         static uint crc[NUMBER_PARTS_HEIGHT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 

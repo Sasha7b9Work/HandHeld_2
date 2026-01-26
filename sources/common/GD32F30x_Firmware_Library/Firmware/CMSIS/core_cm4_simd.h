@@ -42,6 +42,12 @@
 #ifndef __CORE_CM4_SIMD_H
 #define __CORE_CM4_SIMD_H
 
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
+
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -693,5 +699,10 @@ __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __SMMLA (int32_t op1
 #ifdef __cplusplus
 }
 #endif
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic pop
+#endif
+
 
 #endif /* __CORE_CM4_SIMD_H */

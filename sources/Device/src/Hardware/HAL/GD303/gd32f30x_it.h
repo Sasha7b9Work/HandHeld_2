@@ -35,7 +35,7 @@ OF SUCH DAMAGE.
 #ifndef GD32E23X_IT_H
 #define GD32E23X_IT_H
 
-#include "gd32f30x.h"
+#include "system.h"
 
 #ifdef __cplusplus
 extern "C" {

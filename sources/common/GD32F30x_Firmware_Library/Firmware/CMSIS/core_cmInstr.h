@@ -25,6 +25,12 @@
 #define __CORE_CMINSTR_H
 
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
+
+
 /* ##########################  Core Instruction Access  ######################### */
 /** \defgroup CMSIS_Core_InstructionInterface CMSIS Core Instruction Interface
   Access to dedicated instructions
@@ -614,5 +620,11 @@ __attribute__( ( always_inline ) ) __STATIC_INLINE uint8_t __CLZ(uint32_t value)
 #endif
 
 /*@}*/ /* end of group CMSIS_Core_InstructionInterface */
+
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic pop
+#endif
+
 
 #endif /* __CORE_CMINSTR_H */

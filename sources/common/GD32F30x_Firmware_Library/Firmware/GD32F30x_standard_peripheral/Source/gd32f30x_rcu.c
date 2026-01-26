@@ -34,6 +34,12 @@ OF SUCH DAMAGE.
 
 #include "gd32f30x_rcu.h"
 
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic ignored "-Wcovered-switch-default"
+#endif
+
+
 /* define clock source */
 #define SEL_IRC8M                   ((uint16_t)0U)  /* IRC8M is selected as CK_SYS */
 #define SEL_HXTAL                   ((uint16_t)1U)  /* HXTAL is selected as CK_SYS */

@@ -37,6 +37,11 @@ OF SUCH DAMAGE.
 
 #include "gd32f30x.h"
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 /* TIMERx(x=0..13) definitions */
 #define TIMER0                           (TIMER_BASE + 0x00012C00U)
 #define TIMER1                           (TIMER_BASE + 0x00000000U)
@@ -745,5 +750,10 @@ void timer_external_clock_mode1_disable(uint32_t timer_periph);
 void timer_write_chxval_register_config(uint32_t timer_periph, uint16_t ccsel);
 /* configure TIMER output value selection */
 void timer_output_value_selection_config(uint32_t timer_periph, uint16_t outsel);
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic pop
+#endif
+
 
 #endif /* GD32F30X_TIMER_H */

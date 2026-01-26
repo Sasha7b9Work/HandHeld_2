@@ -39,6 +39,13 @@
  #pragma system_include  /* treat file as system include file for MISRA check */
 #endif
 
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wmissing-noreturn"
+#endif
+
+
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -1787,4 +1794,8 @@ __STATIC_INLINE int32_t ITM_CheckChar (void) {
 
 #ifdef __cplusplus
 }
+#endif
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic pop
 #endif
