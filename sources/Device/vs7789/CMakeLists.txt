@@ -1,6 +1,6 @@
 # (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 
-project (Device7735)
+project (Device7789)
 
 set(CMAKE_UNITY_BUILD OFF)
 
@@ -36,7 +36,7 @@ file(GLOB GD32E23x                ../../common/GD32E23x_Firmware_Library/Firmwar
 file(GLOB SRC                     ../src/*.*)
 file(GLOB DISPLAY                 ../src/Display/Display.h
                                   ../src/Display/Display.cpp
-                                  ../src/Display/Display7735.cpp
+                                  ../src/Display/Display7789.cpp
                                   ../src/Display/Icons.*
                                   ../src/Display/Colors.*
                                   ../src/Display/Text.*)

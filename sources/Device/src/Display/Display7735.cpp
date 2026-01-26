@@ -16,9 +16,6 @@
 #include "Utils/FPS.h"
 
 
-#ifndef STATIONARY
-
-
 namespace Display
 {
     namespace Buffer
@@ -373,6 +370,3 @@ void RTCDateTime::DrawDate(int x, int y, const Color &color) const
 {
     Text<>("%02d/%02d/%02d", Day, Month, Year).Write(x, y, color);
 }
-
-
-#endif

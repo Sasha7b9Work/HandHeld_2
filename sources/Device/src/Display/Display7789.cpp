@@ -3,9 +3,6 @@
 #include "Display/Display.h"
 
 
-#ifdef STATIONARY
-
-
 void Display::Init()
 {
 
@@ -42,7 +39,7 @@ void Display::PrepareToSleep()
 }
 
 
-uint8 *Display::Buffer::GetLine(int y)
+uint8 *Display::Buffer::GetLine(int /*y*/)
 {
     return nullptr;
 }
@@ -58,7 +55,3 @@ void Rect::Draw(int /*x*/, int /*y*/, const Color &/*color*/ /* = Color::NUMBER 
 {
 
 }
-
-
-
-#endif

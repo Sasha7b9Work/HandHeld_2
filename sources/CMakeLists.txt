@@ -9,5 +9,6 @@ if(${CMAKE_BUILD_TYPE} STREQUAL Debug)
 endif()
 
 add_subdirectory(Device/vs7735)
+add_subdirectory(Device/vs7789)
 add_subdirectory(Loader)
 add_subdirectory(Transmitter)

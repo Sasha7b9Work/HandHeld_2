@@ -49,14 +49,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\Objects-Debug7735\</OutputDirectory>
-          <OutputName>HandHeld7735Debug</OutputName>
+          <OutputDirectory>.\Objects-Debug7789\</OutputDirectory>
+          <OutputName>HandHeld7789Debug</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>.\Listings-Debug7735\</ListingPath>
+          <ListingPath>.\Listings-Debug7789\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -372,7 +372,7 @@
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\Device7735.sct</ScatterFile>
+            <ScatterFile>.\Device7789.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -810,11 +810,6 @@
               <FileName>Display.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Display.h</FilePath>
-            </File>
-            <File>
-              <FileName>Display7735.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Display\Display7735.cpp</FilePath>
             </File>
             <File>
               <FileName>Display7789.cpp</FileName>
@@ -1294,14 +1289,14 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\Objects7735\</OutputDirectory>
-          <OutputName>HandHeld7735</OutputName>
+          <OutputDirectory>.\Objects7789\</OutputDirectory>
+          <OutputName>HandHeld7789</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>0</BrowseInformation>
-          <ListingPath>.\Listings7735\</ListingPath>
+          <ListingPath>.\Listings7789\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -1617,7 +1612,7 @@
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\Device7735.sct</ScatterFile>
+            <ScatterFile>.\Device7789.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -2004,11 +1999,6 @@
               <FileName>Display.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Display.h</FilePath>
-            </File>
-            <File>
-              <FileName>Display7735.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Display\Display7735.cpp</FilePath>
             </File>
             <File>
               <FileName>Display7789.cpp</FileName>
