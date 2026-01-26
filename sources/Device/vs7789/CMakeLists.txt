@@ -9,6 +9,7 @@ message("-----------------------------------------------------------------------
 include_directories(
     ../../common/VS_KEIL
     ../src/Hardware/HAL
+    ../src/Hardware/HAL/GD303
     ../src
     ../../common/GD32F30x_Firmware_Library/Firmware/CMSIS/GD/GD32F30x/Include
     ../../common/GD32F30x_Firmware_Library/Firmware/GD32F30x_standard_peripheral/Include
@@ -44,7 +45,7 @@ file(GLOB DISPLAY_FONT            ../src/Display/Font/*.*)
 file(GLOB HARDWARE                ../src/Hardware/*.*)
 file(GLOB HARDWARE_CMSIS          ../src/Hardware/CMSIS/*.*)
 file(GLOB HARDWARE_HAL            ../src/Hardware/HAL/*.h
-                                  ../src/Hardware/HAL/GD303/*.cpp)
+                                  ../src/Hardware/HAL/GD303/*.*)
 file(GLOB KEYBOARD                ../src/Keyboard/*.*)
 file(GLOB MENU                    ../src/Menu/*.*)
 file(GLOB MENU_PAGES              ../src/Menu/Pages/*.*)

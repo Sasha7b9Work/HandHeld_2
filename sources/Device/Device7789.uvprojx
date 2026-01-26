@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>GD32F30X_HD, MODEL7789, DEBUG</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src;.\src\Hardware\HAL;..\common\GD32F30x_Firmware_Library\Firmware\CMSIS\GD\GD32F30x\Include;..\common\GD32F30x_Firmware_Library\Firmware\CMSIS;..\common\GD32F30x_Firmware_Library\Firmware\GD32F30x_standard_peripheral\Include</IncludePath>
+              <IncludePath>.\src;.\src\Hardware\HAL;..\common\GD32F30x_Firmware_Library\Firmware\CMSIS\GD\GD32F30x\Include;..\common\GD32F30x_Firmware_Library\Firmware\CMSIS;..\common\GD32F30x_Firmware_Library\Firmware\GD32F30x_standard_peripheral\Include;.\src\Hardware\HAL\GD303</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1360,7 +1360,7 @@
               <MiscControls></MiscControls>
               <Define>GD32F30X_HD, MODEL7789</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src\Hardware\HAL;.\src;..\common\GD32F30x_Firmware_Library\Firmware\CMSIS\GD\GD32F30x\Include;..\common\GD32F30x_Firmware_Library\Firmware\CMSIS;..\common\GD32F30x_Firmware_Library\Firmware\GD32F30x_standard_peripheral\Include</IncludePath>
+              <IncludePath>.\src\Hardware\HAL;.\src;..\common\GD32F30x_Firmware_Library\Firmware\CMSIS\GD\GD32F30x\Include;..\common\GD32F30x_Firmware_Library\Firmware\CMSIS;..\common\GD32F30x_Firmware_Library\Firmware\GD32F30x_standard_peripheral\Include;.\src\Hardware\HAL\GD303</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

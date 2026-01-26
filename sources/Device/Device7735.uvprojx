@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>GD32E230, MODEL7735, DEBUG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x;..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x\Include;.\src\Hardware\HAL;..\common\GD32E23x_Firmware_Library\Firmware\GD32E23x_standard_peripheral\Include;.\src</IncludePath>
+              <IncludePath>..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x;..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x\Include;.\src\Hardware\HAL;..\common\GD32E23x_Firmware_Library\Firmware\GD32E23x_standard_peripheral\Include;.\src;.\src\Hardware\HAL\GD23</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -712,16 +712,6 @@
           <GroupName>Hardware/HAL</GroupName>
           <Files>
             <File>
-              <FileName>gd32e23x_it.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_it.h</FilePath>
-            </File>
-            <File>
-              <FileName>gd32e23x_libopt.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_libopt.h</FilePath>
-            </File>
-            <File>
               <FileName>systick.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\HAL\systick.h</FilePath>
@@ -742,19 +732,9 @@
               <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
             </File>
             <File>
-              <FileName>gd32f30x_libopt.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32f30x_libopt.h</FilePath>
-            </File>
-            <File>
               <FileName>system.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\HAL\system.h</FilePath>
-            </File>
-            <File>
-              <FileName>gd32e23x_it_23.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_it_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_23.cpp</FileName>
@@ -785,6 +765,21 @@
               <FileName>HAL_ROM_23.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\GD23\HAL_ROM_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>gd32e23x_it.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_it.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>gd32e23x_it.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_it.h</FilePath>
+            </File>
+            <File>
+              <FileName>gd32e23x_libopt.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_libopt.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1591,7 +1586,7 @@
               <MiscControls></MiscControls>
               <Define>GD32E230, MODEL7735</Define>
               <Undefine></Undefine>
-              <IncludePath>..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x;..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x\Include;.\src\Hardware\HAL;..\common\GD32E23x_Firmware_Library\Firmware\GD32E23x_standard_peripheral\Include;.\src</IncludePath>
+              <IncludePath>..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x;..\common\GD32E23x_Firmware_Library\Firmware\CMSIS\GD\GD32E23x\Include;.\src\Hardware\HAL;..\common\GD32E23x_Firmware_Library\Firmware\GD32E23x_standard_peripheral\Include;.\src;.\src\Hardware\HAL\GD23</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1911,16 +1906,6 @@
           <GroupName>Hardware/HAL</GroupName>
           <Files>
             <File>
-              <FileName>gd32e23x_it.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_it.h</FilePath>
-            </File>
-            <File>
-              <FileName>gd32e23x_libopt.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_libopt.h</FilePath>
-            </File>
-            <File>
               <FileName>systick.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\HAL\systick.h</FilePath>
@@ -1941,19 +1926,9 @@
               <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
             </File>
             <File>
-              <FileName>gd32f30x_libopt.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32f30x_libopt.h</FilePath>
-            </File>
-            <File>
               <FileName>system.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\HAL\system.h</FilePath>
-            </File>
-            <File>
-              <FileName>gd32e23x_it_23.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_it_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_23.cpp</FileName>
@@ -1984,6 +1959,21 @@
               <FileName>HAL_ROM_23.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\GD23\HAL_ROM_23.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>gd32e23x_it.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_it.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>gd32e23x_it.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_it.h</FilePath>
+            </File>
+            <File>
+              <FileName>gd32e23x_libopt.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_libopt.h</FilePath>
             </File>
           </Files>
         </Group>
