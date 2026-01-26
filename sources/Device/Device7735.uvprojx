@@ -742,49 +742,49 @@
               <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
             </File>
             <File>
-              <FileName>gd32e23x_it_23.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_it_23.cpp</FilePath>
-            </File>
-            <File>
               <FileName>gd32f30x_libopt.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\HAL\gd32f30x_libopt.h</FilePath>
             </File>
             <File>
+              <FileName>system.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\system.h</FilePath>
+            </File>
+            <File>
+              <FileName>gd32e23x_it_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_it_23.cpp</FilePath>
+            </File>
+            <File>
               <FileName>HAL_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_ADC_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ADC_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_ADC_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_CLOCK_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_CLOCK_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_CLOCK_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_I2C_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_I2C_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_I2C_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_PINS_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_PINS_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_PINS_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_ROM_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ROM_23.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>system.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\system.h</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_ROM_23.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -1941,49 +1941,49 @@
               <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
             </File>
             <File>
-              <FileName>gd32e23x_it_23.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\gd32e23x_it_23.cpp</FilePath>
-            </File>
-            <File>
               <FileName>gd32f30x_libopt.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Hardware\HAL\gd32f30x_libopt.h</FilePath>
             </File>
             <File>
+              <FileName>system.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\system.h</FilePath>
+            </File>
+            <File>
+              <FileName>gd32e23x_it_23.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_it_23.cpp</FilePath>
+            </File>
+            <File>
               <FileName>HAL_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_ADC_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ADC_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_ADC_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_CLOCK_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_CLOCK_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_CLOCK_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_I2C_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_I2C_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_I2C_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_PINS_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_PINS_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_PINS_23.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_ROM_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ROM_23.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>system.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\system.h</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_ROM_23.cpp</FilePath>
             </File>
           </Files>
         </Group>
