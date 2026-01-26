@@ -37,9 +37,9 @@
 #include "driver_st7789.h"
 #include "driver_st7789_font.h"
 
-/**
- * @brief chip information definition
- */
+ /**
+  * @brief chip information definition
+  */
 #define CHIP_NAME                 "Sitronix ST7789"        /**< chip name */
 #define MANUFACTURER_NAME         "Sitronix"               /**< manufacturer name */
 #define SUPPLY_VOLTAGE_MIN        2.4f                     /**< chip min supply voltage */
@@ -49,15 +49,15 @@
 #define TEMPERATURE_MAX           85.0f                    /**< chip max operating temperature */
 #define DRIVER_VERSION            1000                     /**< driver version */
 
-/**
- * @brief command data type definition
- */
+  /**
+   * @brief command data type definition
+   */
 #define ST7789_CMD         0        /**< command type */
 #define ST7789_DATA        1        /**< data type */
 
-/**
- * @brief chip command definition
- */
+   /**
+    * @brief chip command definition
+    */
 #define ST7789_CMD_NOP             0x00        /**< no operation command */
 #define ST7789_CMD_SWRESET         0x01        /**< software reset command */
 #define ST7789_CMD_SLPIN           0x10        /**< sleep in command */
@@ -123,16 +123,16 @@
 #define ST7789_CMD_NVMSET          0xFC        /**< nvm setting command */
 #define ST7789_CMD_PROMACT         0xFE        /**< program action command */
 
-/**
- * @brief     write one byte
- * @param[in] *handle pointer to an st7789 handle structure
- * @param[in] data written data
- * @param[in] cmd data type
- * @return    status code
- *            - 0 success
- *            - 1 write failed
- * @note      none
- */
+    /**
+     * @brief     write one byte
+     * @param[in] *handle pointer to an st7789 handle structure
+     * @param[in] data written data
+     * @param[in] cmd data type
+     * @return    status code
+     *            - 0 success
+     *            - 1 write failed
+     * @note      none
+     */
 static uint8_t a_st7789_write_byte(st7789_handle_t *handle, uint8_t data, uint8_t cmd)
 {
     uint8_t res;
@@ -746,7 +746,7 @@ uint8_t st7789_set_partial_areas(st7789_handle_t *handle, uint16_t start_row, ui
  * @note      none
  */
 uint8_t st7789_set_vertical_scrolling(st7789_handle_t *handle, uint16_t top_fixed_area,
-                                      uint16_t scrolling_area, uint16_t bottom_fixed_area)
+    uint16_t scrolling_area, uint16_t bottom_fixed_area)
 {
     uint8_t buf[6];
 
@@ -1012,7 +1012,7 @@ uint8_t st7789_idle_mode_on(st7789_handle_t *handle)
  * @note      none
  */
 uint8_t st7789_set_interface_pixel_format(st7789_handle_t *handle, st7789_rgb_interface_color_format_t rgb,
-                                          st7789_control_interface_color_format_t control)
+    st7789_control_interface_color_format_t control)
 {
     uint8_t data;
 
@@ -1178,7 +1178,7 @@ uint8_t st7789_set_display_brightness(st7789_handle_t *handle, uint8_t brightnes
  * @note      none
  */
 uint8_t st7789_set_display_control(st7789_handle_t *handle, st7789_bool_t brightness_control_block,
-                                   st7789_bool_t display_dimming, st7789_bool_t backlight_control)
+    st7789_bool_t display_dimming, st7789_bool_t backlight_control)
 {
     uint8_t data;
 
@@ -1199,7 +1199,7 @@ uint8_t st7789_set_display_control(st7789_handle_t *handle, st7789_bool_t bright
     }
 
     data = (brightness_control_block << 5) | (display_dimming << 3)
-            | (backlight_control << 2);                                         /* set control data */
+        | (backlight_control << 2);                                         /* set control data */
     if (a_st7789_write_byte(handle, data, ST7789_DATA) != 0)                    /* write control */
     {
         handle->debug_print("st7789: write data failed.\n");                    /* write data failed */
@@ -1224,7 +1224,7 @@ uint8_t st7789_set_display_control(st7789_handle_t *handle, st7789_bool_t bright
  * @note      none
  */
 uint8_t st7789_set_brightness_control_and_color_enhancement(st7789_handle_t *handle, st7789_bool_t color_enhancement,
-                                                            st7789_color_enhancement_mode_t mode, st7789_color_enhancement_level_t level)
+    st7789_color_enhancement_mode_t mode, st7789_color_enhancement_level_t level)
 {
     uint8_t data;
 
@@ -1311,12 +1311,12 @@ uint8_t st7789_set_cabc_minimum_brightness(st7789_handle_t *handle, uint8_t brig
  * @note      none
  */
 uint8_t st7789_set_ram_control(st7789_handle_t *handle,
-                               st7789_ram_access_t ram_mode,
-                               st7789_display_mode_t display_mode,
-                               st7789_frame_type_t frame_type,
-                               st7789_data_mode_t data_mode,
-                               st7789_rgb_bus_width_t bus_width,
-                               st7789_pixel_type_t pixel_type)
+    st7789_ram_access_t ram_mode,
+    st7789_display_mode_t display_mode,
+    st7789_frame_type_t frame_type,
+    st7789_data_mode_t data_mode,
+    st7789_rgb_bus_width_t bus_width,
+    st7789_pixel_type_t pixel_type)
 {
     uint8_t buf[2];
 
@@ -1337,7 +1337,7 @@ uint8_t st7789_set_ram_control(st7789_handle_t *handle,
     }
     buf[0] = (ram_mode << 4) | (display_mode << 0);                               /* set param1 */
     buf[1] = (frame_type << 4) | (data_mode << 3) |
-             (bus_width << 2) | (pixel_type << 0);                                /* set param2 */
+        (bus_width << 2) | (pixel_type << 0);                                /* set param2 */
     if (a_st7789_write_bytes(handle, buf, 2, ST7789_DATA) != 0)                   /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1370,14 +1370,14 @@ uint8_t st7789_set_ram_control(st7789_handle_t *handle,
  *            0x02 <= hbp <= 0x1F
  */
 uint8_t st7789_set_rgb_interface_control(st7789_handle_t *handle,
-                                         st7789_direct_rgb_mode_t rgb_mode,
-                                         st7789_rgb_if_enable_mode_t rgb_if_mode,
-                                         st7789_pin_level_t vspl,
-                                         st7789_pin_level_t hspl,
-                                         st7789_pin_level_t dpl,
-                                         st7789_pin_level_t epl,
-                                         uint8_t vbp,
-                                         uint8_t hbp)
+    st7789_direct_rgb_mode_t rgb_mode,
+    st7789_rgb_if_enable_mode_t rgb_if_mode,
+    st7789_pin_level_t vspl,
+    st7789_pin_level_t hspl,
+    st7789_pin_level_t dpl,
+    st7789_pin_level_t epl,
+    uint8_t vbp,
+    uint8_t hbp)
 {
     uint8_t buf[3];
 
@@ -1409,7 +1409,7 @@ uint8_t st7789_set_rgb_interface_control(st7789_handle_t *handle,
         return 1;                                                                 /* return error */
     }
     buf[0] = (rgb_mode << 7) | (rgb_if_mode << 5) |
-             (vspl << 3) | (hspl << 2) | (dpl << 1) | (epl << 0);                 /* set param1 */
+        (vspl << 3) | (hspl << 2) | (dpl << 1) | (epl << 0);                 /* set param1 */
     buf[1] = vbp & 0x7F;                                                          /* set param2 */
     buf[2] = hbp & 0x1F;                                                          /* set param3 */
     if (a_st7789_write_bytes(handle, buf, 3, ST7789_DATA) != 0)                   /* write data */
@@ -1451,13 +1451,13 @@ uint8_t st7789_set_rgb_interface_control(st7789_handle_t *handle,
  *            0x01 <= front_porch_partial <= 0xF
  */
 uint8_t st7789_set_porch(st7789_handle_t *handle,
-                         uint8_t back_porch_normal,
-                         uint8_t front_porch_normal,
-                         st7789_bool_t separate_porch_enable,
-                         uint8_t back_porch_idle,
-                         uint8_t front_porch_idle,
-                         uint8_t back_porch_partial,
-                         uint8_t front_porch_partial)
+    uint8_t back_porch_normal,
+    uint8_t front_porch_normal,
+    st7789_bool_t separate_porch_enable,
+    uint8_t back_porch_idle,
+    uint8_t front_porch_idle,
+    uint8_t back_porch_partial,
+    uint8_t front_porch_partial)
 {
     uint8_t buf[5];
 
@@ -1547,12 +1547,12 @@ uint8_t st7789_set_porch(st7789_handle_t *handle,
  *            0 <= partial_frame_rate <= 0x1F
  */
 uint8_t st7789_set_frame_rate_control(st7789_handle_t *handle,
-                                      st7789_bool_t separate_fr_control,
-                                      st7789_frame_rate_divided_control_t div_control,
-                                      st7789_inversion_idle_mode_t idle_mode,
-                                      uint8_t idle_frame_rate,
-                                      st7789_inversion_partial_mode_t partial_mode,
-                                      uint8_t partial_frame_rate)
+    st7789_bool_t separate_fr_control,
+    st7789_frame_rate_divided_control_t div_control,
+    st7789_inversion_idle_mode_t idle_mode,
+    uint8_t idle_frame_rate,
+    st7789_inversion_partial_mode_t partial_mode,
+    uint8_t partial_frame_rate)
 {
     uint8_t buf[3];
 
@@ -1610,9 +1610,9 @@ uint8_t st7789_set_frame_rate_control(st7789_handle_t *handle,
  * @note      none
  */
 uint8_t st7789_set_partial_mode_control(st7789_handle_t *handle,
-                                        st7789_non_display_source_output_level_t level,
-                                        st7789_non_display_area_scan_mode_t mode,
-                                        st7789_non_display_frame_frequency_t frequency)
+    st7789_non_display_source_output_level_t level,
+    st7789_non_display_area_scan_mode_t mode,
+    st7789_non_display_frame_frequency_t frequency)
 {
     uint8_t reg;
 
@@ -1700,9 +1700,9 @@ uint8_t st7789_set_gate_control(st7789_handle_t *handle, st7789_vghs_t vghs, st7
  *            gate_off_timing_adjustment <= 0xF
  */
 uint8_t st7789_set_gate_on_timing_adjustment(st7789_handle_t *handle,
-                                             uint8_t gate_on_timing_adjustment,
-                                             uint8_t gate_off_timing_adjustment_rgb,
-                                             uint8_t gate_off_timing_adjustment)
+    uint8_t gate_on_timing_adjustment,
+    uint8_t gate_off_timing_adjustment_rgb,
+    uint8_t gate_off_timing_adjustment)
 {
     uint8_t buf[4];
 
@@ -1743,7 +1743,7 @@ uint8_t st7789_set_gate_on_timing_adjustment(st7789_handle_t *handle,
     buf[1] = 0x2B;                                                                /* set param2 */
     buf[2] = gate_on_timing_adjustment & 0x3F;                                    /* set param3 */
     buf[3] = ((gate_off_timing_adjustment_rgb & 0xF) << 4) |
-             ((gate_off_timing_adjustment & 0xF) << 0);                           /* set param4 */
+        ((gate_off_timing_adjustment & 0xF) << 0);                           /* set param4 */
     if (a_st7789_write_bytes(handle, buf, 4, ST7789_DATA) != 0)                   /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -1915,13 +1915,13 @@ uint8_t st7789_vcom_convert_to_data(st7789_handle_t *handle, uint8_t reg, float 
  * @note      none
  */
 uint8_t st7789_set_lcm_control(st7789_handle_t *handle,
-                               st7789_bool_t xmy,
-                               st7789_bool_t xbgr,
-                               st7789_bool_t xinv,
-                               st7789_bool_t xmx,
-                               st7789_bool_t xmh,
-                               st7789_bool_t xmv,
-                               st7789_bool_t xgs)
+    st7789_bool_t xmy,
+    st7789_bool_t xbgr,
+    st7789_bool_t xinv,
+    st7789_bool_t xmx,
+    st7789_bool_t xmh,
+    st7789_bool_t xmv,
+    st7789_bool_t xgs)
 {
     uint8_t reg;
 
@@ -1941,7 +1941,7 @@ uint8_t st7789_set_lcm_control(st7789_handle_t *handle,
         return 1;                                                                 /* return error */
     }
     reg = (xmy << 6) | (xbgr << 5) | (xinv << 4) | (xmx << 3) |
-          (xmh << 2) | (xmv << 1) | (xgs << 0);                                   /* set param */
+        (xmh << 2) | (xmv << 1) | (xgs << 0);                                   /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2395,10 +2395,10 @@ uint8_t st7789_set_frame_rate(st7789_handle_t *handle, st7789_inversion_selectio
  * @note      none
  */
 uint8_t st7789_set_cabc_control(st7789_handle_t *handle,
-                                st7789_bool_t led_on,
-                                st7789_bool_t led_pwm_init,
-                                st7789_bool_t led_pwm_fix,
-                                st7789_bool_t led_pwm_polarity)
+    st7789_bool_t led_on,
+    st7789_bool_t led_pwm_init,
+    st7789_bool_t led_pwm_fix,
+    st7789_bool_t led_pwm_polarity)
 {
     uint8_t reg;
 
@@ -2418,7 +2418,7 @@ uint8_t st7789_set_cabc_control(st7789_handle_t *handle,
         return 1;                                                                 /* return error */
     }
     reg = (led_on << 3) | (led_pwm_init << 2) |
-          (led_pwm_fix << 1) | (led_pwm_polarity << 0);                           /* set param */
+        (led_pwm_fix << 1) | (led_pwm_polarity << 0);                           /* set param */
     if (a_st7789_write_byte(handle, reg, ST7789_DATA) != 0)                       /* write data */
     {
         handle->debug_print("st7789: write data failed.\n");                      /* write data failed */
@@ -2768,10 +2768,10 @@ uint8_t st7789_set_digital_gamma_look_up_table_blue(st7789_handle_t *handle, uin
  *            0 <= first_scan_line_number 0x3F
  */
 uint8_t st7789_set_gate(st7789_handle_t *handle,
-                        uint8_t gate_line_number,
-                        uint8_t first_scan_line_number,
-                        st7789_gate_scan_mode_t mode,
-                        st7789_gate_scan_direction_t direction)
+    uint8_t gate_line_number,
+    uint8_t first_scan_line_number,
+    st7789_gate_scan_mode_t mode,
+    st7789_gate_scan_direction_t direction)
 {
     uint8_t buf[3];
 
@@ -2970,9 +2970,9 @@ uint8_t st7789_set_power_control_2(st7789_handle_t *handle, st7789_sbclk_div_t s
  * @note      0 <= source_equalize_time <= 0x1F
  */
 uint8_t st7789_set_equalize_time_control(st7789_handle_t *handle,
-                                         uint8_t source_equalize_time,
-                                         uint8_t source_pre_drive_time,
-                                         uint8_t gate_equalize_time)
+    uint8_t source_equalize_time,
+    uint8_t source_pre_drive_time,
+    uint8_t gate_equalize_time)
 {
     uint8_t buf[3];
 
@@ -3508,9 +3508,9 @@ uint8_t st7789_clear(st7789_handle_t *handle)
     {
         memset(handle->buf, 0x00, sizeof(uint8_t) * ST7789_BUFFER_SIZE);           /* clear buffer */
         m = ((uint32_t)(handle->row) * handle->column * 3 / 2) /
-             ST7789_BUFFER_SIZE;                                                   /* total times */
+            ST7789_BUFFER_SIZE;                                                   /* total times */
         n = ((uint32_t)(handle->row) * handle->column * 3 / 2) %
-             ST7789_BUFFER_SIZE;                                                   /* the last */
+            ST7789_BUFFER_SIZE;                                                   /* the last */
         for (i = 0; i < m; i++)
         {
             if (a_st7789_write_bytes(handle, handle->buf,
@@ -3710,16 +3710,16 @@ uint8_t st7789_fill_rect(st7789_handle_t *handle, uint16_t left, uint16_t top, u
         for (i = 0; i < ST7789_BUFFER_SIZE; i += 3)                                /* fill the buffer */
         {
             handle->buf[i] = (((color >> 8) & 0xF) << 4) |
-                             (((color >> 4) & 0xF) << 0);                          /* set the color */
+                (((color >> 4) & 0xF) << 0);                          /* set the color */
             handle->buf[i + 1] = (((color >> 0) & 0xF) << 4) |
-                                 (((color >> 8) & 0xF) << 0);                      /* set the color */
+                (((color >> 8) & 0xF) << 0);                      /* set the color */
             handle->buf[i + 2] = (((color >> 4) & 0xF) << 4) |
-                                 (((color >> 0) & 0xF) << 0);                      /* set the color */
+                (((color >> 0) & 0xF) << 0);                      /* set the color */
         }
         m = ((uint32_t)(right - left + 1) * (bottom - top + 1) * 3 / 2) /
-             ST7789_BUFFER_SIZE;                                                   /* total times */
+            ST7789_BUFFER_SIZE;                                                   /* total times */
         n = ((uint32_t)(right - left + 1) * (bottom - top + 1) * 3 / 2) %
-             ST7789_BUFFER_SIZE;                                                   /* the last */
+            ST7789_BUFFER_SIZE;                                                   /* the last */
         for (i = 0; i < m; i++)
         {
             if (a_st7789_write_bytes(handle, handle->buf,
@@ -3748,9 +3748,9 @@ uint8_t st7789_fill_rect(st7789_handle_t *handle, uint16_t left, uint16_t top, u
             handle->buf[i + 1] = (color >> 0) & 0xFF;                              /* set the color */
         }
         m = (uint32_t)(right - left + 1) * (bottom - top + 1) * 2 /
-             ST7789_BUFFER_SIZE;                                                   /* total times */
+            ST7789_BUFFER_SIZE;                                                   /* total times */
         n = ((uint32_t)(right - left + 1) * (bottom - top + 1) * 2) %
-             ST7789_BUFFER_SIZE;                                                   /* the last */
+            ST7789_BUFFER_SIZE;                                                   /* the last */
         for (i = 0; i < m; i++)
         {
             if (a_st7789_write_bytes(handle, handle->buf,
@@ -3780,9 +3780,9 @@ uint8_t st7789_fill_rect(st7789_handle_t *handle, uint16_t left, uint16_t top, u
             handle->buf[i + 2] = ((color >> 0) & 0x3F) << 2;                       /* set the color */
         }
         m = (uint32_t)(right - left + 1) * (bottom - top + 1) * 3 /
-             ST7789_BUFFER_SIZE;                                                   /* total times */
+            ST7789_BUFFER_SIZE;                                                   /* total times */
         n = ((uint32_t)(right - left + 1) * (bottom - top + 1) * 3) %
-             ST7789_BUFFER_SIZE;                                                   /* the last */
+            ST7789_BUFFER_SIZE;                                                   /* the last */
         for (i = 0; i < m; i++)
         {
             if (a_st7789_write_bytes(handle, handle->buf,
@@ -3939,20 +3939,20 @@ uint8_t st7789_draw_picture_12bits(st7789_handle_t *handle, uint16_t left, uint1
         r = bottom - top + 1;                                                      /* row */
         point = 0;                                                                 /* image point init 0 */
         m = ((uint32_t)(right - left + 1) * (bottom - top + 1) * 3 / 2) /
-             ST7789_BUFFER_SIZE;                                                   /* total times */
+            ST7789_BUFFER_SIZE;                                                   /* total times */
         n = ((uint32_t)(right - left + 1) * (bottom - top + 1) * 3 / 2) %
-             ST7789_BUFFER_SIZE;                                                   /* the last */
+            ST7789_BUFFER_SIZE;                                                   /* the last */
         for (i = 0; i < m; i++)
         {
             for (j = 0; j < ST7789_BUFFER_SIZE; j += 3)                            /* fill the buffer */
             {
                 color = image[(point % c) * r + (point / c)];                      /* set color */
                 handle->buf[i] = (((color >> 8) & 0xF) << 4) |
-                                 (((color >> 4) & 0xF) << 0);                      /* set the color */
+                    (((color >> 4) & 0xF) << 0);                      /* set the color */
                 handle->buf[i + 1] = (((color >> 0) & 0xF) << 4) |
-                                     (((color >> 8) & 0xF) << 0);                  /* set the color */
+                    (((color >> 8) & 0xF) << 0);                  /* set the color */
                 handle->buf[i + 2] = (((color >> 4) & 0xF) << 4) |
-                                     (((color >> 0) & 0xF) << 0);                  /* set the color */
+                    (((color >> 0) & 0xF) << 0);                  /* set the color */
                 point++;                                                           /* point++ */
             }
             if (a_st7789_write_bytes(handle, handle->buf,
@@ -3969,11 +3969,11 @@ uint8_t st7789_draw_picture_12bits(st7789_handle_t *handle, uint16_t left, uint1
             {
                 color = image[(point % c) * r + (point / c)];                      /* set color */
                 handle->buf[i] = (((color >> 8) & 0xF) << 4) |
-                                 (((color >> 4) & 0xF) << 0);                      /* set the color */
+                    (((color >> 4) & 0xF) << 0);                      /* set the color */
                 handle->buf[i + 1] = (((color >> 0) & 0xF) << 4) |
-                                     (((color >> 8) & 0xF) << 0);                  /* set the color */
+                    (((color >> 8) & 0xF) << 0);                  /* set the color */
                 handle->buf[i + 2] = (((color >> 4) & 0xF) << 4) |
-                                     (((color >> 0) & 0xF) << 0);                  /* set the color */
+                    (((color >> 0) & 0xF) << 0);                  /* set the color */
                 point++;                                                           /* point++ */
             }
             if (a_st7789_write_bytes(handle, handle->buf, n, ST7789_DATA) != 0)    /* write data */
@@ -4120,9 +4120,9 @@ uint8_t st7789_draw_picture_16bits(st7789_handle_t *handle, uint16_t left, uint1
         r = bottom - top + 1;                                                      /* row */
         point = 0;                                                                 /* image point init 0 */
         m = ((uint32_t)(right - left + 1) * (bottom - top + 1) * 2) /
-             ST7789_BUFFER_SIZE;                                                   /* total times */
+            ST7789_BUFFER_SIZE;                                                   /* total times */
         n = ((uint32_t)(right - left + 1) * (bottom - top + 1) * 2) %
-             ST7789_BUFFER_SIZE;                                                   /* the last */
+            ST7789_BUFFER_SIZE;                                                   /* the last */
         for (i = 0; i < m; i++)
         {
             for (j = 0; j < ST7789_BUFFER_SIZE; j += 2)                            /* fill the buffer */
@@ -4293,9 +4293,9 @@ uint8_t st7789_draw_picture_18bits(st7789_handle_t *handle, uint16_t left, uint1
         r = bottom - top + 1;                                                      /* row */
         point = 0;                                                                 /* image point init 0 */
         m = ((uint32_t)(right - left + 1) * (bottom - top + 1) * 3) /
-             ST7789_BUFFER_SIZE;                                                   /* total times */
+            ST7789_BUFFER_SIZE;                                                   /* total times */
         n = ((uint32_t)(right - left + 1) * (bottom - top + 1) * 3) %
-             ST7789_BUFFER_SIZE;                                                   /* the last */
+            ST7789_BUFFER_SIZE;                                                   /* the last */
         for (i = 0; i < m; i++)
         {
             for (j = 0; j < ST7789_BUFFER_SIZE; j += 3)                            /* fill the buffer */
@@ -4401,7 +4401,7 @@ static uint8_t a_st7789_draw_point(st7789_handle_t *handle, uint16_t x, uint16_t
     if ((handle->format & 0x03) == 0x03)                                           /* rgb444 */
     {
         handle->buf[0] = (((color >> 8) & 0xF) << 4) |
-                         (((color >> 4) & 0xF) << 0);                              /* set the color */
+            (((color >> 4) & 0xF) << 0);                              /* set the color */
         handle->buf[1] = (((color >> 0) & 0xF) << 4);                              /* set the color */
         if (a_st7789_write_bytes(handle, handle->buf,
             2, ST7789_DATA) != 0)                                                  /* write data */
@@ -4476,7 +4476,7 @@ static uint8_t a_st7789_show_char(st7789_handle_t *handle, uint16_t x, uint16_t 
         {
             temp = gsc_st7789_ascii_1608[chr][t];                                   /* get ascii 1608 */
         }
-        else if(size == 24)                                                         /* if size 24 */
+        else if (size == 24)                                                         /* if size 24 */
         {
             temp = gsc_st7789_ascii_2412[chr][t];                                   /* get ascii 2412 */
         }
@@ -4535,7 +4535,7 @@ uint8_t st7789_write_string(st7789_handle_t *handle, uint16_t x, uint16_t y, cha
     {
         return 3;                                                            /* return error */
     }
-    if((x >= handle->column) || (y >= handle->row))                          /* check x, y */
+    if ((x >= handle->column) || (y >= handle->row))                          /* check x, y */
     {
         handle->debug_print("ssd1351: x or y is invalid.\n");                /* x or y is invalid */
 
