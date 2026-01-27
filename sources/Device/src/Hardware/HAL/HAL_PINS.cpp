@@ -19,14 +19,26 @@ void Pin::Init()
 
 void PinOut::Init()
 {
+#ifdef MODEL7735
     gpio_mode_set(port, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, pin);
     gpio_output_options_set(port, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, pin);
+#endif
+
+#ifdef MODEL7789
+    gpio_init(port, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, pin);
+#endif
 }
 
 
 void PinIn::Init()
 {
+#ifdef MODEL7735
     gpio_mode_set(port, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, pin);
+#endif
+
+#ifdef MODEL7789
+    gpio_init(port, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, pin);
+#endif
 }
 
 
