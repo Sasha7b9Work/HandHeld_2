@@ -63,13 +63,23 @@ namespace HAL_I2C
 namespace HAL_ROM
 {
     static const uint ADDRESS_BEGIN = 0x8000000;
+
+#ifdef MODEL7735
     static const uint SIZE_PAGE = 1024;
     static const uint NUM_PAGES = 64;
-
     static const int PAGE_FOR_JOURNAL = 63;
     static const int PAGE_FOR_SETTINGS = 62;
+#endif
 
-    // Стиреть страницу от 0 до 63
+#ifdef MODEL7789
+    static const uint SIZE_PAGE = 2048;
+    static const uint NUM_PAGES = 128;
+    static const int PAGE_FOR_JOURNAL = 127;
+    static const int PAGE_FOR_SETTINGS = 126;
+
+#endif
+
+    // Стиреть страницу от 0 до (NUM_PAGES - 1)
     void ErasePage(int);
 
     uint AddressPage(int);
