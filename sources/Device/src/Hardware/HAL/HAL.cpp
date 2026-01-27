@@ -20,11 +20,11 @@ void HAL::Init()
 
 #ifdef MODEL7735
     rcu_periph_clock_enable(RCU_CFGCMP);
-
     nvic_irq_enable(TIMER2_IRQn, 0);            // Для звука
 #endif
 
 #ifdef MODEL7789
+    rcu_periph_clock_enable(RCU_AF);
     nvic_irq_enable(TIMER2_IRQn, 0, 0);        // Для звука
 #endif
 

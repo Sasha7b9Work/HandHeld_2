@@ -22,9 +22,15 @@ namespace Beeper
 
 void Beeper::Driver::Init()
 {
+#ifdef MODEL7735
     gpio_mode_set(PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, PIN);
     gpio_output_options_set(PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PIN);
     gpio_af_set(PORT, GPIO_AF_1, PIN);
+#endif
+
+#ifdef MODEL7789
+    gpio_init(PORT, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, PIN);
+#endif
 
     timer_deinit(TIMER);
 
@@ -68,9 +74,15 @@ void Beeper::Driver::Init()
 
 void Beeper::Driver::StartFrequency(float frequency, uint8 vol)
 {
+#ifdef MODEL7735
     gpio_mode_set(PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, PIN);
     gpio_output_options_set(PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PIN);
     gpio_af_set(PORT, GPIO_AF_1, PIN);
+#endif
+
+#ifdef MODEL7789
+    gpio_init(PORT, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, PIN);
+#endif
 
     uint period = 250;
 
@@ -99,8 +111,14 @@ void Beeper::Driver::Stop()
     timer_interrupt_disable(TIMER, TIMER_INT_CH2);
     timer_disable(TIMER);
 
+#ifdef MODEL7735
     gpio_mode_set(PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, PIN);
     gpio_output_options_set(PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PIN);
+#endif
+
+#ifdef MODEL7789
+    gpio_init(PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, PIN);
+#endif
 
     gpio_bit_reset(PORT, PIN);                  // Переводим в ноль, чтобы не палить динамик
 }

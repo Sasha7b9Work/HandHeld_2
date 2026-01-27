@@ -807,9 +807,9 @@
               <FilePath>.\src\Modules\Beeper\driverBeeper.h</FilePath>
             </File>
             <File>
-              <FileName>driverBeeper_303.cpp</FileName>
+              <FileName>driverBeeper.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Modules\Beeper\driverBeeper_303.cpp</FilePath>
+              <FilePath>.\src\Modules\Beeper\driverBeeper.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -1815,9 +1815,9 @@
               <FilePath>.\src\Modules\Beeper\driverBeeper.h</FilePath>
             </File>
             <File>
-              <FileName>driverBeeper_303.cpp</FileName>
+              <FileName>driverBeeper.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Modules\Beeper\driverBeeper_303.cpp</FilePath>
+              <FilePath>.\src\Modules\Beeper\driverBeeper.cpp</FilePath>
             </File>
           </Files>
         </Group>
