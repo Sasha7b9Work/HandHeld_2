@@ -9,11 +9,8 @@
 
 //extern SPI_HandleTypeDef ST7789_SPI_PORT;
 
-/* choose whether use DMA or not */
-//#define USE_DMA
-
 /* If u need CS control, comment below*/
-//#define CFG_NO_CS
+#define CFG_NO_CS
 
 /* Pin connection*/
 #define ST7789_RST_PORT ST7789_RST_GPIO_Port
@@ -139,28 +136,28 @@
  *If you want to use another color, you can choose one in RGB565 format.
  */
 
-#define WHITE       0xFFFF
-#define BLACK       0x0000
-#define BLUE        0x001F
-#define RED         0xF800
-#define MAGENTA     0xF81F
-#define GREEN       0x07E0
-#define CYAN        0x7FFF
-#define YELLOW      0xFFE0
-#define GRAY        0X8430
-#define BRED        0XF81F
-#define GRED        0XFFE0
-#define GBLUE       0X07FF
-#define BROWN       0XBC40
-#define BRRED       0XFC07
-#define DARKBLUE    0X01CF
-#define LIGHTBLUE   0X7D7C
-#define GRAYBLUE    0X5458
+#define __WHITE       0xFFFF
+#define __BLACK       0x0000
+#define __BLUE        0x001F
+#define __RED         0xF800
+#define __MAGENTA     0xF81F
+#define __GREEN       0x07E0
+#define __CYAN        0x7FFF
+#define __YELLOW      0xFFE0
+#define __GRAY        0X8430
+#define __BRED        0XF81F
+#define __GRED        0XFFE0
+#define __GBLUE       0X07FF
+#define __BROWN       0XBC40
+#define __BRRED       0XFC07
+#define __DARKBLUE    0X01CF
+#define __LIGHTBLUE   0X7D7C
+#define __GRAYBLUE    0X5458
 
-#define LIGHTGREEN  0X841F
-#define LGRAY       0XC618
-#define LGRAYBLUE   0XA651
-#define LBBLUE      0X2B12
+#define __LIGHTGREEN  0X841F
+#define __LGRAY       0XC618
+#define __LGRAYBLUE   0XA651
+#define __LBBLUE      0X2B12
 
  /* Control Registers and constant codes */
 #define ST7789_NOP     0x00
@@ -213,29 +210,14 @@
 #define ST7789_COLOR_MODE_16bit 0x55    //  RGB565 (16bit)
 #define ST7789_COLOR_MODE_18bit 0x66    //  RGB666 (18bit)
 
-/* Basic operations */
-//#define ST7789_RST_Clr() HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_RESET)
-#define ST7789_RST_Clr()
-
-//#define ST7789_RST_Set() HAL_GPIO_WritePin(ST7789_RST_PORT, ST7789_RST_PIN, GPIO_PIN_SET)
-#define ST7789_RST_Set()
-
-//#define ST7789_DC_Clr() HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_RESET)
-#define ST7789_DC_Clr()
-
-//#define ST7789_DC_Set() HAL_GPIO_WritePin(ST7789_DC_PORT, ST7789_DC_PIN, GPIO_PIN_SET)
-#define ST7789_DC_Set()
-
 #ifndef CFG_NO_CS
-//#define ST7789_Select() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_RESET)
-#define ST7789_Select()
+    #define ST7789_Select() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_RESET)
 
-//#define ST7789_UnSelect() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_SET)
-#define ST7789_UnSelect()
+    #define ST7789_UnSelect() HAL_GPIO_WritePin(ST7789_CS_PORT, ST7789_CS_PIN, GPIO_PIN_SET)
 
 #else
-#define ST7789_Select() asm("nop")
-#define ST7789_UnSelect() asm("nop")
+    #define ST7789_Select()
+    #define ST7789_UnSelect()
 #endif
 
 #define ABS(x) ((x) > 0 ? (x) : -(x))
@@ -246,6 +228,7 @@ void ST7789_SetRotation(uint8 m);
 void ST7789_Fill_Color(uint16 color);
 void ST7789_DrawPixel(int16 x, int16 y, uint16 color);
 void ST7789_Fill(int16 xSta, int16 ySta, int16 xEnd, int16 yEnd, uint16 color);
+void ST7789_WriteBuffer(int16 x0, int16 y0, int16 x1, int16 y1, uint8 *buffer);
 void ST7789_DrawPixel_4px(uint16 x, uint16 y, uint16 color);
 
 /* Graphical functions. */
@@ -270,6 +253,8 @@ void ST7789_TearEffect(uint8 tear);
 
 /* Simple test function. */
 void ST7789_Test(void);
+
+void ST7789_WriteCommand(uint8);
 
 #ifndef ST7789_ROTATION
 #error You should at least choose a display rotation!
