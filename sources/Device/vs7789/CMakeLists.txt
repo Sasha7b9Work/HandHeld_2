@@ -44,7 +44,7 @@ file(GLOB DISPLAY                 ../src/Display/Display.h
 file(GLOB DISPLAY_FONT            ../src/Display/Font/*.*)
 file(GLOB HARDWARE                ../src/Hardware/*.*)
 file(GLOB HARDWARE_CMSIS          ../src/Hardware/CMSIS/*.*)
-file(GLOB HARDWARE_HAL            ../src/Hardware/HAL/*.h
+file(GLOB HARDWARE_HAL            ../src/Hardware/HAL/*.*
                                   ../src/Hardware/HAL/GD303/*.*)
 file(GLOB KEYBOARD                ../src/Keyboard/*.*)
 file(GLOB MENU                    ../src/Menu/*.*)

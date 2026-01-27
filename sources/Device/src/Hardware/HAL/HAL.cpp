@@ -2,7 +2,6 @@
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/HAL/systick.h"
-//#include "Hardware/HAL/HAL_PINS.h"
 #include "system.h"
 
 
@@ -15,12 +14,19 @@ void HAL::Init()
     rcu_periph_clock_enable(RCU_GPIOC);
     rcu_periph_clock_enable(RCU_GPIOF);
 
-    rcu_periph_clock_enable(RCU_CFGCMP);
-
     rcu_periph_clock_enable(RCU_SPI0);
 
     rcu_periph_clock_enable(RCU_TIMER2);        // Для звука
+
+#ifdef MODEL7735
+    rcu_periph_clock_enable(RCU_CFGCMP);
+
     nvic_irq_enable(TIMER2_IRQn, 0);            // Для звука
+#endif
+
+#ifdef MODEL7789
+    nvic_irq_enable(TIMER2_IRQn, 0, 0);        // Для звука
+#endif
 
     HAL_ADC::Init();
 
@@ -30,9 +36,11 @@ void HAL::Init()
 
 void HAL::DeInit()
 {
+#ifdef MODEL7735
     rcu_periph_clock_disable(RCU_CFGCMP);
-    rcu_periph_clock_disable(RCU_I2C1);
     rcu_periph_clock_disable(RCU_ADC);
+#endif
+
     rcu_periph_clock_disable(RCU_TIMER2);
 }
 
