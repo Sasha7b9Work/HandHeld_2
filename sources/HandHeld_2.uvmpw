@@ -5,11 +5,12 @@
 
   <Header>### uVision Project, (C) Keil Software</Header>
 
-  <WorkspaceName>HandHeld_2</WorkspaceName>
+  <WorkspaceName>D:\My\Prog\GitHub\Work\HandHeld\HandHeld_2\sources\HandHeld_2.uvmpw</WorkspaceName>
 
   <project>
     <PathAndName>.\Device\Device7735.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
