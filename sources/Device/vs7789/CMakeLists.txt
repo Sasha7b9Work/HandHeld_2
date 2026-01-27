@@ -32,8 +32,8 @@ add_compile_options(
     /wd5204
 )
 
-file(GLOB GD32E23x                ../../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include/*.*
-                                  ../../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Source/*.*)
+file(GLOB GD32F30x                ../../common/GD32F30x_Firmware_Library/Firmware/GD32F30x_standard_peripheral/Include/*.*
+                                  ../../common/GD32F30x_Firmware_Library/Firmware/GD32F30x_standard_peripheral/Source/*.*)
 file(GLOB SRC                     ../src/*.*)
 file(GLOB DISPLAY                 ../src/Display/Display.h
                                   ../src/Display/Display.cpp
@@ -66,7 +66,7 @@ file(GLOB SETTINGS                ../src/Settings/*.*)
 file(GLOB STORAGE                 ../src/Storage/*.*)
 file(GLOB UTILS                   ../src/Utils/*.*)
 
-source_group(GD32E23x               FILES ${GD32E23x})
+source_group(GD32F30x               FILES ${GD32F30x})
 source_group(src                    FILES ${SRC})
 source_group(Display                FILES ${DISPLAY})
 source_group(Display/Font           FILES ${DISPLAY_FONT})
@@ -88,14 +88,14 @@ source_group(Storage                FILES ${STORAGE})
 source_group(Utils                  FILES ${UTILS})
 
 set_source_files_properties(
-    ${GD32E23x}
+    ${GD32F30x}
     ${HARDWARE_CMSIS}
     src/Hardware/Watch.cpp
     PROPERTIES HEADER_FILE_ONLY TRUE
 )
 
 add_library(${PROJECT_NAME}
-    ${GD32E23x}
+    ${GD32F30x}
     ${SRC}
     ${DISPLAY}
     ${DISPLAY_FONT}

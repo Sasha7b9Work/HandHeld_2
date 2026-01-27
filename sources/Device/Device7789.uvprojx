@@ -602,11 +602,6 @@
               <FilePath>.\src\Hardware\HAL\GD303\gd32f30x_it.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_I2C_303.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\GD303\HAL_I2C_303.cpp</FilePath>
-            </File>
-            <File>
               <FileName>HAL_ROM_303.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\GD303\HAL_ROM_303.cpp</FilePath>
@@ -630,6 +625,11 @@
               <FileName>HAL_ADC.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_I2C.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_I2C.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -1610,11 +1610,6 @@
               <FilePath>.\src\Hardware\HAL\GD303\gd32f30x_it.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_I2C_303.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\GD303\HAL_I2C_303.cpp</FilePath>
-            </File>
-            <File>
               <FileName>HAL_ROM_303.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\GD303\HAL_ROM_303.cpp</FilePath>
@@ -1638,6 +1633,11 @@
               <FileName>HAL_ADC.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_I2C.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_I2C.cpp</FilePath>
             </File>
           </Files>
         </Group>

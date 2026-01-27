@@ -12,8 +12,8 @@
 + SCK       | 26 PB13         |              | Приёмник SPI
 + MISO      | 27 PB14         |              | Приёмник SPI
 + MOSI      | 28 PB15         |              | Приёмник SPI
-+ I2C_SCK   | 10 PA0          |    PB6       | Часы I2C
-+ I2C_SDA   | 11 PA1          |    PB7       | Часы I2C
++ I2C_SCK   | 10 PA0          |    PB6     + | Часы I2C
++ I2C_SDA   | 11 PA1          |    PB7     + | Часы I2C
 + ADC       | 12 PA2(ADC_IN2) | ADC012_IN2 + | Уровень заряда
 + SW_RGHT   | 13 PA3          |              | Кнопка вправо
   TFT_BKG   | 14 PA4          |              | Дисплей

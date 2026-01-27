@@ -2,15 +2,17 @@
 #include "Hardware/Timer.h"
 #include "Hardware/HAL/HAL.h"
 #include <stdlib.h>
-#include <gd32e23x.h>
+#include "system.h"
 
 #ifdef WIN32
     #define __asm(x)
 #endif
 
 
-// SCL PA0 10 - alternate I2C1
-// SDA PA1 11 - alternate I2C1
+#ifdef MODEL7735
+    // SCL PA0 10
+    // SDA PA1 11
+#endif
 
 
 #define SW_I2C_WAIT_TIME    2 // 10us 100kHz
@@ -30,13 +32,26 @@
 #endif
 
 
-#define SDA_TO_LOW()    GPIO_BC(GPIOA) = (uint)GPIO_PIN_1
-#define SDA_TO_HI()     GPIO_BOP(GPIOA) = (uint)GPIO_PIN_1
+#ifdef MODEL7735
+    #define PORT_I2C  GPIOA
+    #define I2C_SCK   GPIO_PIN_0
+    #define I2C_SDA   GPIO_PIN_1
+#endif
 
-#define GET_SDA()       (GPIO_ISTAT(GPIOA)&(GPIO_PIN_1))
+#ifdef MODEL7789
+    #define PORT_I2C GPIOB
+    #define I2C_SCK   GPIO_PIN_6
+    #define I2C_SDA   GPIO_PIN_7
+#endif
 
-#define SCL_TO_LOW()    GPIO_BC(GPIOA) = (uint)GPIO_PIN_0
-#define SCL_TO_HI()     GPIO_BOP(GPIOA) = (uint)GPIO_PIN_0
+
+#define SDA_TO_LOW()    GPIO_BC(PORT_I2C) = (uint)I2C_SDA
+#define SDA_TO_HI()     GPIO_BOP(PORT_I2C) = (uint)I2C_SDA
+
+#define GET_SDA()       (GPIO_ISTAT(PORT_I2C)&(I2C_SDA))
+
+#define SCL_TO_LOW()    GPIO_BC(PORT_I2C) = (uint)I2C_SCK
+#define SCL_TO_HI()     GPIO_BOP(PORT_I2C) = (uint)I2C_SCK
 
 #define DELAY()     __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP"); __asm("NOP")
 
@@ -317,51 +332,6 @@ static uint8_t SW_I2C_Read_8addr(uint8_t IICID, uint8_t regaddr, uint8_t *pdata,
     return returnack;
 }
 
-/*
-static uint8_t SW_I2C_Read_16addr(uint8_t IICID, uint16_t regaddr, uint8_t *pdata, uint8_t rcnt)
-{
-    uint8_t returnack = TRUE;
-    uint8_t index;
-
-    if (!rcnt) return FALSE;
-
-    i2c_port_initial();
-    i2c_start_condition();
-    //写ID
-    i2c_slave_address(IICID, WRITE_CMD);
-    if (!i2c_check_ack()) { returnack = FALSE; }
-    DELAY();
-    //写高八位地址
-    i2c_register_address((uint8_t)(regaddr >> 8));
-    if (!i2c_check_ack()) { returnack = FALSE; }
-    DELAY();
-    //写低八位地址
-    i2c_register_address((uint8_t)regaddr);
-    if (!i2c_check_ack()) { returnack = FALSE; }
-    DELAY();
-    //重启I2C总线
-    i2c_start_condition();
-    //读ID
-    i2c_slave_address(IICID, READ_CMD);
-    if (!i2c_check_ack()) { returnack = FALSE; }
-    //循环读数据
-    if (rcnt > 1)
-    {
-        for (index = 0; index < (rcnt - 1); index++)
-        {
-            DELAY();
-            pdata[index] = SW_I2C_Read_Data();
-            i2c_send_ack();
-        }
-    }
-    DelayUS(SW_I2C_WAIT_TIME);
-    pdata[rcnt - 1] = SW_I2C_Read_Data();
-    i2c_check_not_ack();
-    i2c_stop_condition();
-
-    return returnack;
-}
-*/
 
 static uint8_t SW_I2C_Write_8addr(uint8_t IICID, uint8_t regaddr, const uint8_t *pdata, uint8_t rcnt)
 {
@@ -383,46 +353,19 @@ static uint8_t SW_I2C_Write_8addr(uint8_t IICID, uint8_t regaddr, const uint8_t 
     return returnack;
 }
 
-/*
-static uint8_t SW_I2C_Write_16addr(uint8_t IICID, uint16_t regaddr, uint8_t *pdata, uint8_t rcnt)
-{
-    uint8_t returnack = TRUE;
-
-    if (!rcnt) return FALSE;
-
-    i2c_port_initial();
-    i2c_start_condition();
-    //写ID
-    i2c_slave_address(IICID, WRITE_CMD);
-    if (!i2c_check_ack()) { returnack = FALSE; }
-    DELAY();
-    //写高八位地址
-    i2c_register_address((uint8_t)(regaddr >> 8));
-    if (!i2c_check_ack()) { returnack = FALSE; }
-    DELAY();
-    //写低八位地址
-    i2c_register_address((uint8_t)regaddr);
-    if (!i2c_check_ack()) { returnack = FALSE; }
-    DELAY();
-    //写数据
-    for (int index = 0; index < rcnt; index++)
-    {
-        SW_I2C_Write_Data(pdata[index]);
-        if (!i2c_check_ack()) { returnack = FALSE; }
-        DELAY();
-    }
-    i2c_stop_condition();
-    return returnack;
-}
-*/
-
 
 namespace HAL_I2C
 {
     void Init()
     {
-        gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, GPIO_PIN_0 | GPIO_PIN_1);
-        gpio_output_options_set(GPIOA, GPIO_OTYPE_OD, GPIO_OSPEED_50MHZ, GPIO_PIN_0 | GPIO_PIN_1);
+#ifdef MODEL7735
+        gpio_mode_set(PORT_I2C, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLUP, I2C_SCK | I2C_SDA);
+        gpio_output_options_set(PORT_I2C, GPIO_OTYPE_OD, GPIO_OSPEED_50MHZ, I2C_SCK | I2C_SDA);
+#endif
+
+#ifdef MODEL7789
+        gpio_init(PORT_I2C, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, I2C_SCK | I2C_SDA);
+#endif
     }
 
     bool Read(uint8 reg_addr, uint8 *reg_data, uint16 len)

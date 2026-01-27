@@ -742,11 +742,6 @@
               <FilePath>.\src\Hardware\HAL\GD23\HAL_CLOCK_23.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_I2C_23.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\GD23\HAL_I2C_23.cpp</FilePath>
-            </File>
-            <File>
               <FileName>HAL_PINS_23.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\GD23\HAL_PINS_23.cpp</FilePath>
@@ -780,6 +775,11 @@
               <FileName>HAL_ADC.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_I2C.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_I2C.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -1885,11 +1885,6 @@
               <FilePath>.\src\Hardware\HAL\GD23\HAL_CLOCK_23.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_I2C_23.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\GD23\HAL_I2C_23.cpp</FilePath>
-            </File>
-            <File>
               <FileName>HAL_PINS_23.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\GD23\HAL_PINS_23.cpp</FilePath>
@@ -1923,6 +1918,11 @@
               <FileName>HAL_ADC.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_I2C.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_I2C.cpp</FilePath>
             </File>
           </Files>
         </Group>
