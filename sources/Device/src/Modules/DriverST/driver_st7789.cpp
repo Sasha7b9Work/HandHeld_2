@@ -29,11 +29,12 @@ PinOut pinON(GPIOB, GPIO_PIN_2);       // PB2
  * @param cmd -> command to write
  * @return none
  */
-void ST7789_WriteCommand(uint8 /*cmd*/)
+void ST7789_WriteCommand(uint8 cmd)
 {
 	ST7789_Select();
 	pinDC_RS.ToLow();
-//	HAL_SPI_Transmit(&ST7789_SPI_PORT, &cmd, sizeof(cmd), HAL_MAX_DELAY);
+	while(RESET == spi_i2s_flag_get(SPI0, SPI_FLAG_TBE)) { }
+	spi_i2s_data_transmit(SPI0, cmd);
 	ST7789_UnSelect();
 }
 
@@ -54,6 +55,11 @@ static void ST7789_WriteData(uint8 *buff, uint buff_size)
 	{
 		uint16 chunk_size = buff_size > 65535U ? 65535U : (uint16)buff_size;
 //		HAL_SPI_Transmit(&ST7789_SPI_PORT, buff, chunk_size, HAL_MAX_DELAY);
+		for (uint i = 0; i < chunk_size; i++)
+		{
+			while(RESET == spi_i2s_flag_get(SPI0, SPI_FLAG_TBE)) { }
+			spi_i2s_data_transmit(SPI0, *buff++);
+		}
 		buff += chunk_size;
 		buff_size -= chunk_size;
 	}
@@ -65,11 +71,15 @@ static void ST7789_WriteData(uint8 *buff, uint buff_size)
  * data -> data to write
  * @return none
  */
-static void ST7789_WriteSmallData(uint8 /*data*/)
+static void ST7789_WriteSmallData(uint8 data)
 {
 	ST7789_Select();
 	pinDC_RS.ToHi();
 //	HAL_SPI_Transmit(&ST7789_SPI_PORT, &data, sizeof(data), HAL_MAX_DELAY);
+    while (RESET == spi_i2s_flag_get(SPI0, SPI_FLAG_TBE))
+    {
+    }
+    spi_i2s_data_transmit(SPI0, data);
 	ST7789_UnSelect();
 }
 
@@ -136,10 +146,36 @@ static void ST7789_SetAddressWindow(uint16 x0, uint16 y0, uint16 x1, uint16 y1)
  */
 void ST7789_Init(void)
 {
+    {
+        // PA5 - TFT_SCL SPI0
+        // PA7 - TFT_SDA SPI0
+        gpio_init(GPIOA, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_5 | GPIO_PIN_7);
+    }
+
+    {
+        spi_parameter_struct spi_is;
+        spi_i2s_deinit(SPI0);
+        spi_struct_para_init(&spi_is);
+
+        spi_is.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
+        spi_is.device_mode = SPI_MASTER;
+        spi_is.frame_size = SPI_FRAMESIZE_8BIT;
+        spi_is.clock_polarity_phase = SPI_CK_PL_HIGH_PH_1EDGE;
+        spi_is.nss = SPI_NSS_SOFT;
+        spi_is.prescale = SPI_PSC_2;
+        spi_is.endian = SPI_ENDIAN_MSB;
+        spi_init(SPI0, &spi_is);
+    }
+
+    spi_enable(SPI0);
+
 	pinDC_RS.Init();
 	pinRES.Init();
 	pinBKG.Init();
 	pinON.Init();
+
+	pinON.ToLow();
+	pinBKG.ToHi();
 
 	HAL_Delay(10);
 	pinRES.ToLow();
