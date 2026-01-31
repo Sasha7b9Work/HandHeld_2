@@ -1,17 +1,8 @@
-/********************金逸晨**************************
-******************GMT024-01 模块 2.4寸   7PIN SPI TFT FOR AT89S52/STC12*************
-*****AT89S52驱动**************************
-*********ST7789 控制器,
-***** P30----3  SCK   ,  P31----4  SDA   ,  P32----5   RES
-	  P33-----6   DC   , P34-----7  BLK   ,  
-***** BY:GU 
-*********ST7789V2
-
-从左往右，从上往下    240*320  18bit 6 6 6 RGB 模式  高位模式
-
-********************************************************/
-//#include "reg51.h"
+// 2026/01/31 11:19:15 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
+#include "Hardware/HAL/HAL_PINS.h"
+#include "system.h"
+
 
 #define set_0   0x01
 #define set_1   0x02
@@ -30,42 +21,39 @@
 #define clr_5   0xDF
 #define clr_6   0xBF
 #define clr_7   0x7F
-/**********SPI引脚分配，连接oled屏，更具实际情况修改*********/
 
-//#define SPI_SCK_0  P3 &=clr_0        //P3_0      
-#define SPI_SCK_0
 
-//#define SPI_SCK_1  P3|=set_0
-#define SPI_SCK_1
+PinOut pinDC_RS(GPIOB, GPIO_PIN_11);    // PB11
+PinOut pinRES(GPIOB, GPIO_PIN_10);      // PB10
+PinOut pinBKG(GPIOA, GPIO_PIN_4);       // PA4
+PinOut pinON(GPIOB, GPIO_PIN_2);        // PB2
+PinOut pinSCK(GPIOA, GPIO_PIN_5);       // PA5
+PinOut pinSDA(GPIOA, GPIO_PIN_7);       // PA7
 
-//#define SPI_SDA_0  P3&=clr_1        //P3_1        
-#define SPI_SDA_0
 
-//#define SPI_SDA_1  P3|=set_1
-#define SPI_SDA_1
+#define SPI_SCK_0   pinSCK.ToLow()
 
-//#define SPI_RST_0  P3&=clr_2        //P3_2        
-#define SPI_RST_0
+#define SPI_SCK_1   pinSCK.ToHi()
 
-//#define SPI_RST_1  P3|=set_2
-#define SPI_RST_1
+#define SPI_SDA_0   pinSDA.ToLow()
 
-//#define SPI_DC_0  P3&=clr_3           //P3_3
-#define SPI_DC_0
+#define SPI_SDA_1   pinSDA.ToHi()
 
-//#define SPI_DC_1  P3|=set_3
-#define SPI_DC_1
+#define SPI_RST_0   pinRES.ToLow()
 
-//#define SPI_CS_0  P3&=clr_4          //P3_4
+#define SPI_RST_1   pinRES.ToHi()
+
+#define SPI_DC_0    pinDC_RS.ToLow()
+
+#define SPI_DC_1    pinDC_RS.ToHi()
+
 #define SPI_CS_0
 
-//#define SPI_CS_1  P3|=set_4
 #define SPI_CS_1
 
-#define BL_0  P3&=clr_5          //P3_5//H 有效,背光控制 
+//#define BL_0
 
-//#define BL_1  P3|=set_5
-#define BL_1
+#define BL_1        pinBKG.ToHi()
 
 #define     RED          0XF800	  //红色
 #define     GREEN        0X07E0	  //绿色
@@ -106,7 +94,8 @@ unsigned char  chines_word[   ][32]=   //汉字码
 
 
 void delay_us(unsigned int _us_time)
-{       
+{
+    _us_time *= 100;
   unsigned char x=0;
   for(;_us_time>0;_us_time--)
   {
@@ -115,6 +104,7 @@ void delay_us(unsigned int _us_time)
 }
 void Delay_ms(unsigned int _ms_time)
   {
+    _ms_time *= 30;
     unsigned int i,j;
     for(i=0;i<_ms_time;i++)
     {
@@ -360,9 +350,12 @@ void display_char16_16(unsigned int x,unsigned int y,unsigned long color,unsigne
 
 void IO_init(void)
 {
-//  P2|=0xFF;                         //PC  06,07，03,04,07输出模式
-  
-
+    pinDC_RS.Init();
+    pinRES.Init();
+    pinBKG.Init();
+    pinON.Init();
+    pinSCK.Init();
+    pinSDA.Init();
 }
 
 void ST7789_Init()

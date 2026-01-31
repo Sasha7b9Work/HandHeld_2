@@ -32,9 +32,9 @@ int main()
 {
     HAL::Init();
 
-    gset.Load();
+//    gset.Load();
 
-    PCF8563::Init();
+//    PCF8563::Init();
 
     Display::Init();
 

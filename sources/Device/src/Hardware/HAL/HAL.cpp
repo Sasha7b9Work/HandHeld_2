@@ -28,9 +28,9 @@ void HAL::Init()
     nvic_irq_enable(TIMER2_IRQn, 0, 0);        // Для звука
 #endif
 
-    HAL_ADC::Init();
+//    HAL_ADC::Init();
 
-    HAL_I2C::Init();
+//    HAL_I2C::Init();
 }
 
 
