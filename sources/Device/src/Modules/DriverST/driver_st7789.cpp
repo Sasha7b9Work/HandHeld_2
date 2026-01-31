@@ -210,108 +210,60 @@ void TFT_full(unsigned int color)
   }
 
 
-void TFT_init(void)				////ST7789V2
-  {
-	SPI_SCK_1;			//特别注意！！
-	SPI_RST_0;
-	Delay_ms(50);//1000
-	SPI_RST_1;
-	Delay_ms(10);//1000
+void TFT_init(void)     // ST7789V2
+{
+    SPI_SCK_1;          // 特别注意！！
+    SPI_RST_0;
+    Delay_ms(50);//1000
+    SPI_RST_1;
+    Delay_ms(10);//1000
+
+    pinON.ToLow();
+    pinBKG.ToHi();
+
+    pinRES.ToLow();
+    pinDC_RS.ToLow();
+
+    Delay_ms(50);
+    pinRES.ToHi();
+    Delay_ms(150);
+
+    TFT_SEND_CMD(0x01);             // RESET
+    Delay_ms(150);
+
     TFT_SEND_CMD(0x11);             // SLPOUT : Sleep Out
-	Delay_ms(120);
-	 	  //-----------------------ST7789V Frame rate setting-----------------//
-                TFT_SEND_CMD(0x3A);         // COLMOD : Interface Pixel Format
-                TFT_SEND_DATA(0x55);        // 65K RGB, 16bit/pixel
+    Delay_ms(10);
 
-                TFT_SEND_CMD(0xC5);         // VCMOFSET : VCOM Offset Set
-                TFT_SEND_DATA(0x1A);        // -0.15V
+    TFT_SEND_CMD(0x3A);             // COLMOD
+    TFT_SEND_DATA(0x55);
+    Delay_ms(10);
 
-                TFT_SEND_CMD(0x36);         // MADCTL : Memory Data Access Control
-                TFT_SEND_DATA(0x00);        // Page Address Order   : Top to Bottom
-                                            // Column Address Order : Left to Right
-                                            // Page/Column Order    : Normal Mode
-                                            // Line Address Mode    : LCD Refresh Top to Bottom
-                                            // RGB/BGR Order        : RGB
-                                            // Display Data Latch Data Order : LCD Refresh Left to Rigth
-                //-------------ST7789V Frame rate setting-----------//
-                TFT_SEND_CMD(0xb2);		    // PORCTRL : Porch Setting
-                TFT_SEND_DATA(0x05);        // BPA[6:0]
-                TFT_SEND_DATA(0x05);        // FPA[6:0]
-                TFT_SEND_DATA(0x00);        // PSEN
-                TFT_SEND_DATA(0x33);        // BPB[3:0], FPB[3:0]
-                TFT_SEND_DATA(0x33);        // BPC[3:0], PFC[3:0]
+    TFT_SEND_CMD(0x36);             // MADCTL
+    TFT_SEND_DATA(0x08);
 
-                TFT_SEND_CMD(0xb7);         // GCTRL : Gate Control
-                TFT_SEND_DATA(0x05);        // VGH : 12.2v,  VGL : -10.43v
-                //--------------ST7789V Power setting---------------//
-                TFT_SEND_CMD(0xBB);         // VCOMS : VCOM Setting
-                TFT_SEND_DATA(0x3F);        // 1.675 V
+    TFT_SEND_CMD(0x2A);             // CASET
+    TFT_SEND_DATA(0x00);
+    TFT_SEND_DATA(0x00);
+    TFT_SEND_DATA(0x00);
+    TFT_SEND_DATA(240);
 
-                TFT_SEND_CMD(0xC0);         // LCMCTRL : LCM Control
-                TFT_SEND_DATA(0x2c);
+    TFT_SEND_CMD(0x2B);             // RASET
+    TFT_SEND_DATA(0x00);
+    TFT_SEND_DATA(0x00);
+    TFT_SEND_DATA(320 >> 8);
+    TFT_SEND_DATA(320 & 0xFF);
 
-                TFT_SEND_CMD(0xC2);         // VDVVRHEN : VDV and VRH Command Enable
-                TFT_SEND_DATA(0x01);        // VDV and VRH register value comes from command write
-                TFT_SEND_DATA(0xFF);
+    TFT_SEND_CMD(0x21);             // INVON
+    Delay_ms(10);
 
-                TFT_SEND_CMD(0xC3);			//VRH Set
-                TFT_SEND_DATA(0x0F);		//4.3+( vcom+vcom offset+vdv)
+    TFT_SEND_CMD(0x13);             // NORON
+    Delay_ms(10);
 
-                TFT_SEND_CMD(0xC4);			//VDV Set
-                TFT_SEND_DATA(0x20);				//0v
+    TFT_SEND_CMD(0x29);             // DISPON
+    Delay_ms(10);
+}
 
-                TFT_SEND_CMD(0xC6);				//Frame Rate Control in Normal Mode
-                TFT_SEND_DATA(0X01);			//111Hz
 
-                TFT_SEND_CMD(0xd0);				//Power Control 1
-                TFT_SEND_DATA(0xa4);
-                TFT_SEND_DATA(0xa1);
-
-                TFT_SEND_CMD(0xE8);				//Power Control 1
-                TFT_SEND_DATA(0x03);
-
-                TFT_SEND_CMD(0xE9);				//Equalize time control
-                TFT_SEND_DATA(0x09);
-                TFT_SEND_DATA(0x09);
-                TFT_SEND_DATA(0x08);
-                //---------------ST7789V gamma setting-------------//
-                TFT_SEND_CMD(0xE0); //Set Gamma
-                TFT_SEND_DATA(0xD0);
-                TFT_SEND_DATA(0x05);
-                TFT_SEND_DATA(0x09);
-                TFT_SEND_DATA(0x09);
-                TFT_SEND_DATA(0x08);
-                TFT_SEND_DATA(0x14);
-                TFT_SEND_DATA(0x28);
-                TFT_SEND_DATA(0x33);
-                TFT_SEND_DATA(0x3F);
-                TFT_SEND_DATA(0x07);
-                TFT_SEND_DATA(0x13);
-                TFT_SEND_DATA(0x14);
-                TFT_SEND_DATA(0x28);
-                TFT_SEND_DATA(0x30);
-                 
-                TFT_SEND_CMD(0XE1); //Set Gamma
-                TFT_SEND_DATA(0xD0);
-                TFT_SEND_DATA(0x05);
-                TFT_SEND_DATA(0x09);
-                TFT_SEND_DATA(0x09);
-                TFT_SEND_DATA(0x08);
-                TFT_SEND_DATA(0x03);
-                TFT_SEND_DATA(0x24);
-                TFT_SEND_DATA(0x32);
-                TFT_SEND_DATA(0x32);
-                TFT_SEND_DATA(0x3B);
-                TFT_SEND_DATA(0x14);
-                TFT_SEND_DATA(0x13);
-                TFT_SEND_DATA(0x28);
-                TFT_SEND_DATA(0x2F);
-
-                TFT_SEND_CMD(0x20); 		//反显
-               
-                TFT_SEND_CMD(0x29);         //开启显示 
-
-  }
 void display_char16_16(unsigned int x,unsigned int y,unsigned long color,unsigned char word_serial_number)
 {
    unsigned int column;
@@ -366,36 +318,33 @@ void IO_init(void)
 }
 
 void ST7789_Init()
-{ 
- 
+{
+    IO_init();
+    SPI_SCK_0;
+    TFT_init();
+    BL_1;
 
-	IO_init();
-	SPI_SCK_0;
-	TFT_init();
-	BL_1;
-	
-	while(1)
-	{
-		
-	TFT_full(RED);
-	Delay_ms(10);
-	TFT_full(GREEN);
-	Delay_ms(20);
-	TFT_full(BLUE);
-	Delay_ms(20);
-	TFT_clear();
+    while (1)
+    {
+
+        TFT_full(RED);
+        Delay_ms(10);
+        TFT_full(GREEN);
+        Delay_ms(20);
+        TFT_full(BLUE);
+        Delay_ms(20);
+        TFT_clear();
 
 
-    display_char16_16(20,160,BLUE,0);
-	display_char16_16(36,160,GREEN,1);
-	display_char16_16(60,160,RED,2);
-	display_char16_16(76,160,BLUE,3);
-	display_char16_16(92,160,GREEN,4);
-	display_char16_16(118,160,BLUE,5);
-	display_char16_16(134,160,RED,6);
-	Delay_ms(10);
-
-	}
+        display_char16_16(20, 160, BLUE, 0);
+        display_char16_16(36, 160, GREEN, 1);
+        display_char16_16(60, 160, RED, 2);
+        display_char16_16(76, 160, BLUE, 3);
+        display_char16_16(92, 160, GREEN, 4);
+        display_char16_16(118, 160, BLUE, 5);
+        display_char16_16(134, 160, RED, 6);
+        Delay_ms(10);
+    }
 }
 
 
