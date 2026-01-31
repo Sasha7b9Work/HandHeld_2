@@ -48,6 +48,9 @@ namespace Display
     static void BeginScene(int num_part);
     static void DrawScene(int num_part);
     static void EndScene(int num_parts);
+
+    static bool old_display = false;    // Если true, то используется старый тип дисплея - без синей полосы с левого края экрана.
+                                        // Это значение зависит от байта в загрузчике
 }
 
 
@@ -56,6 +59,19 @@ void Display::Init()
     ST7735::Init();
 
     Font::SetType(TypeFont::_7);
+
+    {
+        // Читаем байт конфигурации из области загрузчика чтобы правильно работать с дисплеем
+
+#define _FLASH_ADDRESS 0x8001FFF
+
+        uint8 value = *(volatile uint8 *)_FLASH_ADDRESS;
+
+        if (value == 0x00)
+        {
+            old_display = true;
+        }
+    }
 }
 
 
