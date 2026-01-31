@@ -68,7 +68,7 @@ PinOut pinSDA(GPIOA, GPIO_PIN_7);       // PA7
 
 
 //static const unsigned char  *point;
-unsigned char  chines_word[   ][32]=   //汉字码
+unsigned char  chines_word[][32] =   //汉字码
 {
     {0x00,0x00,0xE4,0x3F,0x28,0x20,0x28,0x25,0x81,0x08,0x42,0x10,0x02,0x02,0x08,0x02},
     {0xE8,0x3F,0x04,0x02,0x07,0x07,0x84,0x0A,0x44,0x12,0x34,0x62,0x04,0x02,0x00,0x02},/*"深",0*/
@@ -96,92 +96,86 @@ unsigned char  chines_word[   ][32]=   //汉字码
 void delay_us(unsigned int _us_time)
 {
     _us_time *= 100;
-  unsigned char x=0;
-  for(;_us_time>0;_us_time--)
-  {
-    x++;
-  }
+    unsigned char x = 0;
+    for (; _us_time > 0; _us_time--)
+    {
+        x++;
+    }
 }
 void Delay_ms(unsigned int _ms_time)
-  {
-    _ms_time *= 30;
-    unsigned int i,j;
-    for(i=0;i<_ms_time;i++)
-    {
-    for(j=0;j<900;j++)
-      {
-      }
-    }
-  }
-/*************SPI配置函数*******************
-SCL空闲时低电平，第一个上升沿采样
-模拟SPI
-******************************************/
-
-/**************************SPI模块发送函数************************************************
-
- *************************************************************************/
-void SPI_SendByte(unsigned  char byte)				//向液晶屏写一个8位数据
 {
-  
-  unsigned char counter;
- 
-  for(counter=0;counter<8;counter++)
-  { 
-    SPI_SCK_0;		  
-    if((byte&0x80)==0)
+    _ms_time *= 30;
+    unsigned int i, j;
+    for (i = 0; i < _ms_time; i++)
     {
-      SPI_SDA_0;
+        for (j = 0; j < 900; j++)
+        {
+        }
     }
-    else SPI_SDA_1;
-    byte = (unsigned char)(byte << 1);
-    SPI_SCK_1;		
-  }		
-	SPI_SCK_0;
+}
+
+
+void SPI_SendByte(unsigned  char byte)
+{
+    unsigned char counter;
+
+    for (counter = 0; counter < 8; counter++)
+    {
+        SPI_SCK_0;
+        if ((byte & 0x80) == 0)
+        {
+            SPI_SDA_0;
+        }
+        else SPI_SDA_1;
+        byte = (unsigned char)(byte << 1);
+        SPI_SCK_1;
+    }
+    SPI_SCK_0;
 }
 
 void TFT_SEND_CMD(unsigned char o_command)
-  {
-	SPI_DC_0;
-	SPI_CS_0;
-	  
-    SPI_SendByte(o_command);
-	  SPI_CS_1;
-  }
-  //向液晶屏写一个8位数据
-void TFT_SEND_DATA(unsigned  char o_data)
-  { 
-    SPI_DC_1;
-	SPI_CS_0;	
-    SPI_SendByte(o_data);
-	SPI_CS_1;	  
-   }
-void TFT_clear(void)
-  {
-    unsigned int ROW,column;
-  TFT_SEND_CMD(0x2a);     //Column address set
-  TFT_SEND_DATA(0x00);    //start column
-  TFT_SEND_DATA(0x00); 
-  TFT_SEND_DATA(0x00);    //end column
-  TFT_SEND_DATA(0xF0);
+{
+    SPI_DC_0;
+    SPI_CS_0;
 
-  TFT_SEND_CMD(0x2b);     //Row address set
-  TFT_SEND_DATA(0x00);    //start row
-  TFT_SEND_DATA(0x00); 
-  TFT_SEND_DATA(0x01);    //end row
-  TFT_SEND_DATA(0x40);
+    SPI_SendByte(o_command);
+    SPI_CS_1;
+}
+
+void TFT_SEND_DATA(unsigned  char o_data)
+{
+    SPI_DC_1;
+    SPI_CS_0;
+    SPI_SendByte(o_data);
+    SPI_CS_1;
+}
+
+void TFT_clear(void)
+{
+    unsigned int ROW, column;
+    TFT_SEND_CMD(0x2a);     //Column address set
+    TFT_SEND_DATA(0x00);    //start column
+    TFT_SEND_DATA(0x00);
+    TFT_SEND_DATA(0x00);    //end column
+    TFT_SEND_DATA(0xF0);
+
+    TFT_SEND_CMD(0x2b);     //Row address set
+    TFT_SEND_DATA(0x00);    //start row
+    TFT_SEND_DATA(0x00);
+    TFT_SEND_DATA(0x01);    //end row
+    TFT_SEND_DATA(0x40);
     TFT_SEND_CMD(0x2C);     //Memory write
-    for(ROW=0;ROW<TFT_LINE_NUMBER;ROW++)             //ROW loop
-      { 
-    
-          for(column=0;column<TFT_COLUMN_NUMBER;column++)  //column loop
-            {
-              
-				TFT_SEND_DATA(0xFF);
-				TFT_SEND_DATA(0xFF);
-            }
-      }
-  }
+    for (ROW = 0; ROW < TFT_LINE_NUMBER; ROW++)             //ROW loop
+    {
+
+        for (column = 0; column < TFT_COLUMN_NUMBER; column++)  //column loop
+        {
+
+            TFT_SEND_DATA(0xFF);
+            TFT_SEND_DATA(0xFF);
+        }
+    }
+}
 
 
 void TFT_full(unsigned int color)
@@ -323,47 +317,47 @@ void TFT_init(void)     // ST7789V2
 }
 
 
-void display_char16_16(unsigned int x,unsigned int y,unsigned long color,unsigned char word_serial_number)
+void display_char16_16(unsigned int x, unsigned int y, unsigned long color, unsigned char word_serial_number)
 {
-   unsigned int column;
-  unsigned char tm=0,temp=0,xxx=0;
+    unsigned int column;
+    unsigned char tm = 0, temp = 0, xxx = 0;
 
-   TFT_SEND_CMD(0x2a);    //Column address set
-  TFT_SEND_DATA((unsigned char)(x>>8));    //start column
-  TFT_SEND_DATA((unsigned char)x);
-  x=x+15;
-  TFT_SEND_DATA((unsigned char)(x>>8));    //end column
-  TFT_SEND_DATA((unsigned char)x);
+    TFT_SEND_CMD(0x2a);    //Column address set
+    TFT_SEND_DATA((unsigned char)(x >> 8));    //start column
+    TFT_SEND_DATA((unsigned char)x);
+    x = x + 15;
+    TFT_SEND_DATA((unsigned char)(x >> 8));    //end column
+    TFT_SEND_DATA((unsigned char)x);
 
-  TFT_SEND_CMD(0x2b);     //Row address set
-  TFT_SEND_DATA((unsigned char)(y>>8));    //start row
-  TFT_SEND_DATA((unsigned char)y);
-  y=y+15;
-  TFT_SEND_DATA((unsigned char)(y>>8));    //end row
-  TFT_SEND_DATA((unsigned char)y);
+    TFT_SEND_CMD(0x2b);     //Row address set
+    TFT_SEND_DATA((unsigned char)(y >> 8));    //start row
+    TFT_SEND_DATA((unsigned char)y);
+    y = y + 15;
+    TFT_SEND_DATA((unsigned char)(y >> 8));    //end row
+    TFT_SEND_DATA((unsigned char)y);
     TFT_SEND_CMD(0x2C);     //Memory write
-    
-    
-  for(column=0;column<32;column++)  //column loop
-          {
-        temp=chines_word[  word_serial_number ][xxx];
-        for(tm=0;tm<8;tm++)
+
+
+    for (column = 0; column < 32; column++)  //column loop
+    {
+        temp = chines_word[word_serial_number][xxx];
+        for (tm = 0; tm < 8; tm++)
         {
-        if(temp&0x01)
-          {
-          TFT_SEND_DATA((unsigned char)(color>>8));
-          TFT_SEND_DATA((unsigned char)color);
-          }
-        else 
-          {
-          TFT_SEND_DATA(0XFF);
-          TFT_SEND_DATA(0XFF);
-          }
-          temp>>=1;
+            if (temp & 0x01)
+            {
+                TFT_SEND_DATA((unsigned char)(color >> 8));
+                TFT_SEND_DATA((unsigned char)color);
+            }
+            else
+            {
+                TFT_SEND_DATA(0XFF);
+                TFT_SEND_DATA(0XFF);
+            }
+            temp >>= 1;
         }
         xxx++;
-          
-      }
+
+    }
 }
 
 void IO_init(void)
@@ -380,7 +374,10 @@ void ST7789_Init()
 {
     IO_init();
     SPI_SCK_0;
-    TFT_init();
+    while (true)
+    {
+        TFT_init();
+    }
     BL_1;
 
     while (1)
