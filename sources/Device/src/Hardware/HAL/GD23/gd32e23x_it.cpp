@@ -87,49 +87,7 @@ void SysTick_Handler(void)
 
 void EXTI2_3_IRQHandler(void)
 {
-#ifdef BOARD_NEW
-
     CALLBACK_ON_KEY(EXTI_3, Key::Menu)
-
-#else
-
-    /*
-        bool PinIn::IsHi() const
-        {
-            return gpio_input_bit_get(port, pin) != RESET;
-        }
-    */
-
-    static bool prev_cancel = false;
-    static bool prev_menu = false;
-
-    {
-        bool cancel = gpio_input_bit_get(GPIOB, GPIO_PIN_3) != RESET;
-
-        if (cancel != prev_cancel)
-        {
-            prev_cancel = cancel;
-
-            Keyboard::CallbackFromInterrupt(Key::Cancel);
-
-            exti_interrupt_flag_clear(EXTI_3);
-        }
-    }
-
-    {
-        bool menu = gpio_input_bit_get(GPIOA, GPIO_PIN_3) != RESET;
-
-        if (menu != prev_menu)
-        {
-            prev_menu = menu;
-
-            Keyboard::CallbackFromInterrupt(Key::Menu);
-
-            exti_interrupt_flag_clear(EXTI_3);
-        }
-    }
-
-#endif
 }
 
 
@@ -155,11 +113,7 @@ void EXTI4_15_IRQHandler(void)
 
     CALLBACK_ON_KEY(EXTI_12, Key::Up)
 
-#ifdef BOARD_NEW
-
     CALLBACK_ON_KEY(EXTI_15, Key::Cancel)
-
-#endif
 }
 
 

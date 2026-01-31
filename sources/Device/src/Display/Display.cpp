@@ -54,8 +54,16 @@ namespace Display
 }
 
 
+bool Display::IsOldType()
+{
+    return old_display;
+}
+
+
 void Display::Init()
 {
+    Color::Init();
+
     ST7735::Init();
 
     Font::SetType(TypeFont::_7);

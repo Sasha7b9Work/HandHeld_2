@@ -7,9 +7,5 @@
     #define ENABLE_EMULATOR
 #endif
 
-
-// На "старой" плате была немного другая распиновка
-#define BOARD_NEW
-
 // Воспроизводить звуки
 #define SOUND_ENABELD

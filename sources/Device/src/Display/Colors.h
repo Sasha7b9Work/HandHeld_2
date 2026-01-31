@@ -44,12 +44,8 @@ struct Color
     static Color::E Contrast(E);
 
     static Color current;
+
+    static uint16 Make(uint8 r, uint8 g, uint8 b);
+
+    static void Init();
 };
-
-
-#ifdef BOARD_NEW
-    #define MAKE_COLOR(r, g, b)  (uint16)((0x1f - (b)) + ((0x3f - (g)) << 5) + ((0x1f - (r)) << 11))
-#else
-    #define MAKE_COLOR(r, g, b)  (uint16)((b) + ((g) << 5) + ((r) << 11))
-#endif
-

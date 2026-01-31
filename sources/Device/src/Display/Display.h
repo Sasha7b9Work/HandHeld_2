@@ -29,6 +29,8 @@ namespace Display
 
     uint TimeEnabled();
 
+    bool IsOldType();
+
     namespace Buffer
     {
         static const uint SIZE = WIDTH * HEIGHT / NUMBER_PARTS_HEIGHT;

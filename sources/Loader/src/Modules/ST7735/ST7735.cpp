@@ -389,11 +389,14 @@ void ST7735::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned 
 {
     unsigned char YSH, YSL, YEH, YEL;
 
-#ifdef BOARD_NEW
-    x0 += 0; x1 += 1; y0 += 24; y1 += 26;
-#else
-    x0 += 1; x1 += 1; y0 += 26; y1 += 26;
-#endif
+    if (Display::IsOldType())
+    {
+        x0 += 1; x1 += 1; y0 += 26; y1 += 26;
+    }
+    else
+    {
+        x0 += 0; x1 += 1; y0 += 24; y1 += 26;
+    }
 
     YSH = (uint8)(y0 >> 8);
     YSL = (uint8)y0;
