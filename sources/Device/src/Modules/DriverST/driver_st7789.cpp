@@ -212,55 +212,61 @@ void TFT_full(unsigned int color)
 
 void TFT_init(void)     // ST7789V2
 {
-    SPI_SCK_1;          // 特别注意！！
-    SPI_RST_0;
-    Delay_ms(50);//1000
-    SPI_RST_1;
-    Delay_ms(10);//1000
+    {
+        SPI_SCK_1;          // 特别注意！！
+        SPI_RST_0;
+        Delay_ms(50);//1000
+        SPI_RST_1;
+        Delay_ms(10);//1000
 
-    pinON.ToLow();
-    pinBKG.ToHi();
+        pinON.ToLow();
+        pinBKG.ToHi();
 
-    pinRES.ToLow();
-    pinDC_RS.ToLow();
+        pinRES.ToLow();
+        pinDC_RS.ToLow();
 
-    Delay_ms(50);
-    pinRES.ToHi();
-    Delay_ms(150);
+        Delay_ms(50);
+        pinRES.ToHi();
+        Delay_ms(150);
+    }
 
-    TFT_SEND_CMD(0x01);             // RESET
-    Delay_ms(150);
+    {
+        // Adafruit_ST7789
 
-    TFT_SEND_CMD(0x11);             // SLPOUT : Sleep Out
-    Delay_ms(10);
+        TFT_SEND_CMD(0x01);             // RESET
+        Delay_ms(150);
 
-    TFT_SEND_CMD(0x3A);             // COLMOD
-    TFT_SEND_DATA(0x55);
-    Delay_ms(10);
+        TFT_SEND_CMD(0x11);             // SLPOUT : Sleep Out
+        Delay_ms(10);
 
-    TFT_SEND_CMD(0x36);             // MADCTL
-    TFT_SEND_DATA(0x08);
+        TFT_SEND_CMD(0x3A);             // COLMOD
+        TFT_SEND_DATA(0x55);
+        Delay_ms(10);
 
-    TFT_SEND_CMD(0x2A);             // CASET
-    TFT_SEND_DATA(0x00);
-    TFT_SEND_DATA(0x00);
-    TFT_SEND_DATA(0x00);
-    TFT_SEND_DATA(240);
+        TFT_SEND_CMD(0x36);             // MADCTL
+        TFT_SEND_DATA(0x08);
 
-    TFT_SEND_CMD(0x2B);             // RASET
-    TFT_SEND_DATA(0x00);
-    TFT_SEND_DATA(0x00);
-    TFT_SEND_DATA(320 >> 8);
-    TFT_SEND_DATA(320 & 0xFF);
+        TFT_SEND_CMD(0x2A);             // CASET
+        TFT_SEND_DATA(0x00);
+        TFT_SEND_DATA(0x00);
+        TFT_SEND_DATA(0x00);
+        TFT_SEND_DATA(240);
 
-    TFT_SEND_CMD(0x21);             // INVON
-    Delay_ms(10);
+        TFT_SEND_CMD(0x2B);             // RASET
+        TFT_SEND_DATA(0x00);
+        TFT_SEND_DATA(0x00);
+        TFT_SEND_DATA(320 >> 8);
+        TFT_SEND_DATA(320 & 0xFF);
 
-    TFT_SEND_CMD(0x13);             // NORON
-    Delay_ms(10);
+        TFT_SEND_CMD(0x21);             // INVON
+        Delay_ms(10);
 
-    TFT_SEND_CMD(0x29);             // DISPON
-    Delay_ms(10);
+        TFT_SEND_CMD(0x13);             // NORON
+        Delay_ms(10);
+
+        TFT_SEND_CMD(0x29);             // DISPON
+        Delay_ms(10);
+    }
 }
 
 
