@@ -20,10 +20,14 @@ add_definitions(-DGD32F30X_HD -DMODEL7789)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
 
 add_compile_options(
+    /wd4244
+    /wd4265
     /wd4310
+    /wd4365
     /wd4514
     /wd4623
     /wd4626
+    /wd4668
     /wd4710
     /wd4820    # 'xxx': '4' bytes padding added after data member 'yyy'
     /wd4996
@@ -60,6 +64,7 @@ file(GLOB MODULES_PMS150G         ../src/Modules/PMS150G/*.*)
 file(GLOB MODULES_DRIVERST        ../src/Modules/DriverST/DriverST.h
                                   ../src/Modules/DriverST/ST7789.cpp
                                   ../src/Modules/DriverST/driver_st7789.*)
+file(GLOB MODULES_DRIVERST_ADAFRUIT ../src/Modules/DriverST/Adafruit/*)
 file(GLOB SETTINGS                ../src/Settings/*.*)
 file(GLOB STORAGE                 ../src/Storage/*.*)
 file(GLOB UTILS                   ../src/Utils/*.*)
@@ -81,6 +86,7 @@ source_group(Modules/PAN3060        FILES ${MODULES_PAN3060})
 source_group(Modules/PCF8563        FILES ${MODULES_PCF8563})
 source_group(Modules/PMS150G        FILES ${MODULES_PMS150G})
 source_group(Modules/DriverST       FILES ${MODULES_DRIVERST})
+source_group(Modules/DriverST/Adafruit FILES ${MODULES_DRIVERST_ADAFRUIT})
 source_group(Settings               FILES ${SETTINGS})
 source_group(Storage                FILES ${STORAGE})
 source_group(Utils                  FILES ${UTILS})
@@ -110,6 +116,7 @@ add_library(${PROJECT_NAME}
     ${MODULES_PCF8563}
     ${MODULES_PMS150G}
     ${MODULES_DRIVERST}
+    ${MODULES_DRIVERST_ADAFRUIT}
     ${SETTINGS}
     ${STORAGE}
     ${UTILS}
