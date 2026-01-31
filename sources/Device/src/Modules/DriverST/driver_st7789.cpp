@@ -230,6 +230,57 @@ void TFT_init(void)     // ST7789V2
         Delay_ms(150);
     }
 
+    /*
+    {
+        // Adafruit_ST7789s
+
+        TFT_SEND_CMD(0x01);         // RESET
+        Delay_ms(150);
+
+        TFT_SEND_CMD(0xF0);         // Unlock manufacturer
+        TFT_SEND_DATA(0xC3);
+
+        TFT_SEND_CMD(0xF0);
+        TFT_SEND_DATA(0x96);
+
+        TFT_SEND_CMD(0xC5);         // VCOM Control
+        TFT_SEND_DATA(0x1C);
+
+        TFT_SEND_CMD(0x36);         // MADCTL
+        TFT_SEND_DATA(0x48);
+
+        TFT_SEND_CMD(0x3A);         // COLMOD
+        TFT_SEND_DATA(0x55);
+        Delay_ms(10);
+
+        TFT_SEND_CMD(0xB0);         // Interface control
+        TFT_SEND_DATA(0x80);
+
+        TFT_SEND_CMD(0xB4);         // Inversion control
+        TFT_SEND_DATA(0x00);
+
+        TFT_SEND_CMD(0xB6);         // Display Function Control
+        TFT_SEND_DATA(0x80);
+        TFT_SEND_DATA(0x02);
+        TFT_SEND_DATA(0x3B);
+
+        TFT_SEND_CMD(0xB7);         // Entry Mode
+        TFT_SEND_DATA(0xC6);
+
+        TFT_SEND_CMD(0xF0);         // Lock manufacturer command
+        TFT_SEND_DATA(0x69);
+
+        TFT_SEND_CMD(0xF0);
+        TFT_SEND_DATA(0x3C);
+
+        TFT_SEND_CMD(0x11);             // SLPOUT : Sleep Out
+        Delay_ms(150);
+
+        TFT_SEND_CMD(0x29);             // DISPON
+        Delay_ms(10);
+    }
+    */
+
     {
         // Adafruit_ST7789
 
@@ -237,7 +288,7 @@ void TFT_init(void)     // ST7789V2
         Delay_ms(150);
 
         TFT_SEND_CMD(0x11);             // SLPOUT : Sleep Out
-        Delay_ms(10);
+        Delay_ms(150);
 
         TFT_SEND_CMD(0x3A);             // COLMOD
         TFT_SEND_DATA(0x55);
@@ -265,7 +316,7 @@ void TFT_init(void)     // ST7789V2
         Delay_ms(10);
 
         TFT_SEND_CMD(0x29);             // DISPON
-        Delay_ms(10);
+        Delay_ms(150);
     }
 }
 
