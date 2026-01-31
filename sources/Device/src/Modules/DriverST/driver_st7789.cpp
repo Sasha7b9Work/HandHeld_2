@@ -182,32 +182,34 @@ void TFT_clear(void)
             }
       }
   }
+
+
 void TFT_full(unsigned int color)
-  {
-    unsigned int ROW,column;
+{
+    unsigned int ROW, column;
     TFT_SEND_CMD(0x2a);     //Column address set
-  TFT_SEND_DATA(0x00);    //start column
-  TFT_SEND_DATA(0x00); 
-  TFT_SEND_DATA(0x00);    //end column
-  TFT_SEND_DATA(0xF0);
+    TFT_SEND_DATA(0x00);    //start column
+    TFT_SEND_DATA(0x00);
+    TFT_SEND_DATA(0x00);    //end column
+    TFT_SEND_DATA(0xF0);
 
-  TFT_SEND_CMD(0x2b);     //Row address set
-  TFT_SEND_DATA(0x00);    //start row
-  TFT_SEND_DATA(0x00); 
-  TFT_SEND_DATA(0x01);    //end row
-  TFT_SEND_DATA(0x40);
+    TFT_SEND_CMD(0x2b);     //Row address set
+    TFT_SEND_DATA(0x00);    //start row
+    TFT_SEND_DATA(0x00);
+    TFT_SEND_DATA(0x01);    //end row
+    TFT_SEND_DATA(0x40);
     TFT_SEND_CMD(0x2C);     //Memory write
-    for(ROW=0;ROW<TFT_LINE_NUMBER;ROW++)             //ROW loop
-      { 
-    
-  for(column=0;column<TFT_COLUMN_NUMBER ;column++) //column loop
-          {
+    for (ROW = 0; ROW < TFT_LINE_NUMBER; ROW++)             //ROW loop
+    {
 
-			TFT_SEND_DATA((unsigned char)(color>>8));
-			  TFT_SEND_DATA((unsigned char)color);
-          }
-      }
-  }
+        for (column = 0; column < TFT_COLUMN_NUMBER; column++) //column loop
+        {
+
+            TFT_SEND_DATA((unsigned char)(color >> 8));
+            TFT_SEND_DATA((unsigned char)color);
+        }
+    }
+}
 
 
 void TFT_init(void)     // ST7789V2
