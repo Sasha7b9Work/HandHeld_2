@@ -1,6 +1,6 @@
 // 2024/03/01 22:47:19 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Modules/ST7735/ST7735.h"
+#include "Modules/ST7735_89/ST7735_89.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Hardware/Timer.h"
 #include "Display/Display.h"

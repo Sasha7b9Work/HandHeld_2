@@ -954,17 +954,17 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Modules/ST7735</GroupName>
+          <GroupName>Modules/ST7735_89</GroupName>
           <Files>
             <File>
-              <FileName>ST7735.cpp</FileName>
+              <FileName>ST7735_89.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Modules\ST7735\ST7735.cpp</FilePath>
+              <FilePath>.\src\Modules\ST7735_89\ST7735_89.cpp</FilePath>
             </File>
             <File>
-              <FileName>ST7735.h</FileName>
+              <FileName>ST7735_89.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\Modules\ST7735\ST7735.h</FilePath>
+              <FilePath>.\src\Modules\ST7735_89\ST7735_89.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1952,17 +1952,17 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Modules/ST7735</GroupName>
+          <GroupName>Modules/ST7735_89</GroupName>
           <Files>
             <File>
-              <FileName>ST7735.cpp</FileName>
+              <FileName>ST7735_89.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Modules\ST7735\ST7735.cpp</FilePath>
+              <FilePath>.\src\Modules\ST7735_89\ST7735_89.cpp</FilePath>
             </File>
             <File>
-              <FileName>ST7735.h</FileName>
+              <FileName>ST7735_89.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\src\Modules\ST7735\ST7735.h</FilePath>
+              <FilePath>.\src\Modules\ST7735_89\ST7735_89.h</FilePath>
             </File>
           </Files>
         </Group>
