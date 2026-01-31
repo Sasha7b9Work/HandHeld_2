@@ -15,6 +15,12 @@ namespace PageWatch
 }
 
 
+namespace PageTimeIndication
+{
+    extern const Item *const self;
+}
+
+
 namespace PageAlarm
 {
     extern const Item *const self;

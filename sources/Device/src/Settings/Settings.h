@@ -56,6 +56,7 @@ struct SettingsAlarm
     ModeIndication::E mode_indication;
     RTCDateTime       time;
     uint8             enabled;
+    uint8             time_indication;
 };
 
 

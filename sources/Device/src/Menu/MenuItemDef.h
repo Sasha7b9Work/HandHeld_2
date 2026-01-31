@@ -146,6 +146,15 @@ static const DataChoice dc##name{&name, func_on_change, value, &names##name[0], 
 static const Choice choice##name{&dc##name};                                                                                \
 const Item name{&di##name, &choice##name}
 
+#define DEF_CHOICE_4(name, keeper, title, value, name0, name1, name2, name3, func_on_change)                                \
+static int8 opened##name = 0;                                                                                               \
+static const DataItem di##name{ItemType::Choice, keeper, title, &opened##name};                                             \
+extern const Item name;                                                                                                     \
+static const pchar names##name[] = {name0, name1, name2, name3, nullptr };                                                  \
+static const DataChoice dc##name{&name, func_on_change, value, &names##name[0], nullptr };                                  \
+static const Choice choice##name{&dc##name};                                                                                \
+const Item name{&di##name, &choice##name}
+
 #define DEF_CHOICE_7(name, keeper, title, value, name0, name1, name2, name3, name4, name5, name6, func_on_change)           \
 static int8 opened##name = 0;                                                                                               \
 static const DataItem di##name{ItemType::Choice, keeper, title, &opened##name};                                             \

@@ -55,19 +55,35 @@ namespace PageMicrophone
 }
 
 
-DEF_PAGE_8(pageMain, nullptr, "Ã≈Õﬁ",
-    PageAlarm::self,
-    PageWatch::self,
-    PageDoorBell::self,
-    PageMobile::self,
-    PageHomePhone::self,
-    PageIntercom::self,
-    PageMicrophone::self,
-    PageJournal::self,
-    nullptr,
-    nullptr,
-    nullptr
-);
+namespace PageMain
+{
+    static void FuncOnChange()
+    {
+    }
+
+    DEF_CHOICE_4(choiceTimeIndication, self, "¬–≈Ãﬂ »Õƒ» ¿÷»»", &gset.alarm.time_indication,
+        "10 Ò",
+        "20 Ò",
+        "30 Ò",
+        "60 Ò",
+        FuncOnChange
+    );
 
 
-const Item * const PageMain::self = &pageMain;
+    DEF_PAGE_9(pageMain, nullptr, "Ã≈Õﬁ",
+        PageAlarm::self,
+        PageWatch::self,
+        PageDoorBell::self,
+        PageMobile::self,
+        PageHomePhone::self,
+        PageIntercom::self,
+        PageMicrophone::self,
+        PageJournal::self,
+        &choiceTimeIndication,
+        nullptr,
+        nullptr,
+        nullptr
+    );
+
+    const Item *const self = &pageMain;
+}
