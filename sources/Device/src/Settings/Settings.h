@@ -38,6 +38,23 @@ struct Melody
 };
 
 
+struct TimeIndication
+{
+    enum E
+    {
+        _10s,
+        _20s,
+        _30s,
+        _60s,
+        Count
+    };
+
+    uint8 value;
+
+    uint TimeMS() const;
+};
+
+
 struct SettingsSource
 {
     Melody::E         melody;           // Текущая мелодия
@@ -56,16 +73,16 @@ struct SettingsAlarm
     ModeIndication::E mode_indication;
     RTCDateTime       time;
     uint8             enabled;
-    uint8             time_indication;
 };
 
 
 struct Settings
 {
-    uint crc32;
+    uint           crc32;
     SettingsSource sources[Source::Count];
-    SettingsAlarm alarm;
-    uint empty;                 // Используется для контроля записи. Должно быть ноль
+    SettingsAlarm  alarm;
+    TimeIndication time_indication;
+    uint           empty;                 // Используется для контроля записи. Должно быть ноль
 
     void Save();
     void Load();

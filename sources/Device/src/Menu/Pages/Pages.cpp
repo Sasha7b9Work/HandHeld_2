@@ -61,11 +61,11 @@ namespace PageMain
     {
     }
 
-    DEF_CHOICE_4(choiceTimeIndication, self, "ֲ׀ֵּß ִָָֽÊְײָָ", &gset.alarm.time_indication,
-        "10 ס",
-        "20 ס",
-        "30 ס",
-        "60 ס",
+    DEF_CHOICE_4(choiceTimeIndication, self, "ִָָֽÊְײָß", &gset.time_indication.value,
+        "10 סוך",
+        "20 סוך",
+        "30 סוך",
+        "60 סוך",
         FuncOnChange
     );
 

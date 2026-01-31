@@ -24,6 +24,7 @@ static const Settings def_set =
         { 0, 0, 0, 0, 0, 0 },
         1
     },
+    { TimeIndication::_60s },
     0       // empty
 };
 
@@ -106,4 +107,18 @@ const void *Settings::BeginData() const
 int Settings::SizeData() const
 {
     return sizeof(*this) - 4;
+}
+
+
+uint TimeIndication::TimeMS() const
+{
+    static const uint time[Count] =
+    {
+        10 * 1000,
+        20 * 1000,
+        30 * 1000,
+        60 * 1000
+    };
+
+    return time[value];
 }
