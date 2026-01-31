@@ -217,35 +217,42 @@ void TFT_init(void)				////ST7789V2
 	Delay_ms(50);//1000
 	SPI_RST_1;
 	Delay_ms(10);//1000
-    TFT_SEND_CMD(0x11); 			//Sleep Out
-	Delay_ms(120);               //DELAY120ms 
+    TFT_SEND_CMD(0x11);             // SLPOUT : Sleep Out
+	Delay_ms(120);
 	 	  //-----------------------ST7789V Frame rate setting-----------------//
-//************************************************
-                TFT_SEND_CMD(0x3A);        //65k mode
-                TFT_SEND_DATA(0x05);
-                TFT_SEND_CMD(0xC5); 		//VCOM
-                TFT_SEND_DATA(0x1A);
-                TFT_SEND_CMD(0x36);                 // 屏幕显示方向设置
-                TFT_SEND_DATA(0x00);
+                TFT_SEND_CMD(0x3A);         // COLMOD : Interface Pixel Format
+                TFT_SEND_DATA(0x55);        // 65K RGB, 16bit/pixel
+
+                TFT_SEND_CMD(0xC5);         // VCMOFSET : VCOM Offset Set
+                TFT_SEND_DATA(0x1A);        // -0.15V
+
+                TFT_SEND_CMD(0x36);         // MADCTL : Memory Data Access Control
+                TFT_SEND_DATA(0x00);        // Page Address Order   : Top to Bottom
+                                            // Column Address Order : Left to Right
+                                            // Page/Column Order    : Normal Mode
+                                            // Line Address Mode    : LCD Refresh Top to Bottom
+                                            // RGB/BGR Order        : RGB
+                                            // Display Data Latch Data Order : LCD Refresh Left to Rigth
                 //-------------ST7789V Frame rate setting-----------//
-                TFT_SEND_CMD(0xb2);		//Porch Setting
-                TFT_SEND_DATA(0x05);
-                TFT_SEND_DATA(0x05);
-                TFT_SEND_DATA(0x00);
-                TFT_SEND_DATA(0x33);
-                TFT_SEND_DATA(0x33);
+                TFT_SEND_CMD(0xb2);		    // PORCTRL : Porch Setting
+                TFT_SEND_DATA(0x05);        // BPA[6:0]
+                TFT_SEND_DATA(0x05);        // FPA[6:0]
+                TFT_SEND_DATA(0x00);        // PSEN
+                TFT_SEND_DATA(0x33);        // BPB[3:0], FPB[3:0]
+                TFT_SEND_DATA(0x33);        // BPC[3:0], PFC[3:0]
 
-                TFT_SEND_CMD(0xb7);			//Gate Control
-                TFT_SEND_DATA(0x05);			//12.2v   -10.43v
+                TFT_SEND_CMD(0xb7);         // GCTRL : Gate Control
+                TFT_SEND_DATA(0x05);        // VGH : 12.2v,  VGL : -10.43v
                 //--------------ST7789V Power setting---------------//
-                TFT_SEND_CMD(0xBB);//VCOM
-                TFT_SEND_DATA(0x3F);
+                TFT_SEND_CMD(0xBB);         // VCOMS : VCOM Setting
+                TFT_SEND_DATA(0x3F);        // 1.675 V
 
-                TFT_SEND_CMD(0xC0); //Power control
+                TFT_SEND_CMD(0xC0);         // LCMCTRL : LCM Control
                 TFT_SEND_DATA(0x2c);
 
-                TFT_SEND_CMD(0xC2);		//VDV and VRH Command Enable
-                TFT_SEND_DATA(0x01);
+                TFT_SEND_CMD(0xC2);         // VDVVRHEN : VDV and VRH Command Enable
+                TFT_SEND_DATA(0x01);        // VDV and VRH register value comes from command write
+                TFT_SEND_DATA(0xFF);
 
                 TFT_SEND_CMD(0xC3);			//VRH Set
                 TFT_SEND_DATA(0x0F);		//4.3+( vcom+vcom offset+vdv)
