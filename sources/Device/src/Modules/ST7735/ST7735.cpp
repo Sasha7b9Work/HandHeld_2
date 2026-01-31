@@ -1,6 +1,6 @@
 // 2024/03/01 22:47:19 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Modules/DriverST/DriverST.h"
+#include "Modules/ST7735/ST7735.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Hardware/Timer.h"
 #include "Display/Display.h"
@@ -8,7 +8,7 @@
 #include "system.h"
 
 
-namespace DriverST
+namespace ST7735
 {
     /*
     *   TFT_SCK - 15 : PA5     AF0 SPI0_SCK
@@ -63,7 +63,7 @@ namespace DriverST
 }
 
 
-void DriverST::Enable()
+void ST7735::Enable()
 {
     if (is_enabled)
     {
@@ -80,7 +80,7 @@ void DriverST::Enable()
 }
 
 
-void DriverST::Disable()
+void ST7735::Disable()
 {
     if (!is_enabled)
     {
@@ -95,26 +95,29 @@ void DriverST::Disable()
 }
 
 
-bool DriverST::IsEnabled()
+bool ST7735::IsEnabled()
 {
     return is_enabled;
 }
 
 
-uint DriverST::TimeEnabled()
+uint ST7735::TimeEnabled()
 {
     return TIME_MS - time_enable;
 }
 
 
-void DriverST::Init()
+void ST7735::Init()
 {
     {
-        // PA5 - TFT_SCL SPI0
-        // PA7 - TFT_SDA SPI0
+#ifdef MODEL7735
         gpio_af_set(GPIOA, GPIO_AF_0, GPIO_PIN_5 | GPIO_PIN_7);
         gpio_mode_set(GPIOA, GPIO_MODE_AF, GPIO_PUPD_PULLDOWN, GPIO_PIN_5 | GPIO_PIN_7);
         gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_5 | GPIO_PIN_7);
+#endif
+
+#ifdef MODEL7789
+#endif
     }
 
     {
@@ -252,7 +255,7 @@ void DriverST::Init()
 }
 
 
-void DriverST::LCD_SetPos_Vertical(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
+void ST7735::LCD_SetPos_Vertical(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
 {
     unsigned char YSH, YSL, YEH, YEL;
     x0 += 0; x1 += 26; y0 += 26; y1 += 26;
@@ -277,7 +280,7 @@ void DriverST::LCD_SetPos_Vertical(unsigned char x0, unsigned char x1, unsigned 
 }
 
 
-void DriverST::SetWindow(int x, int y, int width, int height)
+void ST7735::SetWindow(int x, int y, int width, int height)
 {
     SendCommand(0x2A);      // CASET
     SendData8(0x00);
@@ -292,7 +295,7 @@ void DriverST::SetWindow(int x, int y, int width, int height)
 }
 
 
-void DriverST::Fill(uint16 color)
+void ST7735::Fill(uint16 color)
 {
     LCD_SetPos_Vertical(0, 159, 0, 79);
 
@@ -311,7 +314,7 @@ void DriverST::Fill(uint16 color)
 }
 
 
-void DriverST::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
+void ST7735::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
 {
     unsigned char YSH, YSL, YEH, YEL;
 
@@ -341,7 +344,7 @@ void DriverST::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigne
 }
 
 
-void DriverST::WriteBuffer(int y0)
+void ST7735::WriteBuffer(int y0)
 {
     LCD_SetPos_Horizontal(0, Display::WIDTH - 1, (uint)y0, (uint)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
 

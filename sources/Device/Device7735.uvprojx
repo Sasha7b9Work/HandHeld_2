@@ -17,8 +17,8 @@
         <TargetCommonOption>
           <Device>GD32E230C8</Device>
           <Vendor>GigaDevice</Vendor>
-          <PackID>GigaDevice.GD32E23x_DFP.2.3.2</PackID>
-          <PackURL>http://gd32mcu.com/data/documents/pack/</PackURL>
+          <PackID>GigaDevice.GD32E23x_DFP.1.0.2</PackID>
+          <PackURL>https://gd32mcu.com/data/documents/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x0002000) IROM(0x08000000,0x0010000) CPUTYPE("Cortex-M23") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -817,11 +817,6 @@
               <FilePath>.\src\Display\Display.h</FilePath>
             </File>
             <File>
-              <FileName>Display7735.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Display\Display7735.cpp</FilePath>
-            </File>
-            <File>
               <FileName>Display.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Display\Display.cpp</FilePath>
@@ -1019,21 +1014,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Modules/DriverST</GroupName>
-          <Files>
-            <File>
-              <FileName>DriverST.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Modules\DriverST\DriverST.h</FilePath>
-            </File>
-            <File>
-              <FileName>ST7735.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Modules\DriverST\ST7735.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Modules/LED</GroupName>
           <Files>
             <File>
@@ -1110,6 +1090,21 @@
               <FileName>PMS150G.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PMS150G\PMS150G.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Modules/ST7735</GroupName>
+          <Files>
+            <File>
+              <FileName>ST7735.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\ST7735\ST7735.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ST7735.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\ST7735\ST7735.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1211,8 +1206,8 @@
         <TargetCommonOption>
           <Device>GD32E230C8</Device>
           <Vendor>GigaDevice</Vendor>
-          <PackID>GigaDevice.GD32E23x_DFP.2.3.2</PackID>
-          <PackURL>http://gd32mcu.com/data/documents/pack/</PackURL>
+          <PackID>GigaDevice.GD32E23x_DFP.1.0.2</PackID>
+          <PackURL>https://gd32mcu.com/data/documents/pack/</PackURL>
           <Cpu>IRAM(0x20000000,0x0002000) IROM(0x08000000,0x0010000) CPUTYPE("Cortex-M23") CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -1960,11 +1955,6 @@
               <FilePath>.\src\Display\Display.h</FilePath>
             </File>
             <File>
-              <FileName>Display7735.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Display\Display7735.cpp</FilePath>
-            </File>
-            <File>
               <FileName>Display.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Display\Display.cpp</FilePath>
@@ -2162,21 +2152,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Modules/DriverST</GroupName>
-          <Files>
-            <File>
-              <FileName>DriverST.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Modules\DriverST\DriverST.h</FilePath>
-            </File>
-            <File>
-              <FileName>ST7735.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Modules\DriverST\ST7735.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Modules/LED</GroupName>
           <Files>
             <File>
@@ -2253,6 +2228,21 @@
               <FileName>PMS150G.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Modules\PMS150G\PMS150G.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Modules/ST7735</GroupName>
+          <Files>
+            <File>
+              <FileName>ST7735.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Modules\ST7735\ST7735.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ST7735.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Modules\ST7735\ST7735.h</FilePath>
             </File>
           </Files>
         </Group>

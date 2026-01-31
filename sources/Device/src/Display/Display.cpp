@@ -1,18 +1,19 @@
-// 2026/01/26 13:47:55 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+// 2024/03/01 22:45:35 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Display/Display.h"
-#include "Display/Text.h"
-#include "Settings/Source.h"
+#include "Modules/ST7735/ST7735.h"
 #include "Settings/Settings.h"
-#include "Hardware/Timer.h"
-#include "Hardware/HAL/HAL.h"
+#include "Display/Font/Font.h"
 #include "Keyboard/Keyboard.h"
-#include "Utils/StringUtils.h"
+#include "Hardware/HAL/HAL.h"
 #include "Menu/Menu.h"
-#include "Utils/FPS.h"
+#include "Utils/StringUtils.h"
 #include "Hardware/Power.h"
 #include "Utils/Math.h"
-#include "Modules/DriverST/DriverST.h"
+#include "Modules/PCF8563/PCF8563.h"
+#include "Hardware/Timer.h"
+#include "Display/Text.h"
+#include "Utils/FPS.h"
 
 
 template int Text<64>::Write(int x, int y, const Color &color) const;
@@ -24,183 +25,54 @@ namespace Display
     {
         static uint8 buffer[SIZE];
 
-        static int current_part = 0;                            // Эту часть сейчас отрисовываем
-
         static uint crc[NUMBER_PARTS_HEIGHT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+
+        static int current_part = 0;                            // Эту часть сейчас отрисовываем
 
         static uint CalcualteCRC()
         {
             return Math::CalculateCRC32(buffer, SIZE);
         }
 
+        static void Fill(const Color &color)
+        {
+            std::memset(buffer, color.value, SIZE);
+        }
 
         uint8 *GetLine(int y)
         {
             return buffer + y * Display::WIDTH;
         }
-
-        static void Fill(const Color &color)
-        {
-            std::memset(buffer, color.value, SIZE);
-        }
     }
 
-    void BeginScene(int num_part);
+    static void BeginScene(int num_part);
     static void DrawScene(int num_part);
-    extern void EndScene(int num_parts);
-}
-
-
-template<int capacity>
-int Text<capacity>::Write(int x, int y, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    pchar pointer = text;
-
-    while (*pointer)
-    {
-        x = Char(*pointer++).Write(x, y);
-        x += Font::GetSize(); //-V1026
-    }
-
-    return x;
+    static void EndScene(int num_parts);
 }
 
 
 void Display::Init()
 {
-    DriverST::Init();
+    ST7735::Init();
 
     Font::SetType(TypeFont::_7);
 }
 
 
-void Rect::Draw(int x, int y, const Color &color) const
+uint Display::TimeEnabled()
 {
-    color.SetAsCurrent();
-
-    HLine(width).Draw(x, y);
-    HLine(width).Draw(x, y + height - 1);
-    VLine(height).Draw(x, y);
-    VLine(height).Draw(x + width - 1, y);
+    return ST7735::TimeEnabled();
 }
 
 
-void VLine::Draw(int x, int y, const Color &color) const
+void Display::PrepareToSleep()
 {
-    color.SetAsCurrent();
+    ST7735::Disable();
 
-    for (int i = 0; i < height; i++)
-    {
-        Pixel().Set(x, y++);
-    }
-}
-
-
-void Pixel::Set(int x, int y, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    if (x < 0)
-    {
-        return;
-    }
-
-    if (x >= Display::WIDTH)
-    {
-        return;
-    }
-
-    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
-
-    if (y < 0)
-    {
-        return;
-    }
-
-    if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
-    {
-        return;
-    }
-
-    Display::Buffer::buffer[y * Display::WIDTH + x] = (uint8)Color::current.value;
-}
-
-
-void HLine::Draw(int x, int y, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    if (x >= Display::WIDTH)
-    {
-        return;
-    }
-
-    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
-
-    if (y < 0)
-    {
-        return;
-    }
-
-    if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
-    {
-        return;
-    }
-
-    uint8 *pixel = Display::Buffer::buffer + y * Display::WIDTH + x;
-
-    for (int i = 0; i < width; i++)
-    {
-        *pixel++ = (uint8)Color::current.value;
-    }
-}
-
-
-void Rect::Fill(int x0, int y0, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    for (int y = y0; y < y0 + height; y++)
-    {
-        HLine(width).Draw(x0, y);
-    }
-}
-
-
-void Display::DrawPowerOff()
-{
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
     {
-        BeginScene(i);
-
-        Font::SetSize(2);
-
-        Text<>("ВЫКЛЮЧЕНИЕ").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
-
-        EndScene(i);
+        Buffer::crc[i] = 0;                         // Без этого не будет выходить по кнопке из сна
     }
-}
-
-
-void Display::BeginScene(int num_part)
-{
-    Buffer::current_part = num_part;
-
-    Color color = Color::BLACK;
-
-    if (Source::GetCountReceived())
-    {
-        color = gset.sources[Source::Current()].color;
-    }
-
-    if (PCF8563::IsAlarmed())
-    {
-        color = gset.alarm.color;
-    }
-
-    Buffer::Fill(color);
 }
 
 
@@ -234,6 +106,88 @@ void Display::Update()
     if (Source::GetCountReceived() == 0 && !PCF8563::IsAlarmed())
     {
         ModeClock::Set(ModeClock::Low);
+    }
+}
+
+
+void Display::DrawPowerOff()
+{
+    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    {
+        BeginScene(i);
+
+        Font::SetSize(2);
+
+        Text<>("ВЫКЛЮЧЕНИЕ").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
+
+        EndScene(i);
+    }
+}
+
+
+void Display::DrawPowerOn()
+{
+    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    {
+        BeginScene(i);
+
+        Font::SetSize(2);
+
+        Text<>("ВКЛЮЧЕНИЕ").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
+
+        EndScene(i);
+    }
+}
+
+
+void Display::DrawLowVoltage()
+{
+    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    {
+        BeginScene(i);
+
+        Font::SetSize(2);
+
+        Text<>("НИЗКОЕ").WriteInCenter(0, 20, Display::WIDTH, Color::RED);
+
+        Text<>("НАПРЯЖЕНИЕ").WriteInCenter(0, 50, Display::WIDTH, Color::RED);
+
+        EndScene(i);
+    }
+}
+
+
+void Display::BeginScene(int num_part)
+{
+    Buffer::current_part = num_part;
+
+    Color color = Color::BLACK;
+
+    if (Source::GetCountReceived())
+    {
+        color = gset.sources[Source::Current()].color;
+    }
+
+    if (PCF8563::IsAlarmed())
+    {
+        color = gset.alarm.color;
+    }
+
+    Buffer::Fill(color);
+}
+
+
+void Display::EndScene(int num_parts)
+{
+    uint crc = Buffer::CalcualteCRC();
+
+    if (crc != Buffer::crc[Buffer::current_part])
+    {
+        ST7735::Enable();
+
+        Buffer::crc[Buffer::current_part] = crc;
+
+        ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
     }
 }
 
@@ -316,6 +270,99 @@ void Display::DrawScene(int num_part)
 }
 
 
+void Rect::Fill(int x0, int y0, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    for (int y = y0; y < y0 + height; y++)
+    {
+        HLine(width).Draw(x0, y);
+    }
+}
+
+
+void Rect::Draw(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    HLine(width).Draw(x, y);
+    HLine(width).Draw(x, y + height - 1);
+    VLine(height).Draw(x, y);
+    VLine(height).Draw(x + width - 1, y);
+}
+
+
+void VLine::Draw(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    for (int i = 0; i < height; i++)
+    {
+        Pixel().Set(x, y++);
+    }
+}
+
+
+void HLine::Draw(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    if (x >= Display::WIDTH)
+    {
+        return;
+    }
+
+    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
+
+    if (y < 0)
+    {
+        return;
+    }
+
+    if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
+    {
+        return;
+    }
+
+    uint8 *pixel = Display::Buffer::buffer + y * Display::WIDTH + x;
+
+    for (int i = 0; i < width; i++)
+    {
+        *pixel++ = (uint8)Color::current.value;
+    }
+}
+
+
+void Pixel::Set(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    if (x < 0)
+    {
+        return;
+    }
+
+    if (x >= Display::WIDTH)
+    {
+        return;
+    }
+
+    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
+
+    if (y < 0)
+    {
+        return;
+    }
+
+    if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
+    {
+        return;
+    }
+
+    Display::Buffer::buffer[y * Display::WIDTH + x] = (uint8)Color::current.value;
+}
+
+
 void RTCDateTime::DrawTime(int x, int y, const Color &color) const
 {
     Text<>("%02d:%02d", Hour, Minute).Write(x, y, color);
@@ -327,66 +374,18 @@ void RTCDateTime::DrawDate(int x, int y, const Color &color) const
     Text<>("%02d/%02d/%02d", Day, Month, Year).Write(x, y, color);
 }
 
-
-uint Display::TimeEnabled()
+template<int capacity>
+int Text<capacity>::Write(int x, int y, const Color &color) const
 {
-    return DriverST::TimeEnabled();
-}
+    color.SetAsCurrent();
 
+    pchar pointer = text;
 
-void Display::DrawLowVoltage()
-{
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    while (*pointer)
     {
-        BeginScene(i);
-
-        Font::SetSize(2);
-
-        Text<>("НИЗКОЕ").WriteInCenter(0, 20, Display::WIDTH, Color::RED);
-
-        Text<>("НАПРЯЖЕНИЕ").WriteInCenter(0, 50, Display::WIDTH, Color::RED);
-
-        EndScene(i);
+        x = Char(*pointer++).Write(x, y);
+        x += Font::GetSize(); //-V1026
     }
-}
 
-
-void Display::PrepareToSleep()
-{
-    DriverST::Disable();
-
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
-    {
-        Buffer::crc[i] = 0;                         // Без этого не будет выходить по кнопке из сна
-    }
-}
-
-
-void Display::EndScene(int num_parts)
-{
-    uint crc = Buffer::CalcualteCRC();
-
-    if (crc != Buffer::crc[Buffer::current_part])
-    {
-        DriverST::Enable();
-
-        Buffer::crc[Buffer::current_part] = crc;
-
-        DriverST::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
-    }
-}
-
-
-void Display::DrawPowerOn()
-{
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
-    {
-        BeginScene(i);
-
-        Font::SetSize(2);
-
-        Text<>("ВКЛЮЧЕНИЕ").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
-
-        EndScene(i);
-    }
+    return x;
 }

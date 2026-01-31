@@ -35,12 +35,7 @@ add_compile_options(
 file(GLOB GD32E23x                ../../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include/*.*
                                   ../../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Source/*.*)
 file(GLOB SRC                     ../src/*.*)
-file(GLOB DISPLAY                 ../src/Display/Display.h
-                                  ../src/Display/Display.cpp
-                                  ../src/Display/Display7735.cpp
-                                  ../src/Display/Icons.*
-                                  ../src/Display/Colors.*
-                                  ../src/Display/Text.*)
+file(GLOB DISPLAY                 ../src/Display/*.*)
 file(GLOB DISPLAY_FONT            ../src/Display/Font/*.*)
 file(GLOB HARDWARE                ../src/Hardware/*.*)
 file(GLOB HARDWARE_CMSIS          ../src/Hardware/CMSIS/*.*)
@@ -57,8 +52,7 @@ file(GLOB MODULES_LED             ../src/Modules/LED/*.h
 file(GLOB MODULES_PAN3060         ../src/Modules/PAN3060/*.*)
 file(GLOB MODULES_PCF8563         ../src/Modules/PCF8563/*.*)
 file(GLOB MODULES_PMS150G         ../src/Modules/PMS150G/*.*)
-file(GLOB MODULES_DRIVERST        ../src/Modules/DriverST/DriverST.h
-                                  ../src/Modules/DriverST/ST7735.cpp)
+file(GLOB MODULES_ST7735          ../src/Modules/ST7735/*.*)
 file(GLOB SETTINGS                ../src/Settings/*.*)
 file(GLOB STORAGE                 ../src/Storage/*.*)
 file(GLOB UTILS                   ../src/Utils/*.*)
@@ -79,7 +73,7 @@ source_group(Modules/LED            FILES ${MODULES_LED})
 source_group(Modules/PAN3060        FILES ${MODULES_PAN3060})
 source_group(Modules/PCF8563        FILES ${MODULES_PCF8563})
 source_group(Modules/PMS150G        FILES ${MODULES_PMS150G})
-source_group(Modules/DriverST       FILES ${MODULES_DRIVERST})
+source_group(Modules/ST7735         FILES ${MODULES_ST7735})
 source_group(Settings               FILES ${SETTINGS})
 source_group(Storage                FILES ${STORAGE})
 source_group(Utils                  FILES ${UTILS})
@@ -108,7 +102,7 @@ add_library(${PROJECT_NAME}
     ${MODULES_PAN3060}
     ${MODULES_PCF8563}
     ${MODULES_PMS150G}
-    ${MODULES_DRIVERST}
+    ${MODULES_ST7735}
     ${SETTINGS}
     ${STORAGE}
     ${UTILS}
