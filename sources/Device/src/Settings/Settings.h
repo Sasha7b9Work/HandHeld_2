@@ -38,7 +38,8 @@ struct Melody
 };
 
 
-struct TimeIndication
+// Столько времени длится вызов
+struct TimeCall
 {
     enum E
     {
@@ -81,7 +82,7 @@ struct Settings
     uint           crc32;
     SettingsSource sources[Source::Count];
     SettingsAlarm  alarm;
-    TimeIndication time_indication;
+    TimeCall       time_call;
     uint           empty;                 // Используется для контроля записи. Должно быть ноль
 
     void Save();

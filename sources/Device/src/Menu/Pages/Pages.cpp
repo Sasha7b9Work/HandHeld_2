@@ -61,7 +61,7 @@ namespace PageMain
     {
     }
 
-    DEF_CHOICE_4(choiceTimeIndication, self, "ִָָֽÊְײָß", &gset.time_indication.value,
+    DEF_CHOICE_4(choiceTimeIndication, self, "ֲ׀ֵּß ֲÛַ־ְֲ", &gset.time_call.value,
         "10 סוך",
         "20 סוך",
         "30 סוך",

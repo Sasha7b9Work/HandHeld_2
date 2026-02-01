@@ -24,7 +24,7 @@ static const Settings def_set =
         { 0, 0, 0, 0, 0, 0 },
         1
     },
-    { TimeIndication::_60s },
+    { TimeCall::_60s },
     0       // empty
 };
 
@@ -110,7 +110,7 @@ int Settings::SizeData() const
 }
 
 
-uint TimeIndication::TimeMS() const
+uint TimeCall::TimeMS() const
 {
     static const uint time[Count] =
     {
