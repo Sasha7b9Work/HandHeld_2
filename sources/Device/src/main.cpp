@@ -67,11 +67,9 @@ int main()
 
 void Update()
 {
-    bool keyboard_more_time = Keyboard::ToMoreTime();
-    int num_sources = Source::GetCountReceived();
-    bool is_alarmed = PCF8563::IsAlarmed();
-
-    if (keyboard_more_time && num_sources == 0 && !is_alarmed)
+    if (Keyboard::ToMoreTime() &&
+        Source::GetCountReceived() == 0 &&
+        !PCF8563::IsAlarmed())
     {
         ModeClock::Set(ModeClock::Sleep);
     }
