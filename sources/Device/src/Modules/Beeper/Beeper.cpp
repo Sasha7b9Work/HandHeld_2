@@ -45,7 +45,7 @@ struct Sound
     static void Update();
 
     static const Sound *current;
-    static const Sound *sounds[TypeSound::Count];
+    static const Sound *sounds[Melody::Count];
 
 private:
 
@@ -63,21 +63,22 @@ private:
 };
 
 
-#include "Modules/Beeper/Sounds/sound1.h"
-#include "Modules/Beeper/Sounds/sound2.h"
-#include "Modules/Beeper/Sounds/sound3.h"
+//#include "Modules/Beeper/Sounds/sound1.h"
+//#include "Modules/Beeper/Sounds/sound2.h"
+//#include "Modules/Beeper/Sounds/sound3.h"
 #include "Modules/Beeper/Sounds/sound4.h"
 #include "Modules/Beeper/Sounds/sound5.h"
 #include "Modules/Beeper/Sounds/sound6.h"
 #include "Modules/Beeper/Sounds/sound7.h"
 #include "Modules/Beeper/Sounds/sound8.h"
-#include "Modules/Beeper/Sounds/sound9.h"
-#include "Modules/Beeper/Sounds/sound10.h"
+//#include "Modules/Beeper/Sounds/sound9.h"
+//#include "Modules/Beeper/Sounds/sound10.h"
 
 
-const Sound *Sound::sounds[TypeSound::Count] =
+const Sound *Sound::sounds[Melody::Count] =
 {
-    &sound1, &sound2, &sound3, &sound4, &sound5, &sound6, &sound7, &sound8, &sound9, &sound10
+//    &sound1, &sound2, &sound3, &sound4, &sound5, &sound6, &sound7, &sound8, &sound9, &sound10
+    &sound4, &sound5, &sound6, &sound7, &sound8
 };
 
 
@@ -109,7 +110,7 @@ void Beeper::Init()
 }
 
 
-void Beeper::Play(TypeSound::E type, uint8 _volume)
+void Beeper::Play(Melody::E type, uint8 _volume)
 {
     if (is_running)
     {

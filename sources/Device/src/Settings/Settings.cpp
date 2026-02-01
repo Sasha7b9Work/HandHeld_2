@@ -9,12 +9,12 @@
 static const Settings def_set =
 {
     0,      // crc32
-    { {Melody::_9,  Volume::Hi, Color::Red,     ModeIndication::All},
-      {Melody::_10, Volume::Hi, Color::Cyan,    ModeIndication::All},
+    { {Melody::_1,  Volume::Hi, Color::Red,     ModeIndication::All},
+      {Melody::_2,  Volume::Hi, Color::Cyan,    ModeIndication::All},
       {Melody::_3,  Volume::Hi, Color::Yellow,  ModeIndication::All},
       {Melody::_4,  Volume::Hi, Color::Green,   ModeIndication::All},
       {Melody::_5,  Volume::Hi, Color::Blue,    ModeIndication::All},
-      {Melody::_6,  Volume::Hi, Color::Magenta, ModeIndication::All}
+      {Melody::_5,  Volume::Hi, Color::Magenta, ModeIndication::All}
     },
     {
         Melody::_1,
@@ -36,16 +36,16 @@ pchar Melody::Name(E v)
 {
     static const pchar names[Count] =
     {
-        "пхмцрнм 1",
-        "пхмцрнм 2",
-        "пхмцрнм 3",
-        "оеяемйю",
-        "екнвйю",
-        "йсгмевхй",
-        "пндхмю",
-        "демэ пнфдемхъ",
-        "яхпемю ашярп.",
-        "яхпемю ледк."
+//      "пхмцрнм 1",            //  1 - 
+//      "пхмцрнм 2",            //  2 - 
+//      "пхмцрнм 3",            //  3-
+        "оеяемйю",              //  4
+        "екнвйю",               //  5
+        "йсгмевхй",             //  6
+        "пндхмю",               //  7
+        "демэ пнфдемхъ"         //  8
+//      "яхпемю ашярп.",        //  9 -
+//      "яхпемю ледк."          // 10 -
     };
 
     return names[v];

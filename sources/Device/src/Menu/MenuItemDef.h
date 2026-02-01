@@ -155,6 +155,15 @@ static const DataChoice dc##name{&name, func_on_change, value, &names##name[0], 
 static const Choice choice##name{&dc##name};                                                                                \
 const Item name{&di##name, &choice##name}
 
+#define DEF_CHOICE_5(name, keeper, title, value, name0, name1, name2, name3, name4, func_on_change)                         \
+static int8 opened##name = 0;                                                                                               \
+static const DataItem di##name{ItemType::Choice, keeper, title, &opened##name};                                             \
+extern const Item name;                                                                                                     \
+static const pchar names##name[] = {name0, name1, name2, name3, name4, nullptr };                                           \
+static const DataChoice dc##name{&name, func_on_change, value, &names##name[0], nullptr };                                  \
+static const Choice choice##name{&dc##name};                                                                                \
+const Item name{&di##name, &choice##name}
+
 #define DEF_CHOICE_7(name, keeper, title, value, name0, name1, name2, name3, name4, name5, name6, func_on_change)           \
 static int8 opened##name = 0;                                                                                               \
 static const DataItem di##name{ItemType::Choice, keeper, title, &opened##name};                                             \
@@ -205,7 +214,7 @@ static const Choice choice##name{&dc##name};                                    
 const Item name{&di##name, &choice##name}
 
 
-
+/*
 #define DEF_CHOICE_MELODY(set)                                              \
 DEF_CHOICE_10(choiceMelody, self, "лекндхъ", (uint8 *const)&set,            \
     Melody::Name(Melody::_1),                                               \
@@ -218,6 +227,17 @@ DEF_CHOICE_10(choiceMelody, self, "лекндхъ", (uint8 *const)&set,            \
     Melody::Name(Melody::_8),                                               \
     Melody::Name(Melody::_9),                                               \
     Melody::Name(Melody::_10),                                              \
+    nullptr                                                                 \
+);
+*/
+
+#define DEF_CHOICE_MELODY(set)                                              \
+DEF_CHOICE_5(choiceMelody, self, "лекндхъ", (uint8 *const)&set,             \
+    Melody::Name(Melody::_1),                                               \
+    Melody::Name(Melody::_2),                                               \
+    Melody::Name(Melody::_3),                                               \
+    Melody::Name(Melody::_4),                                               \
+    Melody::Name(Melody::_5),                                               \
     nullptr                                                                 \
 );
 
