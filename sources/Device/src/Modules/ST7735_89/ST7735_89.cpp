@@ -24,8 +24,6 @@ namespace ST7735
     static void SendByte(uint8 byte)
     {
         spi_i2s_data_transmit(SPI0, byte);
-
-//        SPI_DATA(SPI0) = (uint32_t)((uint16_t)byte);
     }
 
 
@@ -117,6 +115,7 @@ void ST7735::Init()
 #endif
 
 #ifdef MODEL7789
+        gpio_init(GPIOA, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_5 | GPIO_PIN_7);
 #endif
     }
 
@@ -154,9 +153,11 @@ void ST7735::Init()
     pinRES.ToHi();
     Timer::Delay(150);
 
-    Write_Cmd(0x11);
+    Write_Cmd(0x11);                // Sleep Out
 
     Timer::Delay(120);
+
+#ifdef MODEL7735
 
     Write_Cmd(0x21);                // Display Inversion On
 
@@ -251,32 +252,147 @@ void ST7735::Init()
 
     Write_Cmd(0x2C);                // Memory Write
 
+#endif
+
+#ifdef MODEL7789
+
+#define ST7789_NORON		0x13
+#define ST7789_MADCTL		0x36      // Memory data access control
+#define ST7789_RAMCTRL		0xB0      // RAM control
+#define ST7789_COLMOD		0x3A
+#define ST7789_PORCTRL		0xB2      // Porch control
+#define ST7789_GCTRL		0xB7      // Gate control
+#define ST7789_VCOMS		0xBB      // VCOMS setting
+#define ST7789_LCMCTRL		0xC0      // LCM control
+#define ST7789_VDVVRHEN		0xC2      // VDV and VRH command enable
+#define ST7789_VRHS			0xC3      // VRH set
+#define ST7789_VDVSET		0xC4      // VDV setting
+#define ST7789_FRCTR2		0xC6      // FR Control 2
+#define ST7789_PWCTRL1		0xD0      // Power control 1
+#define ST7789_PVGAMCTRL	0xE0      // Positive voltage gamma control
+#define ST7789_NVGAMCTRL	0xE1      // Negative voltage gamma control
+#define ST7789_INVON		0x21
+#define ST7789_CASET		0x2A
+#define ST7789_RASET		0x2B
+#define ST7789_DISPON		0x29
+
+#define TFT_MAD_RGB         0x00
+#define TFT_MAD_COLOR_ORDER TFT_MAD_RGB
+
+    Write_Cmd(ST7789_NORON);    // Normal display mode on
+
+    //------------------------------display and color format setting--------------------------------//
+    Write_Cmd(ST7789_MADCTL);
+    //writedata(0x00);
+    Write_Cmd_Data(TFT_MAD_COLOR_ORDER);
+
+    // JLX240 display datasheet
+    Write_Cmd(0xB6);
+    Write_Cmd_Data(0x0A);
+    Write_Cmd_Data(0x82);
+
+    Write_Cmd(ST7789_RAMCTRL);
+    Write_Cmd_Data(0x00);
+    Write_Cmd_Data(0xE0); // 5 to 6-bit conversion: r0 = r5, b0 = b5
+
+    Write_Cmd(ST7789_COLMOD);
+    Write_Cmd_Data(0x55);
+    Timer::Delay(10);
+
+    //--------------------------------ST7789V Frame rate setting----------------------------------//
+    Write_Cmd(ST7789_PORCTRL);
+    Write_Cmd_Data(0x0c);
+    Write_Cmd_Data(0x0c);
+    Write_Cmd_Data(0x00);
+    Write_Cmd_Data(0x33);
+    Write_Cmd_Data(0x33);
+
+    Write_Cmd(ST7789_GCTRL);      // Voltages: VGH / VGL
+    Write_Cmd_Data(0x35);
+
+    //---------------------------------ST7789V Power setting--------------------------------------//
+    Write_Cmd(ST7789_VCOMS);
+    Write_Cmd_Data(0x28);		// JLX240 display datasheet
+
+    Write_Cmd(ST7789_LCMCTRL);
+    Write_Cmd_Data(0x0C);
+
+    Write_Cmd(ST7789_VDVVRHEN);
+    Write_Cmd_Data(0x01);
+    Write_Cmd_Data(0xFF);
+
+    Write_Cmd(ST7789_VRHS);       // voltage VRHS
+    Write_Cmd_Data(0x10);
+
+    Write_Cmd(ST7789_VDVSET);
+    Write_Cmd_Data(0x20);
+
+    Write_Cmd(ST7789_FRCTR2);
+    Write_Cmd_Data(0x0f);
+
+    Write_Cmd(ST7789_PWCTRL1);
+    Write_Cmd_Data(0xa4);
+    Write_Cmd_Data(0xa1);
+
+    //--------------------------------ST7789V gamma setting---------------------------------------//
+    Write_Cmd(ST7789_PVGAMCTRL);
+    Write_Cmd_Data(0xd0);
+    Write_Cmd_Data(0x00);
+    Write_Cmd_Data(0x02);
+    Write_Cmd_Data(0x07);
+    Write_Cmd_Data(0x0a);
+    Write_Cmd_Data(0x28);
+    Write_Cmd_Data(0x32);
+    Write_Cmd_Data(0x44);
+    Write_Cmd_Data(0x42);
+    Write_Cmd_Data(0x06);
+    Write_Cmd_Data(0x0e);
+    Write_Cmd_Data(0x12);
+    Write_Cmd_Data(0x14);
+    Write_Cmd_Data(0x17);
+
+    Write_Cmd(ST7789_NVGAMCTRL);
+    Write_Cmd_Data(0xd0);
+    Write_Cmd_Data(0x00);
+    Write_Cmd_Data(0x02);
+    Write_Cmd_Data(0x07);
+    Write_Cmd_Data(0x0a);
+    Write_Cmd_Data(0x28);
+    Write_Cmd_Data(0x31);
+    Write_Cmd_Data(0x54);
+    Write_Cmd_Data(0x47);
+    Write_Cmd_Data(0x0e);
+    Write_Cmd_Data(0x1c);
+    Write_Cmd_Data(0x17);
+    Write_Cmd_Data(0x1b);
+    Write_Cmd_Data(0x1e);
+
+    Write_Cmd(ST7789_INVON);
+
+    Write_Cmd(ST7789_CASET);    // Column address set
+    Write_Cmd_Data(0x00);
+    Write_Cmd_Data(0x00);
+    Write_Cmd_Data(0x00);
+    Write_Cmd_Data(0xEF);    // 239
+
+    Write_Cmd(ST7789_RASET);    // Row address set
+    Write_Cmd_Data(0x00);
+    Write_Cmd_Data(0x00);
+    Write_Cmd_Data(0x01);
+    Write_Cmd_Data(0x3F);    // 319
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//    end_tft_write();
+    Timer::Delay(120);
+//    begin_tft_write();
+
+    Write_Cmd(ST7789_DISPON);    //Display on
+    Timer::Delay(120);
+
+#endif
+
     is_enabled = true;
-}
-
-
-void ST7735::LCD_SetPos_Vertical(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
-{
-    unsigned char YSH, YSL, YEH, YEL;
-    x0 += 0; x1 += 26; y0 += 26; y1 += 26;
-
-    YSH = (uint8)(y0 >> 8);
-    YSL = (uint8)y0;
-
-    YEH = (uint8)(y1 >> 8);
-    YEL = (uint8)y1;
-
-    Write_Cmd(0x2A);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(x0);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(x1);
-    Write_Cmd(0x2B);
-    Write_Cmd_Data(YSH);
-    Write_Cmd_Data(YSL);
-    Write_Cmd_Data(YEH);
-    Write_Cmd_Data(YEL);
-    Write_Cmd(0x2C);//LCD_WriteCMD(GRAMWR);
 }
 
 
@@ -295,29 +411,11 @@ void ST7735::SetWindow(int x, int y, int width, int height)
 }
 
 
-void ST7735::Fill(uint16 color)
-{
-    LCD_SetPos_Vertical(0, 159, 0, 79);
-
-    pinDC_RS.ToHi();
-
-    for (uint w = 0; w < 160; w++)
-    {
-        for (uint u = 0; u < 80; u++)
-        {
-            uint16 word = color;
-
-            SendByte((uint8)(word >> 8));
-            SendByte((uint8)word);
-        }
-    }
-}
-
-
 void ST7735::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
 {
     unsigned char YSH, YSL, YEH, YEL;
 
+#ifdef MODEL7735
     if (Display::IsOldType())
     {
         x0 += 1; x1 += 1; y0 += 26; y1 += 26;
@@ -326,6 +424,11 @@ void ST7735::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned 
     {
         x0 += 0; x1 += 1; y0 += 24; y1 += 26;
     }
+#endif
+
+#ifdef MODEL7789
+    x0 += 0; x1 += 1; y0 += 24; y1 += 26;
+#endif
 
     YSH = (uint8)(y0 >> 8);
     YSL = (uint8)y0;
@@ -333,17 +436,21 @@ void ST7735::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned 
     YEH = (uint8)(y1 >> 8);
     YEL = (uint8)y1;
 
-    Write_Cmd(0x2A);
+#define CMD_CASET 0x2A      // Column Address Set
+#define CMD_RASET 0x2B      // Row Address Set
+#define CMD_RAMWR 0x2C      // Memory Write
+
+    Write_Cmd(CMD_CASET);
     Write_Cmd_Data(0x00);
     Write_Cmd_Data(x0);
     Write_Cmd_Data(0x00);
     Write_Cmd_Data(x1);
-    Write_Cmd(0x2B);
+    Write_Cmd(CMD_RASET);
     Write_Cmd_Data(YSH);
     Write_Cmd_Data(YSL);
     Write_Cmd_Data(YEH);
     Write_Cmd_Data(YEL);
-    Write_Cmd(0x2C);//LCD_WriteCMD(GRAMWR);
+    Write_Cmd(CMD_RAMWR);
 }
 
 
