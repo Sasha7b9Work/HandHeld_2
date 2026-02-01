@@ -87,7 +87,9 @@ void SysTick_Handler(void)
 
 void EXTI2_3_IRQHandler(void)
 {
+#ifdef MODEL7735
     CALLBACK_ON_KEY(EXTI_3, Key::Menu);
+#endif
 }
 
 
@@ -109,11 +111,13 @@ void EXTI4_15_IRQHandler(void)
         PAN3060::CallbackOnWakeUp();
     }
 
+#ifdef MODEL7735
     CALLBACK_ON_KEY(EXTI_5, Key::Down)
 
     CALLBACK_ON_KEY(EXTI_12, Key::Up)
 
     CALLBACK_ON_KEY(EXTI_15, Key::Cancel)
+#endif
 }
 
 

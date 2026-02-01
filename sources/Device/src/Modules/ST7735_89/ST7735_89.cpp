@@ -27,18 +27,11 @@ namespace ST7735
     }
 
 
-    void SetWindow(int startX, int startY, int stopX, int stopY);
-
     static void Write_Cmd(unsigned char CMD)
     {
         pinDC_RS.ToLow();
 
         SendByte(CMD);
-    }
-
-    static void SendCommand(uint8 command)
-    {
-        Write_Cmd(command);
     }
 
     static void Write_Cmd_Data(unsigned char CMDP)
@@ -47,13 +40,6 @@ namespace ST7735
 
         SendByte(CMDP);
     }
-
-    static void SendData8(uint8 byte)
-    {
-        Write_Cmd_Data(byte);
-    }
-
-    static void LCD_SetPos_Vertical(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1);
 
     static void LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1);
 
@@ -393,21 +379,6 @@ void ST7735::Init()
 #endif
 
     is_enabled = true;
-}
-
-
-void ST7735::SetWindow(int x, int y, int width, int height)
-{
-    SendCommand(0x2A);      // CASET
-    SendData8(0x00);
-    SendData8((uint8)x);
-    SendData8(0x00);
-    SendData8((uint8)(x + width - 1));
-    SendCommand(0x2B);      // RASET
-    SendData8(0x00);
-    SendData8((uint8)y);
-    SendData8(0x00);
-    SendData8((uint8)(y + height));
 }
 
 
