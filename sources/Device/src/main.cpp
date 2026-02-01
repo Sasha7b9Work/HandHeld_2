@@ -38,8 +38,6 @@ int main()
 
     Display::Init();
 
-//    Power::Init();
-
     Timer::Init();
 
     Keyboard::Init();
@@ -58,7 +56,7 @@ int main()
 
     PMS150G::Init();
 
-//    Power::Init();
+    Power::Init();
 
     while(true)
     {
@@ -101,7 +99,7 @@ void Update()
 
     SaveSettings();
 
-//    Power::Update();
+    Power::Update();
 }
 
 

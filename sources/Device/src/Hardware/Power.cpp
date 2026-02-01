@@ -23,6 +23,8 @@ namespace Power
 
 void Power::Init()
 {
+#ifdef POWER_ENABLED
+
     float voltage = HAL_ADC::GetVoltage(true);
 
     if (voltage < 3.0f)
@@ -53,6 +55,8 @@ void Power::Init()
     }
 
     Timer::Delay(100);          // Антидребезг
+
+#endif
 }
 
 
@@ -89,10 +93,14 @@ void Power::PowerDown()
 
 void Power::Update()
 {
+#ifdef POWER_ENABLED
+
     if (HAL_ADC::GetVoltage(false) <= 3.5f)
     {
         Disable();
     }
+
+#endif
 }
 
 
