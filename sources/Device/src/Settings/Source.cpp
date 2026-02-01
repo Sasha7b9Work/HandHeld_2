@@ -240,7 +240,6 @@ void Source::Queue::Push(Source::E type)
     {
         LED::Enable();
     }
-
 }
 
 

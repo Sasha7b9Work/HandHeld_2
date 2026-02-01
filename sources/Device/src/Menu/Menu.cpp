@@ -72,8 +72,6 @@ void Menu::Update()
 void Menu::Draw()
 {
     current_item->Draw();
-
-//    FPS::DrawTimeFrame(0, 0);
 }
 
 
