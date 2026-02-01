@@ -45,9 +45,6 @@ struct Source
 
     static pchar NameSmall(E);
 
-    // ֲנולÿ מעלוםû
-    static uint TimeDestroy(E);
-
 private:
 
     Source::E value;

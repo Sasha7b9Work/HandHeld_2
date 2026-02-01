@@ -110,7 +110,7 @@ int Settings::SizeData() const
 }
 
 
-uint TimeCall::TimeMS() const
+uint TimeCall::ToMS() const
 {
     static const uint time[Count] =
     {

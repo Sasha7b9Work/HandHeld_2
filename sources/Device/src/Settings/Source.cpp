@@ -271,7 +271,7 @@ void Source::Queue::DeleteOld()
     {
         for (int i = 0; i < size; i++)
         {
-            if (TIME_MS > time_recv[buffer[i]].GetMS() + TimeDestroy(Current()))
+            if (TIME_MS > time_recv[buffer[i]].GetMS() + gset.time_call.ToMS())
             {
                 Remove(i, false);
 
@@ -316,22 +316,6 @@ int Source::GetCountReceived()
 Source::E Source::Current()
 {
     return Queue::At(0);
-}
-
-
-uint Source::TimeDestroy(E v)
-{
-    static const uint times[Count] =
-    {
-        38000,
-        31000,
-        31000,
-        31000,
-        31000,
-        10000
-    };
-
-    return times[v];
 }
 
 

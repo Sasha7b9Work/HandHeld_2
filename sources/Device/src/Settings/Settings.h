@@ -52,7 +52,7 @@ struct TimeCall
 
     uint8 value;
 
-    uint TimeMS() const;
+    uint ToMS() const;
 };
 
 
