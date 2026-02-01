@@ -2,6 +2,11 @@
 *uvgui*
 archive.zip
 
+sources/Device/Objects-Debug/*
+sources/Device/Objects/*
+sources/Device/Listings-Debug/*
+sources/Device/Listings/*
+
 doc/Hardware/Display/ST7789/st7789-main/project/stm32f407/MDK/RTE/Device/STM32F407ZGTx/*
 doc/Hardware/Display/ST7789/st7789-main/project/stm32f407/MDK/DebugConfig/*
 doc/Hardware/Display/ST7789/st7789-main/project/stm32f407/output/mdk/*
