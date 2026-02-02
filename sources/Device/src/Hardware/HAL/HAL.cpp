@@ -14,7 +14,8 @@ void HAL::Init()
     rcu_periph_clock_enable(RCU_GPIOC);
     rcu_periph_clock_enable(RCU_GPIOF);
 
-    rcu_periph_clock_enable(RCU_SPI0);
+    rcu_periph_clock_enable(RCU_SPI0);          // Дисплей
+    rcu_periph_clock_enable(RCU_SPI1);          // Для PAN3060
 
     rcu_periph_clock_enable(RCU_TIMER2);        // Для звука
 
