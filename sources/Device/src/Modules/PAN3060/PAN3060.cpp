@@ -138,7 +138,7 @@ void PAN3060::PrepareToSleep()
     syscfg_exti_line_clear(EXTI_SOURCE_PIN8);
 #endif
 
-    rf_deepsleep();
+//    rf_deepsleep();
 }
 
 
@@ -149,6 +149,8 @@ void PAN3060::CallbackOnIRQ()
     if(irq != 0x00)                 // После захода в спящий режим вызывается это прерывание
     {                               // Но чтение регистра прерываний даёт 0. Проверяем, что это прерывание вызвано именно приёмом даных
         need_rx = true;
+
+        InitRF();
     }
 }
 
