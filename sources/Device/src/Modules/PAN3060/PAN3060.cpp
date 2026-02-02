@@ -83,7 +83,7 @@ void PAN3060::InitSPI()
     spi_is.frame_size = SPI_FRAMESIZE_8BIT;
     spi_is.clock_polarity_phase = SPI_CK_PL_HIGH_PH_1EDGE;
     spi_is.nss = SPI_NSS_SOFT;
-    spi_is.prescale = SPI_PSC_2;
+    spi_is.prescale = SPI_PSC_8;
     spi_is.endian = SPI_ENDIAN_MSB;
     spi_init(SPI_PAN3060, &spi_is);
 
