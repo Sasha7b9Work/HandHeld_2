@@ -29,7 +29,19 @@ static uint8 spi_readwrite(uint8 byte)
     {
     }
 
-    return (uint8)spi_i2s_data_receive(SPI_PAN3060);
+    uint8 result = (uint8)spi_i2s_data_receive(SPI_PAN3060);
+
+    if (result)
+    {
+        result = result;
+    }
+    
+    if(result != 0 && result != 1)
+    {
+        result = result;
+    }
+
+    return result;
 }
 
 
