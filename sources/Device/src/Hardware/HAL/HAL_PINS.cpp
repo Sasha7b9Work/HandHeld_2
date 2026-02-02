@@ -5,10 +5,6 @@
 
 
 PinOut pinSPI1_NSS(GPIOB, GPIO_PIN_12);
-PinOut pinSPI1_CLK(GPIOB, GPIO_PIN_13);
-PinOut pinSPI1_MOSI(GPIOB, GPIO_PIN_15);
-PinIn  pinSPI_MISO(GPIOB, GPIO_PIN_14);
-
 
 
 void Pin::Init()

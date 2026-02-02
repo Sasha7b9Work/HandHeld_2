@@ -44,7 +44,4 @@ struct PinOut : public Pin
 };
 
 
-extern PinOut pinSPI1_NSS;  // /
-extern PinOut pinSPI1_CLK;  // | Используются для работы с
-extern PinOut pinSPI1_MOSI; // | PAN3060
-extern PinIn  pinSPI_MISO;  // /
+extern PinOut pinSPI1_NSS;  // Используются для работы с PAN3060
