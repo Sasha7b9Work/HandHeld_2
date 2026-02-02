@@ -19,6 +19,8 @@ namespace PAN3060
 
     static bool need_rx = false;
 
+    static uint8 irq = 0;
+
     static void InitIRQ();
 
     static void InitSPI();
@@ -72,15 +74,12 @@ void PAN3060::Update()
     {
         need_rx = false;
 
-        uint8_t _irq;
-
-        _irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
-        if (_irq & REG_IRQ_RX_TIMEOUT)
+        if (irq & REG_IRQ_RX_TIMEOUT)
         {
             rf_clr_irq();
         }
 
-        if (_irq & REG_IRQ_RX_DONE)
+        if (irq & REG_IRQ_RX_DONE)
         {
             uint8_t _buffer[PACKET_PAYLOAD_LENGTH];
             uint8_t _len = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
@@ -116,6 +115,8 @@ void PAN3060::Update()
                 rf_enter_continous_rx();
             }
         }
+
+        irq = 0x00;
     }
 }
 
@@ -127,7 +128,12 @@ void PAN3060::PrepareToSleep()
 
 void PAN3060::CallbackOnIRQ()
 {
-    need_rx = true;
+    irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
+
+    if (irq != 0x00)
+    {
+        need_rx = true;
+    }
 }
 
 
