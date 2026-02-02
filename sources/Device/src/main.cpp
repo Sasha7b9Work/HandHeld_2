@@ -76,6 +76,8 @@ void Update()
 
     ModeClock::LeaveSleepMode();
 
+    ModeClock::Set(ModeClock::Hi);
+
     PCF8563::Update();
 
     Menu::Update();

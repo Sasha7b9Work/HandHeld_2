@@ -1,5 +1,6 @@
 // 2024/03/01 22:46:05 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
+#include "Hardware/HAL/HAL.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Hardware/Timer.h"
 #include "Modules/PAN3060/PAN3060.h"
@@ -18,6 +19,7 @@ namespace PAN3060
     */
 
     static bool need_rx = false;
+    static uint8 irq = 0;           // Сюда читаем значение регистра прямо в прерывании, чтобы потом его обрабатывать
 
     static void InitIRQ();
 
@@ -45,6 +47,11 @@ void PAN3060::InitRF()
     rf_set_default_para();
 
     rf_enter_continous_rx();
+
+#ifdef MODEL7735
+    syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
+    exti_interrupt_flag_clear(EXTI_8);
+#endif
 }
 
 
@@ -55,9 +62,7 @@ void PAN3060::InitIRQ()
     // Инициализируем пин клоков от приёмника на прерывание
     gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_8);
     nvic_irq_enable(EXTI4_15_IRQn, 2);
-    syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
     exti_init(EXTI_8, EXTI_INTERRUPT, EXTI_TRIG_RISING);
-    exti_interrupt_flag_clear(EXTI_8);
 
 #endif
 }
@@ -76,19 +81,16 @@ void PAN3060::InitSPI()
 
 void PAN3060::Update()
 {
-    if (need_rx)
+    if (need_rx && irq != 0x00)
     {
         need_rx = false;
 
-        uint8_t _irq;
-
-        _irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
-        if (_irq & REG_IRQ_RX_TIMEOUT)
+        if (irq & REG_IRQ_RX_TIMEOUT)
         {
             rf_clr_irq();
         }
 
-        if (_irq & REG_IRQ_RX_DONE)
+        if (irq & REG_IRQ_RX_DONE)
         {
             uint8_t _buffer[PACKET_PAYLOAD_LENGTH];
             uint8_t _len = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
@@ -124,22 +126,34 @@ void PAN3060::Update()
                 rf_enter_continous_rx();
             }
         }
+
+        irq = 0x00;
     }
 }
 
 
 void PAN3060::PrepareToSleep()
 {
+#ifdef MODEL7735
+    syscfg_exti_line_clear(EXTI_SOURCE_PIN8);
+#endif
+
     rf_deepsleep();
 }
 
 
 void PAN3060::CallbackOnIRQ()
 {
-    need_rx = true;
+    irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
+
+    if(irq != 0x00)                 // После захода в спящий режим вызывается это прерывание
+    {                               // Но чтение регистра прерываний даёт 0. Проверяем, что это прерывание вызвано именно приёмом даных
+        need_rx = true;
+    }
 }
 
 
 void PAN3060::CallbackOnWakeUp()
 {
+    InitRF();
 }

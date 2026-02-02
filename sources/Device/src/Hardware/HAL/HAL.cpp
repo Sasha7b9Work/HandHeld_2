@@ -44,3 +44,35 @@ void HAL::DeInit()
     rcu_periph_clock_disable(RCU_TIMER2);
 }
 
+
+#ifdef MODEL7735
+
+void syscfg_exti_line_clear(uint8 exti_pin)
+{
+    uint32_t clear_exti_mask = ~((uint32_t)EXTI_SS_MASK << (EXTI_SS_MSTEP(exti_pin)));
+
+    switch (exti_pin / EXTI_SS_JSTEP)
+    {
+    case EXTISS0:
+        /* clear EXTI source line(0..3) */
+        SYSCFG_EXTISS0 &= clear_exti_mask;
+        break;
+    case EXTISS1:
+        /* clear EXTI soure line(4..7) */
+        SYSCFG_EXTISS1 &= clear_exti_mask;
+        break;
+    case EXTISS2:
+        /* clear EXTI soure line(8..11) */
+        SYSCFG_EXTISS2 &= clear_exti_mask;
+        break;
+    case EXTISS3:
+        /* clear EXTI soure line(12..15) */
+        SYSCFG_EXTISS3 &= clear_exti_mask;
+        break;
+    default:
+        break;
+    }
+}
+
+#endif
+

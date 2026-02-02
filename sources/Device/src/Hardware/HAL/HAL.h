@@ -8,6 +8,14 @@
 struct Settings;
 
 
+#ifdef MODEL7735
+
+// Выключение прерывания по линии
+void syscfg_exti_line_clear(uint8 exti_pin);
+
+#endif
+
+
 struct ModeClock
 {
     enum E
