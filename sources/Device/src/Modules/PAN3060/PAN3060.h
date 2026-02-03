@@ -9,7 +9,7 @@ namespace PAN3060
     void InitFull();
 
     // Инициализация непосредственно приёмника - производится после выхода из спящего режима
-//    void InitRF();
+    void InitRF();
 
     void Update();
 

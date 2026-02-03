@@ -60,11 +60,9 @@ void ModeClock::LeaveSleepMode()
     {
         HAL_CLOCK::in_sleep_mode = false;
 
-//        PAN3060::InitRF();
-
-//        PAN3060::Update();
-
         ModeClock::Set(Source::ExistReceived() ? ModeClock::Hi : ModeClock::Low);
+
+        PAN3060::InitRF();
     }
 }
 

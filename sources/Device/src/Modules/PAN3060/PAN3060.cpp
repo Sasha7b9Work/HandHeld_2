@@ -19,8 +19,7 @@ namespace PAN3060
     */
 
     static bool need_rx = false;
-
-    static uint8 irq = 0;
+    static uint8 irq = 0;           // Сюда читаем значение регистра прямо в прерывании, чтобы потом его обрабатывать
 
     static void InitIRQ();
 
@@ -37,53 +36,52 @@ void PAN3060::InitFull()
 
     InitSPI();
 
+    InitRF();
+}
+
+
+void PAN3060::InitRF()
+{
     rf_init();
 
     rf_set_default_para();
 
     rf_enter_continous_rx();
+
+#ifdef MODEL7735
+    syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
+    exti_interrupt_flag_clear(EXTI_8);
+#endif
 }
 
 
 void PAN3060::InitIRQ()
 {
 #ifdef MODEL7735
+
     // Инициализируем пин клоков от приёмника на прерывание
-    gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO_PIN_8);
+    gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_8);
     nvic_irq_enable(EXTI4_15_IRQn, 2);
-    syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
     exti_init(EXTI_8, EXTI_INTERRUPT, EXTI_TRIG_RISING);
-    exti_interrupt_flag_clear(EXTI_8);
+
 #endif
 }
 
 
 void PAN3060::InitSPI()
 {
-    gpio_af_set(GPIOB, GPIO_AF_0, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
-    gpio_mode_set(GPIOB, GPIO_MODE_AF, GPIO_PUPD_PULLDOWN, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
-    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+    pinSPI1_MOSI.Init();
+    pinSPI_MISO.Init();
+    pinSPI1_CLK.Init();
 
-    spi_parameter_struct spi_is;
-    spi_i2s_deinit(SPI_PAN3060);
-    spi_struct_para_init(&spi_is);
-
-    spi_is.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
-    spi_is.device_mode = SPI_MASTER;
-    spi_is.frame_size = SPI_FRAMESIZE_8BIT;
-    spi_is.clock_polarity_phase = SPI_CK_PL_HIGH_PH_1EDGE;
-    spi_is.nss = SPI_NSS_SOFT;
-    spi_is.prescale = SPI_PSC_2;
-    spi_is.endian = SPI_ENDIAN_MSB;
-    spi_init(SPI_PAN3060, &spi_is);
-
-    spi_enable(SPI_PAN3060);
+    pinSPI1_MOSI.ToLow();
+    pinSPI1_CLK.ToLow();
 }
 
 
 void PAN3060::Update()
 {
-    if (need_rx)
+    if (need_rx && irq != 0x00)
     {
         need_rx = false;
 
@@ -136,6 +134,11 @@ void PAN3060::Update()
 
 void PAN3060::PrepareToSleep()
 {
+#ifdef MODEL7735
+    syscfg_exti_line_clear(EXTI_SOURCE_PIN8);
+#endif
+
+    rf_deepsleep();
 }
 
 
@@ -143,8 +146,8 @@ void PAN3060::CallbackOnIRQ()
 {
     irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
 
-    if (irq != 0x00)
-    {
+    if(irq != 0x00)                 // После захода в спящий режим вызывается это прерывание
+    {                               // Но чтение регистра прерываний даёт 0. Проверяем, что это прерывание вызвано именно приёмом даных
         need_rx = true;
     }
 }
@@ -152,4 +155,5 @@ void PAN3060::CallbackOnIRQ()
 
 void PAN3060::CallbackOnWakeUp()
 {
+    InitRF();
 }
