@@ -18,8 +18,9 @@ namespace PAN3060
     *   MOSI - PB15     SPI1_MOSI   AF_0
     */
 
-    static bool need_read = false;      // Нужно принимать данные в Update()
-    static bool need_sleep = false;     // Нужно засыпать в 
+    static bool need_read = false;          // Нужно принимать данные в Update()
+    static bool need_sleep = false;         // Нужно засыпать в Update()
+    static bool interrupt_occured = false;  // true, если произошло прерывание от приёмника. Можно запускать новый процесс
 
     static void InitIRQ();
 
@@ -56,6 +57,8 @@ void PAN3060::InitOn90ms()
     syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
     exti_interrupt_flag_clear(EXTI_8);
 #endif
+
+    interrupt_occured = false;
 }
 
 
@@ -116,7 +119,7 @@ void PAN3060::Update()
 void PAN3060::EnterSleepMode()
 {
 #ifdef MODEL7735
-    syscfg_exti_line_clear(EXTI_SOURCE_PIN8);
+//    syscfg_exti_line_clear(EXTI_SOURCE_PIN8);
 #endif
 
     rf_deepsleep();
@@ -153,9 +156,9 @@ void PAN3060::ReadFIFO()
         {
             Source::Receive(Source::Mobile);
         }
-
-        need_sleep = true;
     }
+    
+    need_sleep = true;
 }
 
 
@@ -173,10 +176,15 @@ void PAN3060::CallbackOnIRQ()
     {
         need_read = true;
     }
+
+    interrupt_occured = true;
 }
 
 
 void PAN3060::CallbackOnWakeUp()
 {
-    InitOn90ms();
+    if (interrupt_occured)
+    {
+        InitOn90ms();
+    }
 }
