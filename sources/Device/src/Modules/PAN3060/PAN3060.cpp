@@ -21,7 +21,7 @@ namespace PAN3060
     static bool need_read = false;          // Нужно принимать данные в Update()
     static bool need_sleep = false;         // Нужно засыпать в Update()
     static bool need_init = false;          // Произошло прерывание от PSM150. Нужно инициализироваться
-    static bool interrupt_occured = false;  // true, если произошло прерывание от приёмника. Можно запускать новый процесс
+    static bool irq_occured = false;        // true, если произошло прерывание от приёмника. Можно запускать новый процесс
 
     static void InitIRQ();
 
@@ -184,15 +184,15 @@ void PAN3060::CallbackOnIRQ()
         need_read = true;
     }
 
-    interrupt_occured = true;
+    irq_occured = true;
 }
 
 
-void PAN3060::CallbackOnWakeUp()
+void PAN3060::CallbackOnPMS150()
 {
-    if (interrupt_occured)
+    if (irq_occured)
     {
-        interrupt_occured = false;
+        irq_occured = false;
         
         need_init = true;
     }
