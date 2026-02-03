@@ -24,11 +24,16 @@ static uint8 spi_readwrite(uint8 byte)
     }
 
     spi_i2s_data_transmit(SPI_PAN3060, byte);
+    
+
+    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
+    {
+    }
 
     while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_RBNE))
     {
     }
-
+    
     uint8 result = (uint8)spi_i2s_data_receive(SPI_PAN3060);
 
     if (result)
@@ -206,8 +211,30 @@ void rf_write_reg(uint8 _addr, uint8 _data)
 
     rf_reply = RF_OK;
 #if SPI_WRITE_CHECK
-    if (rf_read_reg(_addr) != _data)
-        rf_reply = RF_FAIL;
+    uint8 r_val = rf_read_reg(_addr);
+
+    if (r_val != 0x00)
+    {
+        if (r_val != _data)
+        {
+            rf_reply = RF_FAIL;
+        }
+        else
+        {
+            rf_reply = RF_OK;
+        }
+    }
+    else
+    {
+        if (r_val != _data)
+        {
+            rf_reply = RF_FAIL;
+        }
+        else
+        {
+            rf_reply = RF_OK;
+        }
+    }
 #endif
 }
 
