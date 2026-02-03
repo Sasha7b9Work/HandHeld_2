@@ -23,6 +23,10 @@ static void spi_write(uint8 byte)
     {
     }
     spi_i2s_data_transmit(SPI_PAN3060, byte);
+    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_RBNE))
+    {
+    }
+
     spi_i2s_data_receive(SPI_PAN3060);
 }
 
@@ -35,13 +39,12 @@ static uint8 spi_read(void)
     while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_RBNE))
     {
     }
-    spi_i2s_data_receive(SPI_PAN3060);
     return (uint8)spi_i2s_data_receive(SPI_PAN3060);
 }
 
 
 #define spi_cs_set_low()            pinSPI1_NSS.ToLow()
-#define spi_cs_set_high()           {while(RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE)) {}; pinSPI1_NSS.ToHi();}
+#define spi_cs_set_high()           while(RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE)) {}; pinSPI1_NSS.ToHi()
 
 
 /**
