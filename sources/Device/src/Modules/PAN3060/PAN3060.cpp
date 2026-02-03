@@ -49,7 +49,7 @@ void PAN3060::InitIRQ()
 {
 #ifdef MODEL7735
     // Инициализируем пин клоков от приёмника на прерывание
-    gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_8);
+    gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO_PIN_8);
     nvic_irq_enable(EXTI4_15_IRQn, 2);
     syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
     exti_init(EXTI_8, EXTI_INTERRUPT, EXTI_TRIG_RISING);
