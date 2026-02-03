@@ -151,6 +151,12 @@ void Keyboard::CallbackFromInterrupt(Key::E key)
 }
 
 
+bool Keyboard::ActionExist()
+{
+    return num_actions != 0;
+}
+
+
 bool Keyboard::ToMoreTime()
 {
     return ms_for_disable < 0;

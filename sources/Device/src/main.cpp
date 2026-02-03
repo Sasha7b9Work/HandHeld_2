@@ -67,14 +67,21 @@ int main()
 
 void Update()
 {
+    bool in_sleep_mode = false;
+    
     if (Keyboard::ToMoreTime() &&
         Source::GetCountReceived() == 0 &&
         !PCF8563::IsAlarmed())
     {
         ModeClock::Set(ModeClock::Sleep);
+        
+        in_sleep_mode = true;
     }
 
-    ModeClock::LeaveSleepMode();
+    if(in_sleep_mode)
+    {
+        ModeClock::LeaveSleepMode();
+    }
 
     ModeClock::Set(ModeClock::Hi);
 

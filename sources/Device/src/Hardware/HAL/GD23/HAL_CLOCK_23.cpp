@@ -4,6 +4,7 @@
 #include "Hardware/HAL/systick.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include "Display/Display.h"
+#include "Keyboard/Keyboard.h"
 #include <gd32e23x.h>
 
 
@@ -60,9 +61,14 @@ void ModeClock::LeaveSleepMode()
     {
         HAL_CLOCK::in_sleep_mode = false;
 
-        ModeClock::Set(Source::ExistReceived() ? ModeClock::Hi : ModeClock::Low);
-
-        PAN3060::InitRF();
+        if (Keyboard::ActionExist())                    // Если проснулись от кнопки
+        {
+            ModeClock::Set(Source::ExistReceived() ? ModeClock::Hi : ModeClock::Low);
+        }
+        else                                            // А здесь проснулись от приёмника
+        {
+            PAN3060::InitOn90ms();
+        }
     }
 }
 
@@ -84,10 +90,6 @@ void ModeClock::LeaveSleepMode()
 void HAL_CLOCK::SetSleepMode()
 {
     Display::PrepareToSleep();
-
-    PAN3060::PrepareToSleep();
-
-//    HAL::DeInit();
 
     rcu_periph_clock_enable(RCU_PMU);
 

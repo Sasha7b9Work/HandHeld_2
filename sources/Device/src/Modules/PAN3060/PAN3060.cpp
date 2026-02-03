@@ -18,12 +18,16 @@ namespace PAN3060
     *   MOSI - PB15     SPI1_MOSI   AF_0
     */
 
-    static bool need_rx = false;
-    static uint8 irq = 0;           // Сюда читаем значение регистра прямо в прерывании, чтобы потом его обрабатывать
+    static bool need_read = false;      // Нужно принимать данные в Update()
+    static bool need_sleep = false;     // Нужно засыпать в 
 
     static void InitIRQ();
 
     static void InitSPI();
+
+    static void EnterSleepMode();
+
+    static void ReadFIFO();
 }
 
 
@@ -36,17 +40,17 @@ void PAN3060::InitFull()
 
     InitSPI();
 
-    InitRF();
+    InitOn90ms();
 }
 
 
-void PAN3060::InitRF()
+void PAN3060::InitOn90ms()
 {
     rf_init();
 
     rf_set_default_para();
 
-    rf_enter_continous_rx();
+    rf_enter_single_timeout_rx(90);
 
 #ifdef MODEL7735
     syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
@@ -94,58 +98,22 @@ void PAN3060::InitSPI()
 
 void PAN3060::Update()
 {
-    if (need_rx && irq != 0x00)
+    if (need_sleep)
     {
-        need_rx = false;
+        need_sleep = false;
 
-        if (irq & REG_IRQ_RX_TIMEOUT)
-        {
-            rf_clr_irq();
-        }
+        EnterSleepMode();
+    }
+    else if (need_read)
+    {
+        need_read = false;
 
-        if (irq & REG_IRQ_RX_DONE)
-        {
-            uint8_t _buffer[PACKET_PAYLOAD_LENGTH];
-            uint8_t _len = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
-
-            rf_read_fifo(REG_FIFO_ACC_ADDR, _buffer, PACKET_PAYLOAD_LENGTH);
-            rf_clr_irq();
-            if (_len == PACKET_PAYLOAD_LENGTH && _buffer[0] == VIBROLINE_HEAD)
-            {
-                _buffer[1] &= 0x7F;
-                if (_buffer[1] & VIBROLINE_DEVICE_DOORBELL)
-                {
-                    Source::Receive(Source::DoorBell);
-                }
-                else if (_buffer[1] & VIBROLINE_DEVICE_PHONE)
-                {
-                    Source::Receive(Source::PhoneHome);
-                }
-                else if (_buffer[1] & VIBROLINE_DEVICE_INTERCOM)
-                {
-                    Source::Receive(Source::Intercom);
-                }
-                else if (_buffer[1] & VIBROLINE_DEVICE_BABYCRY)
-                {
-                    Source::Receive(Source::Microphone);
-                }
-                else if (_buffer[1] & VIBROLINE_DEVICE_MOBILE)
-                {
-                    Source::Receive(Source::Mobile);
-                }
-
-                rf_init();
-                rf_set_default_para();
-                rf_enter_continous_rx();
-            }
-        }
-
-        irq = 0x00;
+        ReadFIFO();
     }
 }
 
 
-void PAN3060::PrepareToSleep()
+void PAN3060::EnterSleepMode()
 {
 #ifdef MODEL7735
     syscfg_exti_line_clear(EXTI_SOURCE_PIN8);
@@ -155,18 +123,60 @@ void PAN3060::PrepareToSleep()
 }
 
 
+void PAN3060::ReadFIFO()
+{
+    uint8_t _buffer[PACKET_PAYLOAD_LENGTH];
+    uint8_t _len = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
+
+    rf_read_fifo(REG_FIFO_ACC_ADDR, _buffer, PACKET_PAYLOAD_LENGTH);
+
+    if (_len == PACKET_PAYLOAD_LENGTH && _buffer[0] == VIBROLINE_HEAD)
+    {
+        _buffer[1] &= 0x7F;
+        if (_buffer[1] & VIBROLINE_DEVICE_DOORBELL)
+        {
+            Source::Receive(Source::DoorBell);
+        }
+        else if (_buffer[1] & VIBROLINE_DEVICE_PHONE)
+        {
+            Source::Receive(Source::PhoneHome);
+        }
+        else if (_buffer[1] & VIBROLINE_DEVICE_INTERCOM)
+        {
+            Source::Receive(Source::Intercom);
+        }
+        else if (_buffer[1] & VIBROLINE_DEVICE_BABYCRY)
+        {
+            Source::Receive(Source::Microphone);
+        }
+        else if (_buffer[1] & VIBROLINE_DEVICE_MOBILE)
+        {
+            Source::Receive(Source::Mobile);
+        }
+
+        need_sleep = true;
+    }
+}
+
+
 void PAN3060::CallbackOnIRQ()
 {
-    irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
+    uint8 irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
 
-    if(irq != 0x00)                 // После захода в спящий режим вызывается это прерывание
-    {                               // Но чтение регистра прерываний даёт 0. Проверяем, что это прерывание вызвано именно приёмом даных
-        need_rx = true;
+    rf_clr_irq();
+
+    if (irq & REG_IRQ_RX_TIMEOUT)
+    {
+        need_sleep = true;
+    }
+    else if (irq & REG_IRQ_RX_DONE)
+    {
+        need_read = true;
     }
 }
 
 
 void PAN3060::CallbackOnWakeUp()
 {
-    InitRF();
+    InitOn90ms();
 }

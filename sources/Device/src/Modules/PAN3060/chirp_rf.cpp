@@ -184,7 +184,7 @@ uint8 rf_read_reg(uint8 _addr)
     spi_cs_set_low();
     spi_write((uint8)(_addr << 1));
     _data = spi_read();
-    spi_cs_set_high();
+    spi_cs_set_high(); 
 
 //  delay_us(100);
 

@@ -46,6 +46,9 @@ namespace Keyboard
 
     bool GetNextAction(Action &);
 
+    // Есть ли невыполненные действия
+    bool ActionExist();
+
     // Прошло много времени после последнего нажатия кнопки
     bool ToMoreTime();
 
