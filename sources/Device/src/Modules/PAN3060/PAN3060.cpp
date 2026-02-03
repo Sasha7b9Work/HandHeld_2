@@ -20,6 +20,7 @@ namespace PAN3060
 
     static bool need_read = false;          // Нужно принимать данные в Update()
     static bool need_sleep = false;         // Нужно засыпать в Update()
+    static bool need_init = false;          // Произошло прерывание от PSM150. Нужно инициализироваться
     static bool interrupt_occured = false;  // true, если произошло прерывание от приёмника. Можно запускать новый процесс
 
     static void InitIRQ();
@@ -57,8 +58,6 @@ void PAN3060::InitOn90ms()
     syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
     exti_interrupt_flag_clear(EXTI_8);
 #endif
-
-    interrupt_occured = false;
 }
 
 
@@ -101,7 +100,13 @@ void PAN3060::InitSPI()
 
 void PAN3060::Update()
 {
-    if (need_sleep)
+    if (need_init)
+    {
+        need_init = false;
+
+        InitOn90ms();
+    }
+    else if (need_sleep)
     {
         need_sleep = false;
 
@@ -121,6 +126,8 @@ void PAN3060::EnterSleepMode()
 #ifdef MODEL7735
 //    syscfg_exti_line_clear(EXTI_SOURCE_PIN8);
 #endif
+    
+    rf_clr_irq();
 
     rf_deepsleep();
 }
@@ -158,6 +165,8 @@ void PAN3060::ReadFIFO()
         }
     }
     
+    rf_clr_irq();
+    
     need_sleep = true;
 }
 
@@ -165,8 +174,6 @@ void PAN3060::ReadFIFO()
 void PAN3060::CallbackOnIRQ()
 {
     uint8 irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
-
-    rf_clr_irq();
 
     if (irq & REG_IRQ_RX_TIMEOUT)
     {
@@ -185,6 +192,8 @@ void PAN3060::CallbackOnWakeUp()
 {
     if (interrupt_occured)
     {
-        InitOn90ms();
+        interrupt_occured = false;
+        
+        need_init = true;
     }
 }
