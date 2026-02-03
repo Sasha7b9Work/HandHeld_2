@@ -60,7 +60,7 @@ void PAN3060::InitIRQ()
 #ifdef MODEL7735
 
     // Инициализируем пин клоков от приёмника на прерывание
-    gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_8);
+    gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO_PIN_8);
     nvic_irq_enable(EXTI4_15_IRQn, 2);
     exti_init(EXTI_8, EXTI_INTERRUPT, EXTI_TRIG_RISING);
 
@@ -70,12 +70,25 @@ void PAN3060::InitIRQ()
 
 void PAN3060::InitSPI()
 {
-    pinSPI1_MOSI.Init();
-    pinSPI_MISO.Init();
-    pinSPI1_CLK.Init();
+    gpio_af_set(GPIOB, GPIO_AF_0, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+    gpio_mode_set(GPIOB, GPIO_MODE_AF, GPIO_PUPD_PULLDOWN, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
 
-    pinSPI1_MOSI.ToLow();
-    pinSPI1_CLK.ToLow();
+    spi_parameter_struct spi_is;
+    spi_i2s_deinit(SPI_PAN3060);
+    spi_struct_para_init(&spi_is);
+
+    spi_is.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
+    spi_is.device_mode = SPI_MASTER;
+    spi_is.frame_size = SPI_FRAMESIZE_8BIT;
+    spi_is.clock_polarity_phase = SPI_CK_PL_LOW_PH_1EDGE;
+    spi_is.nss = SPI_NSS_SOFT;
+    spi_is.prescale = SPI_PSC_8;
+    spi_is.endian = SPI_ENDIAN_MSB;
+    spi_init(SPI_PAN3060, &spi_is);
+
+    spi_fifo_access_size_config(SPI1, SPI_BYTE_ACCESS);
+    spi_enable(SPI_PAN3060);
 }
 
 

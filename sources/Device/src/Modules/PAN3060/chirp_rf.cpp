@@ -17,42 +17,31 @@ static void delay_us(uint us)
     }
 }
 
-static uint8 spi_readwrite(uint8 byte)
+static void spi_write(uint8 byte)
 {
-    uint8 result = 0;
-
-    for (int i = 7; i >= 0; i--)
+    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
     {
-        pinSPI1_MOSI.Set(_GET_BIT(byte, i) != 0);
-
-        pinSPI1_CLK.ToHi();
-
-        if (pinSPI_MISO.IsHi())
-        {
-            _SET_BIT(result, i);
-        }
-
-        pinSPI1_CLK.ToLow();
     }
+    spi_i2s_data_transmit(SPI_PAN3060, byte);
+    spi_i2s_data_receive(SPI_PAN3060);
+}
 
-    return result;
-
-//    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
-//    {
-//    }
-//
-//    spi_i2s_data_transmit(SPI_PAN3060, byte);
-//
-//    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
-//    {
-//    }
-//    
-//    return (uint8)SPI_DATA(SPI_PAN3060);
+static uint8 spi_read(void)
+{
+    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE))
+    {
+    }
+    spi_i2s_data_transmit(SPI_PAN3060, 0x00);
+    while (RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_RBNE))
+    {
+    }
+    spi_i2s_data_receive(SPI_PAN3060);
+    return (uint8)spi_i2s_data_receive(SPI_PAN3060);
 }
 
 
 #define spi_cs_set_low()            pinSPI1_NSS.ToLow()
-#define spi_cs_set_high()           pinSPI1_NSS.ToHi()
+#define spi_cs_set_high()           {while(RESET == spi_i2s_flag_get(SPI_PAN3060, SPI_FLAG_TBE)) {}; pinSPI1_NSS.ToHi();}
 
 
 /**
@@ -190,9 +179,11 @@ uint8 rf_read_reg(uint8 _addr)
     uint8 _data;
 
     spi_cs_set_low();
-    spi_readwrite((uint8)(_addr << 1));
-    _data = spi_readwrite(0x00);
+    spi_write((uint8)(_addr << 1));
+    _data = spi_read();
     spi_cs_set_high();
+
+//  delay_us(100);
 
     return _data;
 }
@@ -206,25 +197,29 @@ uint8 rf_read_reg(uint8 _addr)
 void rf_write_reg(uint8 _addr, uint8 _data)
 {
     spi_cs_set_low();
-    spi_readwrite((uint8)((_addr << 1) | 0x01));
-    spi_readwrite(_data);
+    spi_write((uint8)((_addr << 1) | 0x01));
+    spi_write(_data);
     spi_cs_set_high();
 
     rf_reply = RF_OK;
 #if SPI_WRITE_CHECK
-    if (rf_read_reg(_addr) != _data)
-        rf_reply = RF_FAIL;
+    uint8 r_value = rf_read_reg(_addr);
+//    if(_data != 0)
+    {
+        if (r_value != _data)
+            rf_reply = RF_FAIL;
+    }
 #endif
 }
 
 void rf_write_fifo_otp(enum PAGE_SEL /*_page*/, uint8 _addr, const uint8 *_buffer, uint8 _cnt)
 {
     spi_cs_set_low();
-    spi_readwrite((uint8)((_addr << 1) | 0x01));
+    spi_write((uint8)((_addr << 1) | 0x01));
 
     do
     {
-        spi_readwrite(*_buffer++);
+        spi_write(*_buffer++);
     } while (--_cnt);
     spi_cs_set_high();
 }
@@ -239,10 +234,10 @@ void rf_write_fifo_otp(enum PAGE_SEL /*_page*/, uint8 _addr, const uint8 *_buffe
 void rf_read_fifo(uint8 _addr, uint8 *_buffer, uint8 _cnt)
 {
     spi_cs_set_low();
-    spi_readwrite((uint8)((_addr << 1) | 0x00));
+    spi_write((uint8)((_addr << 1) | 0x00));
     do
     {
-        *_buffer++ = spi_readwrite(0x00);
+        *_buffer++ = spi_read();
     } while (--_cnt);
     spi_cs_set_high();
 }
@@ -325,10 +320,10 @@ uint8 rf_efuse_read_encry_byte(uint8 _efuse_addr)
     rf_switch_page(PAGE2_SEL);
 
     spi_cs_set_low();
-    spi_readwrite((0x3B << 1) | 0x01);
-    spi_readwrite(0x5A);
-    spi_readwrite(0xA5);
-    spi_readwrite((uint8)(_efuse_addr << 1));
+    spi_write((0x3B << 1) | 0x01);
+    spi_write(0x5A);
+    spi_write(0xA5);
+    spi_write((uint8)(_efuse_addr << 1));
     spi_cs_set_high();
 
     do
