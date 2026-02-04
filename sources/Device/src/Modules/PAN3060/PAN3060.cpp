@@ -19,8 +19,6 @@ namespace PAN3060
     */
 
     static bool need_read = false;          // Нужно принимать данные в Update()
-    static bool need_sleep = false;         // Нужно засыпать в Update()
-    static bool in_deepsleep = false;
 
     static void InitIRQ();
 
@@ -106,13 +104,7 @@ void PAN3060::InitSPI()
 
 void PAN3060::Update()
 {
-    if (need_sleep)
-    {
-        need_sleep = false;
-
-        EnterSleepMode();
-    }
-    else if (need_read)
+    if (need_read)
     {
         need_read = false;
 
@@ -130,8 +122,6 @@ void PAN3060::EnterSleepMode()
     rf_clr_irq();
 
     rf_deepsleep();
-
-    in_deepsleep = true;
 }
 
 
@@ -167,21 +157,21 @@ void PAN3060::ReadFIFO()
         }
     }
 
-    rf_clr_irq();
+    rf_init();
+    rf_set_default_para();
+    rf_enter_continous_rx();
 
-    need_sleep = true;
+    rf_clr_irq();
 }
 
 
 void PAN3060::CallbackOnIRQ()
 {
-    in_deepsleep = false;
-
     uint8 irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
 
     if (irq & REG_IRQ_RX_TIMEOUT)
     {
-        need_sleep = true;
+        rf_clr_irq();
     }
     else if (irq & REG_IRQ_RX_DONE)
     {
