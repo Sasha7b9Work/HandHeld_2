@@ -34,6 +34,8 @@ int main()
 
     gset.Load();
 
+    Power::Init();
+
     PCF8563::Init();
 
     Display::Init();
@@ -56,8 +58,6 @@ int main()
 
     PMS150G::Init();
 
-    Power::Init();
-
     while(true)
     {
         Update();
@@ -74,6 +74,8 @@ void Update()
         ModeClock::Set(ModeClock::Sleep);
         
         ModeClock::LeaveSleepMode();
+
+        Power::MeasVoltage();
     }
 
     ModeClock::Set(ModeClock::Hi);

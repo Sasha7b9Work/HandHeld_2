@@ -18,6 +18,22 @@ namespace Power
     static PinOut pinCHRG(GPIOB, GPIO_PIN_3);
 
     static void PowerDown();
+
+    static float voltage = 0.0f;
+}
+
+
+void Power::MeasVoltage()
+{
+    float sum = 0.0f;
+    int num_meas = 10;
+
+    for (int i = 0; i < num_meas; i++)
+    {
+        sum += HAL_ADC::GetVoltage(false);
+    }
+
+    voltage = sum / (float)num_meas;
 }
 
 
@@ -25,7 +41,7 @@ void Power::Init()
 {
 #ifdef POWER_ENABLED
 
-    float voltage = HAL_ADC::GetVoltage(true);
+    voltage = HAL_ADC::GetVoltage(true);
 
     if (voltage < 3.0f)
     {
@@ -95,7 +111,7 @@ void Power::Update()
 {
 #ifdef POWER_ENABLED
 
-    if (HAL_ADC::GetVoltage(false) <= 3.5f)
+    if (voltage <= 3.5f)
     {
         Disable();
     }
@@ -106,8 +122,6 @@ void Power::Update()
 
 void Power::Draw()
 {
-    float voltage = HAL_ADC::GetVoltage(false);
-
     int x = 121;
     int y = 0;
 

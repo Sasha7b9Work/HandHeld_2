@@ -11,4 +11,7 @@ namespace Power
     void Disable();
 
     void Draw();
+
+    // Замерить значение напряжения
+    void MeasVoltage();
 }
