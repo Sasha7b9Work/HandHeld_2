@@ -71,9 +71,9 @@ void Update()
         Source::GetCountReceived() == 0 &&
         !PCF8563::IsAlarmed())
     {
-//        ModeClock::Set(ModeClock::Sleep);
+        ModeClock::Set(ModeClock::Sleep);
         
-//        ModeClock::LeaveSleepMode();
+        ModeClock::LeaveSleepMode();
 
         Power::MeasVoltage();
     }

@@ -30,6 +30,8 @@ namespace PAN3060
 
     // Инициализируем постоянный режим
     static void InitContinuosMode();
+
+    static void ReInit();
 }
 
 
@@ -110,6 +112,15 @@ void PAN3060::Update()
 
         ReadFIFO();
     }
+
+    static TimeMeterMS meter_reinit;
+
+    if (meter_reinit.ElapsedTime() >= 1000)
+    {
+        meter_reinit.Reset();
+
+        ReInit();
+    }
 }
 
 
@@ -157,6 +168,12 @@ void PAN3060::ReadFIFO()
         }
     }
 
+    ReInit();
+}
+
+
+void PAN3060::ReInit()
+{
     rf_init();
     rf_set_default_para();
     rf_enter_continous_rx();
