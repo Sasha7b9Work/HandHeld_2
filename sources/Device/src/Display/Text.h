@@ -34,7 +34,7 @@ struct Text
 
         x += width / 2 - length / 2;
 
-        Write(x, y, color);
+        Write(x, y + 1, color);
     }
     int GetLength() const
     {

@@ -271,7 +271,7 @@ void PCF8563::Update()
 {
     static uint8 buffer[7];
 
-    HAL_I2C::Read(PCF8563_REG_TIME, buffer, 7);
+    HAL_I2C::Read(PCF8563_REG_TIME, buffer, 7); 
 
     CalculateDateTime(buffer, &date_time);
 
@@ -279,25 +279,32 @@ void PCF8563::Update()
 
     HAL_I2C::Read(PCF8563_REG_CONTROL_STATUS2, &status2, 1);
 
-    if (status2 & (1 << PCF8563_CONTROL2_AF))            // INT
+    if (time_alarm == 0)
     {
-        time_alarm = TIME_MS;
-
-        Keyboard::CallbackFromInterrupt();
-
-        if (ModeIndication::ConsistSound(gset.alarm.mode_indication))
+        if (status2 & (1 << PCF8563_CONTROL2_AF))            // INT
         {
-            Beeper::Play((Melody::E)gset.alarm.melody, (uint8)gset.alarm.volume);
-        }
+            status2 &= ~(1 << PCF8563_CONTROL2_AF);
 
-        if (ModeIndication::ConsistLED(gset.alarm.mode_indication))
-        {
-            LED::Enable((ColorLED::E)gset.alarm.color);
-        }
+            HAL_I2C::Write(PCF8563_REG_CONTROL_STATUS2, &status2, 1);
 
-        if (ModeIndication::ConsistVibro(gset.alarm.mode_indication))
-        {
-            Vibrato::Enable();
+            time_alarm = TIME_MS;
+
+            Keyboard::CallbackFromInterrupt();
+
+            if (ModeIndication::ConsistSound(gset.alarm.mode_indication))
+            {
+                Beeper::Play((Melody::E)gset.alarm.melody, (uint8)gset.alarm.volume);
+            }
+
+            if (ModeIndication::ConsistLED(gset.alarm.mode_indication))
+            {
+                LED::Enable((ColorLED::E)gset.alarm.color);
+            }
+
+            if (ModeIndication::ConsistVibro(gset.alarm.mode_indication))
+            {
+                Vibrato::Enable();
+            }
         }
     }
 }
