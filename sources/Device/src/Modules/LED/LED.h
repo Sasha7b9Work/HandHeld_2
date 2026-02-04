@@ -26,8 +26,6 @@ namespace LED
 
     void Update();
 
-    void Enable();
-
     void Enable(ColorLED::E);
 
     void Disable();

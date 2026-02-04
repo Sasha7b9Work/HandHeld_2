@@ -36,12 +36,6 @@ void LED::Driver::Init()
 }
 
 
-void LED::Driver::On()
-{
-
-}
-
-
 void LED::Driver::Off()
 {
     is_fired = false;

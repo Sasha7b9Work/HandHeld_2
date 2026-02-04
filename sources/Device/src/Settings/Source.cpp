@@ -238,7 +238,7 @@ void Source::Queue::Push(Source::E type)
 
     if (ModeIndication::ConsistLED(source.mode_indication))
     {
-        LED::Enable();
+        LED::Enable((ColorLED::E)source.color);
     }
 }
 

@@ -3,6 +3,7 @@
 #include "Hardware/Timer.h"
 #include "Modules/LED/LED.h"
 #include "Modules/LED/driverLED.h"
+#include "Settings/Settings.h"
 
 
 namespace LED
@@ -34,22 +35,11 @@ void LED::Update()
 
     if (SourceScript::GetForLED(source, TIME_MS - time_enable))
     {
-        Driver::On();
+        Driver::On((ColorLED::E)gset.sources[source].color);
     }
     else
     {
         Driver::Off();
-    }
-}
-
-
-void LED::Enable()
-{
-    if (!is_enabled)
-    {
-        is_enabled = true;
-
-        time_enable = TIME_MS;
     }
 }
 
@@ -59,6 +49,8 @@ void LED::Enable(ColorLED::E color)
     current_color = color;
 
     is_enabled = true;
+
+    time_enable = TIME_MS;
 
     Driver::On(color);
 }
