@@ -20,7 +20,6 @@ namespace PAN3060
 
     static bool need_read = false;          // Нужно принимать данные в Update()
     static bool need_sleep = false;         // Нужно засыпать в Update()
-    static bool need_init = false;          // Произошло прерывание от PSM150. Нужно инициализироваться
     static bool in_deepsleep = false;
 
     static void InitIRQ();
@@ -30,6 +29,9 @@ namespace PAN3060
     static void EnterSleepMode();
 
     static void ReadFIFO();
+
+    // Инициализируем постоянный режим
+    static void InitContinuosMode();
 }
 
 
@@ -42,17 +44,17 @@ void PAN3060::InitFull()
 
     InitSPI();
 
-    InitOn90ms();
+    InitContinuosMode();
 }
 
 
-void PAN3060::InitOn90ms()
+void PAN3060::InitContinuosMode()
 {
     rf_init();
 
     rf_set_default_para();
 
-    rf_enter_single_timeout_rx(90);
+    rf_enter_continous_rx();
 
 #ifdef MODEL7735
     syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
@@ -104,13 +106,7 @@ void PAN3060::InitSPI()
 
 void PAN3060::Update()
 {
-    if (need_init)
-    {
-        need_init = false;
-
-        InitOn90ms();
-    }
-    else if (need_sleep)
+    if (need_sleep)
     {
         need_sleep = false;
 
@@ -196,9 +192,4 @@ void PAN3060::CallbackOnIRQ()
 
 void PAN3060::CallbackOnPMS150()
 {
-    if (in_deepsleep)
-    {
-        in_deepsleep = false;
-        need_init = true;
-    }
 }

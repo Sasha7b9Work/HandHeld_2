@@ -65,10 +65,10 @@ void ModeClock::LeaveSleepMode()
         {
             ModeClock::Set(Source::ExistReceived() ? ModeClock::Hi : ModeClock::Low);
         }
-        else                                            // А здесь проснулись от приёмника
-        {
-            PAN3060::InitOn90ms();
-        }
+//        else                                            // А здесь проснулись от приёмника
+//        {
+//            PAN3060::InitOn90ms();
+//        }
     }
 }
 
