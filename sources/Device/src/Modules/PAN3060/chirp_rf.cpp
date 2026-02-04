@@ -448,9 +448,9 @@ void rf_set_default_para(void)
     _data |= 0x80;
     rf_write_spec_page_reg(PAGE0_SEL, 0x45, _data);
 
-    //set ldo on (dcdc off) regulator
     _data = rf_read_spec_page_reg(PAGE3_SEL, 0x24);
-    _data &= ~(1 << 3);
+    //_data &= ~(1 << 3);       // ldo on (dcdc off)
+    _data |= (1 << 3);          // ldo off (dcdc on)
     rf_write_spec_page_reg(PAGE3_SEL, 0x24, _data);
 }
 
