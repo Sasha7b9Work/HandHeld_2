@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "Display/Colors.h"
 #include "Display/Display.h"
+#include "Settings/Settings.h"
 
 
 uint16 Color::colors[16] =
@@ -105,10 +106,24 @@ uint16 Color::Make(uint8 r, uint8 g, uint8 b)
 {
     if (Display::IsOldType())
     {
-        return (uint16)((b)+((g) << 5) + ((r) << 11));
+        if (gset.inverse)
+        {
+            return (uint16)((0x1f - (b)) + ((0x3f - (g)) << 5) + ((0x1f - (r)) << 11));
+        }
+        else
+        {
+            return (uint16)((b)+((g) << 5) + ((r) << 11));
+        }
     }
     else
     {
-        return (uint16)((0x1f - (b)) + ((0x3f - (g)) << 5) + ((0x1f - (r)) << 11));
+        if (gset.inverse)
+        {
+            return (uint16)((b)+((g) << 5) + ((r) << 11));
+        }
+        else
+        {
+            return (uint16)((0x1f - (b)) + ((0x3f - (g)) << 5) + ((0x1f - (r)) << 11));
+        }
     }
 }

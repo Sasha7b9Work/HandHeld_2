@@ -3,6 +3,7 @@
 #include "Menu/Pages/Pages.h"
 #include "Menu/MenuItems.h"
 #include "Menu/MenuItemDef.h"
+#include "Display/Display.h"
 
 
 namespace PageDoorBell
@@ -83,7 +84,22 @@ namespace PageMain
     );
 
 
-    DEF_PAGE_10(pageMain, nullptr, "Ã≈Õﬁ",
+    static void FuncOnChangeInverse()
+    {
+        Color::Init();
+
+        Display::Refresh();
+    }
+
+
+    DEF_CHOICE_2(choiceInverse, self, "»Õ¬≈–—»ﬂ", &gset.inverse,
+        "Œ“ À",
+        "¬ À",
+        FuncOnChangeInverse
+    );
+
+
+    DEF_PAGE_11(pageMain, nullptr, "Ã≈Õﬁ",
         PageAlarm::self,
         PageWatch::self,
         PageDoorBell::self,
@@ -94,6 +110,7 @@ namespace PageMain
         PageJournal::self,
         &choiceTimeIndication,
         &choiceVolume,
+        &choiceInverse,
         nullptr,
         nullptr,
         nullptr

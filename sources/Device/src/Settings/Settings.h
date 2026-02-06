@@ -70,6 +70,7 @@ struct Settings
     SettingsSource sources[Source::Count];
     SettingsAlarm  alarm;
     uint8          volume;          // 0 - низкая, 1 - средняя, 2 - высокая
+    uint8          inverse;
     TimeCall       time_call;
     uint           empty;           // Используется для контроля записи. Должно быть ноль
 

@@ -23,7 +23,8 @@ static const Settings def_set =
         { 0, 0, 0, 0, 0, 0 },
         1
     },
-    2,
+    2,                  // volume
+    0,                  // inverse
     { TimeCall::_60s },
     0       // empty
 };

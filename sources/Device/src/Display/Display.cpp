@@ -100,6 +100,15 @@ void Display::PrepareToSleep()
 }
 
 
+void Display::Refresh()
+{
+    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    {
+        Buffer::crc[i] = 0;
+    }
+}
+
+
 void Display::Update()
 {
     static TimeMeterMS meter;
