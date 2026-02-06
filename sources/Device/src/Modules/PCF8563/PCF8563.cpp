@@ -210,6 +210,24 @@ static int dayofweek(int Day, int Month, int Year)
     return (7 + N) % 7;
 }
 
+
+void RTCDateTime::Correct()
+{
+    uint8 m = Month;
+
+    if (Day == 31 &&
+        (m == 4 || m == 6 || m == 9 || m == 11))
+    {
+        Day = 30;
+    }
+
+    if (m == 2 && Day > 29)
+    {
+        Day = 29;
+    }
+}
+
+
 void PCF8563::SetDateTime(RTCDateTime *DateTime)
 {
     uint8 tmp[7];

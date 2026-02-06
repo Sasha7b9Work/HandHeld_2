@@ -300,6 +300,8 @@ int Choice::NumChoices() const
 
 void DateTime::ApplyAction(const Action &action) const
 {
+    data->date_time->Correct();
+
     if (action.key == Key::Menu)
     {
         (*data->field)++;
