@@ -24,7 +24,7 @@ namespace PAN3060
 
     static void InitSPI();
 
-    static void EnterSleepMode();
+    void EnterSleepMode();
 
     static void ReadFIFO();
 

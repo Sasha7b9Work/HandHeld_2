@@ -128,6 +128,17 @@ static const DataPage dp##name{&name, items##name, &current_item##name, func_dra
 static const Page page##name{&dp##name};                                                                                    \
 const Item name{&di##name, &page##name}
 
+#define DEF_PAGE_10(name, keeper, title, item0, item1, item2, item3, item4, item5, item6, item7, item8, item9,              \
+    func_draw_closed, func_draw_opened, func_key)                                                                           \
+static const Item *items##name[] = { item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, nullptr };       \
+static int8 current_item##name = 0;                                                                                         \
+static int8 opened##name = 0;                                                                                               \
+static const DataItem di##name{ItemType::Page, keeper, title, &opened##name};                                               \
+extern const Item name;                                                                                                     \
+static const DataPage dp##name{&name, items##name, &current_item##name, func_draw_closed, func_draw_opened, func_key};      \
+static const Page page##name{&dp##name};                                                                                    \
+const Item name{&di##name, &page##name}
+
 #define DEF_CHOICE_2(name, keeper, title, value, name0, name1, func_on_change)                                              \
 static int8 opened##name = 0;                                                                                               \
 static const DataItem di##name{ItemType::Choice, keeper, title, &opened##name};                                             \
@@ -276,15 +287,13 @@ DEF_CHOICE_7_COLORS(choiceColor, self, "жбер", (uint8 *const)&set,          \
 #define DEF_SOURCE_CHOICES(source, func)                                    \
 DEF_CHOICE_MODE_INDICATION(gset.sources[source].mode_indication, func);     \
 DEF_CHOICE_MELODY(gset.sources[source].melody);                             \
-DEF_CHOICE_VOLUME(gset.sources[source].volume);                             \
 DEF_CHOICE_COLOR(gset.sources[source].color);
 
 #define DEF_PAGE_SOURCE(name, source, func)             \
 DEF_SOURCE_CHOICES(source, func);                       \
-DEF_PAGE_4(name, PageMain::self, Source::Name(source),  \
+DEF_PAGE_3(name, PageMain::self, Source::Name(source),  \
     &choiceModeIndication,                              \
     &choiceMelody,                                      \
-    &choiceVolume,                                      \
     &choiceColor,                                       \
     nullptr,                                            \
     nullptr,                                            \

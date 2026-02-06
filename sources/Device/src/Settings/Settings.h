@@ -5,18 +5,6 @@
 #include "Settings/Source.h"
 
 
-struct Volume
-{
-    enum E
-    {
-        Low,
-        Middle,
-        Hi,
-        Count
-    };
-};
-
-
 struct Melody
 {
     enum E
@@ -60,7 +48,6 @@ struct TimeCall
 struct SettingsSource
 {
     Melody::E         melody;           // Текущая мелодия
-    Volume::E         volume;           // Громкость текущей мелодии
     Color::E          color;
     ModeIndication::E mode_indication;  // Режим индикации
 };
@@ -70,7 +57,6 @@ struct SettingsSource
 struct SettingsAlarm
 {
     Melody::E         melody;
-    Volume::E         volume;
     Color::E          color;
     ModeIndication::E mode_indication;
     RTCDateTime       time;
@@ -83,8 +69,9 @@ struct Settings
     uint           crc32;
     SettingsSource sources[Source::Count];
     SettingsAlarm  alarm;
+    uint8          volume;          // 0 - низкая, 1 - средняя, 2 - высокая
     TimeCall       time_call;
-    uint           empty;                 // Используется для контроля записи. Должно быть ноль
+    uint           empty;           // Используется для контроля записи. Должно быть ноль
 
     void Save();
     void Load();

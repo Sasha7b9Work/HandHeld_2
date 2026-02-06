@@ -57,7 +57,7 @@ namespace PageMicrophone
 
 namespace PageMain
 {
-    static void FuncOnChange()
+    static void FuncOnChangeTime()
     {
     }
 
@@ -66,11 +66,24 @@ namespace PageMain
         "20 ÒÂÍ",
         "30 ÒÂÍ",
         "60 ÒÂÍ",
-        FuncOnChange
+        FuncOnChangeTime
     );
 
 
-    DEF_PAGE_9(pageMain, nullptr, "Ã≈Õﬁ",
+    static void FuncOnChangeVolume()
+    {
+    }
+
+
+    DEF_CHOICE_3(choiceVolume, self, "√–ŒÃ Œ—“‹", &gset.volume,
+        "Õ»« ¿ﬂ",
+        "—–≈ƒÕﬂﬂ",
+        "¬€—Œ ¿ﬂ",
+        FuncOnChangeVolume
+    );
+
+
+    DEF_PAGE_10(pageMain, nullptr, "Ã≈Õﬁ",
         PageAlarm::self,
         PageWatch::self,
         PageDoorBell::self,
@@ -80,6 +93,7 @@ namespace PageMain
         PageMicrophone::self,
         PageJournal::self,
         &choiceTimeIndication,
+        &choiceVolume,
         nullptr,
         nullptr,
         nullptr

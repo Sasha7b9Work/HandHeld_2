@@ -293,7 +293,7 @@ void PCF8563::Update()
 
             if (ModeIndication::ConsistSound(gset.alarm.mode_indication))
             {
-                Beeper::Play((Melody::E)gset.alarm.melody, (uint8)gset.alarm.volume);
+                Beeper::Play((Melody::E)gset.alarm.melody, (uint8)gset.volume);
             }
 
             if (ModeIndication::ConsistLED(gset.alarm.mode_indication))

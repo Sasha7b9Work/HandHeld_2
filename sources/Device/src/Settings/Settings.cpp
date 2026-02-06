@@ -9,21 +9,21 @@
 static const Settings def_set =
 {
     0,      // crc32
-    { {Melody::_1,  Volume::Hi, Color::Red,     ModeIndication::All},
-      {Melody::_2,  Volume::Hi, Color::Cyan,    ModeIndication::All},
-      {Melody::_3,  Volume::Hi, Color::Yellow,  ModeIndication::All},
-      {Melody::_4,  Volume::Hi, Color::Green,   ModeIndication::All},
-      {Melody::_5,  Volume::Hi, Color::Blue,    ModeIndication::All},
-      {Melody::_5,  Volume::Hi, Color::Magenta, ModeIndication::All}
+    { {Melody::_1,  Color::Red,     ModeIndication::All},
+      {Melody::_2,  Color::Cyan,    ModeIndication::All},
+      {Melody::_3,  Color::Yellow,  ModeIndication::All},
+      {Melody::_4,  Color::Green,   ModeIndication::All},
+      {Melody::_5,  Color::Blue,    ModeIndication::All},
+      {Melody::_5,  Color::Magenta, ModeIndication::All}
     },
     {
         Melody::_1,
-        Volume::Hi,
         Color::White,
         ModeIndication::All,
         { 0, 0, 0, 0, 0, 0 },
         1
     },
+    2,
     { TimeCall::_60s },
     0       // empty
 };
