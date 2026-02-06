@@ -1,6 +1,5 @@
 // 2024/03/03 17:06:40 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Modules/Beeper/driverBeeper.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Hardware/Timer.h"
 #include "system.h"
@@ -16,6 +15,12 @@ namespace Beeper
         static const uint PIN = GPIO_PIN_0;
         static const uint TIMER = TIMER2;
         static const uint TIMER_CHAN = TIMER_CH_2;
+
+        void Init();
+
+        void StartFrequency(float frequency, uint8 vol);
+
+        void Stop();
     }
 }
 
@@ -59,7 +64,7 @@ void Beeper::Driver::Init()
     timer_channel_output_config(TIMER, TIMER_CHAN, &timer_ocinitpara);
 
     /* CH1 configuration in PWM mode0, duty cycle 50% */
-    timer_channel_output_pulse_value_config(TIMER, TIMER_CHAN, 12);
+//    timer_channel_output_pulse_value_config(TIMER, TIMER_CHAN, 12);
     timer_channel_output_mode_config(TIMER, TIMER_CHAN, TIMER_OC_MODE_PWM0);
     timer_channel_output_shadow_config(TIMER, TIMER_CHAN, TIMER_OC_SHADOW_DISABLE);
 
@@ -95,10 +100,13 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol)
         period = 125;
     }
 
+    
+
     uint16 prescaler = (uint16)(SystemCoreClock / period / (uint)(frequency + 0.5f));
 
     TIMER_PSC(TIMER) = prescaler;
-    TIMER_CAR(TIMER) = period/4;
+    TIMER_CAR(TIMER) = period / 4;
+    TIMER_CH2CV(TIMER) = TIMER_CAR(TIMER) * 10 / 100;
 
     TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
 
@@ -121,10 +129,4 @@ void Beeper::Driver::Stop()
 #endif
 
     gpio_bit_reset(PORT, PIN);                  // Переводим в ноль, чтобы не палить динамик
-}
-
-
-void Beeper::Driver::CallbackOnOutputSample(uint8 sample)
-{
-    TIMER_CH1CV(TIMER) = (uint32_t)sample;
 }

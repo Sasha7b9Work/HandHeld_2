@@ -1,6 +1,5 @@
 // 2024/03/18 15:45:12 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Modules/Beeper/driverBeeper.h"
 #include "Modules/Beeper/Beeper.h"
 #include "Hardware/Timer.h"
 #include "Modules/PCF8563/PCF8563.h"
@@ -12,6 +11,18 @@
 #endif
 #include "system.h"
 
+
+namespace Beeper
+{
+    namespace Driver
+    {
+        extern void Init();
+
+        extern void StartFrequency(float frequency, uint8 volume);
+
+        extern void Stop();
+    }
+}
 
 struct Note
 {
