@@ -39,7 +39,7 @@ void Power::MeasVoltage()
 
 void Power::Init()
 {
-#ifdef POWER_ENABLED
+#ifdef POWER_CONTROL_ENABLED
 
     voltage = HAL_ADC::GetVoltage(true);
 
@@ -109,7 +109,7 @@ void Power::PowerDown()
 
 void Power::Update()
 {
-#ifdef POWER_ENABLED
+#ifdef POWER_CONTROL_ENABLED
 
     if (voltage <= 3.5f)
     {

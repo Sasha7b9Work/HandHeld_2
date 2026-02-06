@@ -60,6 +60,12 @@ void PAN3060::InitContinuosMode()
     syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
     exti_interrupt_flag_clear(EXTI_8);
 #endif
+
+#ifdef MODEL7789
+
+    #pragma message("Function not defines")
+
+#endif
 }
 
 
@@ -71,6 +77,12 @@ void PAN3060::InitIRQ()
     gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO_PIN_8);
     nvic_irq_enable(EXTI4_15_IRQn, 2);
     exti_init(EXTI_8, EXTI_INTERRUPT, EXTI_TRIG_RISING);
+
+#endif
+
+#ifdef MODEL7789
+
+    #pragma message("Function not defines")
 
 #endif
 }
@@ -99,6 +111,12 @@ void PAN3060::InitSPI()
 
     spi_fifo_access_size_config(SPI1, SPI_BYTE_ACCESS);
     spi_enable(SPI_PAN3060);
+
+#endif
+
+#ifdef MODEL7789
+
+    #pragma message("Function not defines")
 
 #endif
 }
