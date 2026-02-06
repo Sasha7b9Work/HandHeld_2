@@ -9,12 +9,6 @@
 #endif
 
 
-#ifdef MODEL7735
-    // SCL PA0 10
-    // SDA PA1 11
-#endif
-
-
 #define SW_I2C_WAIT_TIME    2 // 10us 100kHz
 
 #define I2C_SLAVE_ADDRESS7     (0xa2)   // Для часов
@@ -39,7 +33,7 @@
 #endif
 
 #ifdef MODEL7789
-    #define PORT_I2C GPIOB
+    #define PORT_I2C  GPIOB
     #define I2C_SCK   GPIO_PIN_6
     #define I2C_SDA   GPIO_PIN_7
 #endif
