@@ -43,11 +43,11 @@ void Beeper::Driver::Init()
     timer_parameter_struct timer_initpara =
     {
         // TIMER2CLK = SystemCoreClock / 18 = 4MHz, the PWM frequency is 16000 Hz
-        8,
+        71,
         TIMER_COUNTER_EDGE,
         TIMER_COUNTER_UP,
         TIMER_CKDIV_DIV1,
-        249,
+        65535,
         0
     };
 
@@ -93,6 +93,8 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
 #endif
     }
 
+    frequency = 1e3f;
+
     timer_disable(TIMER);
 
     uint period = 50;
@@ -100,7 +102,7 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
     uint16 prescaler = (uint16)(SystemCoreClock / period / (uint)(frequency + 0.5f));
 
     TIMER_PSC(TIMER) = prescaler;
-    TIMER_CAR(TIMER) = period / 4;
+    TIMER_CAR(TIMER) = period;
 
     uint k = 50;
 
@@ -113,11 +115,11 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
         k = 12;
     }
 
-    TIMER_CH2CV(TIMER) = period / 4 * k / 100;
+    TIMER_CH2CV(TIMER) = 1;
 
     if (first)
     {
-        TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
+//        TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
     }
 
     timer_enable(TIMER);
