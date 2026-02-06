@@ -119,7 +119,7 @@ void Beeper::Init()
 }
 
 
-void Beeper::Play(Melody::E type, uint8 _volume, uint /*timeMS*/)
+void Beeper::Play(Melody::E type, uint8 _volume)
 {
     if (is_running)
     {
@@ -228,19 +228,12 @@ void Sound::Update()
 
         if (num_note >= NumberNotes())
         {
-            Beeper::Stop();
-
-            if (Source::GetCountReceived() || PCF8563::IsAlarmed())
-            {
-                Sound::Start();
-            }
+            num_note = 0;
         }
-        else
-        {
-            Beeper::Driver::StartFrequency(GetFrequency(), Beeper::volume);
 
-            time_note_start = TIME_MS;
-        }
+        Beeper::Driver::StartFrequency(GetFrequency(), Beeper::volume);
+
+        time_note_start = TIME_MS;
     }
 }
 

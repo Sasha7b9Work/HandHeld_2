@@ -228,7 +228,7 @@ void Source::Queue::Push(Source::E type)
 
     if (ModeIndication::ConsistSound(source.mode_indication))
     {
-        Beeper::Play((Melody::E)source.melody, (uint8)gset.volume, gset.time_call.ToMS());
+        Beeper::Play((Melody::E)source.melody, (uint8)gset.volume);
     }
 
     if (ModeIndication::ConsistVibro(source.mode_indication))

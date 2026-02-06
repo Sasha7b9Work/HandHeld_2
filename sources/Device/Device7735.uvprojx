@@ -642,11 +642,6 @@
               </FileOption>
             </File>
             <File>
-              <FileName>opt.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\opt.h</FilePath>
-            </File>
-            <File>
               <FileName>defines.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\defines.cpp</FilePath>
@@ -655,6 +650,11 @@
               <FileName>readme.txt</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\readme.txt</FilePath>
+            </File>
+            <File>
+              <FileName>option.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\option.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1775,11 +1775,6 @@
               <FilePath>.\src\main.cpp</FilePath>
             </File>
             <File>
-              <FileName>opt.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\opt.h</FilePath>
-            </File>
-            <File>
               <FileName>defines.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\defines.cpp</FilePath>
@@ -1788,6 +1783,11 @@
               <FileName>readme.txt</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\readme.txt</FilePath>
+            </File>
+            <File>
+              <FileName>option.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\option.h</FilePath>
             </File>
           </Files>
         </Group>
