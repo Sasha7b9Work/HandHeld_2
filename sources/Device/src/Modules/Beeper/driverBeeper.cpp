@@ -93,19 +93,34 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
 #endif
     }
 
+    timer_disable(TIMER);
+
     uint period = 50;
 
     uint16 prescaler = (uint16)(SystemCoreClock / period / (uint)(frequency + 0.5f));
 
     TIMER_PSC(TIMER) = prescaler;
     TIMER_CAR(TIMER) = period / 4;
-    TIMER_CH2CV(TIMER) = TIMER_CAR(TIMER) * 10 / 100;
+
+    uint k = 50;
+
+    if (vol == 1)
+    {
+        k = 25;
+    }
+    else if (vol == 0)
+    {
+        k = 12;
+    }
+
+    TIMER_CH2CV(TIMER) = period / 4 * k / 100;
 
     if (first)
     {
         TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
-        TIMER_CTL0(TIMER) |= (uint32_t)TIMER_CTL0_CEN;
     }
+
+    timer_enable(TIMER);
 }
 
 
