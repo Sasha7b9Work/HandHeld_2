@@ -9,7 +9,8 @@ namespace Beeper
 
     void Update();
 
-    void Play(Melody::E, uint8);
+    // timeMS - столько будет звучать мелодия
+    void Play(Melody::E, uint8, uint timeMS);
 
     void Stop();
 
