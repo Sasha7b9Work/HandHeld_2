@@ -11,8 +11,17 @@ namespace Keyboard
 {
     struct Button
     {
-        Button(uint _port, uint16 _pin, uint8 _irqn, uint8 _exti_source_port, uint8 _exti_source_pin, exti_line_enum _exti) :
-            port(_port), pin(_pin), irqn(_irqn), exti_source_port(_exti_source_port), exti_source_pin(_exti_source_pin), exti(_exti)
+        Button(uint _port, uint16 _pin, uint8 _irqn
+#ifdef MODEL7735
+            , uint8 _exti_source_port, uint8 _exti_source_pin
+#endif
+            , exti_line_enum _exti
+        ) :
+            port(_port), pin(_pin), irqn(_irqn)
+#ifdef MODEL7735
+            , exti_source_port(_exti_source_port), exti_source_pin(_exti_source_pin)
+#endif
+            , exti(_exti)
         { }
 
         void Init()
@@ -25,6 +34,14 @@ namespace Keyboard
             exti_init(exti, EXTI_INTERRUPT, EXTI_TRIG_BOTH);
             exti_interrupt_flag_clear(exti);
 
+#endif
+
+#ifdef MODEL7789
+
+            gpio_init(port, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, pin);
+            nvic_irq_enable((IRQn_Type)irqn, 2, 0);
+            exti_init(exti, EXTI_INTERRUPT, EXTI_TRIG_BOTH);
+            exti_interrupt_flag_clear(exti);
 #endif
         }
 
@@ -41,19 +58,21 @@ namespace Keyboard
         uint   port;
         uint16 pin;
         uint8  irqn;
+#ifdef MODEL7735
         uint8  exti_source_port;
         uint8  exti_source_pin;
+#endif
         exti_line_enum exti;
     };
 
-    /*
-    *   SW_DWN    41    PB5      Down
-    *   SW_UP     33    PA12     Up
-    *   SW_LEFT   38    PA15     Menu
-    *   SW_RIGHT  13    PA3      Cancel
-    */
-
 #ifdef MODEL7735
+
+    /*
+    *  SW_DWN    41    PB5      Down
+    *  SW_UP     33    PA12     Up
+    *  SW_LEFT   38    PA15     Menu
+    *  SW_RIGHT  13    PA3      Cancel
+    */
 
     static Button btnMenu(GPIOA, GPIO_PIN_3, EXTI2_3_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN3, EXTI_3); 
     static Button btnCancel(GPIOA, GPIO_PIN_15, EXTI4_15_IRQn, EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN15, EXTI_15);
@@ -64,10 +83,10 @@ namespace Keyboard
 
 #ifdef MODEL7789
 
-    static Button btnMenu(GPIOA, GPIO_PIN_3, EXTI5_9_IRQn, 0, 0, EXTI_3);
-    static Button btnCancel(GPIOA, GPIO_PIN_15, EXTI5_9_IRQn, 0, 0, EXTI_15);
-    static Button btnUp(GPIOA, GPIO_PIN_12, EXTI5_9_IRQn, 0, 0, EXTI_12);
-    static Button btnDown(GPIOB, GPIO_PIN_5, EXTI5_9_IRQn, 0, 0, EXTI_5);
+    static Button btnMenu(GPIOA, GPIO_PIN_3, EXTI3_IRQn, EXTI_3);
+    static Button btnCancel(GPIOA, GPIO_PIN_15, EXTI10_15_IRQn, EXTI_15);
+    static Button btnUp(GPIOA, GPIO_PIN_12, EXTI10_15_IRQn, EXTI_12);
+    static Button btnDown(GPIOB, GPIO_PIN_5, EXTI5_9_IRQn, EXTI_5);
 
 #endif
 

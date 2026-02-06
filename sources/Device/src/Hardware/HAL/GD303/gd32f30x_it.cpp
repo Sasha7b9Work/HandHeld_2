@@ -85,16 +85,16 @@ void SysTick_Handler(void)
     }
 
 
-void EXTI2_3_IRQHandler(void)
+void EXTI3_IRQHandler(void)
 {
-#ifdef MODEL7735
-    CALLBACK_ON_KEY(EXTI_3, Key::Menu);
-#endif
+    CALLBACK_ON_KEY(EXTI_3, Key::Menu)
 }
 
 
-void EXTI4_15_IRQHandler(void)
+void EXTI5_9_IRQHandler(void)
 {
+    CALLBACK_ON_KEY(EXTI_5, Key::Down)
+
     // Получено прерывание от приёмника
     if (SET == exti_interrupt_flag_get(EXTI_8))
     {
@@ -102,7 +102,11 @@ void EXTI4_15_IRQHandler(void)
 
         exti_interrupt_flag_clear(EXTI_8);
     }
+}
 
+
+void EXTI10_15_IRQHandler(void)
+{
     if (SET == exti_interrupt_flag_get(EXTI_13))
     {
         exti_interrupt_flag_clear(EXTI_13);
@@ -111,13 +115,9 @@ void EXTI4_15_IRQHandler(void)
         PAN3060::CallbackOnPMS150();
     }
 
-#ifdef MODEL7735
-    CALLBACK_ON_KEY(EXTI_5, Key::Down)
-
     CALLBACK_ON_KEY(EXTI_12, Key::Up)
 
     CALLBACK_ON_KEY(EXTI_15, Key::Cancel)
-#endif
 }
 
 
