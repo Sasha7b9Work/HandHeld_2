@@ -18,7 +18,7 @@ namespace Beeper
     {
         extern void Init();
 
-        extern void StartFrequency(float frequency, uint8 volume);
+        extern void StartFrequency(float frequency, uint8 volume, bool first);
 
         extern void Stop();
     }
@@ -154,7 +154,7 @@ void Sound::Start()
 
     Beeper::is_running = true;
 
-    Beeper::Driver::StartFrequency(GetFrequency(), Beeper::volume);
+    Beeper::Driver::StartFrequency(GetFrequency(), Beeper::volume, true);
 }
 
 
@@ -231,7 +231,7 @@ void Sound::Update()
             num_note = 0;
         }
 
-        Beeper::Driver::StartFrequency(GetFrequency(), Beeper::volume);
+        Beeper::Driver::StartFrequency(GetFrequency(), Beeper::volume, false);
 
         time_note_start = TIME_MS;
     }

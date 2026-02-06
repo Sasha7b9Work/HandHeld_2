@@ -18,7 +18,8 @@ namespace Beeper
 
         void Init();
 
-        void StartFrequency(float frequency, uint8 vol);
+        // first == true - первый запуск, false - запуск следующей ноты
+        void StartFrequency(float frequency, uint8 vol, bool first);
 
         void Stop();
     }
@@ -68,39 +69,31 @@ void Beeper::Driver::Init()
     timer_channel_output_mode_config(TIMER, TIMER_CHAN, TIMER_OC_MODE_PWM0);
     timer_channel_output_shadow_config(TIMER, TIMER_CHAN, TIMER_OC_SHADOW_DISABLE);
 
-    timer_primary_output_config(TIMER, ENABLE);
+    //    timer_primary_output_config(TIMER, ENABLE);
 
-    /* auto-reload preload enable */
+        /* auto-reload preload enable */
     timer_auto_reload_shadow_enable(TIMER);
-//    timer_interrupt_enable(TIMER14, TIMER_INT_CH1);
-//    timer_enable(TIMER14);
+    //    timer_interrupt_enable(TIMER14, TIMER_INT_CH1);
+    //    timer_enable(TIMER14);
 }
 
 
-void Beeper::Driver::StartFrequency(float frequency, uint8 vol)
+void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
 {
+    if (first)
+    {
 #ifdef MODEL7735
-    gpio_mode_set(PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, PIN);
-    gpio_output_options_set(PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PIN);
-    gpio_af_set(PORT, GPIO_AF_1, PIN);
+        gpio_mode_set(PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, PIN);
+        gpio_output_options_set(PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PIN);
+        gpio_af_set(PORT, GPIO_AF_1, PIN);
 #endif
 
 #ifdef MODEL7789
-    gpio_init(PORT, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, PIN);
+        gpio_init(PORT, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, PIN);
 #endif
-
-    uint period = 250;
-
-    if (vol == 1)
-    {
-        period = 150;
-    }
-    else if (vol == 0)
-    {
-        period = 125;
     }
 
-    
+    uint period = 50;
 
     uint16 prescaler = (uint16)(SystemCoreClock / period / (uint)(frequency + 0.5f));
 
@@ -108,9 +101,11 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol)
     TIMER_CAR(TIMER) = period / 4;
     TIMER_CH2CV(TIMER) = TIMER_CAR(TIMER) * 10 / 100;
 
-    TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
-
-    TIMER_CTL0(TIMER) |= (uint32_t)TIMER_CTL0_CEN;
+    if (first)
+    {
+        TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
+        TIMER_CTL0(TIMER) |= (uint32_t)TIMER_CTL0_CEN;
+    }
 }
 
 
