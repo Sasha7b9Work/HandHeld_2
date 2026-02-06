@@ -26,9 +26,6 @@ namespace Beeper
 }
 
 
-static uint period = 999;
-
-
 void Beeper::Driver::Init()
 {
 #ifdef MODEL7735
@@ -50,7 +47,7 @@ void Beeper::Driver::Init()
         TIMER_COUNTER_EDGE,
         TIMER_COUNTER_UP,
         TIMER_CKDIV_DIV1,
-        period,
+        0,
         0
     };
 
@@ -96,33 +93,36 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
 #endif
     }
 
-    frequency = 1e3f;
-
     timer_disable(TIMER);
 
-    uint period = 50;
+    /*
+    *   1000 - 1000 關
+    *   2000 -  500 關
+    *   4000 -  250 關
+    *
+    *   period = 1000 / X關 * 1000
+    */
 
-    uint16 prescaler = (uint16)(SystemCoreClock / period / (uint)(frequency + 0.5f));
+    uint period = (uint)((1000.0f / (frequency + 0.5f) * 1000.0f) + 0.5f);
 
-//    TIMER_PSC(TIMER) = prescaler;
     TIMER_CAR(TIMER) = period;
 
-    uint k = 50;
-
-    if (vol == 1)
+    if (vol == 2)
     {
-        k = 25;
+        TIMER_CH2CV(TIMER) = period * 50 / 100;
+    }
+    else if (vol == 1)
+    {
+        TIMER_CH2CV(TIMER) = 16;
     }
     else if (vol == 0)
     {
-        k = 12;
+        TIMER_CH2CV(TIMER) = 8;
     }
-
-    TIMER_CH2CV(TIMER) = 1;
 
     if (first)
     {
-//        TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
+        TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
     }
 
     timer_enable(TIMER);
