@@ -9,12 +9,12 @@ namespace Beeper
 {
     namespace Driver
     {
-        // PB0 - Alternate TIMER2_CH2 AF_1
+        // PB1 - Alternate TIMER2_CH3 AF_1
 
         static const uint PORT = GPIOB;
-        static const uint PIN = GPIO_PIN_0;
+        static const uint PIN = GPIO_PIN_1;
         static const uint TIMER = TIMER2;
-        static const uint TIMER_CHAN = TIMER_CH_2;
+        static const uint TIMER_CHAN = TIMER_CH_3;
 
         void Init();
 
@@ -113,11 +113,13 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
         k = 12;
     }
 
-    TIMER_CH2CV(TIMER) = period / 4 * k / 100;
+    k = 25;
+
+    TIMER_CH3CV(TIMER) = period / 4 * 25 / 100;
 
     if (first)
     {
-        TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
+        TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH3;
     }
 
     timer_enable(TIMER);
@@ -126,7 +128,7 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
 
 void Beeper::Driver::Stop()
 {
-    timer_interrupt_disable(TIMER, TIMER_INT_CH2);
+    timer_interrupt_disable(TIMER, TIMER_INT_CH3);
     timer_disable(TIMER);
 
 #ifdef MODEL7735

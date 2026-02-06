@@ -105,7 +105,7 @@ namespace Beeper
     static uint time_start = 0;       // В это время нужно запустить
     static uint8 volume = 0;
 
-    static PinOut pinMUTE(GPIOB, GPIO_PIN_1);
+    static PinOut pinMUTE(GPIOB, GPIO_PIN_0);
 }
 
 
