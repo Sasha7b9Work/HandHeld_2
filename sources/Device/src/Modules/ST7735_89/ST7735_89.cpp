@@ -34,14 +34,14 @@ namespace ST7735_89
         SendByte(CMD);
     }
 
-    static void Write_Cmd_Data(unsigned char CMDP)
+    static void Write_Data(unsigned char CMDP)
     {
         pinDC_RS.ToHi();
 
         SendByte(CMDP);
     }
 
-    void LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1);
+    static void LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1);
 
     static uint time_enable = 0;
 }
@@ -148,91 +148,91 @@ void ST7735_89::Init()
     Write_Cmd(0x21);                // Display Inversion On
 
     Write_Cmd(0xB1);                // Frame Rate Control (In normal mode/ Full colors)
-    Write_Cmd_Data(0x05);
-    Write_Cmd_Data(0x3A);
-    Write_Cmd_Data(0x3A);
+    Write_Data(0x05);
+    Write_Data(0x3A);
+    Write_Data(0x3A);
 
     Write_Cmd(0xB2);                // Frame Rate Control (In Idle mode/ 8-colors) 
-    Write_Cmd_Data(0x05);
-    Write_Cmd_Data(0x3A);
-    Write_Cmd_Data(0x3A);
+    Write_Data(0x05);
+    Write_Data(0x3A);
+    Write_Data(0x3A);
 
     Write_Cmd(0xB3);                // Frame Rate Control (In Partial mode/ full colors)
-    Write_Cmd_Data(0x05);
-    Write_Cmd_Data(0x3A);
-    Write_Cmd_Data(0x3A);
-    Write_Cmd_Data(0x05);
-    Write_Cmd_Data(0x3A);
-    Write_Cmd_Data(0x3A);
+    Write_Data(0x05);
+    Write_Data(0x3A);
+    Write_Data(0x3A);
+    Write_Data(0x05);
+    Write_Data(0x3A);
+    Write_Data(0x3A);
 
     Write_Cmd(0xB4);                // Display Inversion Control
-    Write_Cmd_Data(0x03);
+    Write_Data(0x03);
 
     Write_Cmd(0xC0);                // Power Control 1 
-    Write_Cmd_Data(0x62);
-    Write_Cmd_Data(0x02);
-    Write_Cmd_Data(0x04);
+    Write_Data(0x62);
+    Write_Data(0x02);
+    Write_Data(0x04);
 
     Write_Cmd(0xC1);                //  Power Control 2 
-    Write_Cmd_Data(0xC0);
+    Write_Data(0xC0);
 
     Write_Cmd(0xC2);                // Power Control 3 (in Normal mode/ Full colors)
-    Write_Cmd_Data(0x0D);
-    Write_Cmd_Data(0x00);
+    Write_Data(0x0D);
+    Write_Data(0x00);
 
     Write_Cmd(0xC3);                // Power Control 4 (in Idle mode/ 8-colors)
-    Write_Cmd_Data(0x8D);
-    Write_Cmd_Data(0x6A);
+    Write_Data(0x8D);
+    Write_Data(0x6A);
 
     Write_Cmd(0xC4);                // Power Control 5 (in Partial mode/ full-colors)
-    Write_Cmd_Data(0x8D);
-    Write_Cmd_Data(0xEE);
+    Write_Data(0x8D);
+    Write_Data(0xEE);
 
     Write_Cmd(0xC5);                // VCOM Control 1
-    Write_Cmd_Data(0x0E);
+    Write_Data(0x0E);
 
     Write_Cmd(0xE0);                //  Gamma (‘+’polarity) Correction Characteristics Setting
-    Write_Cmd_Data(0x10);
-    Write_Cmd_Data(0x0E);
-    Write_Cmd_Data(0x02);
-    Write_Cmd_Data(0x03);
-    Write_Cmd_Data(0x0E);
-    Write_Cmd_Data(0x07);
-    Write_Cmd_Data(0x02);
-    Write_Cmd_Data(0x07);
-    Write_Cmd_Data(0x0A);
-    Write_Cmd_Data(0x12);
-    Write_Cmd_Data(0x27);
-    Write_Cmd_Data(0x37);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(0x0D);
-    Write_Cmd_Data(0x0E);
-    Write_Cmd_Data(0x10);
+    Write_Data(0x10);
+    Write_Data(0x0E);
+    Write_Data(0x02);
+    Write_Data(0x03);
+    Write_Data(0x0E);
+    Write_Data(0x07);
+    Write_Data(0x02);
+    Write_Data(0x07);
+    Write_Data(0x0A);
+    Write_Data(0x12);
+    Write_Data(0x27);
+    Write_Data(0x37);
+    Write_Data(0x00);
+    Write_Data(0x0D);
+    Write_Data(0x0E);
+    Write_Data(0x10);
 
 
     Write_Cmd(0xE1);                // Gamma ‘-’polarity Correction Characteristics Setting
-    Write_Cmd_Data(0x10);
-    Write_Cmd_Data(0x0E);
-    Write_Cmd_Data(0x03);
-    Write_Cmd_Data(0x03);
-    Write_Cmd_Data(0x0F);
-    Write_Cmd_Data(0x06);
-    Write_Cmd_Data(0x02);
-    Write_Cmd_Data(0x08);
-    Write_Cmd_Data(0x0A);
-    Write_Cmd_Data(0x13);
-    Write_Cmd_Data(0x26);
-    Write_Cmd_Data(0x36);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(0x0D);
-    Write_Cmd_Data(0x0E);
-    Write_Cmd_Data(0x10);
+    Write_Data(0x10);
+    Write_Data(0x0E);
+    Write_Data(0x03);
+    Write_Data(0x03);
+    Write_Data(0x0F);
+    Write_Data(0x06);
+    Write_Data(0x02);
+    Write_Data(0x08);
+    Write_Data(0x0A);
+    Write_Data(0x13);
+    Write_Data(0x26);
+    Write_Data(0x36);
+    Write_Data(0x00);
+    Write_Data(0x0D);
+    Write_Data(0x0E);
+    Write_Data(0x10);
 
     Write_Cmd(0x3A);                // Interface Pixel Format
-    Write_Cmd_Data(0x05);
+    Write_Data(0x05);
 
     Write_Cmd(0x36);                // Memory Data Access Control
-    Write_Cmd_Data(0x68);
+    Write_Data(0x68);
 
     Write_Cmd(0x29);                // Display On
 
@@ -270,102 +270,102 @@ void ST7735_89::Init()
     //------------------------------display and color format setting--------------------------------//
     Write_Cmd(ST7789_MADCTL);
     //writedata(0x00);
-    Write_Cmd_Data(TFT_MAD_COLOR_ORDER);
+    Write_Data(TFT_MAD_COLOR_ORDER);
 
     // JLX240 display datasheet
     Write_Cmd(0xB6);
-    Write_Cmd_Data(0x0A);
-    Write_Cmd_Data(0x82);
+    Write_Data(0x0A);
+    Write_Data(0x82);
 
     Write_Cmd(ST7789_RAMCTRL);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(0xE0); // 5 to 6-bit conversion: r0 = r5, b0 = b5
+    Write_Data(0x00);
+    Write_Data(0xE0); // 5 to 6-bit conversion: r0 = r5, b0 = b5
 
     Write_Cmd(ST7789_COLMOD);
-    Write_Cmd_Data(0x55);
+    Write_Data(0x55);
     Timer::Delay(10);
 
     //--------------------------------ST7789V Frame rate setting----------------------------------//
     Write_Cmd(ST7789_PORCTRL);
-    Write_Cmd_Data(0x0c);
-    Write_Cmd_Data(0x0c);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(0x33);
-    Write_Cmd_Data(0x33);
+    Write_Data(0x0c);
+    Write_Data(0x0c);
+    Write_Data(0x00);
+    Write_Data(0x33);
+    Write_Data(0x33);
 
     Write_Cmd(ST7789_GCTRL);      // Voltages: VGH / VGL
-    Write_Cmd_Data(0x35);
+    Write_Data(0x35);
 
     //---------------------------------ST7789V Power setting--------------------------------------//
     Write_Cmd(ST7789_VCOMS);
-    Write_Cmd_Data(0x28);		// JLX240 display datasheet
+    Write_Data(0x28);		// JLX240 display datasheet
 
     Write_Cmd(ST7789_LCMCTRL);
-    Write_Cmd_Data(0x0C);
+    Write_Data(0x0C);
 
     Write_Cmd(ST7789_VDVVRHEN);
-    Write_Cmd_Data(0x01);
-    Write_Cmd_Data(0xFF);
+    Write_Data(0x01);
+    Write_Data(0xFF);
 
     Write_Cmd(ST7789_VRHS);       // voltage VRHS
-    Write_Cmd_Data(0x10);
+    Write_Data(0x10);
 
     Write_Cmd(ST7789_VDVSET);
-    Write_Cmd_Data(0x20);
+    Write_Data(0x20);
 
     Write_Cmd(ST7789_FRCTR2);
-    Write_Cmd_Data(0x0f);
+    Write_Data(0x0f);
 
     Write_Cmd(ST7789_PWCTRL1);
-    Write_Cmd_Data(0xa4);
-    Write_Cmd_Data(0xa1);
+    Write_Data(0xa4);
+    Write_Data(0xa1);
 
     //--------------------------------ST7789V gamma setting---------------------------------------//
     Write_Cmd(ST7789_PVGAMCTRL);
-    Write_Cmd_Data(0xd0);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(0x02);
-    Write_Cmd_Data(0x07);
-    Write_Cmd_Data(0x0a);
-    Write_Cmd_Data(0x28);
-    Write_Cmd_Data(0x32);
-    Write_Cmd_Data(0x44);
-    Write_Cmd_Data(0x42);
-    Write_Cmd_Data(0x06);
-    Write_Cmd_Data(0x0e);
-    Write_Cmd_Data(0x12);
-    Write_Cmd_Data(0x14);
-    Write_Cmd_Data(0x17);
+    Write_Data(0xd0);
+    Write_Data(0x00);
+    Write_Data(0x02);
+    Write_Data(0x07);
+    Write_Data(0x0a);
+    Write_Data(0x28);
+    Write_Data(0x32);
+    Write_Data(0x44);
+    Write_Data(0x42);
+    Write_Data(0x06);
+    Write_Data(0x0e);
+    Write_Data(0x12);
+    Write_Data(0x14);
+    Write_Data(0x17);
 
     Write_Cmd(ST7789_NVGAMCTRL);
-    Write_Cmd_Data(0xd0);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(0x02);
-    Write_Cmd_Data(0x07);
-    Write_Cmd_Data(0x0a);
-    Write_Cmd_Data(0x28);
-    Write_Cmd_Data(0x31);
-    Write_Cmd_Data(0x54);
-    Write_Cmd_Data(0x47);
-    Write_Cmd_Data(0x0e);
-    Write_Cmd_Data(0x1c);
-    Write_Cmd_Data(0x17);
-    Write_Cmd_Data(0x1b);
-    Write_Cmd_Data(0x1e);
+    Write_Data(0xd0);
+    Write_Data(0x00);
+    Write_Data(0x02);
+    Write_Data(0x07);
+    Write_Data(0x0a);
+    Write_Data(0x28);
+    Write_Data(0x31);
+    Write_Data(0x54);
+    Write_Data(0x47);
+    Write_Data(0x0e);
+    Write_Data(0x1c);
+    Write_Data(0x17);
+    Write_Data(0x1b);
+    Write_Data(0x1e);
 
     Write_Cmd(ST7789_INVON);
 
     Write_Cmd(ST7789_CASET);    // Column address set
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(0xEF);    // 239
+    Write_Data(0x00);
+    Write_Data(0x00);
+    Write_Data(0x00);
+    Write_Data(0xEF);    // 239
 
     Write_Cmd(ST7789_RASET);    // Row address set
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(0x01);
-    Write_Cmd_Data(0x3F);    // 319
+    Write_Data(0x00);
+    Write_Data(0x00);
+    Write_Data(0x01);
+    Write_Data(0x3F);    // 319
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -412,15 +412,15 @@ void ST7735_89::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsign
 #define CMD_RAMWR 0x2C      // Memory Write
 
     Write_Cmd(CMD_CASET);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(x0);
-    Write_Cmd_Data(0x00);
-    Write_Cmd_Data(x1);
+    Write_Data(0x00);
+    Write_Data(x0);
+    Write_Data(0x00);
+    Write_Data(x1);
     Write_Cmd(CMD_RASET);
-    Write_Cmd_Data(YSH);
-    Write_Cmd_Data(YSL);
-    Write_Cmd_Data(YEH);
-    Write_Cmd_Data(YEL);
+    Write_Data(YSH);
+    Write_Data(YSL);
+    Write_Data(YEH);
+    Write_Data(YEL);
     Write_Cmd(CMD_RAMWR);
 }
 
@@ -476,16 +476,16 @@ void ST7735_89::WriteBuffer(int y0)
     meter.Reset();
 
     Write_Cmd(0x2a);     //Column address set
-    Write_Cmd_Data(0x00);    //start column
-    Write_Cmd_Data(0x02);
-    Write_Cmd_Data(0x00);    //end column
-    Write_Cmd_Data(0xEE);
+    Write_Data(0x00);    //start column
+    Write_Data(0x02);
+    Write_Data(0x00);    //end column
+    Write_Data(0xEE);
 
     Write_Cmd(0x2b);     //Row address set
-    Write_Cmd_Data(0x00);    //start row
-    Write_Cmd_Data(0x02);
-    Write_Cmd_Data(0x01);    //end row
-    Write_Cmd_Data(0x3E);
+    Write_Data(0x00);    //start row
+    Write_Data(0x02);
+    Write_Data(0x01);    //end row
+    Write_Data(0x3E);
     Write_Cmd(0x2C);     //Memory write
 
     pinDC_RS.ToHi();
