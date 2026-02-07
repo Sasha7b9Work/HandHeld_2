@@ -41,7 +41,7 @@ namespace ST7735_89
         SendByte(CMDP);
     }
 
-    static void LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1);
+    static void SetWindow(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1);
 
     static uint time_enable = 0;
 }
@@ -382,7 +382,7 @@ void ST7735_89::Init()
 }
 
 
-void ST7735_89::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
+void ST7735_89::SetWindow(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
 {
     unsigned char YSH, YSL, YEH, YEL;
 
@@ -428,7 +428,7 @@ void ST7735_89::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsign
 void ST7735_89::WriteBuffer(int y0)
 {
 #ifdef MODEL7735
-    LCD_SetPos_Horizontal(0, Display::WIDTH - 1, (uint)y0, (uint)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
+    SetWindow(0, Display::WIDTH - 1, (uint)y0, (uint)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
 
     pinDC_RS.ToHi();
 
