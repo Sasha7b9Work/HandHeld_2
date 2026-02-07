@@ -64,7 +64,7 @@ void Display::Init()
 {
     Color::Init();
 
-    ST7735::Init();
+    ST7735_89::Init();
 
     Font::SetType(TypeFont::_7);
 
@@ -85,13 +85,13 @@ void Display::Init()
 
 uint Display::TimeEnabled()
 {
-    return ST7735::TimeEnabled();
+    return ST7735_89::TimeEnabled();
 }
 
 
 void Display::PrepareToSleep()
 {
-    ST7735::Disable();
+    ST7735_89::Disable();
 
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
     {
@@ -129,7 +129,9 @@ void Display::Update()
         for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
         {
             BeginScene(i);
+#ifndef MODEL7789
             DrawScene(i);
+#endif
             EndScene(i);
         }
 
@@ -214,13 +216,15 @@ void Display::EndScene(int num_parts)
 {
     uint crc = Buffer::CalcualteCRC();
 
+#ifndef MODEL7789
     if (crc != Buffer::crc[Buffer::current_part])
+#endif
     {
-        ST7735::Enable();
+        ST7735_89::Enable();
 
         Buffer::crc[Buffer::current_part] = crc;
 
-        ST7735::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
+        ST7735_89::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
     }
 }
 

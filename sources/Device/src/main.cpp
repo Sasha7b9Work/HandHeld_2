@@ -40,6 +40,15 @@ int main()
 
     Display::Init();
 
+#ifdef MODEL7789
+
+    while (true)
+    {
+        Display::Update();
+    }
+
+#endif
+
     Timer::Init();
 
     Keyboard::Init();
@@ -58,7 +67,7 @@ int main()
 
     PMS150G::Init();
 
-    while(true)
+    while (true)
     {
         Update();
     }
@@ -71,11 +80,13 @@ void Update()
         Source::GetCountReceived() == 0 &&
         !PCF8563::IsAlarmed())
     {
+#ifndef MODEL7789
         ModeClock::Set(ModeClock::Sleep);
-        
+
         ModeClock::LeaveSleepMode();
 
         Power::MeasVoltage();
+#endif
     }
 
     ModeClock::Set(ModeClock::Hi);

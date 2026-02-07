@@ -8,7 +8,7 @@
 #include "system.h"
 
 
-namespace ST7735
+namespace ST7735_89
 {
     /*
     *   TFT_SCK - 15 : PA5     AF0 SPI0_SCK
@@ -41,13 +41,13 @@ namespace ST7735
         SendByte(CMDP);
     }
 
-    static void LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1);
+    void LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1);
 
     static uint time_enable = 0;
 }
 
 
-void ST7735::Enable()
+void ST7735_89::Enable()
 {
     if (is_enabled)
     {
@@ -64,7 +64,7 @@ void ST7735::Enable()
 }
 
 
-void ST7735::Disable()
+void ST7735_89::Disable()
 {
     if (!is_enabled)
     {
@@ -79,19 +79,19 @@ void ST7735::Disable()
 }
 
 
-bool ST7735::IsEnabled()
+bool ST7735_89::IsEnabled()
 {
     return is_enabled;
 }
 
 
-uint ST7735::TimeEnabled()
+uint ST7735_89::TimeEnabled()
 {
     return TIME_MS - time_enable;
 }
 
 
-void ST7735::Init()
+void ST7735_89::Init()
 {
     {
 #ifdef MODEL7735
@@ -382,7 +382,7 @@ void ST7735::Init()
 }
 
 
-void ST7735::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
+void ST7735_89::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
 {
     unsigned char YSH, YSL, YEH, YEL;
 
@@ -425,8 +425,9 @@ void ST7735::LCD_SetPos_Horizontal(unsigned char x0, unsigned char x1, unsigned 
 }
 
 
-void ST7735::WriteBuffer(int y0)
+void ST7735_89::WriteBuffer(int y0)
 {
+#ifdef MODEL7735
     LCD_SetPos_Horizontal(0, Display::WIDTH - 1, (uint)y0, (uint)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
 
     pinDC_RS.ToHi();
@@ -459,4 +460,62 @@ void ST7735::WriteBuffer(int y0)
             SPI_DATA(SPI0) = (uint)((uint8)word);
         }
     }
+#endif
+
+
+#ifdef MODEL7789
+    (void)y0;
+
+    static TimeMeterMS meter;
+
+    if (meter.ElapsedTime() < 1000)
+    {
+        return;
+    }
+
+    meter.Reset();
+
+    Write_Cmd(0x2a);     //Column address set
+    Write_Cmd_Data(0x00);    //start column
+    Write_Cmd_Data(0x02);
+    Write_Cmd_Data(0x00);    //end column
+    Write_Cmd_Data(0xEE);
+
+    Write_Cmd(0x2b);     //Row address set
+    Write_Cmd_Data(0x00);    //start row
+    Write_Cmd_Data(0x02);
+    Write_Cmd_Data(0x01);    //end row
+    Write_Cmd_Data(0x3E);
+    Write_Cmd(0x2C);     //Memory write
+
+    pinDC_RS.ToHi();
+
+    static uint16 word = 1;
+    word += 1023;
+
+    for (int ROW = 0; ROW < 240; ROW++)             //ROW loop
+    {
+        for (int column = 0; column < 320; column++)  //column loop
+        {
+            SPI_DATA(SPI0) = (uint)(word >> 8);
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            SPI_DATA(SPI0) = (uint8)(word);
+        }
+    }
+#endif
 }
