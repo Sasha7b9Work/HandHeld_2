@@ -41,7 +41,7 @@ namespace ST7735_89
         SendByte(CMDP);
     }
 
-    static void SetWindow(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1);
+    static void SetWindow(unsigned char x0, unsigned short x1, unsigned int y0, unsigned int y1);
 
     static uint time_enable = 0;
 }
@@ -91,7 +91,7 @@ uint ST7735_89::TimeEnabled()
 }
 
 
-void ST7735_89::Init()
+void ST7735_89::Init(uint8 macdtl)
 {
     {
 #ifdef MODEL7735
@@ -244,6 +244,17 @@ void ST7735_89::Init()
 
 #define ST7789_NORON		0x13
 #define ST7789_MADCTL		0x36      // Memory data access control
+    /*
+    *  0 n/a
+    *  1 n/a
+    *  2 MH  - Display Data Latch Data Order : 0 - refresh left to rigt, 1 - refresh rigth to left
+    *  3 RGB - RGB/BGR Order : 0 - RGB, 1 - BGR
+    *  4 ML  - Line Address Order : 0 - refresh top to bottom, 1 - refresh bottom to top
+    *  5 MV  - Page/Column Order : 0 - normal mode, 1 - reverser mode
+    *  6 MX  - Column Address Order : 0 - left to right, 1 - rigth to left
+    *  7 MY  - Page Address Order : 0 - top to bottom, 1 - bottom to top
+    */
+
 #define ST7789_RAMCTRL		0xB0      // RAM control
 #define ST7789_COLMOD		0x3A
 #define ST7789_PORCTRL		0xB2      // Porch control
@@ -262,15 +273,17 @@ void ST7735_89::Init()
 #define ST7789_RASET		0x2B
 #define ST7789_DISPON		0x29
 
-#define TFT_MAD_RGB         0x00
-#define TFT_MAD_COLOR_ORDER TFT_MAD_RGB
 
     Write_Cmd(ST7789_NORON);    // Normal display mode on
 
     //------------------------------display and color format setting--------------------------------//
     Write_Cmd(ST7789_MADCTL);
-    //writedata(0x00);
-    Write_Data(TFT_MAD_COLOR_ORDER);
+    uint8 mad = 0x00;
+    _SET_BIT(mad, 4);
+//    _SET_BIT(mad, 6);
+//    _SET_BIT(mad, 7);
+//    Write_Data(0x70);
+    Write_Data(0xA0);
 
     // JLX240 display datasheet
     Write_Cmd(0xB6);
@@ -382,10 +395,8 @@ void ST7735_89::Init()
 }
 
 
-void ST7735_89::SetWindow(unsigned char x0, unsigned char x1, unsigned int y0, unsigned int y1)
+void ST7735_89::SetWindow(unsigned char x0, unsigned short x1, unsigned int y0, unsigned int y1)
 {
-    unsigned char YSH, YSL, YEH, YEL;
-
 #ifdef MODEL7735
     if (Display::IsOldType())
     {
@@ -397,16 +408,6 @@ void ST7735_89::SetWindow(unsigned char x0, unsigned char x1, unsigned int y0, u
     }
 #endif
 
-#ifdef MODEL7789
-    x0 += 0; x1 += 1; y0 += 24; y1 += 26;
-#endif
-
-    YSH = (uint8)(y0 >> 8);
-    YSL = (uint8)y0;
-
-    YEH = (uint8)(y1 >> 8);
-    YEL = (uint8)y1;
-
 #define CMD_CASET 0x2A      // Column Address Set
 #define CMD_RASET 0x2B      // Row Address Set
 #define CMD_RAMWR 0x2C      // Memory Write
@@ -414,13 +415,13 @@ void ST7735_89::SetWindow(unsigned char x0, unsigned char x1, unsigned int y0, u
     Write_Cmd(CMD_CASET);
     Write_Data(0x00);
     Write_Data(x0);
-    Write_Data(0x00);
-    Write_Data(x1);
+    Write_Data((uint8)(x1 >> 8));
+    Write_Data((uint8)x1);
     Write_Cmd(CMD_RASET);
-    Write_Data(YSH);
-    Write_Data(YSL);
-    Write_Data(YEH);
-    Write_Data(YEL);
+    Write_Data(0x00);
+    Write_Data((uint8)y0);
+    Write_Data(0x00);
+    Write_Data((uint8)y1);
     Write_Cmd(CMD_RAMWR);
 }
 
@@ -468,7 +469,7 @@ void ST7735_89::WriteBuffer(int y0)
 
     static TimeMeterMS meter;
 
-    if (meter.ElapsedTime() < 1000)
+    if (meter.ElapsedTime() < 200)
     {
         return;
     }
@@ -477,15 +478,15 @@ void ST7735_89::WriteBuffer(int y0)
 
     Write_Cmd(0x2a);     //Column address set
     Write_Data(0x00);    //start column
-    Write_Data(0x02);
+    Write_Data(10);
     Write_Data(0x00);    //end column
-    Write_Data(0xEE);
+    Write_Data(150);
 
     Write_Cmd(0x2b);     //Row address set
     Write_Data(0x00);    //start row
-    Write_Data(0x02);
-    Write_Data(0x01);    //end row
-    Write_Data(0x3E);
+    Write_Data(10);
+    Write_Data(0x00);    //end row
+    Write_Data(100);
     Write_Cmd(0x2C);     //Memory write
 
     pinDC_RS.ToHi();

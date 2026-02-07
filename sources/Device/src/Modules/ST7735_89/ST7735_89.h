@@ -4,7 +4,7 @@
 
 namespace ST7735_89
 {
-    void Init();
+    void Init(uint8 macdtl = 0);
 
     // Записывает буфер дисплея в строки, начиная с y
     void WriteBuffer(int y);
