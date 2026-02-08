@@ -1,4 +1,4 @@
-#include "main.h"
+﻿#include "main.h"
 #include "ReadKey.h"
 #include "key.h"
 #include "ReadKey.h"
@@ -354,6 +354,17 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
             if (status)
             {
                 upg_start_update(54);
+            }
+            break;
+        }
+        break;
+    case UI_PAGE_ID_UPGRADE_FIRMWARE_182:
+        switch (cursorCount)
+        {
+        case 0:
+            if (status)
+            {
+                upg_start_update(182);
             }
             break;
         }

@@ -124,3 +124,4 @@ void myDisplay_setting_loadParams(int index, const char *fmt, ...);
 void uiTimerFlash_callBack(void);
 
 void myDisplay_ui_upgradeFirmware54(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr);
+void myDisplay_ui_upgradeFirmware182(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr);

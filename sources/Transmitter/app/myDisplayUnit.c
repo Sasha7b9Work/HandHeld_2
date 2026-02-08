@@ -327,6 +327,28 @@ void myDisplay_ui_upgradeFirmware54(bool flashFlag, int agr0, void *arg1_ptr, vo
 
     upg_func_display(54);
 }
+void myDisplay_ui_upgradeFirmware182(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr)
+{
+    if (uiPageIdAddress != UI_PAGE_ID_UPGRADE_FIRMWARE_182)
+    {
+        myLCD_clearFull();
+
+        myLCD_str8x16(IM_NOMALE, 0, 1, "First bytes : ");
+
+        uint32_t address = upg_address_begin();
+
+        uint8_t *pointer = (uint8_t *)address;
+
+        myLCD_str8x16(IM_NOMALE, 0, 2, "%02X %02X %02X %02X %02X %02X %02X %02X", *(pointer), *(pointer + 1), *(pointer + 2), *(pointer + 3), *(pointer + 4), *(pointer + 5), *(pointer + 6), *(pointer + 7));
+    }
+
+    uiPageIdAddress = UI_PAGE_ID_UPGRADE_FIRMWARE_182;
+
+    myLCD_str8x16(agr0 == 0 && flashFlag ? IM_INVERSE : IM_NOMALE, 0, 4, "Start");
+
+    upg_func_display(182);
+
+}
 void myDisplay_ui_rf_rx_packet(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
 {
     int i;
@@ -828,11 +850,13 @@ void myDisplay_init(enterCallback cb)
 //    uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[4] = TYPE_NEXT_LINK;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[4] = UI_PAGE_ID_UPGRADE_FIRMWARE_54 + 1;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[4] = TYPE_NEXT_LINK;
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[5] = UI_PAGE_ID_UPGRADE_FIRMWARE_182 + 1;
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[5] = TYPE_NEXT_LINK;
 
     uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCounting = 0;
-    uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCount = 5;
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCount = 6;
 
-    // Upgrade Firmware ----------------------------------------------------------------------------------------------------------
+    // Upgrade Firmware 54 ----------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].id = UI_PAGE_ID_UPGRADE_FIRMWARE_54 + 1;
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].uiDriver = myDisplay_ui_upgradeFirmware54;
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
@@ -841,6 +865,16 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].writeStaTab[0] = 0;
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].cursorCounting = 0;
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].cursorCount = 1;
+
+    // Upgrade Firmware 182 ----------------------------------------------------------------------------------------------------------
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_182].id = UI_PAGE_ID_UPGRADE_FIRMWARE_182 + 1;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_182].uiDriver = myDisplay_ui_upgradeFirmware182;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_182].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_182].nextPageIdTab[0] = 0;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_182].itemTypeTab[0] = TYPE_WRITE_TEXT;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_182].writeStaTab[0] = 0;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_182].cursorCounting = 0;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_182].cursorCount = 1;
 
     // Enter RF Receiver ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_RX_PACKET].id = UI_PAGE_ID_RX_PACKET + 1;
