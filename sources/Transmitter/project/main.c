@@ -14,6 +14,8 @@
 #include "myUart.h"
 #include "myUart3.h"
 #include "myRadio.h"
+#include "upgrader/Upgrader54.h"
+#include <stdlib.h>
 
 #define SOFT_VERSION 0x13
 #define SET_RF_FREQ_HZ(base, ch,step) base+ch*step*10*1000
@@ -656,7 +658,7 @@ int main(void)
     setEvent(EVENT_TIME_CYCLE_10ms, true, 10);
     setEvent(EVENT_TIME_CYCLE_500ms, true, 500);
 
-    upg_init();
+    upg54_init();
 
     while (1)
     {
@@ -847,6 +849,6 @@ int main(void)
         keyPressValue = keyScan();
         myRadio_process();
 
-        upg_update();
+        upg54_update();
     }
 }

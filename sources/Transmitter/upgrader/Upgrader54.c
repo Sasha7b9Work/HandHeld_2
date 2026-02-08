@@ -1,7 +1,8 @@
-﻿#include "upgrader/Upgrader54.h"
+#include "upgrader/Upgrader54.h"
 #include "upgrader/Timer.h"
 #include "myLcd.h"
 #include "myRadio.h"
+#include "upgrader/Upgrader54.h"
 #include <stdbool.h>
 
 
@@ -84,7 +85,7 @@ void upg_stop_update()
 }
 
 
-void upg_init()
+void upg54_init()
 {
     SysTick_Config(SystemCoreClock / 1000);
 }
@@ -105,7 +106,7 @@ void upg_on_tx_irq()
 }
 
 
-void upg_update()
+void upg54_update()
 {
     if (!in_process_update)
     {
@@ -137,7 +138,7 @@ void upg_update()
 
 void Reset()
 {
-    upg_init();
+    upg54_init();
 
     data = DATA_BEGIN;
 

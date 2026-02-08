@@ -7,6 +7,7 @@
  * @history - V0.7, 2024-3
 *******************************************************************************/
 #include "pan3029_port.h"
+#include <string.h>
 
 uint8_t RadioRxPayload[255];
 uint8_t plhd_buf[16];

@@ -1,4 +1,4 @@
-#ifndef __MY_RADIO_H
+Ôªø#ifndef __MY_RADIO_H
 #define __MY_RADIO_H
 /* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
@@ -93,9 +93,9 @@ typedef struct
 }loraBaudrateFrame_ts;
 typedef enum 
 {
-    RADIO_EXT_CONTROL_TX_UNMODULATED,   //µ•‘ÿ≤®π¶¬ ≤‚ ‘
-    RADIO_EXT_CONTROL_RX_SENSITIVITY,   //Ω” ’¡È√Ù∂»≤‚ ‘
-    RADIO_EXT_CONTROL_TX_MODULATED,   //¡¨–¯µ˜÷∆≤‚ ‘
+    RADIO_EXT_CONTROL_TX_UNMODULATED,   //¬µ“ê–§–®–Ü–Å‚Ññ¬¶–í–ö–Ü–≤–ö–§
+    RADIO_EXT_CONTROL_RX_SENSITIVITY,   //–Ö–£–ö–•–ë–π–ì—Ñ¬∂–ò–Ü–≤–ö–§
+    RADIO_EXT_CONTROL_TX_MODULATED,   //–ë¬¨–†—à¬µ—á–¶–ñ–Ü–≤–ö–§
 }controlMode_te;
 typedef enum
 {
@@ -132,6 +132,9 @@ int16_t myRadio_getRssi(void);
 void myRadio_transmit(rfTxPacket_ts *packet);
 void myRadio_receiver(void);
 void myRadio_setCtrl(controlMode_te mode, uint32_t value);
+void RadioSetregulatorMode(uint8_t mode);
+void myRadio_setSyncWord(uint8_t syncword);
+void myRadio_process(void);
 
 #endif
 
