@@ -8,11 +8,11 @@ void upg54_init(void);
 void upg54_update(void);
 
 // Вызывается передатчиком после передачи пакета
-void upg_on_tx_irq(void);
+void upg54_on_tx_irq(void);
 
-void upg_start_update(void);
-void upg_stop_update(void);
+void upg54_start_update(void);
+void upg54_stop_update(void);
 
-uint32_t upg_address_begin(void);
+uint32_t upg54_address_begin(void);
 
-void upg_func_display(void);
+void upg54_func_display(void);

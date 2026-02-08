@@ -1,4 +1,4 @@
-#include "main.h"
+﻿#include "main.h"
 #include "ReadKey.h"
 #include "key.h"
 #include "ReadKey.h"
@@ -347,13 +347,13 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
         }
     }
         break;
-    case UI_PAGE_ID_UPGRADE_FIRMWARE:
+    case UI_PAGE_ID_UPGRADE_FIRMWARE_54:
         switch (cursorCount)
         {
         case 0:
             if (status)
             {
-                upg_start_update();
+                upg54_start_update();
             }
             break;
         }
@@ -526,7 +526,7 @@ void rfRx_callback(uint8_t status, rfRxPacket_ts packet)
     break;
     case TX_STA_SECCESS:
     {
-        upg_on_tx_irq();
+        upg54_on_tx_irq();
 //        LED1_ON_ONE();
 //        if (rfCtrlMode == UI_PAGE_ID_TX_PACKET)
 //        {

@@ -1,4 +1,4 @@
-# (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+﻿# (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 project (Transmitter)
 
 
@@ -23,7 +23,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
 SET(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -MP -Wall")
 
 add_compile_options(
-    /wd4002
+#    /wd4002
     /wd4068    # unknown pragma 'xxx'
     /wd4113
     /wd4273    # 'xxx' : inconsistent dll linkage

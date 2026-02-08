@@ -1,4 +1,4 @@
-#include "myDisplayUnit.h"
+Ôªø#include "myDisplayUnit.h"
 #include "myLcd.h"
 #include "upgrader/Timer.h"
 #include "upgrader/Upgrader54.h"
@@ -51,7 +51,7 @@ void myDisplay_ui_firstUi(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_p
 {
     if (uiPageIdAddress != UI_PAGE_ID_FIRST_UI)
     {
-        myLCD_16x16(IM_INVERSE, 10, 11, "…Ó€⁄ –Œ÷Ω¯ø∆ºº”–œﬁπ´Àæ");
+        myLCD_16x16(IM_INVERSE, 10, 11, "–ô–æ–´–™–ö–†–û–¶–Ö—à—ó–ñ—ò—ò–£–†–ü–Æ‚Ññ¬´–õ—ï");
         myLCD_displayImage(IM_NOMALE, 1, 1, IMG_SRC_VOLLGO);
         myLCD_str8x16(IM_NOMALE, 80, 1, "VG------------");
         myLCD_str8x16(IM_NOMALE, 95, 2, "Freq.***");
@@ -306,26 +306,26 @@ void myDisplay_ui_selectMode(bool flashFlag, int agr0, void *agr1_ptr, void *agr
     myLCD_str8x16(agr0 == 5 && flashFlag ? IM_INVERSE : IM_NOMALE,
         10, 6, "Upgrade Firmware");
 }
-void myDisplay_ui_upgradeFirmware(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr)
+void myDisplay_ui_upgradeFirmware54(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr)
 {
-    if (uiPageIdAddress != UI_PAGE_ID_UPGRADE_FIRMWARE)
+    if (uiPageIdAddress != UI_PAGE_ID_UPGRADE_FIRMWARE_54)
     {
         myLCD_clearFull();
 
         myLCD_str8x16(IM_NOMALE, 0, 1, "First bytes : ");
 
-        uint32_t address = upg_address_begin();
+        uint32_t address = upg54_address_begin();
 
         uint8_t *pointer = (uint8_t *)address;
 
         myLCD_str8x16(IM_NOMALE, 0, 2, "%02X %02X %02X %02X %02X %02X %02X %02X", *(pointer), *(pointer + 1), *(pointer + 2), *(pointer + 3), *(pointer + 4), *(pointer + 5), *(pointer + 6), *(pointer + 7));
     }
 
-    uiPageIdAddress = UI_PAGE_ID_UPGRADE_FIRMWARE;
+    uiPageIdAddress = UI_PAGE_ID_UPGRADE_FIRMWARE_54;
 
     myLCD_str8x16(agr0 == 0 && flashFlag ? IM_INVERSE : IM_NOMALE, 0, 4, "Start");
 
-    upg_func_display();
+    upg54_func_display();
 }
 void myDisplay_ui_rf_rx_packet(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
 {
@@ -651,17 +651,17 @@ void myDisplay_ui_rf_rxContinue_scroll_buffer(uint8_t *buf, uint16_t len)
     }
 }
 /**
- * π‚±Íøÿ÷∆
- * direct: ∑ΩœÚøÿ÷∆
- *          =1£¨œÚ…œ“∆∂Ø
- *          =0£¨œÚœ¬“∆∂Ø
+ * ‚Ññ–≤¬±–∫—ó–®–¶–ñ
+ * direct: ¬∑–Ö–ü—Ç—ó–®–¶–ñ
+ *          =1–à¬¨–ü—Ç–ô–ü–¢–ñ¬∂–á
+ *          =0–à¬¨–ü—Ç–ü–í–¢–ñ¬∂–á
  * **/
 void myDisplay_change(uint8_t direct)
 {
     uiPageUnit_ts *page = &uiPageParams[uiPageCount - 1];
     if (page->cursorCount)
     {
-        //…Ë÷√º”ºıøÿ÷∆
+        //–ô–∏–¶–ì—ò–£—ò—Ö—ó–®–¶–ñ
         if (page->writeStaTab[page->cursorCounting])
         {
             if (direct)
@@ -694,7 +694,7 @@ void myDisplay_change(uint8_t direct)
         }
         else
         {
-            //π‚±Í“∆∂Øøÿ÷∆
+            //‚Ññ–≤¬±–∫–¢–ñ¬∂–á—ó–®–¶–ñ
             if (direct)
             {
                 page->cursorCounting--;
@@ -719,17 +719,17 @@ void myDisplay_change(uint8_t direct)
     }
 }
 /***
- * ∞¥œ¬»∑∂®º¸
- *  Ω¯»Îœ¬“ª∏ˆΩÁ√ÊªÚ’ﬂΩ¯»Î…Ë÷√◊¥Ã¨
+ * ¬∞“ë–ü–í–ò¬∑¬∂–Å—ò—å
+ *  –Ö—à–ò–ª–ü–í–¢¬ª—ë—Ü–Ö–∑–ì–∂¬ª—Ç–•–Ø–Ö—à–ò–ª–ô–∏–¶–ì–ß“ë–ú¬¨
 */
 void myDisplay_enter(uint8_t direct)
 {
     if (direct == ENTER_NEXT_PAGE)
     {
-        //Ω¯»Î…Ë÷√◊¥Ã¨
+        //–Ö—à–ò–ª–ô–∏–¶–ì–ß“ë–ú¬¨
         if (uiPageParams[uiPageCount - 1].itemTypeTab[uiPageParams[uiPageCount - 1].cursorCounting] == TYPE_WRITE_TEXT)
         {
-            //«–ªª…Ë÷√◊¥Ã¨
+            //–ó–†¬ª¬ª–ô–∏–¶–ì–ß“ë–ú¬¨
             uiPageParams[uiPageCount - 1].writeStaTab[uiPageParams[uiPageCount - 1].cursorCounting] =
                 !uiPageParams[uiPageCount - 1].writeStaTab[uiPageParams[uiPageCount - 1].cursorCounting];
             uiPageParams[uiPageCount - 1].uiDriver(true, uiPageParams[uiPageCount - 1].cursorCounting,
@@ -745,7 +745,7 @@ void myDisplay_enter(uint8_t direct)
             }
 
         }
-        //«–ªªµΩœ¬“ª∏ˆΩÁ√Ê
+        //–ó–†¬ª¬ª¬µ–Ö–ü–í–¢¬ª—ë—Ü–Ö–∑–ì–∂
         if (uiPageParams[uiPageCount - 1].itemTypeTab[uiPageParams[uiPageCount - 1].cursorCounting] == TYPE_NEXT_LINK)
         {
             uiPageCount = uiPageParams[uiPageCount - 1].nextPageIdTab[uiPageParams[uiPageCount - 1].cursorCounting];
@@ -753,7 +753,7 @@ void myDisplay_enter(uint8_t direct)
                 uiPageParams[uiPageCount - 1].itemValueTab, uiPageParams[uiPageCount - 1].itemStringTab[uiPageParams[uiPageCount - 1].cursorCounting]);
         }
     }
-    //«–ªªµΩ…œ“ª∏ˆΩÁ√Ê
+    //–ó–†¬ª¬ª¬µ–Ö–ô–ü–¢¬ª—ë—Ü–Ö–∑–ì–∂
     if (direct == ENTER_LAST_PAGE)
     {
         if (uiPageParams[uiPageCount - 1].lastPageIdTab[0])
@@ -799,7 +799,7 @@ void myDisplay_init(enterCallback cb)
 {
     myLCD_init();
 
-    // —Ú‡ÚÓ‚˚È ˝Í‡Ì ------------------------------------------------------------------------------------------------------
+    // –°—Ç–∞—Ä—Ç–æ–≤—ã–π —ç–∫—Ä–∞–Ω ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_FIRST_UI].id = UI_PAGE_ID_FIRST_UI + 1;
     uiPageParams[UI_PAGE_ID_FIRST_UI].uiDriver = myDisplay_ui_firstUi;
     uiPageParams[UI_PAGE_ID_FIRST_UI].lastPageIdTab[0] = 0;
@@ -809,7 +809,7 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_FIRST_UI].cursorCounting = 0;
     uiPageParams[UI_PAGE_ID_FIRST_UI].cursorCount = 2;
 
-    // œÂ‚‡ˇ ÒÚ‡ÌËˆ‡ ÏÂÌ˛ ------------------------------------------------------------------------------------------------------
+    // –ü–µ—Ä–≤–∞—è —Å—Ç—Ä–∞–Ω–∏—Ü–∞ –º–µ–Ω—é ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_ITEM_MODE].id = UI_PAGE_ID_ITEM_MODE + 1;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].uiDriver = myDisplay_ui_selectMode;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].lastPageIdTab[0] = 0;
@@ -824,21 +824,21 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[3] = TYPE_NEXT_LINK;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[4] = UI_PAGE_ID_DEVICE_INFOR + 1;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[4] = TYPE_NEXT_LINK;
-    uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[5] = UI_PAGE_ID_UPGRADE_FIRMWARE + 1;
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[5] = UI_PAGE_ID_UPGRADE_FIRMWARE_54 + 1;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[5] = TYPE_NEXT_LINK;
 
     uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCounting = 0;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCount = 6;
 
     // Upgrade Firmware ----------------------------------------------------------------------------------------------------------
-    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].id = UI_PAGE_ID_UPGRADE_FIRMWARE + 1;
-    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].uiDriver = myDisplay_ui_upgradeFirmware;
-    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
-    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].nextPageIdTab[0] = 0;
-    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].itemTypeTab[0] = TYPE_WRITE_TEXT;
-    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].writeStaTab[0] = 0;
-    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].cursorCounting = 0;
-    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE].cursorCount = 1;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].id = UI_PAGE_ID_UPGRADE_FIRMWARE_54 + 1;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].uiDriver = myDisplay_ui_upgradeFirmware54;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].nextPageIdTab[0] = 0;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].itemTypeTab[0] = TYPE_WRITE_TEXT;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].writeStaTab[0] = 0;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].cursorCounting = 0;
+    uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].cursorCount = 1;
 
     // Enter RF Receiver ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_RX_PACKET].id = UI_PAGE_ID_RX_PACKET + 1;
@@ -937,7 +937,7 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_SETTING].itemMaxValueTab[SET_ITEM_INDEX_PACKET_LEN] = 256;
     uiPageParams[UI_PAGE_ID_SETTING].itemStepValueTab[SET_ITEM_INDEX_PACKET_LEN] = 5;
 
-    uiPageParams[UI_PAGE_ID_SETTING].cursorCounting = SET_ITEM_INDEX_TYPE;//ƒ¨»œ…Ë÷√π‚±Í‘⁄µ⁄“ª∏ˆ
+    uiPageParams[UI_PAGE_ID_SETTING].cursorCounting = SET_ITEM_INDEX_TYPE;//–î¬¨–ò–ü–ô–∏–¶–ì‚Ññ–≤¬±–∫–§–™¬µ–™–¢¬ª—ë—Ü
     uiPageParams[UI_PAGE_ID_SETTING].cursorCount = SET_ITEM_INDEX_MAX_COUNT;
 
     enterCb = cb;
