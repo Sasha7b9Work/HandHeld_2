@@ -1,4 +1,4 @@
-﻿#include "myDisplayUnit.h"
+#include "myDisplayUnit.h"
 #include "myLcd.h"
 #include "upgrader/Timer.h"
 #include "upgrader/Upgrader54.h"
@@ -314,7 +314,7 @@ void myDisplay_ui_upgradeFirmware54(bool flashFlag, int agr0, void *arg1_ptr, vo
 
         myLCD_str8x16(IM_NOMALE, 0, 1, "First bytes : ");
 
-        uint32_t address = upg54_address_begin();
+        uint32_t address = upg_address_begin();
 
         uint8_t *pointer = (uint8_t *)address;
 
@@ -325,7 +325,7 @@ void myDisplay_ui_upgradeFirmware54(bool flashFlag, int agr0, void *arg1_ptr, vo
 
     myLCD_str8x16(agr0 == 0 && flashFlag ? IM_INVERSE : IM_NOMALE, 0, 4, "Start");
 
-    upg54_func_display();
+    upg_func_display();
 }
 void myDisplay_ui_rf_rx_packet(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
 {

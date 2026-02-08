@@ -1,4 +1,4 @@
-﻿#include "upgrader/Upgrader54.h"
+#include "upgrader/Upgrader54.h"
 #include "upgrader/Timer.h"
 #include "myLcd.h"
 #include "myRadio.h"
@@ -57,7 +57,7 @@ static uint32_t time_small = 125;
 
 //----------------------------------------------------------------------------------------------------------------------------------
 
-uint32_t upg54_address_begin()
+uint32_t upg_address_begin()
 {
     return (uint32_t)DATA_BEGIN;
 }
@@ -69,7 +69,7 @@ static int upg_chains_all()
 }
 
 
-void upg54_start_update(int num_KB)
+void upg_start_update(int num_KB)
 {
     if (!in_process_update)
     {
@@ -82,13 +82,13 @@ void upg54_start_update(int num_KB)
 }
 
 
-void upg54_stop_update()
+void upg_stop_update()
 {
     in_process_update = false;
 }
 
 
-void upg54_init()
+void upg_init()
 {
     SysTick_Config(SystemCoreClock / 1000);
 }
@@ -99,7 +99,7 @@ static bool need_transmit = true;
 static uint32_t time_tx = 0;
 
 
-void upg54_on_tx_irq()
+void upg_on_tx_irq()
 {
     need_transmit = true;
 
@@ -109,7 +109,7 @@ void upg54_on_tx_irq()
 }
 
 
-void upg54_update()
+void upg_update()
 {
     if (!in_process_update)
     {
@@ -141,7 +141,7 @@ void upg54_update()
 
 void Reset()
 {
-    upg54_init();
+    upg_init();
 
     data = DATA_BEGIN;
 
@@ -276,7 +276,7 @@ uint32_t CalculateCRC32(const void *buffer, int size)
 }
 
 
-void upg54_func_display(void)
+void upg_func_display(void)
 {
     myLCD_str8x16(IM_NOMALE, 0, 5, "                              ");
     myLCD_str8x16(IM_NOMALE, 0, 6, "                              ");

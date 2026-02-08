@@ -1,4 +1,4 @@
-﻿#include "main.h"
+#include "main.h"
 #include "ReadKey.h"
 #include "key.h"
 #include "ReadKey.h"
@@ -353,7 +353,7 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
         case 0:
             if (status)
             {
-                upg54_start_update(54);
+                upg_start_update(54);
             }
             break;
         }
@@ -526,7 +526,7 @@ void rfRx_callback(uint8_t status, rfRxPacket_ts packet)
     break;
     case TX_STA_SECCESS:
     {
-        upg54_on_tx_irq();
+        upg_on_tx_irq();
 //        LED1_ON_ONE();
 //        if (rfCtrlMode == UI_PAGE_ID_TX_PACKET)
 //        {
@@ -658,7 +658,7 @@ int main(void)
     setEvent(EVENT_TIME_CYCLE_10ms, true, 10);
     setEvent(EVENT_TIME_CYCLE_500ms, true, 500);
 
-    upg54_init();
+    upg_init();
 
     while (1)
     {
@@ -849,6 +849,6 @@ int main(void)
         keyPressValue = keyScan();
         myRadio_process();
 
-        upg54_update();
+        upg_update();
     }
 }
