@@ -39,11 +39,11 @@ void Vibrato::Init()
 
 #endif
 
-//#ifdef MODEL7789
+#ifdef MODEL7789
 
     #pragma message("Function not defines")
 
-//#endif
+#endif
 
     Driver::Off();
 }

@@ -1,12 +1,12 @@
-// 2024/03/01 22:47:10 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+п»ї// 2024/03/01 22:47:10 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 
 
 namespace ST7735_89
 {
-    void Init(uint8 macdtl = 0);
+    void Init();
 
-    // Записывает буфер дисплея в строки, начиная с y
+    // Р—Р°РїРёСЃС‹РІР°РµС‚ Р±СѓС„РµСЂ РґРёСЃРїР»РµСЏ РІ СЃС‚СЂРѕРєРё, РЅР°С‡РёРЅР°СЏ СЃ y
     void WriteBuffer(int y);
 
     void Enable();

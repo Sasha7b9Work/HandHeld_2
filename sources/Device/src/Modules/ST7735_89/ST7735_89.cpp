@@ -1,4 +1,4 @@
-// 2024/03/01 22:47:19 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+ï»¿// 2024/03/01 22:47:19 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Modules/ST7735_89/ST7735_89.h"
 #include "Hardware/HAL/HAL_PINS.h"
@@ -91,7 +91,7 @@ uint ST7735_89::TimeEnabled()
 }
 
 
-void ST7735_89::Init(uint8 macdtl)
+void ST7735_89::Init()
 {
     {
 #ifdef MODEL7735
@@ -191,7 +191,7 @@ void ST7735_89::Init(uint8 macdtl)
     Write_Cmd(0xC5);                // VCOM Control 1
     Write_Data(0x0E);
 
-    Write_Cmd(0xE0);                //  Gamma (‘+’polarity) Correction Characteristics Setting
+    Write_Cmd(0xE0);                //  Gamma (â€˜+â€™polarity) Correction Characteristics Setting
     Write_Data(0x10);
     Write_Data(0x0E);
     Write_Data(0x02);
@@ -210,7 +210,7 @@ void ST7735_89::Init(uint8 macdtl)
     Write_Data(0x10);
 
 
-    Write_Cmd(0xE1);                // Gamma ‘-’polarity Correction Characteristics Setting
+    Write_Cmd(0xE1);                // Gamma â€˜-â€™polarity Correction Characteristics Setting
     Write_Data(0x10);
     Write_Data(0x0E);
     Write_Data(0x03);

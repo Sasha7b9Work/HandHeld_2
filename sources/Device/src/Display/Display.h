@@ -1,4 +1,4 @@
-// 2024/03/01 22:45:47 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+п»ї// 2024/03/01 22:45:47 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Display/Colors.h"
 #include "Display/Font/Font.h"
@@ -9,11 +9,18 @@
 
 namespace Display
 {
+#ifdef MODEL7735
     static const int WIDTH = 160;
     static const int HEIGHT = 80;
+#endif
 
-    static const int NUMBER_PARTS_HEIGHT = 8;          // На столько частей разбит дислей. Столько раз будем отрисовывать изображение,
-                                                // чтобы получить полную картинку
+#ifdef MODEL7789
+    static const int WIDTH = 320;
+    static const int HEIGHT = 240;
+#endif
+
+    static const int NUMBER_PARTS_HEIGHT = 8;          // РќР° СЃС‚РѕР»СЊРєРѕ С‡Р°СЃС‚РµР№ СЂР°Р·Р±РёС‚ РґРёСЃР»РµР№. РЎС‚РѕР»СЊРєРѕ СЂР°Р· Р±СѓРґРµРј РѕС‚СЂРёСЃРѕРІС‹РІР°С‚СЊ РёР·РѕР±СЂР°Р¶РµРЅРёРµ,
+                                                // С‡С‚РѕР±С‹ РїРѕР»СѓС‡РёС‚СЊ РїРѕР»РЅСѓСЋ РєР°СЂС‚РёРЅРєСѓ
 
     void Init();
 
@@ -37,7 +44,7 @@ namespace Display
     {
         static const uint SIZE = WIDTH * HEIGHT / NUMBER_PARTS_HEIGHT;
 
-        // Возвращает указатель на строку
+        // Р’РѕР·РІСЂР°С‰Р°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂРѕРєСѓ
         uint8 *GetLine(int y);
     }
 }

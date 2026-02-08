@@ -28,7 +28,7 @@ void PMS150G::Init()
 
 #ifdef MODEL7789
 
-    #pragma message("Function not defines")
+//    #pragma message("Function not defines")
 
 #endif
 }
