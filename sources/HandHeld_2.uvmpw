@@ -13,8 +13,6 @@
 
   <project>
     <PathAndName>.\Device\Device7789.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
@@ -23,6 +21,8 @@
 
   <project>
     <PathAndName>.\Transmitter\keil_v5\Transmitter.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
 </ProjectWorkspace>

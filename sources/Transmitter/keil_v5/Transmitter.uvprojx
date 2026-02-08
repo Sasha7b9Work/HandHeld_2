@@ -655,16 +655,6 @@
           <GroupName>upgrader</GroupName>
           <Files>
             <File>
-              <FileName>Upgrader.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\upgrader\Upgrader.h</FilePath>
-            </File>
-            <File>
-              <FileName>Upgrader.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\upgrader\Upgrader.c</FilePath>
-            </File>
-            <File>
               <FileName>Timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\upgrader\Timer.c</FilePath>
@@ -673,6 +663,16 @@
               <FileName>Timer.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\upgrader\Timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>Upgrader54.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\upgrader\Upgrader54.c</FilePath>
+            </File>
+            <File>
+              <FileName>Upgrader54.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\upgrader\Upgrader54.h</FilePath>
             </File>
           </Files>
         </Group>
