@@ -1,4 +1,4 @@
-#include "myDisplayUnit.h"
+﻿#include "myDisplayUnit.h"
 #include "myLcd.h"
 #include "upgrader/Timer.h"
 #include "upgrader/Upgrader54.h"
@@ -353,6 +353,7 @@ void myDisplay_ui_rf_rx_packet(bool flashFlag, int agr0, void *agr1_ptr, void *a
 }
 uint8_t ver_buffer;
 char *mod_buffer;
+/*
 void myDisplay_ui_device_infor(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
 {
     int i;
@@ -372,6 +373,7 @@ void myDisplay_ui_device_infor(bool flashFlag, int agr0, void *agr1_ptr, void *a
     }
     uiPageIdAddress = UI_PAGE_ID_DEVICE_INFOR;
 }
+*/
 void myDisplay_ui_deviceInfor_setVer(uint8_t ver)
 {
     ver_buffer = ver;
@@ -822,13 +824,13 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[2] = TYPE_NEXT_LINK;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[3] = UI_PAGE_ID_SETTING + 1;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[3] = TYPE_NEXT_LINK;
-    uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[4] = UI_PAGE_ID_DEVICE_INFOR + 1;
+//    uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[4] = UI_PAGE_ID_DEVICE_INFOR + 1;
+//    uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[4] = TYPE_NEXT_LINK;
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[4] = UI_PAGE_ID_UPGRADE_FIRMWARE_54 + 1;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[4] = TYPE_NEXT_LINK;
-    uiPageParams[UI_PAGE_ID_ITEM_MODE].nextPageIdTab[5] = UI_PAGE_ID_UPGRADE_FIRMWARE_54 + 1;
-    uiPageParams[UI_PAGE_ID_ITEM_MODE].itemTypeTab[5] = TYPE_NEXT_LINK;
 
     uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCounting = 0;
-    uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCount = 6;
+    uiPageParams[UI_PAGE_ID_ITEM_MODE].cursorCount = 5;
 
     // Upgrade Firmware ----------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_UPGRADE_FIRMWARE_54].id = UI_PAGE_ID_UPGRADE_FIRMWARE_54 + 1;
@@ -853,11 +855,13 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_RX_PACKET].cursorCount = 2;
 
     // Enter Device Infor ------------------------------------------------------------------------------------------------------
+    /*
     uiPageParams[UI_PAGE_ID_DEVICE_INFOR].id = UI_PAGE_ID_DEVICE_INFOR + 1;
     uiPageParams[UI_PAGE_ID_DEVICE_INFOR].uiDriver = myDisplay_ui_device_infor;
     uiPageParams[UI_PAGE_ID_DEVICE_INFOR].lastPageIdTab[0] = UI_PAGE_ID_ITEM_MODE + 1;
     uiPageParams[UI_PAGE_ID_DEVICE_INFOR].nextPageIdTab[0] = 0;
     uiPageParams[UI_PAGE_ID_DEVICE_INFOR].cursorCount = 0;
+    */
 
     // Enter RF Transmitter ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_TX_PACKET].id = UI_PAGE_ID_TX_PACKET + 1;

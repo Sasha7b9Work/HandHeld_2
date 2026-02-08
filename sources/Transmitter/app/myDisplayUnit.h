@@ -14,8 +14,9 @@ typedef enum
     UI_PAGE_ID_RX_PACKET,
     UI_PAGE_ID_RF_CONTINUOUS,
     UI_PAGE_ID_SETTING,
-    UI_PAGE_ID_DEVICE_INFOR,
+//    UI_PAGE_ID_DEVICE_INFOR,
     UI_PAGE_ID_UPGRADE_FIRMWARE_54,
+    UI_PAGE_ID_UPGRADE_FIRMWARE_182,
     UI_PAGE_ID_MAX,
 }uiPageIndex_te;
 typedef enum
@@ -118,8 +119,8 @@ void myDisplay_ui_rf_setting_type(char *type);
 void myDisplay_ui_rf_setting_channelStep(uint32_t channelStep);
 void myDisplay_ui_rf_setting_rfBr(uint32_t br);
 void myDisplay_setting_loadParams(int index, const char *fmt, ...);
-void myDisplay_ui_deviceInfor_setVer(uint8_t ver);
-void myDisplay_ui_deviceInfor_setModule(char *moduleName);
+//void myDisplay_ui_deviceInfor_setVer(uint8_t ver);
+//void myDisplay_ui_deviceInfor_setModule(char *moduleName);
 void uiTimerFlash_callBack(void);
 
 void myDisplay_ui_upgradeFirmware54(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr);

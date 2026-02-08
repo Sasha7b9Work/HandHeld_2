@@ -650,8 +650,8 @@ int main(void)
     myDisplay_setting_loadParams(SET_ITEM_INDEX_CR, "%u->%s", deviceInfor.rf_cr, rf_cr_name[deviceInfor.rf_cr - 1]);
     myDisplay_setting_loadParams(SET_ITEM_INDEX_RGM, "%u->%s", deviceInfor.rf_regulatorMode, rf_rgm_name[deviceInfor.rf_regulatorMode]);
     myDisplay_setting_loadParams(SET_ITEM_INDEX_PACKET_LEN, "%u Byte", deviceInfor.packetLen);
-    myDisplay_ui_deviceInfor_setVer(SOFT_VERSION);
-    myDisplay_ui_deviceInfor_setModule("VGKitBoard_4130S");
+//    myDisplay_ui_deviceInfor_setVer(SOFT_VERSION);
+//    myDisplay_ui_deviceInfor_setModule("VGKitBoard_4130S");
     //上电长想一声
     beep_longBeep();
 
