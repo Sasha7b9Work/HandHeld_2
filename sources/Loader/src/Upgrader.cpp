@@ -3,7 +3,6 @@
 #include "Upgrader.h"
 #include "Hardware/Timer.h"
 #include "Modules/PAN3060/PAN3060.h"
-#include "Display/Display7735.h"
 
 
 void Upgrader::Run()
@@ -20,10 +19,10 @@ void Upgrader::Run()
         }
     }
 
-    Display::Init();
+//    Display::Init();
 
     while (PAN3060::InProcessUpgrade())     // Если после выхода из предыдущего цикла PAN3060 не вошёл в режим обновления, то цикл выполняться не будет
     {
-        Display::Update();
+//        Display::Update();
     }
 }

@@ -7,7 +7,11 @@
     #pragma clang diagnostic ignored "-Wpadded"
 #endif
 
-#include <gd32e23x.h>
+#if CPU_TYPE == GD32E230
+	#include <gd32e23x.h>
+#elif CPU_TYPE == GD32F303
+	#include <gd32f30x.h>
+#endif
 
 #ifndef WIN32
     #pragma clang diagnostic pop

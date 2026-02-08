@@ -2,7 +2,6 @@
 #pragma once
 #include <cstring>
 
-
 #ifndef WIN32
     #pragma clang diagnostic ignored "-Wglobal-constructors"
     #pragma clang diagnostic ignored "-Wmissing-noreturn"

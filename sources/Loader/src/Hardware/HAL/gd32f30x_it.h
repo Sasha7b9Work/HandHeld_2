@@ -1,12 +1,12 @@
 /*!
-    \file    systick.c
-    \brief   the systick configuration file
-    
-    \version 2023-02-27, V1.2.0, firmware for GD32E23x
+    \file    gd32f30x_it.h
+    \brief   the header file of the ISR
+
+   \version 2025-7-31, V3.0.2, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2023, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -32,71 +32,39 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 OF SUCH DAMAGE.
 */
 
-#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-    #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
-#endif
+#ifndef GD32F30X_IT_H
+#define GD32F30X_IT_H
 
-#ifdef GD32E230
-	#include <gd32e23x.h>
-#endif
-#ifdef GD32F303
-	#include <gd32f30x.h>
-#endif
-
-#include "systick.h"
+#include "gd32f30x.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-volatile static uint32_t delay;
-
-/*!
-    \brief      configure systick
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-void systick_config(void)
-{
-    /* setup systick timer for 1000Hz interrupts */
-    if(SysTick_Config(SystemCoreClock / 1000U)){
-        /* capture error */
-        while(1){
-        }
-    }
-    /* configure the systick handler priority */
-    NVIC_SetPriority(SysTick_IRQn, 0x00U);
-}
-
-/*!
-    \brief      delay a time in milliseconds
-    \param[in]  count: count in milliseconds
-    \param[out] none
-    \retval     none
-*/
-void delay_1ms(uint32_t count)
-{
-    delay = count;
-
-    while(0U != delay){
-    }
-}
-
-/*!
-    \brief      delay decrement
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-void delay_decrement(void)
-{
-    if(0U != delay){
-        delay--;
-    }
-}
-
+/* function declarations */
+/* this function handles NMI exception */
+void NMI_Handler(void);
+/* this function handles HardFault exception */
+void HardFault_Handler(void);
+/* this function handles MemManage exception */
+void MemManage_Handler(void);
+/* this function handles BusFault exception */
+void BusFault_Handler(void);
+/* this function handles UsageFault exception */
+void UsageFault_Handler(void);
+/* this function handles SVC exception */
+void SVC_Handler(void);
+/* this function handles DebugMon exception */
+void DebugMon_Handler(void);
+/* this function handles PendSV exception */
+void PendSV_Handler(void);
+/* this function handles SysTick exception */
+void SysTick_Handler(void);
+/* this function handles External interrupts gpio5..9 */
+void EXTI5_9_IRQHandler(void);
 
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* GD32F30X_IT_H */

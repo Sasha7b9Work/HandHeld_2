@@ -3,12 +3,30 @@
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Modules/PAN3060/PAN3060.h"
 #include "Modules/PAN3060/chirp_rf.h"
-#include "Display/Text.h"
 #include "Hardware/HAL/HAL.h"
 #include "Utils/String.h"
 #include "Hardware/Timer.h"
-#include <gd32e23x.h>
+#ifdef GD32E230
+	#include <gd32e23x.h>
+#endif
+#ifdef GD32F303
+	#include <gd32f30x.h>
+#endif
 
+#define PAN30XX_IRQ_PORT 			GPIOA
+#define PAN30XX_IRQ_PIN 			GPIO_PIN_8
+#ifdef GD32E230
+#define PAN30XX_IRQ_EXTI_SRC 	EXTI_SOURCE_GPIOA
+#define PAN30XX_IRQ_EXTI_PIN 	EXTI_SOURCE_PIN8
+#endif
+#ifdef GD32F303
+#define PAN30XX_IRQ_EXTI_SRC 	GPIO_PORT_SOURCE_GPIOA
+#define PAN30XX_IRQ_EXTI_PIN 	GPIO_PIN_SOURCE_8
+#endif
+#define PAN30XX_IRQ_EXTI 			EXTI_8
+
+extern uint rx_irq_set_f;
+extern uint8 rx_buffer[134];
 
 namespace PAN3060
 {
@@ -123,11 +141,18 @@ void PAN3060::Init()
 void PAN3060::InitIRQ()
 {
     // Инициализируем пин клоков от приёмника на прерывание
-    gpio_mode_set(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO_PIN_8);
+		#ifdef GD32E230
+    gpio_mode_set(PAN30XX_IRQ_PORT, GPIO_MODE_INPUT, GPIO_PUPD_NONE, PAN30XX_IRQ_PIN);
     nvic_irq_enable(EXTI4_15_IRQn, 2);
-    syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8);
-    exti_init(EXTI_8, EXTI_INTERRUPT, EXTI_TRIG_RISING);
-    exti_interrupt_flag_clear(EXTI_8);
+    syscfg_exti_line_config(PAN30XX_IRQ_EXTI_SRC, PAN30XX_IRQ_EXTI_PIN);
+		#endif
+		#ifdef GD32F303
+		gpio_init(PAN30XX_IRQ_PORT, GPIO_MODE_IPD, GPIO_OSPEED_50MHZ, PAN30XX_IRQ_PIN);
+    nvic_irq_enable(EXTI5_9_IRQn, 0, 0);
+		gpio_exti_source_select(PAN30XX_IRQ_EXTI_SRC, PAN30XX_IRQ_EXTI_PIN);
+		#endif
+		exti_init(PAN30XX_IRQ_EXTI, EXTI_INTERRUPT, EXTI_TRIG_RISING);
+    exti_interrupt_flag_clear(PAN30XX_IRQ_EXTI);
 }
 
 
@@ -144,151 +169,26 @@ void PAN3060::InitSPI()
 
 void PAN3060::CallbackOnIRQ()
 {
-    if (is_finished)
+    uint irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
+
+    if(irq & REG_IRQ_RX_DONE)
     {
-        return;
-    }
+				uint _length;
 
-    if (!in_process_upgrade)
-    {
-        page.Clear();
-        firmware.Clear();
-    }
-
-    in_process_upgrade = true;
-
-    uint8 irq = rf_read_spec_page_reg(PAGE0_SEL, 0x6C);
-
-    if (irq & REG_IRQ_RX_TIMEOUT)
-    {
-        rf_clr_irq();
-    }
-
-    if (irq & REG_IRQ_RX_DONE)
-    {
-        Packet packet;
-
-        packet.length = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
-
-        rf_read_fifo(REG_FIFO_ACC_ADDR, packet.buffer, packet.length);
+        _length = rf_read_spec_page_reg(PAGE1_SEL, 0x7D);
 
         rf_clr_irq();
 
-        if (packet.length == 2 + 128 + 4)            // Принимаем 128 байт прошивки
+				//received 128 bytes of firmware
+        if (_length == 2 + 128 + 4)
         {
-            rf_init();
-            rf_set_default_para();
-            rf_enter_continous_rx();
-
-            if (packet.IsValid())
-            {
-                chains_is_ok++;
-                packet.ReceiveChain();
-            }
-            else
-            {
-                chains_is_fail++;
-            }
-        }
-        else if (packet.length == 2 + 4 + 4)         // Принимаем завершающий пакет
-        {
-            rf_init();
-            rf_set_default_para();
-            rf_enter_continous_rx();
-
-            if (packet.IsValid())
-            {
-                chains_is_ok++;
-                packet.ReceiveFinish();
-            }
-            else
-            {
-                chains_is_fail++;
-            }
+						rx_irq_set_f = 1;
+						rf_read_fifo(REG_FIFO_ACC_ADDR, rx_buffer, _length);
         }
     }
 }
 
 
-bool PAN3060::Packet::IsValid() const
-{
-    Struct32 crc_recv(buffer + length - 4);
-
-    uint crc_calc = SU::CalculateCRC32(buffer, length - 4);
-
-    if (crc_recv.u32 == crc_calc)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-
-void PAN3060::Packet::ReceiveChain()
-{
-    uint16 number_chain_full = Struct16(buffer).u16;
-      
-    number_page = CalculateNumberPage(number_chain_full);
-
-    number_chain_in_page = CalculateChainInPage(number_chain_full);
-
-    if (number_chain_in_page == 0)          // Первый чайн в странице, готовимся к приёму новой страницы
-    {
-        page.Clear();
-        page.number = number_page;
-    }
-
-    if (page.number != number_page)
-    {
-        return;
-    }
-
-    std::memcpy(page.chains[number_chain_in_page].buffer, buffer + 2, SIZE_CHAIN);
-    page.received[number_chain_in_page] = true;
-
-    if (number_chain_in_page == CHAINS_IN_PAGE - 1)
-    {
-        if (!firmware.pages[number_page])               // Если данная страница ещё не записана в EEPROM
-        {
-            firmware.pages[number_page] = true;
-
-            page.WritePageEEPROM();
-
-            firmware.CheckForComplete();
-        }
-    }
-}
-
-
-void PAN3060::Packet::ReceiveFinish()
-{
-    firmware.crc = Struct32(buffer + 2).u32;
-
-    firmware.CheckForComplete();
-}
-
-
-void PAN3060::Firmware::CheckForComplete()
-{
-    if (!IsFilled())
-    {
-        return;
-    }
-
-    uint crc_real = SU::CalculateCRC32((const void *)BEGIN_FIRMWARE, NUM_PAGES * 1024);
-
-    if (crc_real == crc)
-    {
-        in_process_upgrade = false;
-        is_finished = true;
-    }
-    else
-    {
-        Clear();
-        page.Clear();
-    }
-}
 
 
 bool PAN3060::Firmware::IsFilled() const
@@ -310,39 +210,6 @@ bool PAN3060::Firmware::IsFilled() const
 }
 
 
-void PAN3060::Firmware::Clear()
-{
-    for (uint i = 0; i < NUM_PAGES; i++)
-    {
-        HAL_ROM::ErasePage(BEGIN_FIRMWARE + (uint)(i * 1024));
-    }
-
-    crc = 0;
-
-    for (uint i = 0; i < NUM_PAGES; i++)
-    {
-        pages[i] = false;
-    }
-}
-
-
-uint8 PAN3060::Packet::CalculateNumberPage(uint16 number_chain_full) const
-{
-    return (uint8)(number_chain_full / CHAINS_IN_PAGE);
-}
-
-
-void PAN3060::Page::WritePageEEPROM() const
-{
-    HAL_ROM::WritePage(BEGIN_FIRMWARE + (uint)(number * 1024), &chains[0].buffer[0]);
-}
-
-
-uint8 PAN3060::Packet::CalculateChainInPage(uint16 number_chain_full) const
-{
-    return (uint8)(number_chain_full % CHAINS_IN_PAGE);
-}
-
 
 bool PAN3060::InProcessUpgrade()
 {
@@ -352,22 +219,6 @@ bool PAN3060::InProcessUpgrade()
     }
 
     return in_process_upgrade;
-}
-
-
-void PAN3060::FuncDraw()
-{
-    static TimeMeterMS meter;
-
-    char buffer[32];
-
-    Text<>(SU::IntToASCII(firmware.FilledPages(), buffer)).Write(1, 30);
-
-    Text<>(SU::IntToASCII(chains_is_ok, buffer)).Write(30, 30);
-
-    Text<>(SU::IntToASCII(chains_is_fail, buffer)).Write(60, 30);
-
-    Text<>(SU::IntToASCII((int)(meter.ElapsedTime() / 1000), buffer)).Write(90, 30);
 }
 
 

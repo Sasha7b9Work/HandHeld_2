@@ -2,7 +2,12 @@
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/HAL/systick.h"
-#include <gd32e23x.h>
+#ifdef GD32E230
+	#include <gd32e23x.h>
+#endif
+#ifdef GD32F303
+	#include <gd32f30x.h>
+#endif
 
 
 void HAL::Init()
@@ -14,5 +19,10 @@ void HAL::Init()
     rcu_periph_clock_enable(RCU_GPIOC);
     rcu_periph_clock_enable(RCU_GPIOF);
 
+#ifdef GD32E230
     rcu_periph_clock_enable(RCU_CFGCMP);
+#endif
+#ifdef GD32F303
+		rcu_periph_clock_enable(RCU_AF);
+#endif
 }

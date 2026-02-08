@@ -19,8 +19,13 @@ namespace LED
         static bool is_fired = false;
 
         static PinOut pinRED(GPIOA, GPIO_PIN_9);
+#ifdef BOARD_NEW
         static PinOut pinGREEN(GPIOA, GPIO_PIN_10);
         static PinOut pinBLUE(GPIOA, GPIO_PIN_11);
+#else
+        static PinOut pinGREEN(GPIOA, GPIO_PIN_11);
+        static PinOut pinBLUE(GPIOA, GPIO_PIN_10);
+#endif
     }
 }
 

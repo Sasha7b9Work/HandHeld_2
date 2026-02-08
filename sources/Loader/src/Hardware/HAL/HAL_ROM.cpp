@@ -1,7 +1,12 @@
 // 2025/11/28 16:34:38 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
-#include <gd32e23x.h>
+#ifdef GD32E230
+	#include <gd32e23x.h>
+#endif
+#ifdef GD32F303
+	#include <gd32f30x.h>
+#endif
 
 
 namespace HAL_ROM
