@@ -1,16 +1,16 @@
 # (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
-project (Loader)
+project (Loader7789)
 
 
 set(CMAKE_UNITY_BUILD OFF)
 
 
 include_directories(
-    ../common/VS_KEIL
-    src/Hardware/HAL
-    src
-    ../common/GD32E23x_Firmware_Library/Firmware/CMSIS/GD/GD32E23x/Include
-    ../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include
+    ../../common/VS_KEIL
+    ../src/Hardware/HAL
+    ../src
+    ../../common/GD32E23x_Firmware_Library/Firmware/CMSIS/GD/GD32E23x/Include
+    ../../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include
 )
 
 add_definitions(-DSTM32F407xx)
@@ -34,18 +34,18 @@ add_compile_options(
     /wd5220    # a non-static data member with a volatile qualified type no longer implies
 )
 
-file(GLOB LIBS_HAL         ../common/libs/STM32Cube_F4/Drivers/STM32F4xx_HAL_Driver/Inc/*.*
-                           ../common/libs/STM32Cube_F4/Drivers/STM32F4xx_HAL_Driver/Src/*.*)
-file(GLOB SRC              src/*.*)
-file(GLOB DISPLAY          src/Display/*.*)
-file(GLOB DISPLAY_FONT     src/Display/Font/*.*)
-file(GLOB HARDWARE         src/Hardware/*.*)
-file(GLOB HARDWARE_CMSIS   src/Hardware/CMSIS/*.*)
-file(GLOB HARDWARE_HAL     src/Hardware/HAL/*.*)
-file(GLOB MODULES_LED      src/Modules/LED/*.*)
-file(GLOB MODULES_PAN3060  src/Modules/PAN3060/*.*)
-file(GLOB MODULES_ST7735   src/Modules/ST7735/*.*)
-file(GLOB UTILS            src/Utils/*.*)
+file(GLOB LIBS_HAL         ../../common/libs/STM32Cube_F4/Drivers/STM32F4xx_HAL_Driver/Inc/*.*
+                           ../../common/libs/STM32Cube_F4/Drivers/STM32F4xx_HAL_Driver/Src/*.*)
+file(GLOB SRC              ../src/*.*)
+file(GLOB DISPLAY          ../src/Display/*.*)
+file(GLOB DISPLAY_FONT     ../src/Display/Font/*.*)
+file(GLOB HARDWARE         ../src/Hardware/*.*)
+file(GLOB HARDWARE_CMSIS   ../src/Hardware/CMSIS/*.*)
+file(GLOB HARDWARE_HAL     ../src/Hardware/HAL/*.*)
+file(GLOB MODULES_LED      ../src/Modules/LED/*.*)
+file(GLOB MODULES_PAN3060  ../src/Modules/PAN3060/*.*)
+file(GLOB MODULES_ST7735   ../src/Modules/ST7735/*.*)
+file(GLOB UTILS            ../src/Utils/*.*)
 
 set_source_files_properties(${LIBS_HAL} PROPERTIES HEADER_FILE_ONLY TRUE)
 
