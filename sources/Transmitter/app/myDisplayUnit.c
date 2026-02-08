@@ -325,7 +325,7 @@ void myDisplay_ui_upgradeFirmware54(bool flashFlag, int agr0, void *arg1_ptr, vo
 
     myLCD_str8x16(agr0 == 0 && flashFlag ? IM_INVERSE : IM_NOMALE, 0, 4, "Start");
 
-    upg_func_display();
+    upg_func_display(54);
 }
 void myDisplay_ui_rf_rx_packet(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_ptr)
 {

@@ -1,4 +1,4 @@
-#include "upgrader/Upgrader54.h"
+﻿#include "upgrader/Upgrader54.h"
 #include "upgrader/Timer.h"
 #include "myLcd.h"
 #include "myRadio.h"
@@ -60,12 +60,6 @@ static uint32_t time_small = 125;
 uint32_t upg_address_begin()
 {
     return (uint32_t)DATA_BEGIN;
-}
-
-
-static int upg_chains_all()
-{
-    return (data_end - DATA_BEGIN) / SIZE_CHAIN;
 }
 
 
@@ -276,12 +270,14 @@ uint32_t CalculateCRC32(const void *buffer, int size)
 }
 
 
-void upg_func_display(void)
+void upg_func_display(int num_KB)
 {
     myLCD_str8x16(IM_NOMALE, 0, 5, "                              ");
     myLCD_str8x16(IM_NOMALE, 0, 6, "                              ");
 
     myLCD_str8x16(IM_NOMALE, 0, 5, "%u s   %u     %u/%u", Timer_ElapsedMS(TIM_ELAPSED_UPGRADE) / 1000, time_tx, time_small, time_big);
 
-    myLCD_str8x16(IM_NOMALE, 0, 6, "%d/%d chains, %.0f %%", chains_transmitted, upg_chains_all(), ((float)chains_transmitted / (float)upg_chains_all()) * 100.0f);
+    int chains_all = num_KB * 1024 / SIZE_CHAIN;
+
+    myLCD_str8x16(IM_NOMALE, 0, 6, "%d/%d chains, %.0f %%", chains_transmitted, chains_all, ((float)chains_transmitted / (float)chains_all) * 100.0f);
 }
