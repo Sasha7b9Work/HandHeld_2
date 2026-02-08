@@ -20,11 +20,12 @@
 #define __attribute__()
 #endif
 
-#define DATA_BEGIN ((uint8_t *)0x08030000)
-#define DATA_SIZE (54 * 1024)
-#define DATA_END (DATA_BEGIN + DATA_SIZE)
-
+#define DATA_BEGIN ((uint8_t *)0x08010000)
 static const uint8_t *data = (const uint8_t *)DATA_BEGIN;   // Это указатель на данные, которые следует передавать в данной итерации
+
+static int      data_size = 0;               // Столько байт передаём
+static uint8_t *data_end = 0;
+
 #define SIZE_CHAIN 128
 
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -64,14 +65,16 @@ uint32_t upg54_address_begin()
 
 static int upg_chains_all()
 {
-    return (DATA_END - DATA_BEGIN) / SIZE_CHAIN;
+    return (data_end - DATA_BEGIN) / SIZE_CHAIN;
 }
 
 
-void upg54_start_update()
+void upg54_start_update(int num_KB)
 {
     if (!in_process_update)
     {
+        data_size = num_KB * 1024;
+
         Reset();
 
         in_process_update = true;
@@ -142,6 +145,8 @@ void Reset()
 
     data = DATA_BEGIN;
 
+    data_end = DATA_BEGIN + data_size;
+
     chains_transmitted = 0;
 
     Timer_Reset(TIM_PACKETS);
@@ -156,7 +161,7 @@ const uint8_t *DataNext()
 
     data += SIZE_CHAIN;
 
-    return result < DATA_END ? result : 0;
+    return result < data_end ? result : 0;
 }
 
 
@@ -195,7 +200,7 @@ uint32_t CalculateFirmwareCRC32()
     if (first)
     {
         first = false;
-        crc32 = CalculateCRC32(DATA_BEGIN, DATA_SIZE - 4);
+        crc32 = CalculateCRC32(DATA_BEGIN, data_size - 4);
     }
 
     return crc32;

@@ -353,7 +353,7 @@ void uiEnterCallback(int pageId, int cursorCount, int status, int value)
         case 0:
             if (status)
             {
-                upg54_start_update();
+                upg54_start_update(54);
             }
             break;
         }
