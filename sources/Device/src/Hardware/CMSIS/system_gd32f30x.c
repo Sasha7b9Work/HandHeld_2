@@ -194,6 +194,9 @@ void SystemInit (void)
 
     /* configure the system clock source, PLL Multiplier, AHB/APBx prescalers and Flash settings */
     system_clock_config();
+    
+    // Основная прошивка находится на 0x2000 - переносим сюда таблицу
+    nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x2000);
 }
 /*!
     \brief      configure the system clock
