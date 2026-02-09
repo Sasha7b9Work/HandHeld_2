@@ -155,16 +155,19 @@ void Keyboard::CallbackFromInterrupt(Key::E key)
         {
             bool is_down = buttons[key].button->IsDown();       // Даже если мы зашли при нуле - не факт, что здесь ноль будет
 
-//          if (buttons[key].prev_down != is_down)
-//          {
-                if (is_down)
-                {
-                    AppendAction({ key , ActionType::Up });
-                }
-
+            if (is_down && !buttons[key].prev_down)             // Произошло нажатие
+            {
+                AppendAction({ key, ActionType::_Down });
                 buttons[key].prev_time = time;
-//              buttons[key].prev_down = is_down;
-//          }
+                buttons[key].prev_down = is_down;
+            }
+
+            if (!is_down && buttons[key].prev_down)             // Произошло отпускание
+            {
+                AppendAction({ key, ActionType::Up });
+                buttons[key].prev_time = time;
+                buttons[key].prev_down = is_down;
+            }
         }
     }
 }

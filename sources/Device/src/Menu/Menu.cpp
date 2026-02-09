@@ -49,15 +49,15 @@ void Menu::Update()
     }
     else if (action.IsRelease())
     {
-        if (is_shown)
+        if (is_shown)                                                                           // Находимся в меню
         {
             current_item->ApplyAction(action);
         }
-        else
+        else                                                                                    // Находимся на главном экране
         {
             if (action.key == Key::Cancel && Display::TimeEnabled() > 100)
             {
-                Keyboard::ms_for_disable = 0;
+                Keyboard::ms_for_disable = 0;                                                   // Пора засыпать
             }
 
             if (action.key == Key::Menu || action.key == Key::Up || action.key == Key::Down)
