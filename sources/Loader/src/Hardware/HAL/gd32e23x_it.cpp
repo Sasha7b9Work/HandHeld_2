@@ -18,6 +18,21 @@ extern "C" {
 */
 void NMI_Handler(void)
 {
+#ifdef GD32E230
+    if(SET == syscfg_flag_get(SYSCFG_SRAM_PCEF))
+#endif
+#ifdef GD32F303
+    if(SET == syscfg_flag_get(SYSCFG_FLAG_SRAM_PCE))
+#endif
+		{
+				//SRAM parity check error
+				__NOP();
+    } else {
+        /* if NMI exception occurs, go to infinite loop */
+        /* HXTAL clock monitor NMI error or NMI pin error */
+        while(1) {
+        }
+    }
 }
 
 /*!

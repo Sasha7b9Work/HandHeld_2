@@ -19,6 +19,9 @@ void HAL::Init()
     rcu_periph_clock_enable(RCU_GPIOC);
     rcu_periph_clock_enable(RCU_GPIOF);
 
+		rcu_periph_clock_enable(RCU_SPI0);
+		rcu_periph_clock_enable(RCU_DMA0);
+	
 #ifdef GD32E230
     rcu_periph_clock_enable(RCU_CFGCMP);
 #endif

@@ -4,6 +4,8 @@
 #include "Hardware/Timer.h"
 #include "Utils/String.h"
 #include "Modules/PAN3060/PAN3060.h"
+#include "system_gd32f30x.c"
+
 #ifdef GD32E230
 	#include <gd32e23x.h>
 #endif
@@ -36,7 +38,7 @@ static const uint NUM_PAGES = 54;
 #endif
 #ifdef GD32F303
 static const uint BEGIN_FIRMWARE = 0x8002000;
-static const uint NUM_PAGES = 123;
+static const uint NUM_PAGES = 96;
 #define FLASH_PAGE_SIZE		2048
 #define LED_RED_PORT 			GPIOA
 #define LED_RED_PIN 			GPIO_PIN_9
@@ -77,15 +79,16 @@ static const uint NUM_PAGES = 123;
 #endif
 
 uint rx_irq_set_f = 0;
-uint8 rx_buffer[RX_BUFFER_LENGTH];
-uint8 rx_page[FLASH_PAGE_SIZE];
+uint8 rx_buffer[RX_BUFFER_LENGTH] __attribute__((aligned(4)));
+uint8 rx_page[FLASH_PAGE_SIZE] __attribute__((aligned(4)));
 uint _crc_incoming;
 
 static void JumpToMainApplication();
+static void flash_operation(uint _address, uint8* rx_page);
 static void Power_off_error();
 static void Blink_green();
 static void TFT_init();
-static void TFT_full(unsigned int color);
+static void TFT_clear();
 
 int main()
 {
@@ -94,8 +97,6 @@ int main()
 	
     HAL::Init();
 #ifdef GD32F303
-		TFT_init();
-		TFT_full(0xFF00);	//white
 #endif
 
 		//init button 'down' and vibro port
@@ -129,17 +130,30 @@ int main()
 				gpio_init(LED_GREEN_PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, LED_GREEN_PIN);
 				gpio_init(LED_BLUE_PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, LED_BLUE_PIN);
 				#endif
+
 				//color red
 				gpio_bit_set(LED_RED_PORT, LED_RED_PIN);
 				//color green
 				gpio_bit_set(LED_GREEN_PORT, LED_GREEN_PIN);
 				//color blue
 				gpio_bit_set(LED_BLUE_PORT, LED_BLUE_PIN);
-			
+
+				//display test
+				#ifdef GD32F303
+				TFT_init();
+				TFT_clear();
+				gpio_bit_set(TFT_BKG_PORT, TFT_BKG_PIN);
+				Timer::Delay(1000);
+				gpio_bit_reset(TFT_BKG_PORT, TFT_BKG_PIN);
+				gpio_bit_set(TFT_ON_PORT, TFT_ON_PIN);
+				#endif
+
 				//short vibration
+				#ifdef GD32E230
 		    gpio_bit_set(VIBRO_PORT, VIBRO_PIN);
 				Timer::Delay(200);
 				gpio_bit_reset(VIBRO_PORT, VIBRO_PIN);
+				#endif
 
 				//turn on receiver
 				PAN3060::Init();
@@ -210,24 +224,7 @@ int main()
 											Power_off_error();
 								};
 
-								#ifdef GD32E230
-								HAL_ROM::ErasePage(_address);
-								HAL_ROM::WritePage(_address, rx_page);
-								#endif
-								#ifdef GD32F303
-								fmc_bank0_unlock();
-								fmc_flag_clear(FMC_FLAG_BANK0_END | FMC_FLAG_BANK0_WPERR | FMC_FLAG_BANK0_PGERR);
-								fmc_page_erase(_address);
-								uint *data = (uint *)rx_page;
-								for(int i = 0; i < FLASH_PAGE_SIZE; i += 4)
-								{
-										fmc_word_program(_address, *data);
-										fmc_flag_clear(FMC_FLAG_BANK0_END | FMC_FLAG_BANK0_WPERR | FMC_FLAG_BANK0_PGERR);
-										_address += 4;
-										data++;
-								}
-								fmc_bank0_lock();
-								#endif
+								flash_operation(_address, rx_page);
 						};
 
 						//if last page, exit
@@ -266,6 +263,46 @@ void JumpToMainApplication()
 
 #endif
 }
+
+__attribute__((section("ramfunc")))
+void flash_operation(uint _address, uint8* rx_page)
+{
+								#ifdef GD32E230
+								HAL_ROM::ErasePage(_address);
+								gpio_bit_set(LED_BLUE_PORT, LED_BLUE_PIN);		//blue
+								uint *data = (uint *)rx_page;
+								__disable_irq();
+								fmc_unlock();
+//							HAL_ROM::WritePage(_address, rx_page);
+								for(int i = 0; i < FLASH_PAGE_SIZE; i += 4)
+								{
+										fmc_word_program(_address, *data);
+										fmc_flag_clear(FMC_FLAG_END | FMC_FLAG_WPERR | FMC_FLAG_PGERR);
+										_address += 4U;
+										data++;
+								};
+								fmc_lock();
+								__enable_irq();
+								#endif
+								#ifdef GD32F303
+								fmc_bank0_unlock();
+								fmc_flag_clear(FMC_FLAG_BANK0_END | FMC_FLAG_BANK0_WPERR | FMC_FLAG_BANK0_PGERR);
+								fmc_page_erase(_address);
+								gpio_bit_set(LED_BLUE_PORT, LED_BLUE_PIN);		//blue
+								uint *data = (uint *)rx_page;
+								__disable_irq();
+								for(int i = 0; i < FLASH_PAGE_SIZE; i += 4)
+								{
+										fmc_word_program(_address, *data);
+										fmc_flag_clear(FMC_FLAG_BANK0_END | FMC_FLAG_BANK0_WPERR | FMC_FLAG_BANK0_PGERR);
+										_address += 4;
+										data++;
+								};
+								__enable_irq();
+								fmc_bank0_lock();
+								#endif
+}
+
 void Power_off_error()
 {
 		//blink red light for 0.5s
@@ -284,6 +321,8 @@ void Power_off_error()
 		gpio_init(PWR_CTRL_PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, PWR_CTRL_PIN);
 		#endif
 		gpio_bit_set(PWR_CTRL_PORT, PWR_CTRL_PIN);
+		while(1)
+			;
 }
 
 void Blink_green()
@@ -303,23 +342,7 @@ void Blink_green()
 
 void SPI_SendByte(unsigned  char byte)
 {
-  unsigned char counter;
-
-//	gpio_bit_reset(TFT_SPI_CS_PORT, TFT_SPI_CS_PIN);
-   
-  for(counter = 0; counter < 8; counter++)
-  { 
-		gpio_bit_reset(TFT_SPI_SCK_PORT, TFT_SPI_SCK_PIN);
-    if((byte & 0x80) == 0)
-			gpio_bit_reset(TFT_SPI_SDA_PORT, TFT_SPI_SDA_PIN);
-    else
-			gpio_bit_set(TFT_SPI_SDA_PORT, TFT_SPI_SDA_PIN);
-    byte = byte << 1;	
-		gpio_bit_set(TFT_SPI_SCK_PORT, TFT_SPI_SCK_PIN);
-  }
-  
-	gpio_bit_reset(TFT_SPI_SCK_PORT, TFT_SPI_SCK_PIN);
-//	gpio_bit_set(TFT_SPI_CS_PORT, TFT_SPI_CS_PIN);
+	spi_i2s_data_transmit(SPI0, byte);
 }
 
 void TFT_SEND_CMD(unsigned char o_command)
@@ -337,33 +360,8 @@ void TFT_SEND_DATA(unsigned  char o_data)
 
 void TFT_clear(void)
   {
-    unsigned int ROW,column;
-		TFT_SEND_CMD(0x2a);     //Column address set
-		TFT_SEND_DATA(0x00);    //start column
-		TFT_SEND_DATA(0x00); 
-		TFT_SEND_DATA(0x00);    //end column
-		TFT_SEND_DATA(0xF0);
-
-		TFT_SEND_CMD(0x2b);     //Row address set
-		TFT_SEND_DATA(0x00);    //start row
-		TFT_SEND_DATA(0x00); 
-		TFT_SEND_DATA(0x01);    //end row
-		TFT_SEND_DATA(0x40);
-    TFT_SEND_CMD(0x2C);     //Memory write
-    for(ROW=0;ROW<TFT_LINE_NUMBER;ROW++)             //ROW loop
-      { 
-    
-          for(column=0;column<TFT_COLUMN_NUMBER;column++)  //column loop
-            {
-              
-				TFT_SEND_DATA(0xFF);
-				TFT_SEND_DATA(0xFF);
-            }
-      }
-  }
-void TFT_full(unsigned int color)
-  {
-    unsigned int ROW,column;
+		uint32_t _buffer = 0xFFFFFFFF;	//white
+		
     TFT_SEND_CMD(0x2a);     //Column address set
 		TFT_SEND_DATA(0x00);    //start column
 		TFT_SEND_DATA(0x00); 
@@ -376,16 +374,71 @@ void TFT_full(unsigned int color)
 		TFT_SEND_DATA(0x01);    //end row
 		TFT_SEND_DATA(0x40);
     TFT_SEND_CMD(0x2C);     //Memory write
-    for(ROW=0;ROW<TFT_LINE_NUMBER;ROW++)             //ROW loop
-      { 
-    
-  for(column=0;column<TFT_COLUMN_NUMBER ;column++) //column loop
-          {
 
-			TFT_SEND_DATA(color>>8);
-			  TFT_SEND_DATA(color);
-          }
-      }
+		gpio_bit_set(TFT_DC_PORT, TFT_DC_PIN);
+
+		//init PLL
+    RCU_APB1EN |= RCU_APB1EN_PMUEN;		//LDO output voltage high mode
+    PMU_CTL |= PMU_CTL_LDOVS;
+
+    RCU_CFG0 |= RCU_AHB_CKSYS_DIV1;
+    RCU_CFG0 |= RCU_APB2_CKAHB_DIV1;
+    RCU_CFG0 |= RCU_APB1_CKAHB_DIV2;
+
+    RCU_CFG0 &= ~(RCU_CFG0_PLLMF | RCU_CFG0_PLLMF_4 | RCU_CFG0_PLLMF_5);	//CK_PLL = (CK_IRC8M/2) * 18 = 120 MHz
+    RCU_CFG0 |= RCU_PLL_MUL30;
+
+    RCU_CTL |= RCU_CTL_PLLEN;					//enable PLL
+    while(0U == (RCU_CTL & RCU_CTL_PLLSTB)){
+    }
+    
+    PMU_CTL |= PMU_CTL_HDEN;					//enable the high-drive to extend the clock frequency to 120 MHz
+    while(0U == (PMU_CS & PMU_CS_HDRF)){
+    }
+    
+    PMU_CTL |= PMU_CTL_HDS;						//select the high-drive mode
+    while(0U == (PMU_CS & PMU_CS_HDSRF)){
+    }
+
+    __IO uint32_t reg_temp = RCU_CFG0;
+    reg_temp &= ~RCU_CFG0_SCS;				//select PLL as system clock
+    reg_temp |= RCU_CKSYSSRC_PLL;
+    RCU_CFG0 = reg_temp;
+
+    while(0U == (RCU_CFG0 & RCU_SCSS_PLL)){	//wait until PLL is selected as system clock
+    }
+		
+		//init DMA
+    dma_parameter_struct dma_init_struct;
+    dma_deinit(DMA0, DMA_CH2); // Очистка канала перед новой передачей
+        
+    dma_struct_para_init(&dma_init_struct);
+    dma_init_struct.periph_addr  = (uint32_t)&SPI_DATA(SPI0);
+    dma_init_struct.memory_addr  = (uint32_t)&_buffer;
+    dma_init_struct.direction    = DMA_MEMORY_TO_PERIPHERAL;
+    dma_init_struct.number       = TFT_COLUMN_NUMBER*TFT_LINE_NUMBER*2/4;					//counter is 16-bit only
+    dma_init_struct.periph_inc   = DMA_PERIPH_INCREASE_DISABLE;
+    dma_init_struct.memory_inc   = DMA_MEMORY_INCREASE_DISABLE;
+    dma_init_struct.periph_width = DMA_PERIPHERAL_WIDTH_8BIT;
+    dma_init_struct.memory_width = DMA_MEMORY_WIDTH_8BIT;
+    dma_init_struct.priority     = DMA_PRIORITY_ULTRA_HIGH;
+
+		//Приходится разбить на 4 части, потому что счетчик DMA 16-битный и его разрядности недостаточно
+		for(uint _i=0; _i < 4;_i++)
+		{
+			//Инициализация
+			dma_init(DMA0, DMA_CH2, &dma_init_struct);
+
+			// Запуск передачи
+			dma_channel_enable(DMA0, DMA_CH2);
+        
+			// Ждем завершения
+			while(RESET == dma_flag_get(DMA0, DMA_CH2, DMA_FLAG_FTF));
+			dma_deinit(DMA0, DMA_CH2);
+		};
+		
+		//switch back to 8MHz IRC
+		system_clock_config();
   }
 void TFT_init(void)        
   {
@@ -409,20 +462,39 @@ void TFT_init(void)
 		gpio_init(TFT_BKG_PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, TFT_BKG_PIN);
 		gpio_init(TFT_RST_PIN, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, TFT_RST_PIN);
 		gpio_init(TFT_DC_PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, TFT_DC_PIN);
-		gpio_init(TFT_SPI_SCK_PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, TFT_SPI_SCK_PIN);
-		gpio_init(TFT_SPI_SDA_PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, TFT_SPI_SDA_PIN);
+		gpio_init(TFT_SPI_SCK_PORT, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, TFT_SPI_SCK_PIN);
+		gpio_init(TFT_SPI_SDA_PORT, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, TFT_SPI_SDA_PIN);
 		#endif
 
+		spi_parameter_struct spi_is;
+    spi_i2s_deinit(SPI0);
+    spi_struct_para_init(&spi_is);
+
+    spi_is.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
+    spi_is.device_mode = SPI_MASTER;
+    spi_is.frame_size = SPI_FRAMESIZE_8BIT;
+    spi_is.clock_polarity_phase = SPI_CK_PL_HIGH_PH_1EDGE;
+    spi_is.nss = SPI_NSS_SOFT;
+    spi_is.prescale = SPI_PSC_2;
+    spi_is.endian = SPI_ENDIAN_MSB;
+    spi_init(SPI0, &spi_is);
+		spi_dma_enable(SPI0, SPI_DMA_TRANSMIT);
+    spi_enable(SPI0);
+
 		gpio_bit_reset(TFT_ON_PORT, TFT_ON_PIN);
-		gpio_bit_set(TFT_BKG_PORT, TFT_BKG_PIN);
 		Timer::Delay(200);
 		gpio_bit_reset(TFT_RST_PORT, TFT_RST_PIN);
-		Timer::Delay(10);
+		gpio_bit_reset(TFT_DC_PORT, TFT_DC_PIN);
+		Timer::Delay(50);
 		gpio_bit_set(TFT_RST_PORT, TFT_RST_PIN);
-		Timer::Delay(120);
+		Timer::Delay(150);
+//		TFT_SEND_CMD(0x11); //Exit Sleep // НЛіцЛЇГЯДЈКЅ
+//		Timer::Delay(1200);
+
 //-----------------------ST7789V Frame rate setting-----------------//
 //************************************************
-                TFT_SEND_CMD(0x3A);        //65k mode
+
+								TFT_SEND_CMD(0x3A);        //65k mode
                 TFT_SEND_DATA(0x05);
                 TFT_SEND_CMD(0xC5); 		//VCOM
                 TFT_SEND_DATA(0x1A);

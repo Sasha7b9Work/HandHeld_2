@@ -134,8 +134,22 @@ void HAL_ROM::WritePage(uint address, const uint8 bytes[1024])
 
     for (int i = 0; i < 1024; i += 4)
     {
-        WriteUInt(address, *data);
+//        WriteUInt(address, *data);
+    fmc_state_enum fmc_state = ReadyWait(FMC_TIMEOUT_COUNT);
 
+    if (FMC_READY == fmc_state)
+    {
+        /* set the PG bit to start program */
+        FMC_CTL |= FMC_CTL_PG;
+
+        REG32(address) = *data;
+        /* wait for the FMC ready */
+        fmc_state = ReadyWait(FMC_TIMEOUT_COUNT);
+
+        /* reset the PG bit */
+        FMC_CTL &= ~FMC_CTL_PG;
+    }
+		
         address += 4;
 
         data++;
