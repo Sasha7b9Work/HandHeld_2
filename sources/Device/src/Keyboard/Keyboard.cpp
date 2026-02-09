@@ -99,8 +99,8 @@ namespace Keyboard
 
     static ButtonStruct buttons[Key::Count] =
     {
-        {&btnMenu, false, 0},
-        {&btnCancel, false, 0},
+        {&btnMenu, true, 0},
+        {&btnCancel, true, 0},
         {&btnUp, false, 0},
         {&btnDown, false, 0}
     };
@@ -155,6 +155,16 @@ void Keyboard::CallbackFromInterrupt(Key::E key)
         {
             bool is_down = buttons[key].button->IsDown();       // Даже если мы зашли при нуле - не факт, что здесь ноль будет
 
+            if (!is_down)
+            {
+                AppendAction({ key , ActionType::Up });
+            }
+
+            buttons[key].prev_time = time;
+
+            /*
+            bool is_down = buttons[key].button->IsDown();       // Даже если мы зашли при нуле - не факт, что здесь ноль будет
+
             if (!is_down && buttons[key].prev_down)             // Произошло отпускание
             {
                 AppendAction({ key, ActionType::Up });
@@ -167,6 +177,7 @@ void Keyboard::CallbackFromInterrupt(Key::E key)
                 buttons[key].prev_time = time;
                 buttons[key].prev_down = is_down;
             }
+            */
         }
     }
 }

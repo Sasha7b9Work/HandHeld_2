@@ -9,6 +9,8 @@
 
   <project>
     <PathAndName>.\Device\Device7735.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
@@ -17,7 +19,6 @@
 
   <project>
     <PathAndName>.\Loader\Loader.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
     <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
