@@ -20,7 +20,7 @@ namespace Font
 }
 
 
-void Font::SetSize(int _size)
+void Font::_SetSize(int _size)
 {
     size = _size;
 }

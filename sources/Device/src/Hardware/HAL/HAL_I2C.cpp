@@ -387,7 +387,7 @@ namespace HAL_I2C
 #endif
 
 #ifdef MODEL7789
-        gpio_init(PORT_I2C, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, I2C_SCK | I2C_SDA);
+        gpio_init(PORT_I2C, GPIO_MODE_OUT_OD, GPIO_OSPEED_50MHZ, I2C_SCK | I2C_SDA);
 #endif
     }
 

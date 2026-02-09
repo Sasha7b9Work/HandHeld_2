@@ -46,7 +46,7 @@ void Page::Draw() const
     }
     else
     {
-        Font::SetSize(2);
+        Font::_SetSize(S_2_3);
 
         Text<> title = data->item->Title();
 
@@ -65,7 +65,7 @@ void Page::Draw() const
             Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, 45, Display::WIDTH);
         }
 
-        Font::SetSize(1);
+        Font::_SetSize(1);
 
         if (data->func_draw_closed)
         {
@@ -83,7 +83,7 @@ void Choice::Draw() const
     }
     else
     {
-        Font::SetSize(2);
+        Font::_SetSize(S_2_3);
 
         data->item->Title().WriteInCenter(0, 15, Display::WIDTH, Color::GREEN);
 
@@ -100,7 +100,7 @@ void Choice::Draw() const
 
         Text<>(text).WriteInCenter(0, 45, Display::WIDTH, color);
 
-        Font::SetSize(1);
+        Font::_SetSize(1);
     }
 }
 
@@ -117,9 +117,9 @@ void DateTime::DrawField(int x, int y, Text<> &text, bool selected) const
         Rect(width + 2, height + 2).Draw(x - 1, y - 1, Color::WHITE);
     }
 
-    Font::SetSize(4);
+    Font::_SetSize(S_4_5);
     text.Write(x + 3, (y + 3), selected ? Color::BLACK : Color::WHITE);
-    Font::SetSize(1);
+    Font::_SetSize(1);
 }
 
 
@@ -127,11 +127,11 @@ void DateTime::Draw() const
 {
     if (data->item->IsOpened())
     {
-        Font::SetSize(2);
+        Font::_SetSize(S_2_3);
 
         Text<>("ÓÑÒÀÍÎÂÊÀ").WriteInCenter(0, 10, Display::WIDTH, Color::WHITE);
 
-        Font::SetSize(1);
+        Font::_SetSize(1);
 
         int values[3] =
         {
@@ -165,11 +165,11 @@ void DateTime::Draw() const
     }
     else
     {
-        Font::SetSize(2);
+        Font::_SetSize(S_2_3);
 
         data->item->Title().WriteInCenter(0, 30, Display::WIDTH, Color::GREEN);
 
-        Font::SetSize(1);
+        Font::_SetSize(1);
     }
 }
 

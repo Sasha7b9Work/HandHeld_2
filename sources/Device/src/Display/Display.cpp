@@ -149,7 +149,7 @@ void Display::DrawPowerOff()
     {
         BeginScene(i);
 
-        Font::SetSize(2);
+        Font::_SetSize(S_2_3);
 
         Text<>("¬€ Àﬁ◊≈Õ»≈").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
 
@@ -164,7 +164,7 @@ void Display::DrawPowerOn()
     {
         BeginScene(i);
 
-        Font::SetSize(2);
+        Font::_SetSize(S_2_3);
 
         Text<>("¬ Àﬁ◊≈Õ»≈").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
 
@@ -179,7 +179,7 @@ void Display::DrawLowVoltage()
     {
         BeginScene(i);
 
-        Font::SetSize(2);
+        Font::_SetSize(S_2_3);
 
         Text<>("Õ»« Œ≈").WriteInCenter(0, 20, Display::WIDTH, Color::RED);
 
@@ -233,9 +233,9 @@ void Display::DrawScene(int num_part)
 
     if (PCF8563::IsAlarmed())
     {
-        Font::SetSize(2);
+        Font::_SetSize(S_2_3);
         Text<>("¡”ƒ»À‹Õ» ").WriteInCenter(0, 30, Display::WIDTH, Color(Color::Contrast(gset.alarm.color)));
-        Font::SetSize(1);
+        Font::_SetSize(1);
     }
     else if (Source::GetCountReceived())
     {
@@ -260,7 +260,7 @@ void Display::DrawScene(int num_part)
             }
         }
 
-        Font::SetSize(2);
+        Font::_SetSize(S_2_3);
 
         pchar name = Source::Name(Source::Current());
 
@@ -279,7 +279,7 @@ void Display::DrawScene(int num_part)
             Text<>(SU::GetWordFromString(name, 2, buffer)).WriteInCenter(0, y + 15, Display::WIDTH);
         }
 
-        Font::SetSize(1);
+        Font::_SetSize(1);
     }
     else
     {
@@ -289,15 +289,15 @@ void Display::DrawScene(int num_part)
         }
         else
         {
-            Font::SetSize(5);
+            Font::_SetSize(S_5_6);
 
             PCF8563::GetDateTime().DrawTime(30, 23, Color::WHITE);
 
-            Font::SetSize(2);
+            Font::_SetSize(S_2_3);
 
             PCF8563::GetDateTime().DrawDate(46, 66);
 
-            Font::SetSize(1);
+            Font::_SetSize(1);
 
             Power::Draw();
         }

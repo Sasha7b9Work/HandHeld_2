@@ -25,7 +25,7 @@ namespace PageJournal
         const Record *rec = Storage::Get(top_record);
         const RTCDateTime time = rec->time;
 
-        Font::SetSize(2);
+        Font::_SetSize(S_2_3);
 
         int y = 0;
 
@@ -36,19 +36,19 @@ namespace PageJournal
 
         Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).WriteInCenter(x, y + 50, Display::WIDTH);
 
-        Font::SetSize(1);
+        Font::_SetSize(1);
     }
 
     static void FuncDraw_History()
     {
         if (Storage::GetCountRecords() == 0)
         {
-            Font::SetSize(2);
+            Font::_SetSize(S_2_3);
 
             Text<>("∆”–Õ¿À").WriteInCenter(0, 20, Display::WIDTH, Color::WHITE);
             Text<>("œ”—“").WriteInCenter(0, 50, Display::WIDTH);
 
-            Font::SetSize(1);
+            Font::_SetSize(1);
         }
         else
         {
@@ -85,11 +85,11 @@ namespace PageJournal
 
     void FuncDraw_Closed()
     {
-        Font::SetSize(2);
+        Font::_SetSize(S_2_3);
 
         Text<>("%d ¬€«Œ¬Œ¬", Storage::GetCountRecords()).Write(10, 35, Color::WHITE);
 
-        Font::SetSize(1);
+        Font::_SetSize(1);
     }
 
     DEF_PAGE_0(pageHistory, PageMain::self, "∆”–Õ¿À",

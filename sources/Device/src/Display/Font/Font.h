@@ -76,11 +76,24 @@ struct FontDef
 };
 
 
+#ifdef MODEL7735
+    #define S_2_3   2
+    #define S_4_5   4
+    #define S_5_6   5
+#endif
+
+#ifdef MODEL7789
+    #define S_2_3   2
+    #define S_4_5   4
+    #define S_5_6   5
+#endif
+
+
 namespace Font
 {
     void SetType(TypeFont::E);
 
-    void SetSize(int);
+    void _SetSize(int);
 
     int GetSize();
 
