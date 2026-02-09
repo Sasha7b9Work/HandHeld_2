@@ -1,4 +1,4 @@
-ï»¿#include "myDisplayUnit.h"
+#include "myDisplayUnit.h"
 #include "myLcd.h"
 #include "upgrader/Timer.h"
 #include "upgrader/Upgrader54.h"
@@ -51,7 +51,7 @@ void myDisplay_ui_firstUi(bool flashFlag, int agr0, void *agr1_ptr, void *agr2_p
 {
     if (uiPageIdAddress != UI_PAGE_ID_FIRST_UI)
     {
-        myLCD_16x16(IM_INVERSE, 10, 11, "Ğ™Ğ¾Ğ«ĞªĞšĞ ĞĞ¦Ğ…ÑˆÑ—Ğ–Ñ˜Ñ˜Ğ£Ğ ĞŸĞ®â„–Â«Ğ›Ñ•");
+        myLCD_16x16(IM_INVERSE, 10, 11, "ÉîÛÚÊĞÎÖ½ø¿Æ¼¼ÓĞÏŞ¹«Ë¾");
         myLCD_displayImage(IM_NOMALE, 1, 1, IMG_SRC_VOLLGO);
         myLCD_str8x16(IM_NOMALE, 80, 1, "VG------------");
         myLCD_str8x16(IM_NOMALE, 95, 2, "Freq.***");
@@ -671,17 +671,17 @@ void myDisplay_ui_rf_rxContinue_scroll_buffer(uint8_t *buf, uint16_t len)
     }
 }
 /**
- * â„–Ğ²Â±ĞºÑ—Ğ¨Ğ¦Ğ–
- * direct: Â·Ğ…ĞŸÑ‚Ñ—Ğ¨Ğ¦Ğ–
- *          =1ĞˆÂ¬ĞŸÑ‚Ğ™ĞŸĞ¢Ğ–Â¶Ğ‡
- *          =0ĞˆÂ¬ĞŸÑ‚ĞŸĞ’Ğ¢Ğ–Â¶Ğ‡
+ * ¹â±ê¿ØÖÆ
+ * direct: ·½Ïò¿ØÖÆ
+ *          =1£¬ÏòÉÏÒÆ¶¯
+ *          =0£¬ÏòÏÂÒÆ¶¯
  * **/
 void myDisplay_change(uint8_t direct)
 {
     uiPageUnit_ts *page = &uiPageParams[uiPageCount - 1];
     if (page->cursorCount)
     {
-        //Ğ™Ğ¸Ğ¦Ğ“Ñ˜Ğ£Ñ˜Ñ…Ñ—Ğ¨Ğ¦Ğ–
+        //ÉèÖÃ¼Ó¼õ¿ØÖÆ
         if (page->writeStaTab[page->cursorCounting])
         {
             if (direct)
@@ -714,7 +714,7 @@ void myDisplay_change(uint8_t direct)
         }
         else
         {
-            //â„–Ğ²Â±ĞºĞ¢Ğ–Â¶Ğ‡Ñ—Ğ¨Ğ¦Ğ–
+            //¹â±êÒÆ¶¯¿ØÖÆ
             if (direct)
             {
                 page->cursorCounting--;
@@ -739,17 +739,17 @@ void myDisplay_change(uint8_t direct)
     }
 }
 /***
- * Â°Ò‘ĞŸĞ’Ğ˜Â·Â¶ĞÑ˜ÑŒ
- *  Ğ…ÑˆĞ˜Ğ»ĞŸĞ’Ğ¢Â»Ñ‘Ñ†Ğ…Ğ·Ğ“Ğ¶Â»Ñ‚Ğ¥Ğ¯Ğ…ÑˆĞ˜Ğ»Ğ™Ğ¸Ğ¦Ğ“Ğ§Ò‘ĞœÂ¬
+ * °´ÏÂÈ·¶¨¼ü
+ *  ½øÈëÏÂÒ»¸ö½çÃæ»òÕß½øÈëÉèÖÃ×´Ì¬
 */
 void myDisplay_enter(uint8_t direct)
 {
     if (direct == ENTER_NEXT_PAGE)
     {
-        //Ğ…ÑˆĞ˜Ğ»Ğ™Ğ¸Ğ¦Ğ“Ğ§Ò‘ĞœÂ¬
+        //½øÈëÉèÖÃ×´Ì¬
         if (uiPageParams[uiPageCount - 1].itemTypeTab[uiPageParams[uiPageCount - 1].cursorCounting] == TYPE_WRITE_TEXT)
         {
-            //Ğ—Ğ Â»Â»Ğ™Ğ¸Ğ¦Ğ“Ğ§Ò‘ĞœÂ¬
+            //ÇĞ»»ÉèÖÃ×´Ì¬
             uiPageParams[uiPageCount - 1].writeStaTab[uiPageParams[uiPageCount - 1].cursorCounting] =
                 !uiPageParams[uiPageCount - 1].writeStaTab[uiPageParams[uiPageCount - 1].cursorCounting];
             uiPageParams[uiPageCount - 1].uiDriver(true, uiPageParams[uiPageCount - 1].cursorCounting,
@@ -765,7 +765,7 @@ void myDisplay_enter(uint8_t direct)
             }
 
         }
-        //Ğ—Ğ Â»Â»ÂµĞ…ĞŸĞ’Ğ¢Â»Ñ‘Ñ†Ğ…Ğ·Ğ“Ğ¶
+        //ÇĞ»»µ½ÏÂÒ»¸ö½çÃæ
         if (uiPageParams[uiPageCount - 1].itemTypeTab[uiPageParams[uiPageCount - 1].cursorCounting] == TYPE_NEXT_LINK)
         {
             uiPageCount = uiPageParams[uiPageCount - 1].nextPageIdTab[uiPageParams[uiPageCount - 1].cursorCounting];
@@ -773,7 +773,7 @@ void myDisplay_enter(uint8_t direct)
                 uiPageParams[uiPageCount - 1].itemValueTab, uiPageParams[uiPageCount - 1].itemStringTab[uiPageParams[uiPageCount - 1].cursorCounting]);
         }
     }
-    //Ğ—Ğ Â»Â»ÂµĞ…Ğ™ĞŸĞ¢Â»Ñ‘Ñ†Ğ…Ğ·Ğ“Ğ¶
+    //ÇĞ»»µ½ÉÏÒ»¸ö½çÃæ
     if (direct == ENTER_LAST_PAGE)
     {
         if (uiPageParams[uiPageCount - 1].lastPageIdTab[0])
@@ -819,7 +819,7 @@ void myDisplay_init(enterCallback cb)
 {
     myLCD_init();
 
-    // Ğ¡Ñ‚Ğ°Ñ€Ñ‚Ğ¾Ğ²Ñ‹Ğ¹ ÑĞºÑ€Ğ°Ğ½ ------------------------------------------------------------------------------------------------------
+    // Ñòàğòîâûé ıêğàí ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_FIRST_UI].id = UI_PAGE_ID_FIRST_UI + 1;
     uiPageParams[UI_PAGE_ID_FIRST_UI].uiDriver = myDisplay_ui_firstUi;
     uiPageParams[UI_PAGE_ID_FIRST_UI].lastPageIdTab[0] = 0;
@@ -829,7 +829,7 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_FIRST_UI].cursorCounting = 0;
     uiPageParams[UI_PAGE_ID_FIRST_UI].cursorCount = 2;
 
-    // ĞŸĞµÑ€Ğ²Ğ°Ñ ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ğ° Ğ¼ĞµĞ½Ñ ------------------------------------------------------------------------------------------------------
+    // Ïåğâàÿ ñòğàíèöà ìåíş ------------------------------------------------------------------------------------------------------
     uiPageParams[UI_PAGE_ID_ITEM_MODE].id = UI_PAGE_ID_ITEM_MODE + 1;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].uiDriver = myDisplay_ui_selectMode;
     uiPageParams[UI_PAGE_ID_ITEM_MODE].lastPageIdTab[0] = 0;
@@ -971,7 +971,7 @@ void myDisplay_init(enterCallback cb)
     uiPageParams[UI_PAGE_ID_SETTING].itemMaxValueTab[SET_ITEM_INDEX_PACKET_LEN] = 256;
     uiPageParams[UI_PAGE_ID_SETTING].itemStepValueTab[SET_ITEM_INDEX_PACKET_LEN] = 5;
 
-    uiPageParams[UI_PAGE_ID_SETTING].cursorCounting = SET_ITEM_INDEX_TYPE;//Ğ”Â¬Ğ˜ĞŸĞ™Ğ¸Ğ¦Ğ“â„–Ğ²Â±ĞºĞ¤ĞªÂµĞªĞ¢Â»Ñ‘Ñ†
+    uiPageParams[UI_PAGE_ID_SETTING].cursorCounting = SET_ITEM_INDEX_TYPE;//Ä¬ÈÏÉèÖÃ¹â±êÔÚµÚÒ»¸ö
     uiPageParams[UI_PAGE_ID_SETTING].cursorCount = SET_ITEM_INDEX_MAX_COUNT;
 
     enterCb = cb;
