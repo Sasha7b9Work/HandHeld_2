@@ -129,9 +129,7 @@ void Display::Update()
         for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
         {
             BeginScene(i);
-#ifndef MODEL7789
             DrawScene(i);
-#endif
             EndScene(i);
         }
 

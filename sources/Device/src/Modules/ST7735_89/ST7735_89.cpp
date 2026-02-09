@@ -465,39 +465,30 @@ void ST7735_89::WriteBuffer(int y0)
 
 
 #ifdef MODEL7789
-    (void)y0;
 
-    static TimeMeterMS meter;
-
-    if (meter.ElapsedTime() < 200)
-    {
-        return;
-    }
-
-    meter.Reset();
-
-    Write_Cmd(0x2a);     //Column address set
-    Write_Data(0x00);    //start column
-    Write_Data(10);
-    Write_Data(0x00);    //end column
-    Write_Data(150);
+    Write_Cmd(0x2a);                            //Column address set
+    Write_Data(0x00);                           //start column
+    Write_Data(0x00);
+    Write_Data((uint8)(Display::WIDTH >> 8));    //end column
+    Write_Data((uint8)Display::WIDTH);
 
     Write_Cmd(0x2b);     //Row address set
     Write_Data(0x00);    //start row
-    Write_Data(10);
+    Write_Data(0x00);
     Write_Data(0x00);    //end row
-    Write_Data(100);
+    Write_Data((uint8)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
     Write_Cmd(0x2C);     //Memory write
 
     pinDC_RS.ToHi();
 
-    static uint16 word = 1;
-    word += 1023;
-
-    for (int ROW = 0; ROW < 240; ROW++)             //ROW loop
+    for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
     {
-        for (int column = 0; column < 320; column++)  //column loop
+        uint8 *points = Display::Buffer::GetLine(y);
+
+        for (int i = 0; i < Display::WIDTH; i++)
         {
+            uint16 word = Color::colors[*points++];
+
             SPI_DATA(SPI0) = (uint)(word >> 8);
             __asm("nop");
             __asm("nop");
@@ -515,7 +506,7 @@ void ST7735_89::WriteBuffer(int y0)
             __asm("nop");
             __asm("nop");
             __asm("nop");
-            SPI_DATA(SPI0) = (uint8)(word);
+            SPI_DATA(SPI0) = (uint)((uint8)word);
         }
     }
 #endif
