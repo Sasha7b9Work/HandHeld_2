@@ -14,12 +14,7 @@ namespace Beeper
         static const uint PORT = GPIOB;
         static const uint PIN = GPIO_PIN_0;
         static const uint TIMER = TIMER2;
-#ifdef MODEL7735
         static const uint TIMER_CHAN = TIMER_CH_2;
-#endif
-#ifdef MODEL7789
-        static const uint TIMER_CHAN = TIMER_CH_3;
-#endif
 
         void Init();
 
@@ -119,40 +114,20 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
 
     if (vol == 2)
     {
-#ifdef MODEL7735
         TIMER_CH2CV(TIMER) = period * 50 / 100;
-#endif
-#ifdef MODEL7789
-        TIMER_CH3CV(TIMER) = period * 50 / 100;
-#endif
     }
     else if (vol == 1)
     {
-#ifdef MODEL7735
         TIMER_CH2CV(TIMER) = 32;
-#endif
-#ifdef MODEL7789
-        TIMER_CH3CV(TIMER) = 32;
-#endif
     }
     else if (vol == 0)
     {
-#ifdef MODEL7735
         TIMER_CH2CV(TIMER) = 4;
-#endif
-#ifdef MODEL7789
-        TIMER_CH3CV(TIMER) = 4;
-#endif
     }
 
     if (first)
     {
-#ifdef MODEL7735
         TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
-#endif
-#ifdef MODEL7789
-        TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH3;
-#endif
     }
 
     timer_enable(TIMER);
@@ -161,12 +136,7 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
 
 void Beeper::Driver::Stop()
 {
-#ifdef MODEL7735
     timer_interrupt_disable(TIMER, TIMER_INT_CH2);
-#endif
-#ifdef MODEL7789
-    timer_interrupt_disable(TIMER, TIMER_INT_CH3);
-#endif
     timer_disable(TIMER);
 
 #ifdef MODEL7735
