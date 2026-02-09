@@ -31,7 +31,7 @@ namespace Keyboard
             gpio_mode_set(port, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, pin);
             nvic_irq_enable((IRQn_Type)irqn, 2);
             syscfg_exti_line_config(exti_source_port, exti_source_pin);
-            exti_init(exti, EXTI_INTERRUPT, EXTI_TRIG_BOTH);
+            exti_init(exti, EXTI_INTERRUPT, EXTI_TRIG_FALLING);
             exti_interrupt_flag_clear(exti);
 
 #endif
@@ -153,18 +153,9 @@ void Keyboard::CallbackFromInterrupt(Key::E key)
 
         if (time - buttons[key].prev_time > 250)
         {
-            bool is_down = buttons[key].button->IsDown();       // Даже если мы зашли при нуле - не факт, что здесь ноль будет
+            AppendAction({ key, ActionType::Up });
 
-            if (is_down != buttons[key].prev_down)
-            {
-                buttons[key].prev_time = time;
-                buttons[key].prev_down = is_down;
-
-                if (!is_down)
-                {
-                    AppendAction({ key, ActionType::Up });
-                }
-            }
+            buttons[key].prev_time = time;
         }
     }
 }
