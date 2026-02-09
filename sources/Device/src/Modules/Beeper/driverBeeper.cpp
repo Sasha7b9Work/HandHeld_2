@@ -8,13 +8,18 @@
 namespace Beeper
 {
     namespace Driver
-    {
+    { 
         // PB0 - Alternate TIMER2_CH2 AF_1
 
         static const uint PORT = GPIOB;
         static const uint PIN = GPIO_PIN_0;
         static const uint TIMER = TIMER2;
+#ifdef MODEL7735
         static const uint TIMER_CHAN = TIMER_CH_2;
+#endif
+#ifdef MODEL7789
+        static const uint TIMER_CHAN = TIMER_CH_3;
+#endif
 
         void Init();
 
@@ -43,7 +48,12 @@ void Beeper::Driver::Init()
     timer_parameter_struct timer_initpara =
     {
         // TIMER2CLK = SystemCoreClock / 18 = 4MHz, the PWM frequency is 16000 Hz
+#ifdef MODEL7735
         71,
+#endif
+#ifdef MODEL7789
+        119,
+#endif
         TIMER_COUNTER_EDGE,
         TIMER_COUNTER_UP,
         TIMER_CKDIV_DIV1,
@@ -122,7 +132,12 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
 
     if (first)
     {
+#ifdef MODEL7735
         TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH2;
+#endif
+#ifdef MODEL7789
+        TIMER_DMAINTEN(TIMER) |= (uint32_t)TIMER_INT_CH3;
+#endif
     }
 
     timer_enable(TIMER);
@@ -131,7 +146,12 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
 
 void Beeper::Driver::Stop()
 {
+#ifdef MODEL7735
     timer_interrupt_disable(TIMER, TIMER_INT_CH2);
+#endif
+#ifdef MODEL7789
+    timer_interrupt_disable(TIMER, TIMER_INT_CH3);
+#endif
     timer_disable(TIMER);
 
 #ifdef MODEL7735
