@@ -5,7 +5,7 @@
 
   <Header>### uVision Project, (C) Keil Software</Header>
 
-  <WorkspaceName>D:\My\Prog\GitHub\Work\HandHeld\HandHeld_2\sources\HandHeld_2.uvmpw</WorkspaceName>
+  <WorkspaceName>HandHeld_2</WorkspaceName>
 
   <project>
     <PathAndName>.\Device\Device7735.uvprojx</PathAndName>
@@ -17,12 +17,11 @@
 
   <project>
     <PathAndName>.\Loader\Loader.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
     <PathAndName>.\Transmitter\keil_v5\Transmitter.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
   </project>
 
 </ProjectWorkspace>
