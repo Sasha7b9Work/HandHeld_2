@@ -302,9 +302,9 @@ void myDisplay_ui_selectMode(bool flashFlag, int agr0, void *agr1_ptr, void *agr
     myLCD_str8x16(agr0 == 3 && flashFlag ? IM_INVERSE : IM_NOMALE,
         10, 4, "Enter RF Setting");
     myLCD_str8x16(agr0 == 4 && flashFlag ? IM_INVERSE : IM_NOMALE,
-        10, 5, "Enter Device Infor");
+        10, 5, "Upgrade 54");
     myLCD_str8x16(agr0 == 5 && flashFlag ? IM_INVERSE : IM_NOMALE,
-        10, 6, "Upgrade Firmware");
+        10, 6, "Upgrade 182");
 }
 void myDisplay_ui_upgradeFirmware54(bool flashFlag, int agr0, void *arg1_ptr, void *arg2_ptr)
 {
