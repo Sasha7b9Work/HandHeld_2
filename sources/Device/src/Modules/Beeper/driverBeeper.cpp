@@ -42,7 +42,6 @@ void Beeper::Driver::Init()
 
     timer_parameter_struct timer_initpara =
     {
-        // TIMER2CLK = SystemCoreClock / 18 = 4MHz, the PWM frequency is 16000 Hz
 #ifdef MODEL7735
         71,
 #endif
@@ -69,17 +68,10 @@ void Beeper::Driver::Init()
     };
     timer_channel_output_config(TIMER, TIMER_CHAN, &timer_ocinitpara);
 
-    /* CH1 configuration in PWM mode0, duty cycle 50% */
-//    timer_channel_output_pulse_value_config(TIMER, TIMER_CHAN, 12);
     timer_channel_output_mode_config(TIMER, TIMER_CHAN, TIMER_OC_MODE_PWM0);
     timer_channel_output_shadow_config(TIMER, TIMER_CHAN, TIMER_OC_SHADOW_DISABLE);
 
-    //    timer_primary_output_config(TIMER, ENABLE);
-
-        /* auto-reload preload enable */
     timer_auto_reload_shadow_enable(TIMER);
-    //    timer_interrupt_enable(TIMER14, TIMER_INT_CH1);
-    //    timer_enable(TIMER14);
 }
 
 
