@@ -1,4 +1,4 @@
-﻿// 2024/03/01 22:47:19 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+// 2024/03/01 22:47:19 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Modules/ST7735_89/ST7735_89.h"
 #include "Hardware/HAL/HAL_PINS.h"
@@ -492,39 +492,6 @@ void ST7735_89::WriteBuffer(int y0)
             uint16 word = Color::colors[*points++];
 
             SPI_DATA(SPI0) = (uint)(word >> 8);
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
-            __asm("nop");
             SPI_DATA(SPI0) = (uint)((uint8)word);
         }
     }
