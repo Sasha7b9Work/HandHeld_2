@@ -40,15 +40,6 @@ int main()
 
     Display::Init();
 
-#ifdef MODEL7789
-
-    while (true)
-    {
-        Display::Update();
-    }
-
-#endif
-
     Timer::Init();
 
     Keyboard::Init();

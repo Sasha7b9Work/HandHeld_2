@@ -116,7 +116,23 @@ void PAN3060::InitSPI()
 
 #ifdef MODEL7789
 
-    #pragma message("Function not defines")
+    gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15);
+
+    spi_parameter_struct spi_is;
+    spi_i2s_deinit(SPI_PAN3060);
+    spi_struct_para_init(&spi_is);
+
+    spi_is.trans_mode = SPI_TRANSMODE_FULLDUPLEX;
+    spi_is.device_mode = SPI_MASTER;
+    spi_is.frame_size = SPI_FRAMESIZE_8BIT;
+    spi_is.clock_polarity_phase = SPI_CK_PL_LOW_PH_1EDGE;
+    spi_is.nss = SPI_NSS_SOFT;
+    spi_is.prescale = SPI_PSC_8;
+    spi_is.endian = SPI_ENDIAN_MSB;
+    spi_init(SPI_PAN3060, &spi_is);
+
+//    spi_fifo_access_size_config(SPI1, SPI_BYTE_ACCESS);
+    spi_enable(SPI_PAN3060);
 
 #endif
 }

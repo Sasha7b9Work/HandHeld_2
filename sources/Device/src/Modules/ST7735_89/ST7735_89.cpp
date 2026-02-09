@@ -473,10 +473,12 @@ void ST7735_89::WriteBuffer(int y0)
     Write_Data((uint8)Display::WIDTH);
 
     Write_Cmd(0x2b);     //Row address set
+    uint8 row = (uint8)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1);
     Write_Data(0x00);    //start row
-    Write_Data(0x00);
+    Write_Data(row);
+    row += Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT;
     Write_Data(0x00);    //end row
-    Write_Data((uint8)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
+    Write_Data(row);
     Write_Cmd(0x2C);     //Memory write
 
     pinDC_RS.ToHi();
@@ -490,6 +492,23 @@ void ST7735_89::WriteBuffer(int y0)
             uint16 word = Color::colors[*points++];
 
             SPI_DATA(SPI0) = (uint)(word >> 8);
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+
             __asm("nop");
             __asm("nop");
             __asm("nop");
