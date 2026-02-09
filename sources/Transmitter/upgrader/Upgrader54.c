@@ -57,9 +57,11 @@ static uint32_t time_small = 125;
 
 //----------------------------------------------------------------------------------------------------------------------------------
 
-uint32_t upg_address_begin()
+const uint8_t *upg_address_begin()
 {
-    return (uint32_t)DATA_BEGIN;
+    const uint8_t *data_begin = (const uint8_t *)DATA_BEGIN;
+
+    return data_begin;
 }
 
 

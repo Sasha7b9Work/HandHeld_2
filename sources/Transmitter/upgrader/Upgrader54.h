@@ -15,6 +15,6 @@ void upg_start_update(int num_KB);
 
 void upg_stop_update(void);
 
-uint32_t upg_address_begin(void);
+const uint8_t *upg_address_begin(void);
 
 void upg_func_display(int num_KB);
