@@ -313,15 +313,15 @@ void myDisplay_ui_upgradeFirmware54(bool flashFlag, int agr0, void *arg1_ptr, vo
         myLCD_clearFull();
 
         myLCD_str8x16(IM_NOMALE, 0, 1, "First bytes : ");
-
-        uint32_t address = upg_address_begin();
-
-        uint8_t *pointer = (uint8_t *)address;
-
-        myLCD_str8x16(IM_NOMALE, 0, 2, "%02X %02X %02X %02X %02X %02X %02X %02X", *(pointer), *(pointer + 1), *(pointer + 2), *(pointer + 3), *(pointer + 4), *(pointer + 5), *(pointer + 6), *(pointer + 7));
     }
 
     uiPageIdAddress = UI_PAGE_ID_UPGRADE_FIRMWARE_54;
+
+    uint32_t address = upg_address_begin();
+
+    uint8_t *pointer = (uint8_t *)address;
+
+    myLCD_str8x16(IM_NOMALE, 0, 2, "%02X %02X %02X %02X %02X %02X %02X %02X", *(pointer), *(pointer + 1), *(pointer + 2), *(pointer + 3), *(pointer + 4), *(pointer + 5), *(pointer + 6), *(pointer + 7));
 
     myLCD_str8x16(agr0 == 0 && flashFlag ? IM_INVERSE : IM_NOMALE, 0, 4, "Start");
 
@@ -334,13 +334,13 @@ void myDisplay_ui_upgradeFirmware182(bool flashFlag, int agr0, void *arg1_ptr, v
         myLCD_clearFull();
 
         myLCD_str8x16(IM_NOMALE, 0, 1, "First bytes : ");
-
-        uint32_t address = upg_address_begin();
-
-        uint8_t *pointer = (uint8_t *)address;
-
-        myLCD_str8x16(IM_NOMALE, 0, 2, "%02X %02X %02X %02X %02X %02X %02X %02X", *(pointer), *(pointer + 1), *(pointer + 2), *(pointer + 3), *(pointer + 4), *(pointer + 5), *(pointer + 6), *(pointer + 7));
     }
+
+    uint32_t address = upg_address_begin();
+
+    uint8_t *pointer = (uint8_t *)address;
+
+    myLCD_str8x16(IM_NOMALE, 0, 2, "%02X %02X %02X %02X %02X %02X %02X %02X", *(pointer), *(pointer + 1), *(pointer + 2), *(pointer + 3), *(pointer + 4), *(pointer + 5), *(pointer + 6), *(pointer + 7));
 
     uiPageIdAddress = UI_PAGE_ID_UPGRADE_FIRMWARE_182;
 
