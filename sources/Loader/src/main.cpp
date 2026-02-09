@@ -96,6 +96,7 @@ int main()
 		uint _buffer_offset;
 	
     HAL::Init();
+    
 #ifdef GD32F303
 #endif
 
@@ -161,6 +162,8 @@ int main()
 				//wait for first valid packet or timeout
 				while(1)
 				{
+                            JumpToMainApplication();
+                    
 						if(meter.ElapsedTime() > OPERATION_TIMEOUT)
 								Power_off_error();
 
