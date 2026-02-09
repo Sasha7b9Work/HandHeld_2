@@ -153,9 +153,17 @@ void Keyboard::CallbackFromInterrupt(Key::E key)
 
         if (time - buttons[key].prev_time > 250)
         {
+#ifdef MODEL7735
             AppendAction({ key, ActionType::Up });
-
             buttons[key].prev_time = time;
+#endif
+#ifdef MODEL7789
+            if (buttons[key].button->IsDown())
+            {
+                AppendAction({ key, ActionType::Up });
+            }
+            buttons[key].prev_time = time;
+#endif
         }
     }
 }
