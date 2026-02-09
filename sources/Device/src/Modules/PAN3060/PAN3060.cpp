@@ -83,6 +83,9 @@ void PAN3060::InitIRQ()
 #ifdef MODEL7789
 
     gpio_init(GPIOA, GPIO_MODE_IPD, GPIO_OSPEED_50MHZ, GPIO_PIN_8);
+    nvic_irq_enable(EXTI5_9_IRQn, 2, 0);
+    exti_init(EXTI_8, EXTI_INTERRUPT, EXTI_TRIG_RISING);
+    exti_interrupt_flag_clear(EXTI_8);
 
 #endif
 }

@@ -341,11 +341,6 @@ static uint8_t SW_I2C_Read_8addr(uint8_t IICID, uint8_t regaddr, uint8_t *pdata,
     i2c_send_ack(FALSE);
     i2c_stop_condition();
 
-    if (returnack != TRUE)
-    {
-        returnack = returnack;
-    }
-
     return returnack;
 }
 
@@ -367,11 +362,6 @@ static uint8_t SW_I2C_Write_8addr(uint8_t IICID, uint8_t regaddr, const uint8_t 
         if (!i2c_check_ack()) { returnack = FALSE; }
     }
     i2c_stop_condition();
-
-    if (returnack != TRUE)
-    {
-        returnack = returnack;
-    }
 
     return returnack;
 }
