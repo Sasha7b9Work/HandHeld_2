@@ -62,8 +62,6 @@ bool Display::IsOldType()
 
 void Display::Init()
 {
-    Color::Init();
-
     ST7735_89::Init();
 
     Font::SetType(TypeFont::_7);
@@ -80,6 +78,8 @@ void Display::Init()
             old_display = true;
         }
     }
+
+    Color::Init();
 }
 
 
