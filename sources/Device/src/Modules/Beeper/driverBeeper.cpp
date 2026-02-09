@@ -119,15 +119,30 @@ void Beeper::Driver::StartFrequency(float frequency, uint8 vol, bool first)
 
     if (vol == 2)
     {
+#ifdef MODEL7735
         TIMER_CH2CV(TIMER) = period * 50 / 100;
+#endif
+#ifdef MODEL7789
+        TIMER_CH3CV(TIMER) = period * 50 / 100;
+#endif
     }
     else if (vol == 1)
     {
-        TIMER_CH2CV(TIMER) = 16;
+#ifdef MODEL7735
+        TIMER_CH2CV(TIMER) = 32;
+#endif
+#ifdef MODEL7789
+        TIMER_CH3CV(TIMER) = 32;
+#endif
     }
     else if (vol == 0)
     {
-        TIMER_CH2CV(TIMER) = 8;
+#ifdef MODEL7735
+        TIMER_CH2CV(TIMER) = 4;
+#endif
+#ifdef MODEL7789
+        TIMER_CH3CV(TIMER) = 4;
+#endif
     }
 
     if (first)
