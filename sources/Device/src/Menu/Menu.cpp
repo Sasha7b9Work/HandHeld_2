@@ -47,7 +47,7 @@ void Menu::Update()
             Source::CancelFirst();
         }
     }
-    else if (action.IsRelease())
+    else if (action.IsRelease()) 
     {
         if (is_shown)                                                                           // Находимся в меню
         {
