@@ -82,7 +82,7 @@ void PAN3060::InitIRQ()
 
 #ifdef MODEL7789
 
-    #pragma message("Function not defines")
+    gpio_init(GPIOA, GPIO_MODE_IPD, GPIO_OSPEED_50MHZ, GPIO_PIN_8);
 
 #endif
 }
