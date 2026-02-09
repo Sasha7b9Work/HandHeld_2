@@ -8,7 +8,7 @@
  * 预留4Kflash空间，芯片总的flash空间256K（0X08040000）
  * 
 */
-#define FLASH_APP1_PARAMS_ADDR    0X0803e000
+#define FLASH_APP1_PARAMS_ADDR    0X0800F800
 
 /**
  * 将数据写入flash
