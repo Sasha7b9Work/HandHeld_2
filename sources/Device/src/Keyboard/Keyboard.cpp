@@ -161,6 +161,12 @@ void Keyboard::CallbackFromInterrupt(Key::E key)
                 buttons[key].prev_time = time;
                 buttons[key].prev_down = is_down;
             }
+
+            if (is_down && !buttons[key].prev_down)
+            {
+                buttons[key].prev_time = time;
+                buttons[key].prev_down = is_down;
+            }
         }
     }
 }
