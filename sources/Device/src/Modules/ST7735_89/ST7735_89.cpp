@@ -466,20 +466,7 @@ void ST7735_89::WriteBuffer(int y0)
 
 #ifdef MODEL7789
 
-    Write_Cmd(0x2a);                            //Column address set
-    Write_Data(0x00);                           //start column
-    Write_Data(0x00);
-    Write_Data((uint8)(Display::WIDTH >> 8));    //end column
-    Write_Data((uint8)Display::WIDTH);
-
-    Write_Cmd(0x2b);     //Row address set
-    uint8 row = (uint8)(y0);
-    Write_Data(0x00);    //start row
-    Write_Data(row);
-    row += Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT;
-    Write_Data(0x00);    //end row
-    Write_Data(row);
-    Write_Cmd(0x2C);     //Memory write
+    SetWindow(0, Display::WIDTH, y0, y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
 
     pinDC_RS.ToHi();
 
