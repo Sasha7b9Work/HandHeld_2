@@ -41,7 +41,7 @@ void Power::Init()
 {
 #ifdef POWER_CONTROL_ENABLED
 
-    voltage = HAL_ADC::GetVoltage(true);
+    MeasVoltage();
 
     if (voltage < 3.0f)
     {
@@ -57,6 +57,8 @@ void Power::Init()
 
         while (meter.ElapsedTime() < 3000)
         {
+            Display::Init();
+
             Display::DrawLowVoltage();
         }
 

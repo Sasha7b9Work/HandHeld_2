@@ -34,9 +34,9 @@ int main()
 
     gset.Load();
 
-    Display::Init();
-
     Power::Init();
+
+    Display::Init();
 
     PCF8563::Init();
 
