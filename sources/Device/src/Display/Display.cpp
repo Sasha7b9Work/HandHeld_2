@@ -43,6 +43,19 @@ namespace Display
         {
             return buffer + y * Display::WIDTH;
         }
+
+        uint8 *GetShiftedLine(int y)
+        {
+            static uint8 buffer_line[Display::WIDTH];
+
+            int null_points = 80;
+
+            std::memset(buffer_line, *GetLine(y), (size_t)null_points);
+
+            std::memcpy(buffer_line + null_points, GetLine(y), (uint)(Display::WIDTH - null_points));
+
+            return buffer_line;
+        }
     }
 
     static void BeginScene(int num_part);
@@ -302,10 +315,6 @@ void Display::DrawScene(int num_part)
             Power::Draw();
         }
     }
-
-#ifdef MODEL7789
-    Rect(160, 80).Draw(0, 0, Color::WHITE);
-#endif
 }
 
 

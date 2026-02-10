@@ -485,7 +485,7 @@ void ST7735_89::WriteBuffer(int y0)
 
     for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
     {
-        uint8 *points = Display::Buffer::GetLine(y);
+        uint8 *points = Display::Buffer::GetShiftedLine(y);
 
         for (int i = 0; i < Display::WIDTH; i++)
         {
