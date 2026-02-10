@@ -472,39 +472,25 @@ void ST7735_89::WriteBuffer(int num_part)
     {
         uint8 color = *Display::Buffer::GetLine(0);
 
-        SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
-
-        pinDC_RS.ToHi();
-
-        for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
+        for (int i = 0; i < 2; i++)
         {
-            uint8 *points = Display::Buffer::GetShiftedLine(y);
+            int y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + i);
 
-            for (int i = 0; i < Display::WIDTH; i++)
+            SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
+
+            pinDC_RS.ToHi();
+
+            for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
             {
-                uint16 word = Color::colors[color];
+                uint8 *points = Display::Buffer::GetShiftedLine(y);
 
-                SPI_DATA(SPI0) = (uint)(word >> 8);
-                SPI_DATA(SPI0) = (uint)((uint8)word);
-            }
-        }
+                for (int i = 0; i < Display::WIDTH; i++)
+                {
+                    uint16 word = Color::colors[color];
 
-        int y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + 1);
-
-        SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
-
-        pinDC_RS.ToHi();
-
-        for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
-        {
-            uint8 *points = Display::Buffer::GetShiftedLine(y);
-
-            for (int i = 0; i < Display::WIDTH; i++)
-            {
-                uint16 word = Color::colors[color];
-
-                SPI_DATA(SPI0) = (uint)(word >> 8);
-                SPI_DATA(SPI0) = (uint)((uint8)word);
+                    SPI_DATA(SPI0) = (uint)(word >> 8);
+                    SPI_DATA(SPI0) = (uint)((uint8)word);
+                }
             }
         }
 
@@ -527,9 +513,9 @@ void ST7735_89::WriteBuffer(int num_part)
             }
         }
     }
-    else if (num_part == Display::NUMBER_PARTS_HEIGHT - 1)
+    else if (num_part > Display::NUMBER_PARTS_HEIGHT - 3)
     {
-
+        // Т.к. смещаем изображение вниз, на нижних частях рисовать ничего не нужно
     }
     else
     {
