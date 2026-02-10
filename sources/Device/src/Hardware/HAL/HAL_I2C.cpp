@@ -195,15 +195,6 @@ static uint8_t i2c_check_ack()
     ack = !GET_SDA();
     SCL_TO_LOW();
 
-    if (ack)
-    {
-        ack *= 2;
-    }
-    else
-    {
-        ack *= 3;
-    }
-
     return ack;
 }
 

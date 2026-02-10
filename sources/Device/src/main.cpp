@@ -34,11 +34,11 @@ int main()
 
     gset.Load();
 
+    Display::Init();
+
     Power::Init();
 
     PCF8563::Init();
-
-    Display::Init();
 
     Timer::Init();
 
