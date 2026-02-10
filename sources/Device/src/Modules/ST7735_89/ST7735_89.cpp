@@ -470,11 +470,14 @@ void ST7735_89::WriteBuffer(int num_part)
 
     if (num_part == 0)
     {
-        uint8 color = *Display::Buffer::GetLine(0);
+        // Перед рисованием верхней части пропускаем две верхние части, заполняя их цветом фона.
+        // Это нужно, чтобы сместить изображение вниз.
 
-        for (int i = 0; i < 2; i++)
+        uint16 color = Color::colors[*Display::Buffer::GetLine(0)];
+
+        for (int j = 0; j < 2; j++)
         {
-            int y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + i);
+            y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + j);
 
             SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
 
@@ -482,44 +485,22 @@ void ST7735_89::WriteBuffer(int num_part)
 
             for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
             {
-                uint8 *points = Display::Buffer::GetShiftedLine(y);
-
                 for (int i = 0; i < Display::WIDTH; i++)
                 {
-                    uint16 word = Color::colors[color];
-
-                    SPI_DATA(SPI0) = (uint)(word >> 8);
-                    SPI_DATA(SPI0) = (uint)((uint8)word);
+                    SPI_DATA(SPI0) = (uint)(color >> 8);
+                    SPI_DATA(SPI0) = (uint)((uint8)color);
                 }
             }
         }
-
-        y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + 2);
-
-        SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
-
-        pinDC_RS.ToHi();
-
-        for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
-        {
-            uint8 *points = Display::Buffer::GetShiftedLine(y);
-
-            for (int i = 0; i < Display::WIDTH; i++)
-            {
-                uint16 word = Color::colors[*points++];
-
-                SPI_DATA(SPI0) = (uint)(word >> 8);
-                SPI_DATA(SPI0) = (uint)((uint8)word);
-            }
-        }
     }
-    else if (num_part > Display::NUMBER_PARTS_HEIGHT - 3)
+
+    if (num_part > Display::NUMBER_PARTS_HEIGHT - 3)
     {
         // Т.к. смещаем изображение вниз, на нижних частях рисовать ничего не нужно
     }
     else
     {
-        int y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + 2);
+        y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + 2);
 
         SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
 
