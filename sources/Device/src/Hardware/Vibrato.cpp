@@ -16,12 +16,22 @@ namespace Vibrato
     {
         static void On()
         {
+#ifdef MODEL7735
             gpio_bit_set(PORT, PIN);
+#endif
+#ifdef MODEL7789
+            gpio_bit_reset(PORT, PIN);
+#endif
         }
 
         static void Off()
         {
+#ifdef MODEL7735
             gpio_bit_reset(PORT, PIN);
+#endif
+#ifdef MODEL7789
+            gpio_bit_set(PORT, PIN);
+#endif
         }
     }
 
