@@ -41,7 +41,7 @@ void Vibrato::Init()
 
 #ifdef MODEL7789
 
-    #pragma message("Function not defines")
+    gpio_init(PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, PIN);
 
 #endif
 
