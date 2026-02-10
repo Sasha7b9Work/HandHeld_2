@@ -473,7 +473,7 @@ void ST7735_89::WriteBuffer(int y0)
     Write_Data((uint8)Display::WIDTH);
 
     Write_Cmd(0x2b);     //Row address set
-    uint8 row = (uint8)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1);
+    uint8 row = (uint8)(y0);
     Write_Data(0x00);    //start row
     Write_Data(row);
     row += Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT;

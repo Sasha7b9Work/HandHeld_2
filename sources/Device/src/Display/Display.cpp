@@ -302,6 +302,10 @@ void Display::DrawScene(int num_part)
             Power::Draw();
         }
     }
+
+#ifdef MODEL7789
+    Rect(160, 80).Draw(0, 0, Color::WHITE);
+#endif
 }
 
 
