@@ -41,6 +41,7 @@ void Vibrato::Init()
 
 #ifdef MODEL7789
 
+    gpio_pin_remap_config(GPIO_SWJ_NONJTRST_REMAP, ENABLE);
     gpio_init(PORT, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, PIN);
 
 #endif
