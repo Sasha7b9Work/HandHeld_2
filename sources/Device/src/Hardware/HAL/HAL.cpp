@@ -18,8 +18,9 @@ void HAL::Init()
 
     rcu_periph_clock_enable(RCU_GPIOA); 
     rcu_periph_clock_enable(RCU_GPIOB);
-    rcu_periph_clock_enable(RCU_GPIOC);
     rcu_periph_clock_enable(RCU_GPIOF);
+
+    AllPinsToOutput();
 
     rcu_periph_clock_enable(RCU_SPI0);          // Дислпей
     rcu_periph_clock_enable(RCU_SPI1);          // PAN3060
@@ -50,6 +51,41 @@ void HAL::DeInit()
 #endif
 
     rcu_periph_clock_disable(RCU_TIMER2);
+}
+
+
+void HAL::AllPinsToOutput()
+{
+#define MASK_PINS_A (GPIO_PIN_ALL & ~(GPIO_PIN_13 | GPIO_PIN_14))
+
+#ifdef MODEL7735
+
+    gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLDOWN, MASK_PINS_A);
+    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_2MHZ, MASK_PINS_A);
+    GPIO_BC(GPIOA) = MASK_PINS_A;
+
+    gpio_mode_set(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLDOWN, GPIO_PIN_ALL);
+    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_2MHZ, GPIO_PIN_ALL);
+    GPIO_BC(GPIOB) = GPIO_PIN_ALL;
+
+    gpio_mode_set(GPIOF, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLDOWN, GPIO_PIN_ALL);
+    gpio_output_options_set(GPIOF, GPIO_OTYPE_PP, GPIO_OSPEED_2MHZ, GPIO_PIN_ALL);
+    GPIO_BC(GPIOF) = GPIO_PIN_ALL;
+#endif
+
+#ifdef MODEL7789
+
+    // PIN13, PIN14 - Отладчик
+    gpio_init(GPIOA, GPIO_MODE_OUT_PP, GPIO_OSPEED_2MHZ, MASK_PINS_A);
+    GPIO_BC(GPIOA) = MASK_PINS_A;
+
+    gpio_init(GPIOB, GPIO_MODE_OUT_PP, GPIO_OSPEED_2MHZ, GPIO_PIN_ALL);
+    GPIO_BC(GPIOB) = GPIO_PIN_ALL;
+
+    gpio_init(GPIOF, GPIO_MODE_OUT_PP, GPIO_OSPEED_2MHZ, GPIO_PIN_ALL);
+    GPIO_BC(GPIOF) = GPIO_PIN_ALL;
+
+#endif
 }
 
 
