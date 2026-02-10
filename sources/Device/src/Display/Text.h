@@ -32,7 +32,7 @@ struct Text
     {
 #ifdef MODEL7789
 
-        width /= 2;
+        width /= 2;        // Иначе сообщение о вызове смещается вправо от центра
 
 #endif
         int length = GetLength();
