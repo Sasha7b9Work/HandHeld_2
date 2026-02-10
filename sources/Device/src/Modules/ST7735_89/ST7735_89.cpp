@@ -426,8 +426,10 @@ void ST7735_89::SetWindow(unsigned char x0, unsigned short x1, unsigned int y0, 
 }
 
 
-void ST7735_89::WriteBuffer(int y0)
+void ST7735_89::WriteBuffer(int num_part)
 {
+    int y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * num_part;
+
 #ifdef MODEL7735
     SetWindow(0, Display::WIDTH - 1, (uint)y0, (uint)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
 
@@ -466,21 +468,90 @@ void ST7735_89::WriteBuffer(int y0)
 
 #ifdef MODEL7789
 
-    SetWindow(0, Display::WIDTH, y0, y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
-
-    pinDC_RS.ToHi();
-
-    for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
+    if (num_part == 0)
     {
-        uint8 *points = Display::Buffer::GetShiftedLine(y);
+        uint8 color = *Display::Buffer::GetLine(0);
 
-        for (int i = 0; i < Display::WIDTH; i++)
+        SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
+
+        pinDC_RS.ToHi();
+
+        for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
         {
-            uint16 word = Color::colors[*points++];
+            uint8 *points = Display::Buffer::GetShiftedLine(y);
 
-            SPI_DATA(SPI0) = (uint)(word >> 8);
-            SPI_DATA(SPI0) = (uint)((uint8)word);
+            for (int i = 0; i < Display::WIDTH; i++)
+            {
+                uint16 word = Color::colors[color];
+
+                SPI_DATA(SPI0) = (uint)(word >> 8);
+                SPI_DATA(SPI0) = (uint)((uint8)word);
+            }
+        }
+
+        int y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + 1);
+
+        SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
+
+        pinDC_RS.ToHi();
+
+        for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
+        {
+            uint8 *points = Display::Buffer::GetShiftedLine(y);
+
+            for (int i = 0; i < Display::WIDTH; i++)
+            {
+                uint16 word = Color::colors[color];
+
+                SPI_DATA(SPI0) = (uint)(word >> 8);
+                SPI_DATA(SPI0) = (uint)((uint8)word);
+            }
+        }
+
+        y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + 2);
+
+        SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
+
+        pinDC_RS.ToHi();
+
+        for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
+        {
+            uint8 *points = Display::Buffer::GetShiftedLine(y);
+
+            for (int i = 0; i < Display::WIDTH; i++)
+            {
+                uint16 word = Color::colors[*points++];
+
+                SPI_DATA(SPI0) = (uint)(word >> 8);
+                SPI_DATA(SPI0) = (uint)((uint8)word);
+            }
         }
     }
+    else if (num_part == Display::NUMBER_PARTS_HEIGHT - 1)
+    {
+
+    }
+    else
+    {
+        int y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + 2);
+
+        SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
+
+        pinDC_RS.ToHi();
+
+        for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
+        {
+            uint8 *points = Display::Buffer::GetShiftedLine(y);
+
+            for (int i = 0; i < Display::WIDTH; i++)
+            {
+                uint16 word = Color::colors[*points++];
+
+                SPI_DATA(SPI0) = (uint)(word >> 8);
+                SPI_DATA(SPI0) = (uint)((uint8)word);
+            }
+        }
+    }
+
 #endif
 }

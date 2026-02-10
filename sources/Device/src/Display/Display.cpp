@@ -235,7 +235,9 @@ void Display::EndScene(int num_parts)
 
         Buffer::crc[Buffer::current_part] = crc;
 
-        ST7735_89::WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
+//        ST7735_89::_WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
+
+        ST7735_89::WriteBuffer(num_parts);
     }
 }
 
