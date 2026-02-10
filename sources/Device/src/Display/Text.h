@@ -30,6 +30,11 @@ struct Text
     int Write(int x, int y, const Color &color = Color::NUMBER) const;
     void WriteInCenter(int x, int y, int width, const Color &color = Color::NUMBER) const
     {
+#ifdef MODEL7789
+
+        width /= 2;
+
+#endif
         int length = GetLength();
 
         x += width / 2 - length / 2;
