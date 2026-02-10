@@ -278,7 +278,8 @@ void ST7735_89::Init()
 
     //------------------------------display and color format setting--------------------------------//
     Write_Cmd(ST7789_MADCTL);
-    uint8 mad = 0xA0;
+//    uint8 mad = 0xA0;
+    uint8 mad = 0x60;
     _SET_BIT(mad, 3);
     Write_Data(mad);
 
