@@ -5,6 +5,13 @@
 #include "system.h"
 
 
+namespace HAL
+{
+    // Сделать все порты выходами и записать в них ноль
+    static void AllPinsToOutput();
+}
+
+
 void HAL::Init()
 {
     systick_config();

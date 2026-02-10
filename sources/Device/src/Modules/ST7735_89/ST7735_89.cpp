@@ -488,7 +488,15 @@ void ST7735_89::WriteBuffer(int num_part)
                 for (int i = 0; i < Display::WIDTH; i++)
                 {
                     SPI_DATA(SPI0) = (uint)(color >> 8);
+                    __asm("nop");
+                    __asm("nop");
+                    __asm("nop");
+                    __asm("nop");
                     SPI_DATA(SPI0) = (uint)((uint8)color);
+                    __asm("nop");
+                    __asm("nop");
+                    __asm("nop");
+                    __asm("nop");
                 }
             }
         }
@@ -515,6 +523,10 @@ void ST7735_89::WriteBuffer(int num_part)
                 uint16 word = Color::colors[*points++];
 
                 SPI_DATA(SPI0) = (uint)(word >> 8);
+                __asm("nop");
+                __asm("nop");
+                __asm("nop");
+                __asm("nop");
                 SPI_DATA(SPI0) = (uint)((uint8)word);
             }
         }
