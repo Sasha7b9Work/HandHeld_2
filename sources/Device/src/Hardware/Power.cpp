@@ -53,12 +53,12 @@ void Power::Init()
     {
         PCF8563::AlarmFlagEnable(false);
 
+        Display::Init();
+
         TimeMeterMS meter;
 
         while (meter.ElapsedTime() < 3000)
         {
-            Display::Init();
-
             Display::DrawLowVoltage();
         }
 
