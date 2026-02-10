@@ -98,9 +98,11 @@ float HAL_ADC::GetVoltage(bool force)
 #endif
 
 #ifdef MODEL7789
-        adc_flag_clear(ADC0, ADC_FLAG_EOC);
+        adc_software_trigger_enable(ADC0, ADC_REGULAR_CHANNEL);
 
         while (SET != adc_flag_get(ADC0, ADC_FLAG_EOC)) { }
+
+        adc_flag_clear(ADC0, ADC_FLAG_EOC);
 
         voltage = ConversionRawToVoltageBattery(ADC_RDATA(ADC0));
 #endif
