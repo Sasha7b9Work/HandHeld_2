@@ -681,6 +681,16 @@
               <FileType>8</FileType>
               <FilePath>.\src\Display\Display.cpp</FilePath>
             </File>
+            <File>
+              <FileName>Picture.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Picture.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Picture.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Picture.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -710,6 +720,16 @@
               <FileName>font10_7.inc</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Font\font10_7.inc</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Display/Pictures</GroupName>
+          <Files>
+            <File>
+              <FileName>1.bmp.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Pictures\1.bmp.inc</FilePath>
             </File>
           </Files>
         </Group>
@@ -1674,6 +1694,16 @@
               <FileType>8</FileType>
               <FilePath>.\src\Display\Display.cpp</FilePath>
             </File>
+            <File>
+              <FileName>Picture.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Picture.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Picture.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Picture.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1703,6 +1733,16 @@
               <FileName>font10_7.inc</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Font\font10_7.inc</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Display/Pictures</GroupName>
+          <Files>
+            <File>
+              <FileName>1.bmp.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Pictures\1.bmp.inc</FilePath>
             </File>
           </Files>
         </Group>
