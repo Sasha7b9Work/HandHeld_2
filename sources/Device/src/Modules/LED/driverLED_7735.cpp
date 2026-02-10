@@ -52,11 +52,28 @@ bool LED::Driver::IsFired()
 }
 
 
-void LED::Driver::On(ColorLED::E color)
+void LED::Driver::On(Color::E color)
 {
-    pinRED.Set(_GET_BIT(color, 0) != 0);
-    pinGREEN.Set(_GET_BIT(color, 1) != 0);
-    pinBLUE.Set(_GET_BIT(color, 2) != 0);
+    if ((uint8)color > 7)
+    {
+        return;
+    }
+
+    static const uint8 values[8] =
+    {
+        //    RGB
+            0b111,      // White
+            0b100,      // Red
+            0b010,      // Green
+            0b001,      // Blue
+            0b110,      // Yellow
+            0b011,      // Cyan
+            0b101       // Magenta
+    };
+
+    pinRED.Set(_GET_BIT(values[color], 2) != 0);
+    pinGREEN.Set(_GET_BIT(values[color], 1) != 0);
+    pinBLUE.Set(_GET_BIT(values[color], 0) != 0);
 
     is_fired = true;
 }

@@ -316,7 +316,7 @@ void PCF8563::Update()
 
             if (ModeIndication::ConsistLED(gset.alarm.mode_indication))
             {
-                LED::Enable((ColorLED::E)gset.alarm.color);
+                LED::Enable(gset.alarm.color);
             }
 
             if (ModeIndication::ConsistVibro(gset.alarm.mode_indication))

@@ -12,7 +12,7 @@ namespace LED
 
     static uint time_enable = 0;
 
-    static ColorLED::E current_color = ColorLED::_0;
+    static Color::E current_color = Color::Count;
 }
 
 
@@ -35,7 +35,7 @@ void LED::Update()
 
     if (SourceScript::GetForLED(source, TIME_MS - time_enable))
     {
-        Driver::On((ColorLED::E)gset.sources[source].color);
+        Driver::On(gset.sources[source].color);
     }
     else
     {
@@ -44,7 +44,7 @@ void LED::Update()
 }
 
 
-void LED::Enable(ColorLED::E color)
+void LED::Enable(Color::E color)
 {
     current_color = color;
 
@@ -56,7 +56,7 @@ void LED::Enable(ColorLED::E color)
 }
 
 
-ColorLED::E LED::CurrentColor()
+Color::E LED::CurrentColor()
 {
     return current_color;
 }

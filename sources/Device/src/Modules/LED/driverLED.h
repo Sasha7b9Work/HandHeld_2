@@ -9,7 +9,7 @@ namespace LED
     {
         void Init();
 
-        void On(ColorLED::E);
+        void On(Color::E);
 
         void Off();
 
