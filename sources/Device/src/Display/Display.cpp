@@ -34,8 +34,12 @@ namespace Display
             return Math::CalculateCRC32(buffer, SIZE);
         }
 
+        static Color color_last_filled(Color::BLACK);           // Этим цветом шло последнее заполнение
+
         static void Fill(const Color &color)
         {
+            color_last_filled = color;
+
             std::memset(buffer, color.value, SIZE);
         }
 
@@ -50,7 +54,7 @@ namespace Display
 
             int null_points = 80;
 
-            std::memset(buffer_line, *GetLine(y), (size_t)null_points);
+            std::memset(buffer_line, color_last_filled.value, (size_t)null_points);
 
             std::memcpy(buffer_line + null_points, GetLine(y), (uint)(Display::WIDTH - null_points));
 
