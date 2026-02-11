@@ -97,6 +97,11 @@ void Display::Init()
     }
 
     Color::Init();
+
+    BeginScene(0);
+    EndScene(0);
+
+    ST7735_89::Enable();
 }
 
 

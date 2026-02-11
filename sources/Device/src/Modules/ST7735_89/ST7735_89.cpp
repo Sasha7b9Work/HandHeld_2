@@ -126,10 +126,9 @@ void ST7735_89::Init()
     pinDC_RS.Init();
     pinRES.Init();
     pinBKG.Init();
+    pinBKG.ToLow();
 
     pinON.ToLow();
-
-    pinBKG.ToHi();
 
     pinRES.ToLow();
     pinDC_RS.ToLow();
@@ -386,6 +385,8 @@ void ST7735_89::Init()
 
     Write_Cmd(ST7789_DISPON);    //Display on
     Timer::Delay(120);
+
+    pinBKG.ToHi();
 
 #endif
 
