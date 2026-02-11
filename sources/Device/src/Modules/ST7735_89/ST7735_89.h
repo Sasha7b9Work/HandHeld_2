@@ -4,6 +4,8 @@
 
 namespace ST7735_89
 {
+    void BeforeInit();
+
     void Init();
 
     // Записывает буфер дисплея в строки, начиная с y

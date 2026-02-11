@@ -91,6 +91,13 @@ uint ST7735_89::TimeEnabled()
 }
 
 
+void ST7735_89::BeforeInit()
+{
+    pinBKG.Init();
+    pinBKG.ToLow();
+}
+
+
 void ST7735_89::Init()
 {
     {
@@ -125,8 +132,6 @@ void ST7735_89::Init()
     pinON.Init();
     pinDC_RS.Init();
     pinRES.Init();
-    pinBKG.Init();
-    pinBKG.ToLow();
 
     pinON.ToLow();
 

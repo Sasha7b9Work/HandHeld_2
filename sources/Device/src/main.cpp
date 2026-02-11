@@ -13,6 +13,7 @@
 #include "Display/Display.h"
 #include "Modules/PMS150G/PMS150G.h"
 #include "Hardware/Power.h"
+#include "Modules/ST7735_89/ST7735_89.h"
 
 
 // Ammyy      95 243 113     32766
@@ -31,6 +32,8 @@ static void SaveSettings();
 int main()
 {
     HAL::Init();
+
+    ST7735_89::BeforeInit();
 
     gset.Load();
 
