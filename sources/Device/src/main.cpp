@@ -58,6 +58,8 @@ int main()
 
     PMS150G::Init();
 
+    LED::ShortWhiteBlink();
+
     while (true)
     {
         Update();

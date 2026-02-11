@@ -17,4 +17,6 @@ namespace LED
 
     // true, если в данный момент черзе светодиод идёт ток (повышенное потребление)
     bool IsFired();
+
+    void ShortWhiteBlink();
 }

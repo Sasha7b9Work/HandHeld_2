@@ -77,3 +77,13 @@ bool LED::IsFired()
 {
     return Driver::IsFired();
 }
+
+
+void LED::ShortWhiteBlink()
+{
+    Driver::On(Color::White);
+
+    Timer::Delay(10);
+
+    Driver::Off();
+}
