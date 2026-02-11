@@ -52,8 +52,6 @@ namespace HAL
 namespace HAL_ADC
 {
     void Init();
-
-    float GetVoltage(bool force);
 }
 
 

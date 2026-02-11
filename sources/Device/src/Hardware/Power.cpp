@@ -10,6 +10,12 @@
 #include "system.h"
 
 
+namespace HAL_ADC
+{
+    extern float GetVoltage(bool force);
+}
+
+
 namespace Power
 {
     static const int WIDTH = 38;

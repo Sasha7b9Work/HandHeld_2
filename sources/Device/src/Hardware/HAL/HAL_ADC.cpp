@@ -13,6 +13,10 @@ namespace HAL_ADC
     static float ConversionRawToVoltageADC(uint);
 
     static float ConversionRawToVoltageBattery(uint);
+
+    // Эта функция не вынесена в общий доступ потому, что её нельзя вызывать когда попало - надо вызывать только когда потребление не
+    // сильно высоко, чтобы ёмкость замерить более-менее адекватно
+    float GetVoltage(bool force);
 }
 
 
