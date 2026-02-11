@@ -23,7 +23,7 @@ namespace Power
     static const int WIDTH = 38;
     static const int HEIGHT = 14;
 
-    static PinOut pinCHRG(GPIOB, GPIO_PIN_3);
+    static PinIn pinCHRG(GPIOB, GPIO_PIN_3);
 
     static void PowerDown();
 
@@ -47,6 +47,8 @@ void Power::MeasVoltage()
 
 void Power::Init()
 {
+    pinCHRG.Init();
+
 #ifdef POWER_CONTROL_ENABLED
 
     MeasVoltage();
@@ -162,7 +164,10 @@ void Power::Draw()
         Rect(5, 7).Fill(x - 4, y + 3);
     }
 
-    Color::RED.SetAsCurrent();
+    if (voltage > 4.4f && pinCHRG.IsLow())
+    {
+        Color::RED.SetAsCurrent();
 
-    MonochromeBitmap(bmp_zip_1).Draw(x, y, true);
+        MonochromeBitmap(bmp_zip_1).Draw(x, y, true);
+    }
 }
