@@ -98,8 +98,11 @@ void Display::Init()
 
     Color::Init();
 
-    BeginScene(0);
-    EndScene(0);
+    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    {
+        BeginScene(i);
+        EndScene(i);
+    }
 
     ST7735_89::Enable();
 }
