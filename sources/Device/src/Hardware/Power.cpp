@@ -7,6 +7,8 @@
 #include "Display/Display.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/HAL/HAL_PINS.h"
+#include "Display/MonochromeBitmap.h"
+#include "Display/Pictures/1.bmp.inc"
 #include "system.h"
 
 
@@ -159,4 +161,8 @@ void Power::Draw()
         Rect(WIDTH, HEIGHT).Draw(x, y, Color::RED);
         Rect(5, 7).Fill(x - 4, y + 3);
     }
+
+    Color::RED.SetAsCurrent();
+
+    MonochromeBitmap(bmp_zip_1).Draw(x, y, true);
 }

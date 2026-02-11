@@ -248,8 +248,6 @@ void Display::EndScene(int num_parts)
 
 void Display::DrawScene(int num_part)
 {
-    (void)num_part;
-
     if (PCF8563::IsAlarmed())
     {
         Font::_SetSize(S_2_3);
@@ -318,7 +316,10 @@ void Display::DrawScene(int num_part)
 
             Font::_SetSize(1);
 
-            Power::Draw();
+            if (num_part == 0)
+            {
+                Power::Draw();
+            }
         }
     }
 }

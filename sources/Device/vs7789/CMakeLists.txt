@@ -37,6 +37,7 @@ file(GLOB GD32F30x                ../../common/GD32F30x_Firmware_Library/Firmwar
 file(GLOB SRC                     ../src/*.*)
 file(GLOB DISPLAY                 ../src/Display/*.*)
 file(GLOB DISPLAY_FONT            ../src/Display/Font/*.*)
+file(GLOB DISPLAY_PICTURES        ../src/Display/Pictures/*.*)
 file(GLOB HARDWARE                ../src/Hardware/*.*)
 file(GLOB HARDWARE_CMSIS          ../src/Hardware/CMSIS/*.*)
 file(GLOB HARDWARE_HAL            ../src/Hardware/HAL/*.*
@@ -61,6 +62,7 @@ source_group(GD32F30x               FILES ${GD32F30x})
 source_group(src                    FILES ${SRC})
 source_group(Display                FILES ${DISPLAY})
 source_group(Display/Font           FILES ${DISPLAY_FONT})
+source_group(Display/Pictures       FILES ${DISPLAY_PICTURES})
 source_group(Hardware               FILES ${HARDWARE})
 source_group(Hardware/CMSIS         FILES ${HARDWARE_CMSIS})
 source_group(Hardware/HAL           FILES ${HARDWARE_HAL})
@@ -90,6 +92,7 @@ add_library(${PROJECT_NAME}
     ${SRC}
     ${DISPLAY}
     ${DISPLAY_FONT}
+    ${DISPLAY_PICTURES}
     ${HARDWARE}
     ${HARDWARE_CMSIS}
     ${HARDWARE_HAL}
