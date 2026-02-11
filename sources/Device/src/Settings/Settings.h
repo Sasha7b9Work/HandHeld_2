@@ -76,6 +76,7 @@ struct Settings
 
     void Save();
     void Load();
+    void Reset();
     uint CalculateCRC32() const;
     const void *BeginData() const;  // Указывает на начало реальных данных (без учёта контрольной суммы, расположенной в начале)
     int SizeData() const;           // Размер реальных данных (без учёта контрольной суммы, расположенной в начале)

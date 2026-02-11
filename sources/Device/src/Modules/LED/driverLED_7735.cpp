@@ -20,8 +20,8 @@ namespace LED
         static bool is_fired = false;
 
         static PinOut pinRED(GPIOA, GPIO_PIN_9);
-        static PinOut pinGREEN(GPIOA, GPIO_PIN_10);
-        static PinOut pinBLUE(GPIOA, GPIO_PIN_11);
+        static PinOut pinGREEN(GPIOA, GPIO_PIN_11);     // На плате зелёный - pin 10
+        static PinOut pinBLUE(GPIOA, GPIO_PIN_10);      // На плате синий - pin 11
     }
 }
 

@@ -85,6 +85,14 @@ void Settings::Save()
 }
 
 
+void Settings::Reset()
+{
+    gset = def_set;
+
+    Save();
+}
+
+
 bool Settings::operator==(const Settings &rhs) const
 {
     return GF::MemCmp(BeginData(), rhs.BeginData(), SizeData());
