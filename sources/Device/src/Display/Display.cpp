@@ -104,6 +104,8 @@ void Display::Init()
         EndScene(i);
     }
 
+    ST7735_89::Disable();
+
     ST7735_89::Enable();
 }
 
