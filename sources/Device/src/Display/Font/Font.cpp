@@ -231,7 +231,33 @@ int Font::GetHeight()
 
 int Font::GetWidth(uint8 symbol)
 {
-    return dfont->symbols[symbol].width;
+    if (type == TypeFont::_5 || type == TypeFont::_7)
+    {
+        return dfont->symbols[symbol].width;
+    }
+#ifdef MODEL7789
+    else if (type == TypeFont::GOSTAU16BOLD || type == TypeFont::GOSTB28B)
+    {
+        if (symbol == 0x20)
+        {
+            if (font == fontGOSTAU16BOLD)
+            {
+                return 5;
+            }
+        }
+
+        if (symbol == '1')
+        {
+            return GetWidth('0');
+        }
+
+        NativeSymbol *sym = HeaderFont::Sefl()->GetSymbol(symbol);
+
+        return sym ? (int)sym->width : 0;
+    }
+#endif
+
+    return 10;
 }
 
 
@@ -260,8 +286,8 @@ int Char::Write(int x, int y, const Color &color) const
 #ifdef MODEL7789
     else if (Font::type == TypeFont::GOSTAU16BOLD || Font::type == TypeFont::GOSTB28B)
     {
-        int height = Font::GetHeight();
-        int width = Font::GetWidth(symbol);
+        int height = Font::GetHeight() * Font::size;
+        int width = Font::GetWidth(symbol) * Font::size;
 
         for (int row = 0; row < height; row++)
         {
