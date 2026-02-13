@@ -721,6 +721,26 @@
               <FileType>5</FileType>
               <FilePath>.\src\Display\Font\font10_7.inc</FilePath>
             </File>
+            <File>
+              <FileName>FontBig.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Font\FontBig.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>FontBig.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\FontBig.h</FilePath>
+            </File>
+            <File>
+              <FileName>FontMid.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Font\FontMid.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>FontMid.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\FontMid.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1733,6 +1753,26 @@
               <FileName>font10_7.inc</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Font\font10_7.inc</FilePath>
+            </File>
+            <File>
+              <FileName>FontBig.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Font\FontBig.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>FontBig.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\FontBig.h</FilePath>
+            </File>
+            <File>
+              <FileName>FontMid.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\Font\FontMid.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>FontMid.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\FontMid.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,4 +1,4 @@
-# (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+﻿# (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 
 project (Device7735)
 
@@ -36,7 +36,10 @@ file(GLOB GD32E23x                ../../common/GD32E23x_Firmware_Library/Firmwar
                                   ../../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Source/*.*)
 file(GLOB SRC                     ../src/*.*)
 file(GLOB DISPLAY                 ../src/Display/*.*)
-file(GLOB DISPLAY_FONT            ../src/Display/Font/*.*)
+file(GLOB DISPLAY_FONT            ../src/Display/Font/Font.*
+                                  ../src/Display/Font/font5.inc
+                                  ../src/Display/Font/font8.inc
+                                  ../src/Display/Font/font10_7.inc)
 file(GLOB DISPLAY_PICTURES        ../src/Display/Pictures/*.*)
 file(GLOB HARDWARE                ../src/Hardware/*.*)
 file(GLOB HARDWARE_CMSIS          ../src/Hardware/CMSIS/*.*)
