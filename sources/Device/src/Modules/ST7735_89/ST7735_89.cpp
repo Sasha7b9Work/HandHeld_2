@@ -282,8 +282,11 @@ void ST7735_89::Init()
 
     //------------------------------display and color format setting--------------------------------//
     Write_Cmd(ST7789_MADCTL);
-//    uint8 mad = 0xA0;         // Переворот изображения на 180 градусов
+#ifdef TEST_FONTS
+    uint8 mad = 0xA0;         // Переворот изображения на 180 градусов
+#else
     uint8 mad = 0x60;
+#endif
     _SET_BIT(mad, 3);           // BGR
     Write_Data(mad);
 

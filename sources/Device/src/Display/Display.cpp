@@ -68,7 +68,7 @@ namespace Display
     static void EndScene(int num_parts);
 
     static bool old_display = false;    // Если true, то используется старый тип дисплея - без синей полосы с левого края экрана.
-                                        // Это значение зависит от байта в загрузчике
+    // Это значение зависит от байта в загрузчике
 }
 
 
@@ -270,6 +270,16 @@ void Display::DrawFonts(int /*num_part*/)
 
     Font::SetType(TypeFont::_7);
     Text<>("Строка 2").Write(1, 10);
+
+#ifdef MODEL7789
+
+    Font::SetType(TypeFont::GOSTAU16BOLD);
+    Text<>("Строка 3").Write(1, 20);
+
+    Font::SetType(TypeFont::GOSTB28B);
+    Text<>("Строка 4").Write(1, 40);
+
+#endif
 }
 
 
