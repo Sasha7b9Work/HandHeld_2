@@ -286,8 +286,8 @@ int Char::Write(int x, int y, const Color &color) const
 #ifdef MODEL7789
     else if (Font::type == TypeFont::GOSTAU16BOLD || Font::type == TypeFont::GOSTB28B)
     {
-        int height = Font::GetHeight() * Font::size;
-        int width = Font::GetWidth(symbol) * Font::size;
+        int height = Font::GetHeight();
+        int width = Font::GetWidth(symbol);
 
         for (int row = 0; row < height; row++)
         {
@@ -297,7 +297,7 @@ int Char::Write(int x, int y, const Color &color) const
                 {
                     if (Font::BitIsExist(symbol, row, col))
                     {
-                        Pixel().Set(x + col, y + row);
+                        Rect(Font::size, Font::size).Fill(x + col * Font::size, y + row * Font::size);
                     }
                 }
             }

@@ -263,21 +263,16 @@ void Display::DrawFonts(int /*num_part*/)
 {
     Color::WHITE.SetAsCurrent();
 
-    Font::SetSize(1);
-
-    Font::SetType(TypeFont::_5);
-    Text<>("Строка 1").Write(1, 0);
-
-    Font::SetType(TypeFont::_7);
-    Text<>("Строка 2").Write(1, 10);
-
 #ifdef MODEL7789
 
-    Font::SetType(TypeFont::GOSTAU16BOLD);
-    Text<>("Строка 3").Write(1, 20);
+    Font::SetSize(1);
 
     Font::SetType(TypeFont::GOSTB28B);
-    Text<>("Строка 4").Write(1, 40);
+    Text<>("БУДИЛЬНИК").Write(1, 1);
+
+    Font::SetSize(2);
+
+    Text<>("БУДИЛЬНИК").Write(1, 40);
 
 #endif
 }
