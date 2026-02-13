@@ -1,4 +1,4 @@
-// 2024/03/01 22:45:35 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+п»ї// 2024/03/01 22:45:35 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Display/Display.h"
 #include "Modules/ST7735_89/ST7735_89.h"
@@ -27,14 +27,14 @@ namespace Display
 
         static uint crc[NUMBER_PARTS_HEIGHT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        static int current_part = 0;                            // Эту часть сейчас отрисовываем
+        static int current_part = 0;                            // Р­С‚Сѓ С‡Р°СЃС‚СЊ СЃРµР№С‡Р°СЃ РѕС‚СЂРёСЃРѕРІС‹РІР°РµРј
 
         static uint CalcualteCRC()
         {
             return Math::CalculateCRC32(buffer, SIZE);
         }
 
-        static Color color_last_filled(Color::BLACK);           // Этим цветом шло последнее заполнение
+        static Color color_last_filled(Color::BLACK);           // Р­С‚РёРј С†РІРµС‚РѕРј С€Р»Рѕ РїРѕСЃР»РµРґРЅРµРµ Р·Р°РїРѕР»РЅРµРЅРёРµ
 
         static void Fill(const Color &color)
         {
@@ -66,8 +66,8 @@ namespace Display
     static void DrawScene(int num_part);
     static void EndScene(int num_parts);
 
-    static bool old_display = false;    // Если true, то используется старый тип дисплея - без синей полосы с левого края экрана.
-                                        // Это значение зависит от байта в загрузчике
+    static bool old_display = false;    // Р•СЃР»Рё true, С‚Рѕ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ СЃС‚Р°СЂС‹Р№ С‚РёРї РґРёСЃРїР»РµСЏ - Р±РµР· СЃРёРЅРµР№ РїРѕР»РѕСЃС‹ СЃ Р»РµРІРѕРіРѕ РєСЂР°СЏ СЌРєСЂР°РЅР°.
+                                        // Р­С‚Рѕ Р·РЅР°С‡РµРЅРёРµ Р·Р°РІРёСЃРёС‚ РѕС‚ Р±Р°Р№С‚Р° РІ Р·Р°РіСЂСѓР·С‡РёРєРµ
 }
 
 
@@ -84,7 +84,7 @@ void Display::Init()
     Font::SetType(TypeFont::_7);
 
     {
-        // Читаем байт конфигурации из области загрузчика чтобы правильно работать с дисплеем
+        // Р§РёС‚Р°РµРј Р±Р°Р№С‚ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РёР· РѕР±Р»Р°СЃС‚Рё Р·Р°РіСЂСѓР·С‡РёРєР° С‡С‚РѕР±С‹ РїСЂР°РІРёР»СЊРЅРѕ СЂР°Р±РѕС‚Р°С‚СЊ СЃ РґРёСЃРїР»РµРµРј
 
 #define _FLASH_ADDRESS 0x8001FFF
 
@@ -122,7 +122,7 @@ void Display::PrepareToSleep()
 
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
     {
-        Buffer::crc[i] = 0;                         // Без этого не будет выходить по кнопке из сна
+        Buffer::crc[i] = 0;                         // Р‘РµР· СЌС‚РѕРіРѕ РЅРµ Р±СѓРґРµС‚ РІС‹С…РѕРґРёС‚СЊ РїРѕ РєРЅРѕРїРєРµ РёР· СЃРЅР°
     }
 }
 
@@ -176,9 +176,9 @@ void Display::DrawPowerOff()
     {
         BeginScene(i);
 
-        Font::_SetSize(S_2_3);
+        Font::SetSize(S_2_3);
 
-        Text<>("ВЫКЛЮЧЕНИЕ").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
+        Text<>("Р’Р«РљР›Р®Р§Р•РќРР•").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
 
         EndScene(i);
     }
@@ -191,9 +191,9 @@ void Display::DrawPowerOn()
     {
         BeginScene(i);
 
-        Font::_SetSize(S_2_3);
+        Font::SetSize(S_2_3);
 
-        Text<>("ВКЛЮЧЕНИЕ").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
+        Text<>("Р’РљР›Р®Р§Р•РќРР•").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
 
         EndScene(i);
     }
@@ -206,11 +206,11 @@ void Display::DrawLowVoltage()
     {
         BeginScene(i);
 
-        Font::_SetSize(S_2_3);
+        Font::SetSize(S_2_3);
 
-        Text<>("НИЗКОЕ").WriteInCenter(0, 20, Display::WIDTH, Color::RED);
+        Text<>("РќРР—РљРћР•").WriteInCenter(0, 20, Display::WIDTH, Color::RED);
 
-        Text<>("НАПРЯЖЕНИЕ").WriteInCenter(0, 50, Display::WIDTH, Color::RED);
+        Text<>("РќРђРџР РЇР–Р•РќРР•").WriteInCenter(0, 50, Display::WIDTH, Color::RED);
 
         EndScene(i);
     }
@@ -260,9 +260,9 @@ void Display::DrawScene(int num_part)
 {
     if (PCF8563::IsAlarmed())
     {
-        Font::_SetSize(S_2_3);
-        Text<>("БУДИЛЬНИК").WriteInCenter(0, 30, Display::WIDTH, Color(Color::Contrast(gset.alarm.color)));
-        Font::_SetSize(1);
+        Font::SetSize(S_2_3);
+        Text<>("Р‘РЈР”РР›Р¬РќРРљ").WriteInCenter(0, 30, Display::WIDTH, Color(Color::Contrast(gset.alarm.color)));
+        Font::SetSize(1);
     }
     else if (Source::GetCountReceived())
     {
@@ -287,7 +287,7 @@ void Display::DrawScene(int num_part)
             }
         }
 
-        Font::_SetSize(S_2_3);
+        Font::SetSize(S_2_3);
 
         pchar name = Source::Name(Source::Current());
 
@@ -306,7 +306,7 @@ void Display::DrawScene(int num_part)
             Text<>(SU::GetWordFromString(name, 2, buffer)).WriteInCenter(0, y + 15, Display::WIDTH);
         }
 
-        Font::_SetSize(1);
+        Font::SetSize(1);
     }
     else
     {
@@ -316,15 +316,15 @@ void Display::DrawScene(int num_part)
         }
         else
         {
-            Font::_SetSize(S_5_6);
+            Font::SetSize(S_5_6);
 
             PCF8563::GetDateTime().DrawTime(30, 23, Color::WHITE);
 
-            Font::_SetSize(S_2_3);
+            Font::SetSize(S_2_3);
 
             PCF8563::GetDateTime().DrawDate(46, 66);
 
-            Font::_SetSize(1);
+            Font::SetSize(1);
 
             if (num_part == 0)
             {

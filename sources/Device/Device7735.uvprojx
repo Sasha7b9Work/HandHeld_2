@@ -821,6 +821,16 @@
               <FileType>8</FileType>
               <FilePath>.\src\Display\Display.cpp</FilePath>
             </File>
+            <File>
+              <FileName>MonochromeBitmap.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\MonochromeBitmap.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>MonochromeBitmap.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\MonochromeBitmap.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1948,6 +1958,16 @@
               <FileName>Display.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Display\Display.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>MonochromeBitmap.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Display\MonochromeBitmap.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>MonochromeBitmap.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\MonochromeBitmap.h</FilePath>
             </File>
           </Files>
         </Group>

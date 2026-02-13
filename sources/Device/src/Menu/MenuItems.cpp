@@ -1,4 +1,4 @@
-// 2024/03/02 13:56:13 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+Ôªø// 2024/03/02 13:56:13 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Menu/MenuItems.h"
 #include "Menu/Menu.h"
@@ -46,7 +46,7 @@ void Page::Draw() const
     }
     else
     {
-        Font::_SetSize(S_2_3);
+        Font::SetSize(S_2_3);
 
         Text<> title = data->item->Title();
 
@@ -65,7 +65,7 @@ void Page::Draw() const
             Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, 45, Display::WIDTH);
         }
 
-        Font::_SetSize(1);
+        Font::SetSize(1);
 
         if (data->func_draw_closed)
         {
@@ -83,7 +83,7 @@ void Choice::Draw() const
     }
     else
     {
-        Font::_SetSize(S_2_3);
+        Font::SetSize(S_2_3);
 
         data->item->Title().WriteInCenter(0, 15, Display::WIDTH, Color::GREEN);
 
@@ -100,7 +100,7 @@ void Choice::Draw() const
 
         Text<>(text).WriteInCenter(0, 45, Display::WIDTH, color);
 
-        Font::_SetSize(1);
+        Font::SetSize(1);
     }
 }
 
@@ -117,9 +117,9 @@ void DateTime::DrawField(int x, int y, Text<> &text, bool selected) const
         Rect(width + 2, height + 2).Draw(x - 1, y - 1, Color::WHITE);
     }
 
-    Font::_SetSize(S_4_5);
+    Font::SetSize(S_4_5);
     text.Write(x + 3, (y + 3), selected ? Color::BLACK : Color::WHITE);
-    Font::_SetSize(1);
+    Font::SetSize(1);
 }
 
 
@@ -127,11 +127,11 @@ void DateTime::Draw() const
 {
     if (data->item->IsOpened())
     {
-        Font::_SetSize(S_2_3);
+        Font::SetSize(S_2_3);
 
-        Text<>("”—“¿ÕŒ¬ ¿").WriteInCenter(0, 10, Display::WIDTH, Color::WHITE);
+        Text<>("–£–°–¢–ê–ù–û–í–ö–ê").WriteInCenter(0, 10, Display::WIDTH, Color::WHITE);
 
-        Font::_SetSize(1);
+        Font::SetSize(1);
 
         int values[3] =
         {
@@ -165,11 +165,11 @@ void DateTime::Draw() const
     }
     else
     {
-        Font::_SetSize(S_2_3);
+        Font::SetSize(S_2_3);
 
         data->item->Title().WriteInCenter(0, 30, Display::WIDTH, Color::GREEN);
 
-        Font::_SetSize(1);
+        Font::SetSize(1);
     }
 }
 

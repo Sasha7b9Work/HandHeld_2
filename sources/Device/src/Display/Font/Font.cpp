@@ -1,4 +1,4 @@
-// 2023/04/17 14:03:38 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+﻿// 2023/04/17 14:03:38 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Display/Font/Font.h"
 #include "Display/Font/font5.inc"
@@ -20,7 +20,7 @@ namespace Font
 }
 
 
-void Font::_SetSize(int _size)
+void Font::SetSize(int _size)
 {
     size = _size;
 }

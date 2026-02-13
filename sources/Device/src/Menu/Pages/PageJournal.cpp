@@ -1,4 +1,4 @@
-// 2024/03/07 09:45:23 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+Ôªø// 2024/03/07 09:45:23 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Menu/Pages/Pages.h"
 #include "Menu/MenuItemDef.h"
@@ -25,7 +25,7 @@ namespace PageJournal
         const Record *rec = Storage::Get(top_record);
         const RTCDateTime time = rec->time;
 
-        Font::_SetSize(S_2_3);
+        Font::SetSize(S_2_3);
 
         int y = 0;
 
@@ -36,19 +36,19 @@ namespace PageJournal
 
         Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).WriteInCenter(x, y + 50, Display::WIDTH);
 
-        Font::_SetSize(1);
+        Font::SetSize(1);
     }
 
     static void FuncDraw_History()
     {
         if (Storage::GetCountRecords() == 0)
         {
-            Font::_SetSize(S_2_3);
+            Font::SetSize(S_2_3);
 
-            Text<>("∆”–Õ¿À").WriteInCenter(0, 20, Display::WIDTH, Color::WHITE);
-            Text<>("œ”—“").WriteInCenter(0, 50, Display::WIDTH);
+            Text<>("–ñ–£–†–ù–ê–õ").WriteInCenter(0, 20, Display::WIDTH, Color::WHITE);
+            Text<>("–ü–£–°–¢").WriteInCenter(0, 50, Display::WIDTH);
 
-            Font::_SetSize(1);
+            Font::SetSize(1);
         }
         else
         {
@@ -85,14 +85,14 @@ namespace PageJournal
 
     void FuncDraw_Closed()
     {
-        Font::_SetSize(S_2_3);
+        Font::SetSize(S_2_3);
 
-        Text<>("%d ¬€«Œ¬Œ¬", Storage::GetCountRecords()).Write(10, 35, Color::WHITE);
+        Text<>("%d –í–´–ó–û–í–û–í", Storage::GetCountRecords()).Write(10, 35, Color::WHITE);
 
-        Font::_SetSize(1);
+        Font::SetSize(1);
     }
 
-    DEF_PAGE_0(pageHistory, PageMain::self, "∆”–Õ¿À",
+    DEF_PAGE_0(pageHistory, PageMain::self, "–ñ–£–†–ù–ê–õ",
         nullptr, // FuncDraw_Closed,
         FuncDraw_History,
         Func_ActionKey
