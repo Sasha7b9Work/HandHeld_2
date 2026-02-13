@@ -1,12 +1,44 @@
 ﻿// 2023/04/17 14:03:38 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Display/Font/Font.h"
+#include "Display/Display.h"
+#include "Display/Text.h"
+
+
+struct DSymbol
+{
+    uchar width;
+    uchar bytes[8];
+};
+
+struct DTypeFont
+{
+    enum E
+    {
+        _5,
+        _8,
+        Count,
+        None
+    };
+};
+
+struct DFont
+{
+    int _height;
+    DSymbol symbols[256];
+};
+
+
 #include "Display/Font/font5.inc"
 #include "Display/Font/font8.inc"
-#include "Display/Text.h"
 #include "Display/Font/font10_7.inc"
-#include "Display/Display.h"
 
+struct FontDef
+{
+    const uint8 width;      // Font width in pixels
+    uint8 height;           // Font height in pixels
+    const uint16 *data;     // Pointer to data font data array
+};
 
 static const DFont *dfont = &font8;
 

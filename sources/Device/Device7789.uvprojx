@@ -741,6 +741,16 @@
               <FileType>5</FileType>
               <FilePath>.\src\Display\Font\FontMid.h</FilePath>
             </File>
+            <File>
+              <FileName>fontGOSTAU16BOLD.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\fontGOSTAU16BOLD.inc</FilePath>
+            </File>
+            <File>
+              <FileName>fontGOSTB28B.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\fontGOSTB28B.inc</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1773,6 +1783,16 @@
               <FileName>FontMid.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Font\FontMid.h</FilePath>
+            </File>
+            <File>
+              <FileName>fontGOSTAU16BOLD.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\fontGOSTAU16BOLD.inc</FilePath>
+            </File>
+            <File>
+              <FileName>fontGOSTB28B.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\fontGOSTB28B.inc</FilePath>
             </File>
           </Files>
         </Group>

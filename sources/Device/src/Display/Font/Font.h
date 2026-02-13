@@ -2,29 +2,6 @@
 #pragma once
 
 
-struct DSymbol
-{
-    uchar width;
-    uchar bytes[8];
-};
-
-struct DTypeFont
-{
-    enum E
-    {
-        _5,
-        _8,
-        Count,
-        None
-    };
-};
-
-struct DFont
-{
-    int _height;
-    DSymbol symbols[256];
-};
-
 struct TypeFont
 {
     enum E
@@ -34,14 +11,6 @@ struct TypeFont
         _10,
         Count
     };
-};
-
-
-struct FontDef
-{
-    const uint8 width;      // Font width in pixels
-    uint8 height;           // Font height in pixels
-    const uint16 *data;     // Pointer to data font data array
 };
 
 
