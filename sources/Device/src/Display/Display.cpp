@@ -1,4 +1,4 @@
-п»ї// 2024/03/01 22:45:35 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+// 2024/03/01 22:45:35 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Display/Display.h"
 #include "Modules/ST7735_89/ST7735_89.h"
@@ -27,14 +27,14 @@ namespace Display
 
         static uint crc[NUMBER_PARTS_HEIGHT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        static int current_part = 0;                            // Р­С‚Сѓ С‡Р°СЃС‚СЊ СЃРµР№С‡Р°СЃ РѕС‚СЂРёСЃРѕРІС‹РІР°РµРј
+        static int current_part = 0;                            // Эту часть сейчас отрисовываем
 
         static uint CalcualteCRC()
         {
             return Math::CalculateCRC32(buffer, SIZE);
         }
 
-        static Color color_last_filled(Color::BLACK);           // Р­С‚РёРј С†РІРµС‚РѕРј С€Р»Рѕ РїРѕСЃР»РµРґРЅРµРµ Р·Р°РїРѕР»РЅРµРЅРёРµ
+        static Color color_last_filled(Color::BLACK);           // Этим цветом шло последнее заполнение
 
         static void Fill(const Color &color)
         {
@@ -64,10 +64,11 @@ namespace Display
 
     static void BeginScene(int num_part);
     static void DrawScene(int num_part);
+    static void DrawFonts(int num_part);
     static void EndScene(int num_parts);
 
-    static bool old_display = false;    // Р•СЃР»Рё true, С‚Рѕ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ СЃС‚Р°СЂС‹Р№ С‚РёРї РґРёСЃРїР»РµСЏ - Р±РµР· СЃРёРЅРµР№ РїРѕР»РѕСЃС‹ СЃ Р»РµРІРѕРіРѕ РєСЂР°СЏ СЌРєСЂР°РЅР°.
-                                        // Р­С‚Рѕ Р·РЅР°С‡РµРЅРёРµ Р·Р°РІРёСЃРёС‚ РѕС‚ Р±Р°Р№С‚Р° РІ Р·Р°РіСЂСѓР·С‡РёРєРµ
+    static bool old_display = false;    // Если true, то используется старый тип дисплея - без синей полосы с левого края экрана.
+                                        // Это значение зависит от байта в загрузчике
 }
 
 
@@ -84,7 +85,7 @@ void Display::Init()
     Font::SetType(TypeFont::_7);
 
     {
-        // Р§РёС‚Р°РµРј Р±Р°Р№С‚ РєРѕРЅС„РёРіСѓСЂР°С†РёРё РёР· РѕР±Р»Р°СЃС‚Рё Р·Р°РіСЂСѓР·С‡РёРєР° С‡С‚РѕР±С‹ РїСЂР°РІРёР»СЊРЅРѕ СЂР°Р±РѕС‚Р°С‚СЊ СЃ РґРёСЃРїР»РµРµРј
+        // Читаем байт конфигурации из области загрузчика чтобы правильно работать с дисплеем
 
 #define _FLASH_ADDRESS 0x8001FFF
 
@@ -122,7 +123,7 @@ void Display::PrepareToSleep()
 
     for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
     {
-        Buffer::crc[i] = 0;                         // Р‘РµР· СЌС‚РѕРіРѕ РЅРµ Р±СѓРґРµС‚ РІС‹С…РѕРґРёС‚СЊ РїРѕ РєРЅРѕРїРєРµ РёР· СЃРЅР°
+        Buffer::crc[i] = 0;                         // Без этого не будет выходить по кнопке из сна
     }
 }
 
@@ -156,7 +157,11 @@ void Display::Update()
         for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
         {
             BeginScene(i);
+#ifdef TEST_FONTS
+            DrawFonts(i);
+#else
             DrawScene(i);
+#endif
             EndScene(i);
         }
 
@@ -178,7 +183,7 @@ void Display::DrawPowerOff()
 
         Font::SetSize(S_2_3);
 
-        Text<>("Р’Р«РљР›Р®Р§Р•РќРР•").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
+        Text<>("ВЫКЛЮЧЕНИЕ").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
 
         EndScene(i);
     }
@@ -193,7 +198,7 @@ void Display::DrawPowerOn()
 
         Font::SetSize(S_2_3);
 
-        Text<>("Р’РљР›Р®Р§Р•РќРР•").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
+        Text<>("ВКЛЮЧЕНИЕ").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
 
         EndScene(i);
     }
@@ -208,9 +213,9 @@ void Display::DrawLowVoltage()
 
         Font::SetSize(S_2_3);
 
-        Text<>("РќРР—РљРћР•").WriteInCenter(0, 20, Display::WIDTH, Color::RED);
+        Text<>("НИЗКОЕ").WriteInCenter(0, 20, Display::WIDTH, Color::RED);
 
-        Text<>("РќРђРџР РЇР–Р•РќРР•").WriteInCenter(0, 50, Display::WIDTH, Color::RED);
+        Text<>("НАПРЯЖЕНИЕ").WriteInCenter(0, 50, Display::WIDTH, Color::RED);
 
         EndScene(i);
     }
@@ -237,7 +242,7 @@ void Display::BeginScene(int num_part)
 }
 
 
-void Display::EndScene(int num_parts)
+void Display::EndScene(int num_part)
 {
     uint crc = Buffer::CalcualteCRC();
 
@@ -249,10 +254,22 @@ void Display::EndScene(int num_parts)
 
         Buffer::crc[Buffer::current_part] = crc;
 
-//        ST7735_89::_WriteBuffer(HEIGHT / NUMBER_PARTS_HEIGHT * num_parts);
-
-        ST7735_89::WriteBuffer(num_parts);
+        ST7735_89::WriteBuffer(num_part);
     }
+}
+
+
+void Display::DrawFonts(int /*num_part*/)
+{
+    Color::WHITE.SetAsCurrent();
+
+    Font::SetSize(1);
+
+    Font::SetType(TypeFont::_5);
+    Text<>("Строка 1").Write(1, 0);
+
+    Font::SetType(TypeFont::_7);
+    Text<>("Строка 2").Write(1, 10);
 }
 
 
@@ -261,7 +278,7 @@ void Display::DrawScene(int num_part)
     if (PCF8563::IsAlarmed())
     {
         Font::SetSize(S_2_3);
-        Text<>("Р‘РЈР”РР›Р¬РќРРљ").WriteInCenter(0, 30, Display::WIDTH, Color(Color::Contrast(gset.alarm.color)));
+        Text<>("БУДИЛЬНИК").WriteInCenter(0, 30, Display::WIDTH, Color(Color::Contrast(gset.alarm.color)));
         Font::SetSize(1);
     }
     else if (Source::GetCountReceived())

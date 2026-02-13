@@ -8,7 +8,10 @@ struct TypeFont
     {
         _5,
         _7,
-        _10,
+#ifdef MODEL7789
+        GOSTAU16BOLD,
+        GOSTB28B,
+#endif
         Count
     };
 };

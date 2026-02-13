@@ -717,11 +717,6 @@
               <FilePath>.\src\Display\Font\font8.inc</FilePath>
             </File>
             <File>
-              <FileName>font10_7.inc</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Font\font10_7.inc</FilePath>
-            </File>
-            <File>
               <FileName>FontBig.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\Display\Font\FontBig.cpp</FilePath>
@@ -1758,11 +1753,6 @@
               <FileName>font8.inc</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Font\font8.inc</FilePath>
-            </File>
-            <File>
-              <FileName>font10_7.inc</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Display\Font\font10_7.inc</FilePath>
             </File>
             <File>
               <FileName>FontBig.cpp</FileName>
