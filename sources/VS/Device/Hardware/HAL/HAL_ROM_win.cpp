@@ -69,7 +69,7 @@ uint8 HAL_ROM::ReadByte(uint address)
 {
     if (address == 0x8001FFF)
     {
-        return 0xFF;
+        return 0x00;
     }
 
     return 0xFF;

@@ -52,7 +52,7 @@ public:
     {
     }
 
-    void WriteBuffer(int y0)
+    void WriteBuffer(int num_part)
     {
         static const wxColour colors[Color::Count] =
         {
@@ -73,6 +73,8 @@ public:
         wxPen pen = *wxWHITE_PEN;
 
         int line = 0;
+
+        int y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * num_part;
 
         for (int y = y0; y < y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
         {

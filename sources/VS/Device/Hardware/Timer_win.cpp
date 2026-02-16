@@ -12,13 +12,13 @@ void Timer::Init()
 
 void TimeMeterMS::Reset()
 {
-
+    time_reset = Timer::CurrentTime();
 }
 
 
 uint TimeMeterMS::ElapsedTime() const
 {
-    return 0;
+    return Timer::CurrentTime() - time_reset;
 }
 
 
