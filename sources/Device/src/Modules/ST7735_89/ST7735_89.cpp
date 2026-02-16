@@ -473,6 +473,32 @@ void ST7735_89::WriteBuffer(int num_part)
 
 #ifdef MODEL7789
 
+#ifdef TEST_FONTS
+
+    y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * num_part;
+
+    SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
+
+    pinDC_RS.ToHi();
+
+    for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
+    {
+        uint8 *points = Display::Buffer::GetLine(y);
+
+        for (int i = 0; i < Display::WIDTH; i++)
+        {
+            uint16 word = Color::colors[*points++];
+
+            SPI_DATA(SPI0) = (uint)(word >> 8);
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            __asm("nop");
+            SPI_DATA(SPI0) = (uint)((uint8)word);
+        }
+    }
+
+#else
     if (num_part == 0)
     {
         // Перед рисованием верхней части пропускаем две верхние части, заполняя их цветом фона.
@@ -536,6 +562,7 @@ void ST7735_89::WriteBuffer(int num_part)
             }
         }
     }
+#endif
 
 #endif
 }

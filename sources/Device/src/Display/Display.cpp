@@ -267,12 +267,27 @@ void Display::DrawFonts(int /*num_part*/)
 
     Font::SetSize(1);
 
+    int y = 1;
+
+    Font::SetType(TypeFont::GOSTAU16BOLD);
+    Text<>("¡”ƒ»À‹Õ» ").Write(1, y);
+
+    y += 25;
+
     Font::SetType(TypeFont::GOSTB28B);
-    Text<>("¡”ƒ»À‹Õ» ").Write(1, 1);
+    Text<>("¡”ƒ»À‹Õ» ").Write(1, y);
 
     Font::SetSize(2);
 
-    Text<>("¡”ƒ»À‹Õ» ").Write(1, 40);
+    y += 40;
+
+    Font::SetType(TypeFont::GOSTAU16BOLD);
+    Text<>("¡”ƒ»À‹Õ» ").Write(1, y);
+
+    y += 40;
+
+    Font::SetType(TypeFont::GOSTB28B);
+    Text<>("¡”ƒ»À‹Õ» ").Write(1, y);
 
 #endif
 }

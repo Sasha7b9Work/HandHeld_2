@@ -1,4 +1,4 @@
-﻿// 2024/03/23 13:22:07 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+// 2024/03/23 13:22:07 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 
 #ifdef GUI
@@ -12,4 +12,4 @@
 // При отладке нужно отключать, чтобы не мешало работе с отладчиком (выводит НИЗКОЕ НАПРЯЖЕНИЕ)
 #define POWER_CONTROL_ENABLED
 
-#define TEST_FONTS
+//#define TEST_FONTS
