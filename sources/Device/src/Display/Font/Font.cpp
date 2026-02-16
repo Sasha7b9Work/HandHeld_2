@@ -152,7 +152,11 @@ namespace Font
 
 void Font::SetSize(int _size)
 {
+    (void)_size;
+
+#ifdef MODEL7735
     size = _size;
+#endif
 }
 
 
@@ -226,7 +230,7 @@ int Font::GetHeight()
     {
     case TypeFont::_5:      return 5;
     case TypeFont::_7:      return 7;
-    case TypeFont::Count:
+    case TypeFont::_Count:
         break;
     }
 #endif

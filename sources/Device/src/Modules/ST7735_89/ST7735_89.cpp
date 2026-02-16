@@ -282,11 +282,8 @@ void ST7735_89::Init()
 
     //------------------------------display and color format setting--------------------------------//
     Write_Cmd(ST7789_MADCTL);
-#ifdef TEST_FONTS
     uint8 mad = 0xA0;         // Переворот изображения на 180 градусов
-#else
-    uint8 mad = 0x60;
-#endif
+//    uint8 mad = 0x60;
     _SET_BIT(mad, 3);           // BGR
     Write_Data(mad);
 
@@ -473,8 +470,6 @@ void ST7735_89::WriteBuffer(int num_part)
 
 #ifdef MODEL7789
 
-#ifdef TEST_FONTS
-
     y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * num_part;
 
     SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
@@ -497,72 +492,6 @@ void ST7735_89::WriteBuffer(int num_part)
             SPI_DATA(SPI0) = (uint)((uint8)word);
         }
     }
-
-#else
-    if (num_part == 0)
-    {
-        // Перед рисованием верхней части пропускаем две верхние части, заполняя их цветом фона.
-        // Это нужно, чтобы сместить изображение вниз.
-
-        uint16 color = Color::colors[*Display::Buffer::GetLine(0)];
-
-        for (int j = 0; j < 2; j++)
-        {
-            y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + j);
-
-            SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
-
-            pinDC_RS.ToHi();
-
-            for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
-            {
-                for (int i = 0; i < Display::WIDTH; i++)
-                {
-                    SPI_DATA(SPI0) = (uint)(color >> 8);
-                    __asm("nop");
-                    __asm("nop");
-                    __asm("nop");
-                    __asm("nop");
-                    SPI_DATA(SPI0) = (uint)((uint8)color);
-                    __asm("nop");
-                    __asm("nop");
-                    __asm("nop");
-                    __asm("nop");
-                }
-            }
-        }
-    }
-
-    if (num_part > Display::NUMBER_PARTS_HEIGHT - 3)
-    {
-        // Т.к. смещаем изображение вниз, на нижних частях рисовать ничего не нужно
-    }
-    else
-    {
-        y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * (num_part + 2);
-
-        SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
-
-        pinDC_RS.ToHi();
-
-        for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
-        {
-            uint8 *points = Display::Buffer::GetShiftedLine(y);
-
-            for (int i = 0; i < Display::WIDTH; i++)
-            {
-                uint16 word = Color::colors[*points++];
-
-                SPI_DATA(SPI0) = (uint)(word >> 8);
-                __asm("nop");
-                __asm("nop");
-                __asm("nop");
-                __asm("nop");
-                SPI_DATA(SPI0) = (uint)((uint8)word);
-            }
-        }
-    }
-#endif
 
 #endif
 }
