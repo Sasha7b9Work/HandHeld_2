@@ -28,9 +28,9 @@ void FPS::EndFrame()
 
 void FPS::DrawTimeFrame(int x, int y)
 {
-    Font::SetType(TypeFont::_5);
+    Font::SetSmallType();
 
     Text<>("%d ms", time).Write(x, y, Color::WHITE);
 
-    Font::SetType(TypeFont::_7);
+    Font::SetMainType();
 }

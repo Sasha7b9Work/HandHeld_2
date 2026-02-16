@@ -138,7 +138,13 @@ static const DFont *dfont = &font8;
 
 namespace Font
 {
+#ifdef MODEL7735
     TypeFont::E type = TypeFont::_7;
+#endif
+
+#ifdef MODEL7789
+    TypeFont::E type = TypeFont::GOSTB28B;
+#endif
 
     static int size = 1;
 }
@@ -156,10 +162,35 @@ int Font::GetSize()
 }
 
 
+void Font::SetMainType()
+{
+#ifdef MODEL7735
+    SetType(TypeFont::_7);
+#endif
+
+#ifdef MODEL7789
+    SetType(TypeFont::GOSTB28B);
+#endif
+}
+
+
+void Font::SetSmallType()
+{
+#ifdef MODEL7735
+    Font::SetType(TypeFont::_5);
+#endif
+
+#ifdef MODEL7789
+    Font::SetType(TypeFont::GOSTAU16BOLD);
+#endif
+}
+
+
 void Font::SetType(TypeFont::E _type)
 {
     type = _type;
 
+#ifdef MODEL7735
     if (_type == TypeFont::_5)
     {
         dfont = &font5;
@@ -168,8 +199,10 @@ void Font::SetType(TypeFont::E _type)
     {
         dfont = &font8;
     }
+#endif
+
 #ifdef MODEL7789
-    else if (_type == TypeFont::GOSTAU16BOLD)
+    if (_type == TypeFont::GOSTAU16BOLD)
     {
         font = fontGOSTAU16BOLD;
     }
@@ -198,7 +231,7 @@ int Font::GetHeight()
     }
 #endif
 
-#ifdef MODEL7789
+#ifdef MODEL7735
     if (type == TypeFont::_5)
     {
         return 5;
@@ -207,7 +240,10 @@ int Font::GetHeight()
     {
         return 7;
     }
-    else if (type == TypeFont::GOSTAU16BOLD || type == TypeFont::GOSTB28B)
+#endif
+
+#ifdef MODEL7789
+    if (type == TypeFont::GOSTAU16BOLD || type == TypeFont::GOSTB28B)
     {
         uint8 result = 0;
 
@@ -231,12 +267,15 @@ int Font::GetHeight()
 
 int Font::GetWidth(uint8 symbol)
 {
+#ifdef MODEL7735
     if (type == TypeFont::_5 || type == TypeFont::_7)
     {
         return dfont->symbols[symbol].width;
     }
+#endif
+
 #ifdef MODEL7789
-    else if (type == TypeFont::GOSTAU16BOLD || type == TypeFont::GOSTB28B)
+    if (type == TypeFont::GOSTAU16BOLD || type == TypeFont::GOSTB28B)
     {
         if (symbol == 0x20)
         {
@@ -265,6 +304,7 @@ int Char::Write(int x, int y, const Color &color) const
 {
     color.SetAsCurrent();
 
+#ifdef MODEL7735
     if (Font::type == TypeFont::_5 || Font::type == TypeFont::_7)
     {
         int height = Font::GetHeight();
@@ -283,8 +323,10 @@ int Char::Write(int x, int y, const Color &color) const
 
         return x + width * Font::size;
     }
+#endif
+
 #ifdef MODEL7789
-    else if (Font::type == TypeFont::GOSTAU16BOLD || Font::type == TypeFont::GOSTB28B)
+    if (Font::type == TypeFont::GOSTAU16BOLD || Font::type == TypeFont::GOSTB28B)
     {
         int height = Font::GetHeight();
         int width = Font::GetWidth(symbol);

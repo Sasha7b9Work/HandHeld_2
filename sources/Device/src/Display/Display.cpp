@@ -82,7 +82,7 @@ void Display::Init()
 {
     ST7735_89::Init();
 
-    Font::SetType(TypeFont::_7);
+    Font::SetMainType();
 
     {
         // Читаем байт конфигурации из области загрузчика чтобы правильно работать с дисплеем

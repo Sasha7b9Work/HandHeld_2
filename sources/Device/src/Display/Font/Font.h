@@ -8,13 +8,15 @@ struct TypeFont
 {
     enum E
     {
+#ifndef MODEL7789
         _5,
         _7,
+#endif
 #ifdef MODEL7789
         GOSTAU16BOLD,
         GOSTB28B,
 #endif
-        Count
+        _Count
     };
 };
 
@@ -22,6 +24,8 @@ struct TypeFont
 namespace Font
 {
     void SetType(TypeFont::E);
+    void SetMainType();
+    void SetSmallType();
 
     void SetSize(int);
 
