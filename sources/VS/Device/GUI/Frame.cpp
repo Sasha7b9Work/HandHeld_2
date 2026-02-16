@@ -6,7 +6,6 @@
 #include "wx/statline.h"
 #include "Keyboard/Keyboard.h"
 #include "Settings/Source.h"
-#include "Modules/CMT2210AW/EmulatorReceiver.h"
 #include "GUI/Controls/Painter.h"
 #include "GUI/Controls/PainterVibrator.h"
 #include "Hardware/Timer.h"
@@ -224,8 +223,6 @@ void Frame::OnTimer(wxTimerEvent &)
 
 void Frame::OnButtonEvent(wxCommandEvent &event)
 {
-    EmuRecv::EmulateSignal((Source::E)(event.GetId() - ID_BUTTON_SIGNAL_1));
-
     event.Skip();
 }
 
@@ -313,6 +310,12 @@ void Frame::OnButtonUpEvent(wxCommandEvent &event)
 void Frame::OnCloseWindow(wxCloseEvent &event)
 {
     event.Skip();
+}
+
+
+void ST7735_89::BeforeInit()
+{
+
 }
 
 

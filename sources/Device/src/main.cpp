@@ -1,19 +1,6 @@
 // 2024/03/01 22:30:00 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by// 
 #include "defines.h"
-#include "Hardware/HAL/HAL.h"
-#include "Modules/PCF8563/PCF8563.h"
-#include "Hardware/Timer.h"
-#include "Keyboard/Keyboard.h"
-#include "Menu/Menu.h"
-#include "Modules/LED/LED.h"
-#include "Hardware/Vibrato.h"
-#include "Modules/PAN3060/PAN3060.h"
-#include "Modules/Beeper/Beeper.h"
-#include "Storage/Storage.h"
-#include "Display/Display.h"
-#include "Modules/PMS150G/PMS150G.h"
-#include "Hardware/Power.h"
-#include "Modules/ST7735_89/ST7735_89.h"
+#include "Device.h"
 
 
 // Ammyy      95 243 113     32766
@@ -24,102 +11,12 @@
 */
 
 
-static void Update();
-
-static void SaveSettings();
-
-
 int main()
 {
-    HAL::Init();
-
-    ST7735_89::BeforeInit();
-
-    gset.Load();
-
-    Power::Init();
-
-    Display::Init();
-
-    PCF8563::Init();
-
-    Timer::Init();
-
-    Keyboard::Init();
-
-    Menu::Init();
-
-    LED::Init();
-
-    Vibrato::Init();
-
-    PAN3060::InitFull();
-
-    Beeper::Init();
-
-    Storage::Init();
-
-    PMS150G::Init();
-
-    LED::ShortWhiteBlink();
+    Device::Init();
 
     while (true)
     {
-        Update();
-    }
-}
-
-
-void Update()
-{
-    if (Keyboard::ToMoreTime() &&
-        Source::GetCountReceived() == 0 &&
-        !PCF8563::IsAlarmed())
-    {
-#ifndef MODEL7789
-        ModeClock::Set(ModeClock::Sleep);
-
-        ModeClock::LeaveSleepMode();
-
-        Power::MeasVoltage();
-#endif
-    }
-
-    ModeClock::Set(ModeClock::Hi);
-
-    PCF8563::Update();
-
-    Menu::Update();
-
-    PAN3060::Update();
-
-    if (Source::GetCountReceived() || !Keyboard::ToMoreTime())
-    {
-        Display::Update();
-    }
-
-    LED::Update();
-
-    Vibrato::Update();
-
-    Beeper::Update();
-
-    Source::Update();
-
-    SaveSettings();
-
-    Power::Update();
-}
-
-
-void SaveSettings()
-{
-    static TimeMeterMS meter;
-
-    if (meter.ElapsedTime() > 5000)
-    {
-        meter.Reset();
-
-        gset.Save();
+        Device::Update();
     }
 }

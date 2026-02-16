@@ -7,17 +7,18 @@
 #include "GUI/Controls/PainterLED.h"
 #include "GUI/Controls/PainterMelody.h"
 #include "GUI/Controls/PainterVibrator.h"
+#include "Device.h"
 
 
 void Application::Init()
 {
-//    Device::Init();
+    Device::Init();
 }
 
 
 void Application::Update()
 {
-//    Device::Update();
+    Device::Update();
 
 //    CMT2210AW::CallbackOnBit();
 
