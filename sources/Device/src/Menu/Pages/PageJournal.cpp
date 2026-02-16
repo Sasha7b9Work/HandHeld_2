@@ -25,7 +25,7 @@ namespace PageJournal
         const Record *rec = Storage::Get(top_record);
         const RTCDateTime time = rec->time;
 
-        Font::SetSize(S_2_3);
+        Font::SetSize(2);
 
         int y = 0;
 
@@ -43,7 +43,7 @@ namespace PageJournal
     {
         if (Storage::GetCountRecords() == 0)
         {
-            Font::SetSize(S_2_3);
+            Font::SetSize(2);
 
             Text<>("ЖУРНАЛ").WriteInCenter(0, 20, Display::WIDTH, Color::WHITE);
             Text<>("ПУСТ").WriteInCenter(0, 50, Display::WIDTH);
@@ -85,7 +85,7 @@ namespace PageJournal
 
     void FuncDraw_Closed()
     {
-        Font::SetSize(S_2_3);
+        Font::SetSize(2);
 
         Text<>("%d ВЫЗОВОВ", Storage::GetCountRecords()).Write(10, 35, Color::WHITE);
 

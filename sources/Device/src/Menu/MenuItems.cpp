@@ -46,7 +46,7 @@ void Page::Draw() const
     }
     else
     {
-        Font::SetSize(S_2_3);
+        Font::SetSize(2);
 
         Text<> title = data->item->Title();
 
@@ -83,7 +83,7 @@ void Choice::Draw() const
     }
     else
     {
-        Font::SetSize(S_2_3);
+        Font::SetSize(2);
 
         data->item->Title().WriteInCenter(0, 15, Display::WIDTH, Color::GREEN);
 
@@ -127,7 +127,7 @@ void DateTime::Draw() const
 {
     if (data->item->IsOpened())
     {
-        Font::SetSize(S_2_3);
+        Font::SetSize(2);
 
         Text<>("УСТАНОВКА").WriteInCenter(0, 10, Display::WIDTH, Color::WHITE);
 
@@ -165,7 +165,7 @@ void DateTime::Draw() const
     }
     else
     {
-        Font::SetSize(S_2_3);
+        Font::SetSize(2);
 
         data->item->Title().WriteInCenter(0, 30, Display::WIDTH, Color::GREEN);
 
