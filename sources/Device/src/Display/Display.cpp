@@ -365,6 +365,8 @@ void Display::DrawScene(int num_part)
             }
         }
     }
+
+    Rect(Display::WIDTH - 1, Display::HEIGHT).Draw(0, 0, Color::WHITE);
 }
 
 
