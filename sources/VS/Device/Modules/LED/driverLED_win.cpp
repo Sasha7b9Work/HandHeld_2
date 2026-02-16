@@ -14,10 +14,10 @@ void LED::Driver::Init()
 }
 
 
-void LED::Driver::On()
-{
-    PainterLED::self->SetEnabled();
-}
+//void LED::Driver::On()
+//{
+//    PainterLED::self->SetEnabled();
+//}
 
 
 void LED::Driver::Off()

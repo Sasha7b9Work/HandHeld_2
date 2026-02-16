@@ -85,6 +85,8 @@ namespace HAL_ROM
 
 #endif
 
+    void Init();
+
     // Стиреть страницу от 0 до (NUM_PAGES - 1)
     void ErasePage(int);
 

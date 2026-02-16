@@ -2,7 +2,7 @@
 
 project (Device)
 
-#set(CMAKE_UNITY_BUILD OFF)
+set(CMAKE_UNITY_BUILD OFF)
 
 set(CMAKE_UNITY_BUILD_BATCH_SIZE 16)
 
@@ -15,11 +15,13 @@ include_directories(
     ../../VS/ThirdParty/wxWidgets/include
     ../../generated/ThirdParty/lib/vc_dll/mswud
     ../../common/VS_KEIL
+    ../../common/VS_WIN
+    ../../common/GD32F30x_Firmware_Library/Firmware/CMSIS/GD/GD32F30x/Include
 )
 
 link_directories(../../generated/ThirdParty/lib/vc_dll)
 
-add_definitions(-DSTM32F103xB -DWXUSINGDLL -DGUI -DDEVICE)
+add_definitions(-DGD32F30X_HD -DWXUSINGDLL -DGUI -DDEVICE -DMODEL7789)
 
 if(WIN32)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
@@ -36,6 +38,7 @@ if(WIN32)
         /wd4710
         /wd4774
         /wd4820
+        /wd4865
         /wd5026
         /wd5027
         /wd5039    # 'xxx': pointer or reference to potentially throwing function passed to extern C

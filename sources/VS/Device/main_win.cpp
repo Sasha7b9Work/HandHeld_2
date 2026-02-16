@@ -3,9 +3,7 @@
 #include "defines.h"
 #include "GUI/Application.h"
 #include "GUI/Frame.h"
-#include "Device.h"
 #include "Hardware/Timer.h"
-#include "Modules/CMT2210AW/CMT2210AW.h"
 #include "GUI/Controls/PainterLED.h"
 #include "GUI/Controls/PainterMelody.h"
 #include "GUI/Controls/PainterVibrator.h"
@@ -13,15 +11,15 @@
 
 void Application::Init()
 {
-    Device::Init();
+//    Device::Init();
 }
 
 
 void Application::Update()
 {
-    Device::Update();
+//    Device::Update();
 
-    CMT2210AW::CallbackOnBit();
+//    CMT2210AW::CallbackOnBit();
 
     PainterVibrator::self->Update();
 }

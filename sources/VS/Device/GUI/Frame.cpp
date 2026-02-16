@@ -1,8 +1,6 @@
 // 2022/04/27 11:11:56 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines_win.h"
 #include "Frame.h"
-#include "Display/Display7735.h"
-#include "Modules/ST7735/ST7735.h"
 #include "Application.h"
 #include "Menu/Menu.h"
 #include "wx/statline.h"
@@ -12,6 +10,7 @@
 #include "GUI/Controls/Painter.h"
 #include "GUI/Controls/PainterVibrator.h"
 #include "Hardware/Timer.h"
+#include "Display/Display.h"
 
 
 namespace Keyboard
@@ -33,9 +32,9 @@ static wxColour ConvertColor(Color::E e)
 {
     uint16 value = Color::colors[e];
 
-    float b = (float)BLUE_FROM_COLOR(value);
-    float g = (float)GREEN_FROM_COLOR(value);
-    float r = (float)RED_FROM_COLOR(value);
+    float b = (float)Color::GetBlue(value);
+    float g = (float)Color::GetGreen(value);
+    float r = (float)Color::GetRed(value);
 
     uint8 blue = (uint8)((b / 31.0f) * 255);
     uint8 green = (uint8)((g / 63.0f) * 255);
@@ -236,7 +235,7 @@ void Frame::OnButtonDownEvent(wxCommandEvent &event)
 
     Action action;
 
-    action.type = ActionType::Down;
+    action.type = ActionType::_Down;
 
     bool execute = false;
 
@@ -316,31 +315,31 @@ void Frame::OnCloseWindow(wxCloseEvent &event)
 }
 
 
-void ST7735::Init()
-{
-
-}
-
-
-void ST7735::WriteBuffer(int y0)
-{
-    screen->WriteBuffer(y0);
-}
+//void ST7735::Init()
+//{
+//
+//}
 
 
-void ST7735::Enable()
-{
-
-}
-
-
-void ST7735::Disable()
-{
-
-}
+//void ST7735::WriteBuffer(int y0)
+//{
+//    screen->WriteBuffer(y0);
+//}
 
 
-uint ST7735::TimeEnabled()
-{
-    return TIME_MS;
-}
+//void ST7735::Enable()
+//{
+//
+//}
+
+
+//void ST7735::Disable()
+//{
+//
+//}
+
+
+//uint ST7735::TimeEnabled()
+//{
+//    return TIME_MS;
+//}

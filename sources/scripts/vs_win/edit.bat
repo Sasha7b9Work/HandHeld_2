@@ -1,1 +1,1 @@
-start ..\..\generated\GUI\HandHels-GUI.sln
+start ..\..\generated\GUI\HandHels-GUI.slnx

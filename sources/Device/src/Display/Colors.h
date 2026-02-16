@@ -48,4 +48,19 @@ struct Color
     static uint16 Make(uint8 r, uint8 g, uint8 b);
 
     static void Init();
+
+    static uint8 GetRed(uint color)
+    {
+        return  (((color) >> 11) & 0x1f);
+    }
+
+    static uint8 GetGreen(uint color)
+    {
+        return (((color) >> 5) & 0x3f);
+    }
+
+    static uint8 GetBlue(uint color)
+    {
+        return ((color) & 0x1f);
+    }
 };

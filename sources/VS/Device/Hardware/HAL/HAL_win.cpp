@@ -12,10 +12,10 @@ void ModeClock::Set(E)
 }
 
 
-void ModeClock::LeaveDeepSleep()
-{
-
-}
+//void ModeClock::LeaveDeepSleep()
+//{
+//
+//}
 
 
 void HAL::Init()
