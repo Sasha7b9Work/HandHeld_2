@@ -176,7 +176,7 @@ void Beeper::Update()
 
 #ifdef GUI
 
-    PainterMelody::self->Update();
+//    PainterMelody::self->Update();
 
 #else
 

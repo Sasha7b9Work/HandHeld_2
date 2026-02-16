@@ -13,5 +13,5 @@ namespace HAL_ADC
 
 float HAL_ADC::GetVoltage(bool)
 {
-    return 0.0f;
+    return 5.0f;
 }

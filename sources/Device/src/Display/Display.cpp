@@ -87,11 +87,7 @@ void Display::Init()
     {
         // Читаем байт конфигурации из области загрузчика чтобы правильно работать с дисплеем
 
-#define _FLASH_ADDRESS 0x8001FFF
-
-        uint8 value = *(volatile uint8 *)_FLASH_ADDRESS;
-
-        if (value == 0x00)
+        if (HAL_ROM::ReadByte(0x8001FFF) == 0x00)
         {
             old_display = true;
         }

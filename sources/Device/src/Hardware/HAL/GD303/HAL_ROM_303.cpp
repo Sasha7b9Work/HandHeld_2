@@ -85,3 +85,11 @@ void HAL_ROM::SaveSettings(Settings *set)
 
     } while (!LoadSettings(&control_set));
 }
+
+
+uint8 HAL_ROM::ReadByte(uint address)
+{
+    uint8 value = *((volatile uint8 *)address);
+
+    return value;
+}

@@ -101,4 +101,6 @@ namespace HAL_ROM
     bool LoadSettings(Settings *);
 
     void SaveSettings(Settings *);
+
+    uint8 ReadByte(uint address);
 }

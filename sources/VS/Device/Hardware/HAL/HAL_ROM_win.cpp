@@ -63,3 +63,14 @@ void HAL_ROM::SaveSettings(Settings *)
 {
 
 }
+
+
+uint8 HAL_ROM::ReadByte(uint address)
+{
+    if (address == 0x8001FFF)
+    {
+        return 0xFF;
+    }
+
+    return 0xFF;
+}

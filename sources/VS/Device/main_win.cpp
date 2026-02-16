@@ -20,7 +20,5 @@ void Application::Update()
 {
     Device::Update();
 
-//    CMT2210AW::CallbackOnBit();
-
     PainterVibrator::self->Update();
 }

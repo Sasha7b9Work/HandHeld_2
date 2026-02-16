@@ -102,7 +102,7 @@ source_group(Modules/Beeper/Sounds FILES ${MODULES_BEEPER_SOUNDS})
 source_group(Modules/PAN3060       FILES ${MODULES_PAN3060})
 source_group(Modules/LED           FILES ${MODULES_LED})
 source_group(Modules/PCF8563       FILES ${MODULES_PCF8563})
-source_group(Modules/PMS150G       FILES ${MODUEL
+source_group(Modules/PMS150G       FILES ${MODULES_PMS150G})
 source_group(Modules/ST7735        FILES ${MODULES_ST7735})
 source_group(Menu                  FILES ${MENU})
 source_group(Menu/Pages            FILES ${MENU_PAGES})
@@ -125,6 +125,7 @@ add_executable(${PROJECT_NAME}
     ${MODULES_PAN3060}
     ${MODULES_LED}
     ${MODULES_PCF8563}
+    ${MODULES_PMS150G}
     ${MODULES_ST7735}
     ${MENU}
     ${MENU_PAGES}
