@@ -61,3 +61,9 @@ bool Keyboard::ToMoreTime()
 {
     return false;
 }
+
+
+void Keyboard::CallbackFromInterrupt(Key::E /* = Key::Count */)
+{
+
+}

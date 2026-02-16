@@ -85,3 +85,9 @@ void PCF8563::DisableAlarm()
 {
 
 }
+
+
+void RTCDateTime::Correct()
+{
+
+}

@@ -51,3 +51,15 @@ void HAL_ROM::ReadBuffer(uint address, void *buffer, int size)
         *data++ = memory[address + size];
     }
 }
+
+
+bool HAL_ROM::LoadSettings(Settings *)
+{
+    return false;
+}
+
+
+void HAL_ROM::SaveSettings(Settings *)
+{
+
+}

@@ -55,8 +55,11 @@ file(GLOB SRC                                   *.h *.cpp
                                    ../../Device/src/Device.*
                                    ../../Device/src/*.h)
 file(GLOB DISPLAY                  ../../Device/src/Display/Colors.*
-                                   ../../Device/src/Display/Display7735.*
-                                   ../../Device/src/Display/Icons.*)
+                                   ../../Device/src/Display/Display.*
+                                   ../../Device/src/Display/Icons.*
+                                   ../../Device/src/Display/MonochromeBitmap.*
+                                                    Display/*.h
+                                                    Display/*.cpp)
 file(GLOB DISPLAY_FONT             ../../Device/src/Display/Font/*.*)
 file(GLOB HARDWARE                 ../../Device/src/Hardware/Power.h
                                    ../../Device/src/Hardware/Power.*
@@ -76,7 +79,7 @@ file(GLOB MODULES_CMT2210AW        ../../Device/src/Modules/CMT2210AW/*.*
                                                     Modules/CMT2210AW/*.*)
 file(GLOB MODULES_LED              ../../Device/src/Modules/LED/LED.*
                                                     Modules/LED/*.*)
-file(GLOB MODULES_PCF8563          ../../Device/src/Modules/PCF8563/PCF8563.*
+file(GLOB MODULES_PCF8563          ../../Device/src/Modules/PCF8563/PCF8563.h
                                                     Modules/PCF8563/*.*)
 file(GLOB MODULES_ST7735           ../../Device/src/Modules/ST7735/*.h)
 file(GLOB MENU                     ../../Device/src/Menu/*.*)

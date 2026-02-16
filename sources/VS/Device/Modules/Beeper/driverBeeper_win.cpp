@@ -4,20 +4,29 @@
 #include "GUI/Frame.h"
 
 
-//void Beeper::Driver::Init()
-//{
-//    PainterMelody::Create(Frame::self, Painter::size_indicator);
-//
-//    PainterMelody::self->SetPosition({ 550, 18 });
-//}
-//
+namespace Beeper
+{
+    namespace Driver
+    {
+        void Init();
 
-//void Beeper::Driver::StartFrequency(float, uint8)
-//{
-//}
+        void StartFrequency(float frequency, uint8 vol, bool first);
+
+        void Stop();
+    }
+}
 
 
-//void Beeper::Driver::Stop()
-//{
-//    PainterMelody::self->DisableMelody();
-//}
+void Beeper::Driver::Init()
+{
+}
+
+
+void Beeper::Driver::StartFrequency(float /*frequency*/, uint8 /*vol*/, bool /*first*/)
+{
+}
+
+
+void Beeper::Driver::Stop()
+{
+}

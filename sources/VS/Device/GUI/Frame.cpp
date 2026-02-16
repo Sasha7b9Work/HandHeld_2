@@ -11,6 +11,7 @@
 #include "GUI/Controls/PainterVibrator.h"
 #include "Hardware/Timer.h"
 #include "Display/Display.h"
+#include "Modules/ST7735_89/ST7735_89.h"
 
 
 namespace Keyboard
@@ -315,31 +316,31 @@ void Frame::OnCloseWindow(wxCloseEvent &event)
 }
 
 
-//void ST7735::Init()
-//{
-//
-//}
+void ST7735_89::Init()
+{
+
+}
 
 
-//void ST7735::WriteBuffer(int y0)
-//{
-//    screen->WriteBuffer(y0);
-//}
+void ST7735_89::WriteBuffer(int num_part)
+{
+    screen->WriteBuffer(num_part);
+}
 
 
-//void ST7735::Enable()
-//{
-//
-//}
+void ST7735_89::Enable()
+{
+
+}
 
 
-//void ST7735::Disable()
-//{
-//
-//}
+void ST7735_89::Disable()
+{
+
+}
 
 
-//uint ST7735::TimeEnabled()
-//{
-//    return TIME_MS;
-//}
+uint ST7735_89::TimeEnabled()
+{
+    return TIME_MS;
+}
