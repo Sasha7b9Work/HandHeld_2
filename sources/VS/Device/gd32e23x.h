@@ -1,6 +1,6 @@
 #pragma once
 
-
+#ifndef GPIOB
 #define GPIOA             0
 #define GPIOB             1
 #define GPIO_MODE_INPUT   0
@@ -22,3 +22,4 @@ void syscfg_exti_line_config(uint, uint);
 void exti_init(uint, uint, uint);
 void exti_interrupt_flag_clear(uint);
 void nvic_irq_disable(uint);
+#endif

@@ -11,7 +11,10 @@
 
 #ifdef GUI
     #define WIN32_LEAN_AND_MEAN
-    #include "wx/wx.h"
+    #pragma warning(push)
+    #pragma warning(disable:4459)
+        #include "wx/wx.h"
+    #pragma warning(pop)
 #endif
 
 
@@ -57,8 +60,8 @@ typedef unsigned long long uint64;
     #define __asm(x)
 #endif
 
-#define _GET_BIT(value, bit) ((value >> bit) & 0x01)
-#define _SET_BIT(value, bit) (value |= (1 << bit))
+#define _GET_BIT(value, bit) (((value) >> (bit)) & 0x01)
+#define _SET_BIT(value, bit) (value |= (1 << (bit)))
 
 #define ENABLED_RU "Вкл"
 #define DISABLED_RU "Откл"
