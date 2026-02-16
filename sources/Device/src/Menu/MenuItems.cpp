@@ -117,7 +117,7 @@ void DateTime::DrawField(int x, int y, Text<> &text, bool selected) const
         Rect(width + 2, height + 2).Draw(x - 1, y - 1, Color::WHITE);
     }
 
-    Font::SetSize(S_4_5);
+    Font::SetSize(4);
     text.Write(x + 3, (y + 3), selected ? Color::BLACK : Color::WHITE);
     Font::SetSize(1);
 }

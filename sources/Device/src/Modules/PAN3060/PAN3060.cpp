@@ -63,7 +63,7 @@ void PAN3060::InitContinuosMode()
 
 #ifdef MODEL7789
 
-    #pragma message("Function not defines")
+    #pragma message("Function syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN8) not defines")
 
 #endif
 }

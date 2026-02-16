@@ -64,7 +64,7 @@ namespace Display
 
     static void BeginScene(int num_part);
     static void DrawScene(int num_part);
-    static void DrawFonts(int num_part);
+    void DrawFonts(int num_part);
     static void EndScene(int num_parts);
 
     static bool old_display = false;    // ≈сли true, то используетс€ старый тип диспле€ - без синей полосы с левого кра€ экрана.
@@ -349,7 +349,7 @@ void Display::DrawScene(int num_part)
         }
         else
         {
-            Font::SetSize(S_5_6);
+            Font::SetSize(5);
 
             PCF8563::GetDateTime().DrawTime(30, 23, Color::WHITE);
 
