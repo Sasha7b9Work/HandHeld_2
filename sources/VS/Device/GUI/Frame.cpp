@@ -143,9 +143,9 @@ Frame::Frame(const wxString &title)
     int x3 = 380;
 #endif
 #ifdef MODEL7789
-    int x1 = 660;
-    int x2 = 700;
-    int x3 = 740;
+    int x1 = 650;
+    int x2 = 690;
+    int x3 = 730;
     const int dy = 10;
 #endif
     int y1 = 15 + dy;
@@ -169,18 +169,28 @@ Frame::Frame(const wxString &title)
         "Датчик"
     };
 
+#ifdef MODEL7735
+    x = 440;
+#endif
+#ifdef MODEL7789
+    x = 790;
+#endif
+
     for (int i = 0; i < 5; i++)
     {
-        CreateButton(ID_BUTTON_SIGNAL_1 + i, names[i], { 440, 5 + i * 30 }, 90);
+        CreateButton(ID_BUTTON_SIGNAL_1 + i, names[i], { x, 5 + i * 30 }, 90);
     }
 
     Bind(wxEVT_CLOSE_WINDOW, &Frame::OnCloseWindow, this);
 
-    x = 550;
-
     wxSize size_label(50, 20);
 
+#ifdef MODEL7735
     const int x_label = 540;
+#endif
+#ifdef MODEL7789
+    const int x_label = 890;
+#endif
 
     new wxStaticText(this, wxID_ANY, _("Звук"), { x_label, 0 }, size_label, wxALIGN_CENTRE_HORIZONTAL);
 
@@ -189,6 +199,13 @@ Frame::Frame(const wxString &title)
     new wxStaticText(this, wxID_ANY, _("Вибро"), { x_label, 100 }, size_label, wxALIGN_CENTRE_HORIZONTAL);
 
     PainterVibrator::Create(this, Painter::size_indicator);
+
+#ifdef MODEL7735
+    x = 550;
+#endif
+#ifdef MODEL7789
+    x = 900;
+#endif
 
     PainterVibrator::self->SetPosition({ x, 120 });
 

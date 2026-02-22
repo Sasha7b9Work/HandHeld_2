@@ -33,7 +33,7 @@ namespace Display
         {
             if (_current_part < 0 || _current_part >= NUMBER_PARTS_HEIGHT)
             {
-                return NUMBER_PARTS_HEIGHT - 1;
+                _current_part = 0;;
             }
 
             return _current_part;
