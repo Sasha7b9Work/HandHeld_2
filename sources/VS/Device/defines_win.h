@@ -16,4 +16,8 @@ enum
     ID_BUTTON_MENU
 };
 
+#ifdef MODEL7735
 static const int IMAGE_SCALE = 2;
+#else
+static const int IMAGE_SCALE = 1;
+#endif
