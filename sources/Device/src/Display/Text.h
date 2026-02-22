@@ -11,7 +11,8 @@
 struct Char
 {
     Char(char s) : symbol((uint8)s) { }
-    int Write(int x, int y, const Color &color = Color::NUMBER) const;
+    int Write(int x, int y) const;
+    int Write(int x, int y, const Color &) const;
 private:
     uint8 symbol;
 };

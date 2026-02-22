@@ -311,6 +311,12 @@ int Char::Write(int x, int y, const Color &color) const
 {
     color.SetAsCurrent();
 
+    return Write(x, y);
+}
+
+
+int Char::Write(int x, int y) const
+{
 #ifdef MODEL7735
     if (Font::type == TypeFont::_5 || Font::type == TypeFont::_7)
     {
