@@ -27,7 +27,17 @@ namespace Display
 
         static uint crc[NUMBER_PARTS_HEIGHT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        static int current_part = 0;                            // Эту часть сейчас отрисовываем
+        static int _current_part = 0;                            // Эту часть сейчас отрисовываем
+
+        int CurrentPart()
+        {
+            if (_current_part < 0 || _current_part >= NUMBER_PARTS_HEIGHT)
+            {
+                return NUMBER_PARTS_HEIGHT - 1;
+            }
+
+            return _current_part;
+        }
 
         static uint CalcualteCRC()
         {
@@ -207,7 +217,7 @@ void Display::DrawLowVoltage()
 
 void Display::BeginScene(int num_part)
 {
-    Buffer::current_part = num_part;
+    Buffer::_current_part = num_part;
 
     Color color = Color::BLACK;
 
@@ -235,7 +245,7 @@ void Display::EndScene(int num_part)
     {
         ST7735_89::Enable();
 
-        Buffer::crc[Buffer::current_part] = crc;
+        Buffer::crc[Buffer::CurrentPart()] = crc;
 
         ST7735_89::WriteBuffer(num_part);
     }
@@ -409,7 +419,7 @@ void HLine::Draw(int x, int y, const Color &color) const
         return;
     }
 
-    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
+    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::CurrentPart();
 
     if (y < 0)
     {
@@ -444,7 +454,7 @@ void Pixel::Set(int x, int y, const Color &color) const
         return;
     }
 
-    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
+    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::CurrentPart();
 
     if (y < 0)
     {
