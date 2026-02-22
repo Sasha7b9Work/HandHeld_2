@@ -146,8 +146,8 @@ Frame::Frame(const wxString &title)
     int x1 = 660;
     int x2 = 700;
     int x3 = 740;
-#endif
     const int dy = 10;
+#endif
     int y1 = 15 + dy;
     int y2 = 50 + dy;
     int y3 = 85 + dy;

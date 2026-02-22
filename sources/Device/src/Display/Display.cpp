@@ -47,19 +47,6 @@ namespace Display
         {
             return buffer + y * Display::WIDTH;
         }
-
-        uint8 *GetShiftedLine(int y)
-        {
-            static uint8 buffer_line[Display::WIDTH];
-
-            int null_points = 80;
-
-            std::memset(buffer_line, color_last_filled.value, (size_t)null_points);
-
-            std::memcpy(buffer_line + null_points, GetLine(y), (uint)(Display::WIDTH - null_points));
-
-            return buffer_line;
-        }
     }
 
     static void BeginScene(int num_part);
@@ -243,7 +230,7 @@ void Display::EndScene(int num_part)
     uint crc = Buffer::CalcualteCRC();
 
 #ifndef MODEL7789
-    if (crc != Buffer::crc[Buffer::current_part])
+    if (crc != Buffer::crc[Buffer::_current_part])
 #endif
     {
         ST7735_89::Enable();
