@@ -12,6 +12,12 @@ void ModeClock::Set(E)
 }
 
 
+void ModeClock::LeaveSleepMode()
+{
+
+}
+
+
 //void ModeClock::LeaveDeepSleep()
 //{
 //

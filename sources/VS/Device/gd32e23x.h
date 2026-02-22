@@ -3,10 +3,13 @@
 #ifndef GPIOB
 #define GPIOA             0
 #define GPIOB             1
+#define GPIOC             2
 #define GPIO_MODE_INPUT   0
 #define GPIO_PUPD_PULLUP  0
 #define GPIO_PUPD_NONE    0
+#define GPIO_PIN_1        0
 #define GPIO_PIN_2        0
+#define GPIO_PIN_3        0
 #define GPIO_PIN_13       0
 #define EXTI4_15_IRQn     0
 #define EXTI_SOURCE_GPIOB 0

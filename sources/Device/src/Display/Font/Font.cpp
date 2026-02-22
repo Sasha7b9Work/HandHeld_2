@@ -2,8 +2,11 @@
 #include "defines.h"
 #include "Display/Font/Font.h"
 #include "Display/Display.h"
-#include "Display/Font/fontGOSTB28B.inc"
+//#include "Display/Font/fontGOSTB28B.inc"
 #include "Display/Font/fontGOSTAU16BOLD.inc"
+//#include "Display/Font/fontConsolas72.inc"
+//#include "Display/Font/fontConsolas48.inc"
+#include "Display/Font/fontGostB48B.inc"
 #include "Display/Text.h"
 
 
@@ -212,7 +215,7 @@ void Font::SetType(TypeFont::E _type)
     }
     else if (_type == TypeFont::GOSTB28B)
     {
-        font = fontGOSTB28B;
+        font = fontGostB48B;
     }
 #endif
 }
