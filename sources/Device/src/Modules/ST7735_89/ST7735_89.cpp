@@ -431,8 +431,9 @@ void ST7735_89::SetWindow(unsigned char x0, unsigned short x1, unsigned int y0, 
 void ST7735_89::WriteBuffer(int num_part)
 {
     int y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * num_part;
-
+    
 #ifdef MODEL7735
+    
     SetWindow(0, Display::WIDTH - 1, (uint)y0, (uint)(y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT - 1));
 
     pinDC_RS.ToHi();
@@ -470,11 +471,11 @@ void ST7735_89::WriteBuffer(int num_part)
 
 #ifdef MODEL7789
 
-    y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * num_part;
-
     SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
 
     pinDC_RS.ToHi();
+    
+    BitSet16 bs;
 
     for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
     {
@@ -482,14 +483,14 @@ void ST7735_89::WriteBuffer(int num_part)
 
         for (int i = 0; i < Display::WIDTH; i++)
         {
-            uint16 word = Color::colors[*points++];
-
-            SPI_DATA(SPI0) = (uint)(word >> 8);
+            bs.word = Color::colors[*points++];
+           
+            SPI_DATA(SPI0) = (uint)(bs.b[1]);
             __asm("nop");
             __asm("nop");
             __asm("nop");
             __asm("nop");
-            SPI_DATA(SPI0) = (uint)((uint8)word);
+            SPI_DATA(SPI0) = (uint)(bs.b[0]);
         }
     }
 

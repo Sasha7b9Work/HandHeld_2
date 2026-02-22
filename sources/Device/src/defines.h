@@ -45,6 +45,13 @@ typedef unsigned char  uchar;
 typedef unsigned long long uint64;
 
 
+union BitSet16
+{
+    uint8  b[2];
+    uint16 word;
+};
+
+
 #define _bitset(bits)                               \
   ((uint8)(                                         \
   (((uint8)((uint)bits / 01)        % 010) << 0) |  \
