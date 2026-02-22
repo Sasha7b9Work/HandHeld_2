@@ -50,9 +50,9 @@ namespace Display
         }
     }
 
-    static void BeginScene(int num_part);
-    static void DrawScene(int num_part);
-    static void EndScene(int num_parts);
+    static void BeginScene();
+    static void DrawScene();
+    static void EndScene();
 
     static bool old_display = false;    // Если true, то используется старый тип дисплея - без синей полосы с левого края экрана.
                                         // Это значение зависит от байта в загрузчике
@@ -82,10 +82,10 @@ void Display::Init()
 
     Color::Init();
 
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    for (Buffer::current_part = 0; Buffer::current_part < NUMBER_PARTS_HEIGHT; Buffer::current_part++)
     {
-        BeginScene(i);
-        EndScene(i);
+        BeginScene();
+        EndScene();
     }
 
     ST7735_89::Disable();
@@ -137,11 +137,11 @@ void Display::Update()
     {
         FPS::BeginFrame();
 
-        for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+        for (Buffer::current_part = 0; Buffer::current_part < NUMBER_PARTS_HEIGHT; Buffer::current_part++)
         {
-            BeginScene(i);
-            DrawScene(i);
-            EndScene(i);
+            BeginScene();
+            DrawScene();
+            EndScene();
         }
 
         FPS::EndFrame();
@@ -156,39 +156,39 @@ void Display::Update()
 
 void Display::DrawPowerOff()
 {
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    for (Buffer::current_part = 0; Buffer::current_part < NUMBER_PARTS_HEIGHT; Buffer::current_part++)
     {
-        BeginScene(i);
+        BeginScene();
 
         Font::SetSize(2);
 
         Text<>("ВЫКЛЮЧЕНИЕ").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
 
-        EndScene(i);
+        EndScene();
     }
 }
 
 
 void Display::DrawPowerOn()
 {
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    for (Buffer::current_part = 0; Buffer::current_part < NUMBER_PARTS_HEIGHT; Buffer::current_part++)
     {
-        BeginScene(i);
+        BeginScene();
 
         Font::SetSize(2);
 
         Text<>("ВКЛЮЧЕНИЕ").WriteInCenter(0, 30, Display::WIDTH, Color::WHITE);
 
-        EndScene(i);
+        EndScene();
     }
 }
 
 
 void Display::DrawLowVoltage()
 {
-    for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
+    for (Buffer::current_part = 0; Buffer::current_part < NUMBER_PARTS_HEIGHT; Buffer::current_part++)
     {
-        BeginScene(i);
+        BeginScene();
 
         Font::SetSize(2);
 
@@ -196,15 +196,13 @@ void Display::DrawLowVoltage()
 
         Text<>("НАПРЯЖЕНИЕ").WriteInCenter(0, 50, Display::WIDTH);
 
-        EndScene(i);
+        EndScene();
     }
 }
 
 
-void Display::BeginScene(int num_part)
+void Display::BeginScene()
 {
-    Buffer::current_part = num_part;
-
     Color color = Color::BLACK;
 
     if (Source::GetCountReceived())
@@ -221,7 +219,7 @@ void Display::BeginScene(int num_part)
 }
 
 
-void Display::EndScene(int num_part)
+void Display::EndScene()
 {
     uint crc = Buffer::CalcualteCRC();
 
@@ -233,12 +231,12 @@ void Display::EndScene(int num_part)
 
         Buffer::crc[Buffer::current_part] = crc;
 
-        ST7735_89::WriteBuffer(num_part);
+        ST7735_89::WriteBuffer(Buffer::current_part);
     }
 }
 
 
-void Display::DrawScene(int num_part)
+void Display::DrawScene()
 {
     if (PCF8563::IsAlarmed())
     {
@@ -318,7 +316,7 @@ void Display::DrawScene(int num_part)
 
             Font::SetSize(1);
 
-            if (num_part == 0)
+            if (Buffer::current_part == 0)
             {
                 Power::Draw();
             }
