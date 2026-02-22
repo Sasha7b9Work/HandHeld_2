@@ -17,6 +17,7 @@
 
 
 template int Text<64>::Write(int x, int y, const Color &color) const;
+template int Text<64>::Write(int x, int y) const;
 
 
 namespace Display
@@ -33,7 +34,7 @@ namespace Display
         {
             if (_current_part < 0 || _current_part >= NUMBER_PARTS_HEIGHT)
             {
-                _current_part = 0;;
+                _current_part = 0;
             }
 
             return _current_part;
@@ -65,7 +66,7 @@ namespace Display
     static void EndScene(int num_parts);
 
     static bool old_display = false;    // Если true, то используется старый тип дисплея - без синей полосы с левого края экрана.
-    // Это значение зависит от байта в загрузчике
+                                        // Это значение зависит от байта в загрузчике
 }
 
 
@@ -149,13 +150,17 @@ void Display::Update()
 
         for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
         {
+            Buffer::CurrentPart();
+
             BeginScene(i);
 #ifdef TEST_FONTS
             DrawFonts(i);
 #else
             DrawScene(i);
+            Buffer::CurrentPart();
 #endif
             EndScene(i);
+            Buffer::CurrentPart();
         }
 
         FPS::EndFrame();
@@ -208,7 +213,7 @@ void Display::DrawLowVoltage()
 
         Text<>("НИЗКОЕ").WriteInCenter(0, 20, Display::WIDTH, Color::RED);
 
-        Text<>("НАПРЯЖЕНИЕ").WriteInCenter(0, 50, Display::WIDTH, Color::RED);
+        Text<>("НАПРЯЖЕНИЕ").WriteInCenter(0, 50, Display::WIDTH);
 
         EndScene(i);
     }
@@ -372,8 +377,6 @@ void Display::DrawScene(int num_part)
             }
         }
     }
-
-    Rect(Display::WIDTH - 1, Display::HEIGHT).Draw(0, 0, Color::WHITE);
 }
 
 
@@ -436,6 +439,13 @@ void HLine::Draw(int x, int y, const Color &color) const
     for (int i = 0; i < width; i++)
     {
         *pixel++ = (uint8)Color::current.value;
+
+        x++;
+
+        if (x >= Display::WIDTH)
+        {
+            break;
+        }
     }
 }
 
@@ -482,10 +492,8 @@ void RTCDateTime::DrawDate(int x, int y, const Color &color) const
 }
 
 template<int capacity>
-int Text<capacity>::Write(int x, int y, const Color &color) const
+int Text<capacity>::Write(int x, int y) const
 {
-    color.SetAsCurrent();
-
     pchar pointer = text;
 
     while (*pointer)
@@ -495,4 +503,12 @@ int Text<capacity>::Write(int x, int y, const Color &color) const
     }
 
     return x;
+}
+
+
+template<int capacity>
+int Text<capacity>::Write(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+    return Write(x, y);
 }

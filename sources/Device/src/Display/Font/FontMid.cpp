@@ -1,4 +1,4 @@
-﻿/*!*****************************************************************************
+/*!*****************************************************************************
   @file		FontMid.c
   @author	VicKo
   @brief	Font Middle-size 24 (+6 down) x 15 (+1 right) pixel
@@ -888,7 +888,7 @@ uint32_t FontMid::WriteSymbol(uint8_t symbol, int x, int y)
 				uint32_t pixel = rowshift & 0x8000;
 				if (pixel != 0)
 				{
-					Pixel().Set((int)(x + i), y);
+					Pixel().Set(x + (int)i, y);
 				}
 				if ((pixel != 0) && i > width)
 				{

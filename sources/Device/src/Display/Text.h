@@ -27,19 +27,23 @@ struct Text
         std::vsprintf(text, format, args);
         va_end(args);
     }
-    int Write(int x, int y, const Color &color = Color::NUMBER) const;
-    void WriteInCenter(int x, int y, int width, const Color &color = Color::NUMBER) const
+    int Write(int x, int y) const;
+    int Write(int x, int y, const Color &) const;
+    void WriteInCenter(int x, int y, int width, const Color &color)
     {
-#ifdef MODEL7789
-
-        width /= 2;        // Иначе сообщение о вызове смещается вправо от центра
-
-#endif
+        color.SetAsCurrent();
+        WriteInCenter(x, y, width);
+    }
+    void WriteInCenter(int x, int y, int width) const
+    {
         int length = GetLength();
 
-        x += width / 2 - length / 2;
+        if (length < width)
+        {
+            x += width / 2 - length / 2;
+        }
 
-        Write(x, y + 1, color);
+        Write(x, y);
     }
     int GetLength() const
     {

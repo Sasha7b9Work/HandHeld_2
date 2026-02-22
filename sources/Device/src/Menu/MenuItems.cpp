@@ -54,7 +54,11 @@ void Page::Draw() const
 
         if (num_words == 1)
         {
+            Display::Buffer::CurrentPart();
+
             title.WriteInCenter(0, 30, Display::WIDTH, Color::GREEN);
+
+            Display::Buffer::CurrentPart();
         }
         else if(num_words == 2)
         {

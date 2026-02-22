@@ -1,4 +1,4 @@
-﻿/*!*****************************************************************************
+/*!*****************************************************************************
   @file        BigFont.c
   @author    VicKo
   @brief
@@ -808,7 +808,7 @@ uint FontBig::WriteSymbol(uint8 symbol, int x, int y, bool mapping)
         return ezspace;
     }
     uint16_t offs = BigCharOffs[symbol - ' '];                // offset in BigCharIndx
-    const uint8_t *index = (uint8_t *)&BigCharIndx + offs;    // first row index //-V2567
+    const uint8_t *index = (const uint8_t *)&BigCharIndx + offs;    // first row index //-V2567
 
     uint32_t width = 0;
     if (symbol == ' ')
@@ -862,7 +862,7 @@ uint FontBig::WriteSymbol(uint8 symbol, int x, int y, bool mapping)
                 {
                     if (mapping)
                     {
-                        Pixel().Set((int)(x + i), y);
+                        Pixel().Set(x + (int)i, y);
                     }
                 }
                 if ((pixel != 0) && i > width)

@@ -32,9 +32,9 @@ private:
 
     int width;
     int height;
-    int row_bytes;                  // количество байт в строке с учетом выравнивания
-    const uint8 *data_begin = 0;    // непосредственное начало пикселей
-    uint pixel_data_size = 0;       // размер данных пикселей в байтах
+    int row_bytes;                      // количество байт в строке с учетом выравнивания
+    const uint8 *data_begin = nullptr;  // непосредственное начало пикселей
+    uint pixel_data_size = 0;           // размер данных пикселей в байтах
 
 public:
 
@@ -54,7 +54,7 @@ public:
 
         // Копируем данные пикселей (после палитры)
         uint data_offset = file_header->bfOffBits;
-        pixel_data_size = (uint)row_bytes * height;
+        pixel_data_size = (uint)row_bytes * (uint)height;
 
         data_begin = bmp_data + data_offset;
     }

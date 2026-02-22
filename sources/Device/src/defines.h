@@ -30,6 +30,7 @@
     #pragma clang diagnostic ignored "-Wnon-virtual-dtor"
     #pragma clang diagnostic ignored "-Wundefined-func-template"
     #pragma clang diagnostic ignored "-Wdeprecated-register"
+    #pragma clang diagnostic ignored "-Wmissing-prototypes"
 #endif
 
 
