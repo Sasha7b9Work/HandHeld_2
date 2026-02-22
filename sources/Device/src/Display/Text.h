@@ -30,8 +30,8 @@ struct Text
     }
     int Write(int x, int y) const;
     int Write(int x, int y, const Color &) const;
-    void WriteInCenter(int x, int y, int width, const Color &) const;
     void WriteInCenter(int x, int y, int width) const;
+    void WriteInCenter(int x, int y, int width, const Color &) const;
     int GetLength() const;
     char *c_str()
     {

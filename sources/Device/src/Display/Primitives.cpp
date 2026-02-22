@@ -22,10 +22,8 @@ namespace Display
 }
 
 
-void Pixel::Set(int x, int y, const Color &color) const
+void Pixel::Set(int x, int y) const
 {
-    color.SetAsCurrent();
-
     if (x < 0)
     {
         return;
@@ -52,10 +50,16 @@ void Pixel::Set(int x, int y, const Color &color) const
 }
 
 
-void HLine::Draw(int x, int y, const Color &color) const
+void Pixel::Set(int x, int y, const Color &color) const
 {
     color.SetAsCurrent();
 
+    Set(x, y);
+}
+
+
+void HLine::Draw(int x, int y) const
+{
     if (x >= Display::WIDTH)
     {
         return;
@@ -89,10 +93,8 @@ void HLine::Draw(int x, int y, const Color &color) const
 }
 
 
-void VLine::Draw(int x, int y, const Color &color) const
+void VLine::Draw(int x, int y) const
 {
-    color.SetAsCurrent();
-
     for (int i = 0; i < height; i++)
     {
         Pixel().Set(x, y++);
@@ -111,14 +113,20 @@ void Rect::Draw(int x, int y, const Color &color) const
 }
 
 
-void Rect::Fill(int x0, int y0, const Color &color) const
+void Rect::Fill(int x0, int y0) const
 {
-    color.SetAsCurrent();
-
     for (int y = y0; y < y0 + height; y++)
     {
         HLine(width).Draw(x0, y);
     }
+}
+
+
+void Rect::Fill(int x0, int y0, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    Fill(x0, y0);
 }
 
 
