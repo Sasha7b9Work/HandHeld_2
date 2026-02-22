@@ -46,9 +46,6 @@ namespace Display
 
         // Возвращает указатель на строку
         uint8 *GetLine(int y);
-
-        // Отрисовываемая в данный момент часть дисплея - от 0 до NUMBER_PARTS_HEIGHT
-        int CurrentPart();
     }
 }
 

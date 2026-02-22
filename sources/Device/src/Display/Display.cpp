@@ -28,17 +28,7 @@ namespace Display
 
         static uint crc[NUMBER_PARTS_HEIGHT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        static int _current_part = 0;                            // Ёту часть сейчас отрисовываем
-
-        int CurrentPart()
-        {
-            if (_current_part < 0 || _current_part >= NUMBER_PARTS_HEIGHT)
-            {
-                _current_part = 0;
-            }
-
-            return _current_part;
-        }
+        static int current_part = 0;                            // Ёту часть сейчас отрисовываем
 
         static uint CalcualteCRC()
         {
@@ -62,7 +52,6 @@ namespace Display
 
     static void BeginScene(int num_part);
     static void DrawScene(int num_part);
-    void DrawFonts(int num_part);
     static void EndScene(int num_parts);
 
     static bool old_display = false;    // ≈сли true, то используетс€ старый тип диспле€ - без синей полосы с левого кра€ экрана.
@@ -150,17 +139,9 @@ void Display::Update()
 
         for (int i = 0; i < NUMBER_PARTS_HEIGHT; i++)
         {
-            Buffer::CurrentPart();
-
             BeginScene(i);
-#ifdef TEST_FONTS
-            DrawFonts(i);
-#else
             DrawScene(i);
-            Buffer::CurrentPart();
-#endif
             EndScene(i);
-            Buffer::CurrentPart();
         }
 
         FPS::EndFrame();
@@ -222,7 +203,7 @@ void Display::DrawLowVoltage()
 
 void Display::BeginScene(int num_part)
 {
-    Buffer::_current_part = num_part;
+    Buffer::current_part = num_part;
 
     Color color = Color::BLACK;
 
@@ -245,49 +226,15 @@ void Display::EndScene(int num_part)
     uint crc = Buffer::CalcualteCRC();
 
 #ifndef MODEL7789
-    if (crc != Buffer::crc[Buffer::_current_part])
+    if (crc != Buffer::crc[Buffer::current_part])
 #endif
     {
         ST7735_89::Enable();
 
-        Buffer::crc[Buffer::CurrentPart()] = crc;
+        Buffer::crc[Buffer::current_part] = crc;
 
         ST7735_89::WriteBuffer(num_part);
     }
-}
-
-
-void Display::DrawFonts(int /*num_part*/)
-{
-    Color::WHITE.SetAsCurrent();
-
-#ifdef MODEL7789
-
-    Font::SetSize(1);
-
-    int y = 1;
-
-    Font::SetType(TypeFont::GOSTAU16BOLD);
-    Text<>("Ѕ”ƒ»Ћ№Ќ» ").Write(1, y);
-
-    y += 25;
-
-    Font::SetType(TypeFont::GOSTB28B);
-    Text<>("Ѕ”ƒ»Ћ№Ќ» ").Write(1, y);
-
-    Font::SetSize(2);
-
-    y += 40;
-
-    Font::SetType(TypeFont::GOSTAU16BOLD);
-    Text<>("Ѕ”ƒ»Ћ№Ќ» ").Write(1, y);
-
-    y += 40;
-
-    Font::SetType(TypeFont::GOSTB28B);
-    Text<>("Ѕ”ƒ»Ћ№Ќ» ").Write(1, y);
-
-#endif
 }
 
 
@@ -422,7 +369,7 @@ void HLine::Draw(int x, int y, const Color &color) const
         return;
     }
 
-    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::CurrentPart();
+    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
 
     if (y < 0)
     {
@@ -464,7 +411,7 @@ void Pixel::Set(int x, int y, const Color &color) const
         return;
     }
 
-    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::CurrentPart();
+    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
 
     if (y < 0)
     {
