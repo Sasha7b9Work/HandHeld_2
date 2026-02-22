@@ -10,7 +10,14 @@ void LED::Driver::Init()
 {
     PainterLED::Create(Frame::self, Painter::size_indicator);
 
-    PainterLED::self->SetPosition({ 550, 68 });
+#ifdef MODEL7735
+    const int x = 550;
+#endif
+#ifdef MODEL7789
+    const int x = 900;
+#endif
+
+    PainterLED::self->SetPosition({ x, 68 });
 }
 
 
