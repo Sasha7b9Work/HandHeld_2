@@ -344,15 +344,34 @@ int Char::Write(int x, int y) const
         int height = Font::GetHeight();
         int width = Font::GetWidth(symbol);
 
-        for (int row = 0; row < height; row++)
+        if (Font::size == 1)
         {
-            if (Font::RowNotEmpty(symbol, row))
+            for (int row = 0; row < height; row++)
             {
-                for (int col = 0; col < width; col++)
+                if (Font::RowNotEmpty(symbol, row))
                 {
-                    if (Font::BitIsExist(symbol, row, col))
+                    for (int col = 0; col < width; col++)
                     {
-                        Rect(Font::size, Font::size).Fill(x + col * Font::size, y + row * Font::size);
+                        if (Font::BitIsExist(symbol, row, col))
+                        {
+                            Pixel().Set(x + col, y + row);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int row = 0; row < height; row++)
+            {
+                if (Font::RowNotEmpty(symbol, row))
+                {
+                    for (int col = 0; col < width; col++)
+                    {
+                        if (Font::BitIsExist(symbol, row, col))
+                        {
+                            Rect(Font::size, Font::size).Fill(x + col * Font::size, y + row * Font::size);
+                        }
                     }
                 }
             }
