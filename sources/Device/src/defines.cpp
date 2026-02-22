@@ -1,5 +1,5 @@
 // 2024/11/11 10:49:47 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 
-#define VERSION_BUILD 546
+#define VERSION_BUILD 547
 
-#define DATE_BUILD "2026-02-22 16:39:02"
+#define DATE_BUILD "2026-02-22 16:42:48"
