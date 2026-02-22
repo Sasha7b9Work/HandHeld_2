@@ -136,11 +136,18 @@ Frame::Frame(const wxString &title)
 
     SetPosition({ x, y });
 
+#ifdef MODEL7735
     const int dy = 10;
-
     int x1 = 330;
     int x2 = 355;
     int x3 = 380;
+#endif
+#ifdef MODEL7789
+    int x1 = 660;
+    int x2 = 700;
+    int x3 = 740;
+#endif
+    const int dy = 10;
     int y1 = 15 + dy;
     int y2 = 50 + dy;
     int y3 = 85 + dy;
