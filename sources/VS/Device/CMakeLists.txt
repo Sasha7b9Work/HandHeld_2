@@ -2,7 +2,7 @@
 
 project (Device)
 
-#set(CMAKE_UNITY_BUILD OFF)
+set(CMAKE_UNITY_BUILD OFF)
 
 set(CMAKE_UNITY_BUILD_BATCH_SIZE 16)
 
@@ -57,7 +57,9 @@ file(GLOB SRC                                   *.h *.cpp
 file(GLOB DISPLAY                  ../../Device/src/Display/Colors.*
                                    ../../Device/src/Display/Display.*
                                    ../../Device/src/Display/Icons.*
+                                   ../../Device/src/Display/Primitives.*
                                    ../../Device/src/Display/MonochromeBitmap.*
+                                   ../../Device/src/Display/Text.*
                                                     Display/*.h
                                                     Display/*.cpp)
 file(GLOB DISPLAY_FONT             ../../Device/src/Display/Font/*.*)

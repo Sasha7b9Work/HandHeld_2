@@ -20,6 +20,7 @@
 #include <cstring>
 #include "Display/Font/FontBig.h"
 #include "Display/Display.h"
+#include "Display/Primitives.h"
 
 /*!*****************************************************************************
   @brief    Character rows array (32-bit wide)

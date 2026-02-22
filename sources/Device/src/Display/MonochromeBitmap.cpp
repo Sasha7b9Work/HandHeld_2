@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "Display/MonochromeBitmap.h"
 #include "Display/Display.h"
+#include "Display/Primitives.h"
 
 
 void MonochromeBitmap::Draw(int x, int y, bool inverse)

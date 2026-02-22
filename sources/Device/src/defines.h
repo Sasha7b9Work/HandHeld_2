@@ -31,6 +31,7 @@
     #pragma clang diagnostic ignored "-Wundefined-func-template"
     #pragma clang diagnostic ignored "-Wdeprecated-register"
     #pragma clang diagnostic ignored "-Wmissing-prototypes"
+    #pragma clang diagnostic ignored "-Wmissing-variable-declarations"
 #endif
 
 

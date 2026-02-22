@@ -7,6 +7,7 @@
 #include "Settings/Settings.h"
 #include "Utils/StringUtils.h"
 #include "Display/Display.h"
+#include "Display/Primitives.h"
 
 
 void Item::Draw() const

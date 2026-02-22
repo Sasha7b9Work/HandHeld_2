@@ -14,21 +14,18 @@
 #include "Hardware/Timer.h"
 #include "Display/Text.h"
 #include "Utils/FPS.h"
-
-
-template int Text<64>::Write(int x, int y, const Color &color) const;
-template int Text<64>::Write(int x, int y) const;
+#include "Display/Primitives.h"
 
 
 namespace Display
 {
     namespace Buffer
     {
-        static uint8 buffer[SIZE];
+        uint8 buffer[SIZE] = { 0 };
 
         static uint crc[NUMBER_PARTS_HEIGHT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        static int current_part = 0;                            // Эту часть сейчас отрисовываем
+        int current_part = 0;                                   // Эту часть сейчас отрисовываем
 
         static uint CalcualteCRC()
         {
@@ -135,14 +132,30 @@ void Display::Update()
 
     if (PCF8563::IsAlarmed() || Source::GetCountReceived() || !Keyboard::ToMoreTime())
     {
+        TimeMeterMS timer;
+
+        uint time_begin = 0;
+        uint time_draw = 0;
+        uint time_end = 0;
+
         FPS::BeginFrame();
 
         for (Buffer::current_part = 0; Buffer::current_part < NUMBER_PARTS_HEIGHT; Buffer::current_part++)
         {
+            timer.Reset();
             BeginScene();
+            time_begin += timer.ElapsedTime();
+            timer.Reset();
             DrawScene();
+            time_draw += timer.ElapsedTime();
+            timer.Reset();
             EndScene();
+            time_end += timer.ElapsedTime();
         }
+        
+        uint time_full = time_begin + time_draw + time_end;
+        
+        time_full = time_full;
 
         FPS::EndFrame();
     }
@@ -322,138 +335,4 @@ void Display::DrawScene()
             }
         }
     }
-}
-
-
-void Rect::Fill(int x0, int y0, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    for (int y = y0; y < y0 + height; y++)
-    {
-        HLine(width).Draw(x0, y);
-    }
-}
-
-
-void Rect::Draw(int x, int y, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    HLine(width).Draw(x, y);
-    HLine(width).Draw(x, y + height - 1);
-    VLine(height).Draw(x, y);
-    VLine(height).Draw(x + width - 1, y);
-}
-
-
-void VLine::Draw(int x, int y, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    for (int i = 0; i < height; i++)
-    {
-        Pixel().Set(x, y++);
-    }
-}
-
-
-void HLine::Draw(int x, int y, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    if (x >= Display::WIDTH)
-    {
-        return;
-    }
-
-    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
-
-    if (y < 0)
-    {
-        return;
-    }
-
-    if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
-    {
-        return;
-    }
-
-    uint8 *pixel = Display::Buffer::buffer + y * Display::WIDTH + x;
-
-    for (int i = 0; i < width; i++)
-    {
-        *pixel++ = (uint8)Color::current.value;
-
-        x++;
-
-        if (x >= Display::WIDTH)
-        {
-            break;
-        }
-    }
-}
-
-
-void Pixel::Set(int x, int y, const Color &color) const
-{
-    color.SetAsCurrent();
-
-    if (x < 0)
-    {
-        return;
-    }
-
-    if (x >= Display::WIDTH)
-    {
-        return;
-    }
-
-    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
-
-    if (y < 0)
-    {
-        return;
-    }
-
-    if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
-    {
-        return;
-    }
-
-    Display::Buffer::buffer[y * Display::WIDTH + x] = (uint8)Color::current.value;
-}
-
-
-void RTCDateTime::DrawTime(int x, int y, const Color &color) const
-{
-    Text<>("%02d:%02d", Hour, Minute).Write(x, y, color);
-}
-
-
-void RTCDateTime::DrawDate(int x, int y, const Color &color) const
-{
-    Text<>("%02d/%02d/%02d", Day, Month, Year).Write(x, y, color);
-}
-
-template<int capacity>
-int Text<capacity>::Write(int x, int y) const
-{
-    pchar pointer = text;
-
-    while (*pointer)
-    {
-        x = Char(*pointer++).Write(x, y);
-        x += Font::GetSize(); //-V1026
-    }
-
-    return x;
-}
-
-
-template<int capacity>
-int Text<capacity>::Write(int x, int y, const Color &color) const
-{
-    color.SetAsCurrent();
-    return Write(x, y);
 }

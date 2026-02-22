@@ -34,7 +34,7 @@
 #include "FontMid.h"
 #include "Display/Font/FontMid.h"
 #include "Display/Display.h"
-
+#include "Display/Primitives.h"
 
 
 static const uint16_t	FontMidRow[] = {

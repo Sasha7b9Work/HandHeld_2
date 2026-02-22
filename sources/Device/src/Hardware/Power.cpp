@@ -9,6 +9,7 @@
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Display/MonochromeBitmap.h"
 #include "Display/Pictures/1.bmp.inc"
+#include "Display/Primitives.h"
 #include "system.h"
 
 

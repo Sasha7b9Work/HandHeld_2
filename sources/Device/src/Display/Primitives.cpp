@@ -1,0 +1,154 @@
+// 2026/02/22 17:18:22 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+#include "defines.h"
+#include "Display/Primitives.h"
+#include "Display/Display.h"
+#include "Display/Text.h"
+#include "Modules/PCF8563/PCF8563.h"
+
+
+template int Text<64>::Write(int x, int y, const Color &color) const;
+template int Text<64>::Write(int x, int y) const;
+
+
+namespace Display
+{
+    namespace Buffer
+    {
+        extern int current_part;
+        extern uint8 buffer[SIZE];
+    }
+}
+
+
+void Pixel::Set(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    if (x < 0)
+    {
+        return;
+    }
+
+    if (x >= Display::WIDTH)
+    {
+        return;
+    }
+
+    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
+
+    if (y < 0)
+    {
+        return;
+    }
+
+    if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
+    {
+        return;
+    }
+
+    Display::Buffer::buffer[y * Display::WIDTH + x] = (uint8)Color::current.value;
+}
+
+
+void HLine::Draw(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    if (x >= Display::WIDTH)
+    {
+        return;
+    }
+
+    y -= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * Display::Buffer::current_part;
+
+    if (y < 0)
+    {
+        return;
+    }
+
+    if (y >= Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
+    {
+        return;
+    }
+
+    uint8 *pixel = Display::Buffer::buffer + y * Display::WIDTH + x;
+
+    for (int i = 0; i < width; i++)
+    {
+        *pixel++ = (uint8)Color::current.value;
+
+        x++;
+
+        if (x >= Display::WIDTH)
+        {
+            break;
+        }
+    }
+}
+
+
+void VLine::Draw(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    for (int i = 0; i < height; i++)
+    {
+        Pixel().Set(x, y++);
+    }
+}
+
+
+void Rect::Draw(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    HLine(width).Draw(x, y);
+    HLine(width).Draw(x, y + height - 1);
+    VLine(height).Draw(x, y);
+    VLine(height).Draw(x + width - 1, y);
+}
+
+
+void Rect::Fill(int x0, int y0, const Color &color) const
+{
+    color.SetAsCurrent();
+
+    for (int y = y0; y < y0 + height; y++)
+    {
+        HLine(width).Draw(x0, y);
+    }
+}
+
+
+void RTCDateTime::DrawTime(int x, int y, const Color &color) const
+{
+    Text<>("%02d:%02d", Hour, Minute).Write(x, y, color);
+}
+
+
+void RTCDateTime::DrawDate(int x, int y, const Color &color) const
+{
+    Text<>("%02d/%02d/%02d", Day, Month, Year).Write(x, y, color);
+}
+
+template<int capacity>
+int Text<capacity>::Write(int x, int y) const
+{
+    pchar pointer = text;
+
+    while (*pointer)
+    {
+        x = Char(*pointer++).Write(x, y);
+        x += Font::GetSize(); //-V1026
+    }
+
+    return x;
+}
+
+
+template<int capacity>
+int Text<capacity>::Write(int x, int y, const Color &color) const
+{
+    color.SetAsCurrent();
+    return Write(x, y);
+}

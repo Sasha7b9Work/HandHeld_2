@@ -3,6 +3,7 @@
 #include "Display/Icons.h"
 #include "Display/Text.h"
 #include "Display/Display.h"
+#include "Display/Primitives.h"
 
 
 static IconSourceDoorBell iconSourceDoorBell;

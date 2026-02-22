@@ -2,12 +2,10 @@
 #include "defines.h"
 #include "Display/Font/Font.h"
 #include "Display/Display.h"
-//#include "Display/Font/fontGOSTB28B.inc"
 #include "Display/Font/fontGOSTAU16BOLD.inc"
-//#include "Display/Font/fontConsolas72.inc"
-//#include "Display/Font/fontConsolas48.inc"
 #include "Display/Font/fontGostB48B.inc"
 #include "Display/Text.h"
+#include "Display/Primitives.h"
 
 
 #ifdef MODEL7789
