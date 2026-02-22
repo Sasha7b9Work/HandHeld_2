@@ -30,37 +30,9 @@ struct Text
     }
     int Write(int x, int y) const;
     int Write(int x, int y, const Color &) const;
-    void WriteInCenter(int x, int y, int width, const Color &color)
-    {
-        color.SetAsCurrent();
-        WriteInCenter(x, y, width);
-    }
-    void WriteInCenter(int x, int y, int width) const
-    {
-        int length = GetLength();
-
-        if (length < width)
-        {
-            x += width / 2 - length / 2;
-        }
-
-        Write(x, y);
-    }
-    int GetLength() const
-    {
-        int result = 0;
-
-        pchar pointer = text;
-
-        while (*pointer)
-        {
-            uint8 symbol = (uint8)*pointer++;
-            result += Font::GetWidth(symbol) * Font::GetSize(); //-V1026
-            result += Font::GetSize(); //-V1026
-        }
-
-        return result;
-    }
+    void WriteInCenter(int x, int y, int width, const Color &) const;
+    void WriteInCenter(int x, int y, int width) const;
+    int GetLength() const;
     char *c_str()
     {
         return &text[0];

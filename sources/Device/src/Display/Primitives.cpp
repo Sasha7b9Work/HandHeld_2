@@ -6,9 +6,11 @@
 #include "Modules/PCF8563/PCF8563.h"
 
 
-template int Text<64>::Write(int x, int y, const Color &color) const;
+template int Text<64>::Write(int x, int y, const Color &) const;
 template int Text<64>::Write(int x, int y) const;
-
+template void Text<64>::WriteInCenter(int x, int y, int width, const Color &) const;
+template void Text<64>::WriteInCenter(int x, int y, int width) const;
+template int Text<64>::GetLength() const;
 
 namespace Display
 {
@@ -151,4 +153,41 @@ int Text<capacity>::Write(int x, int y, const Color &color) const
 {
     color.SetAsCurrent();
     return Write(x, y);
+}
+
+template<int capacity>
+void Text<capacity>::WriteInCenter(int x, int y, int width, const Color &color) const
+{
+    color.SetAsCurrent();
+    WriteInCenter(x, y, width);
+}
+
+template<int capacity>
+void Text<capacity>::WriteInCenter(int x, int y, int width) const
+{
+    int length = GetLength();
+
+    if (length < width)
+    {
+        x += width / 2 - length / 2;
+    }
+
+    Write(x, y);
+}
+
+template<int capacity>
+int Text<capacity>::GetLength() const
+{
+    int result = 0;
+
+    pchar pointer = text;
+
+    while (*pointer)
+    {
+        uint8 symbol = (uint8)*pointer++;
+        result += Font::GetWidth(symbol) * Font::GetSize(); //-V1026
+        result += Font::GetSize(); //-V1026
+    }
+
+    return result;
 }
