@@ -74,25 +74,23 @@ public:
 
         int line = 0;
 
-        int y0 = Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * num_part;
+        wxImage image(Display::WIDTH, Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
 
-        for (int y = y0; y < y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
+        for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
         {
             uint8 *points = Display::Buffer::GetLine(line++);
 
-            uint8 value = *points;
-
             for (int x = 0; x < Display::WIDTH; x++)
             {
-                pen.SetColour(colors[value]);
-
-                memDC.SetPen(pen);
-
-                memDC.DrawPoint(x + 1, y);
-
-                value = *(++points);
+                uint value = points[x];
+                const wxColour &color = colors[value];
+                image.SetRGB(x, y, color.Red(), color.Green(), color.Blue());
             }
         }
+
+        wxBitmap bmp(image);
+
+        memDC.DrawBitmap(bmp, 0, Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT * num_part, false);
 
         EndScene();
     }
