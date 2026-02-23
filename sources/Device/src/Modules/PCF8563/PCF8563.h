@@ -34,9 +34,9 @@ struct RTCDateTime
     uint8  Minute;
     uint8  Second;
 
-    void DrawTime(int x, int y, const Color & = Color::Count) const;
+    void DrawTime(const Color & = Color::Count) const;
 
-    void DrawDate(int x, int y, const Color & = Color::Count) const;
+    void DrawDate(const Color & = Color::Count) const;
 
     // Скорректировать, чтбы не было противоречивых значений
     void Correct();

@@ -130,15 +130,27 @@ void Rect::Fill(int x0, int y0, const Color &color) const
 }
 
 
-void RTCDateTime::DrawTime(int x, int y, const Color &color) const
+void RTCDateTime::DrawTime(const Color &color) const
 {
-    Text<>("%02d:%02d", Hour, Minute).Write(x, y, color);
+#ifdef MODEL7735
+    const int y = 23;
+#else
+    const int y = 40;
+#endif
+
+    Text<>("%02d:%02d", Hour, Minute).WriteInCenter(0, y, Display::WIDTH, color);
 }
 
 
-void RTCDateTime::DrawDate(int x, int y, const Color &color) const
+void RTCDateTime::DrawDate(const Color &color) const
 {
-    Text<>("%02d/%02d/%02d", Day, Month, Year).Write(x, y, color);
+#ifdef MODEL7735
+    const int y = 66;
+#else
+    const int y = 130;
+#endif
+
+    Text<>("%02d/%02d/%02d", Day, Month, Year).WriteInCenter(0, y, Display::WIDTH, color);
 }
 
 template<int capacity>

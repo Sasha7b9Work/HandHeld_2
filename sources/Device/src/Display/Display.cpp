@@ -311,21 +311,11 @@ void Display::DrawScene()
         {
             Font::SetSize(5);
 
-#ifdef MODEL7735
-            PCF8563::GetDateTime().DrawTime(30, 23, Color::WHITE);
-#endif
-#ifdef MODEL7789
-            PCF8563::GetDateTime().DrawTime(100, 50, Color::WHITE);
-#endif
+            PCF8563::GetDateTime().DrawTime(Color::WHITE);
 
             Font::SetSize(2);
 
-#ifdef MODEL7735
-            PCF8563::GetDateTime().DrawDate(46, 66);
-#endif
-#ifdef MODEL7789
-            PCF8563::GetDateTime().DrawDate(100, 120);
-#endif
+            PCF8563::GetDateTime().DrawDate();
 
             Font::SetSize(1);
 
