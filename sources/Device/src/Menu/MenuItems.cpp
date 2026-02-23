@@ -55,15 +55,33 @@ void Page::Draw() const
 
         if (num_words == 1)
         {
-            title.WriteInCenter(0, 30, Display::WIDTH, Color::GREEN);
+            title.WriteInCenter(0,
+#ifdef MODEL7735
+                30
+#else
+                70
+#endif
+                , Display::WIDTH, Color::GREEN);
         }
         else if(num_words == 2)
         {
             char buffer[32];
 
-            Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, 15, Display::WIDTH, Color::GREEN);
+            Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0,
+#ifdef MODEL7735
+                15
+#else
+                30
+#endif
+                , Display::WIDTH, Color::GREEN);
 
-            Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, 45, Display::WIDTH);
+            Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0,
+#ifdef MODEL7735
+                45
+#else
+                90
+#endif
+                , Display::WIDTH);
         }
 
         Font::SetSize(1);
@@ -86,7 +104,13 @@ void Choice::Draw() const
     {
         Font::SetSize(2);
 
-        data->item->Title().WriteInCenter(0, 15, Display::WIDTH, Color::GREEN);
+        data->item->Title().WriteInCenter(0,
+#ifdef MODEL7735
+            15
+#else
+            30
+#endif
+            , Display::WIDTH, Color::GREEN);
 
         int index = (int)(*data->value);
 
@@ -99,7 +123,13 @@ void Choice::Draw() const
             color = Color(data->colors[index]);
         }
 
-        Text<>(text).WriteInCenter(0, 45, Display::WIDTH, color);
+        Text<>(text).WriteInCenter(0,
+#ifdef MODEL7735
+            45
+#else
+            120
+#endif
+            , Display::WIDTH, color);
 
         Font::SetSize(1);
     }

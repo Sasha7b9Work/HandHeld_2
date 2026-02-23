@@ -21,8 +21,11 @@ namespace HAL_ADC
 
 namespace Power
 {
-    static const int WIDTH = 38;
-    static const int HEIGHT = 14;
+#ifdef MODEL7735
+    static const int WIDTH = 38, HEIGHT = 14;
+#else
+    static const int WIDTH = 80, HEIGHT = 28;
+#endif
 
     static PinIn pinCHRG(GPIOB, GPIO_PIN_3);
 
@@ -135,13 +138,19 @@ void Power::Update()
 
 void Power::Draw()
 {
-    int x = 121;
-    int y = 0;
+#ifdef MODEL7735
+    const int x = 121, y = 0;
+    #define DRAW_SMALL Rect(5, 7).Fill(x - 4, y + 3)
+#else
+    const int x = Display::WIDTH - WIDTH, y = 0;
+    #define DRAW_SMALL Rect(10, 14).Fill(x - 8, y + 6)
+#endif
 
     Color color = Color::GREEN;
 
     Rect(WIDTH, HEIGHT).Draw(x, y, color);
-    Rect(5, 7).Fill(x - 4, y + 3);
+
+    DRAW_SMALL;
 
     if (voltage > 3.9f)        // Полный заряд
     {
@@ -162,7 +171,7 @@ void Power::Draw()
     else if (voltage > 3.5f)        // Пустая батарея
     {
         Rect(WIDTH, HEIGHT).Draw(x, y, Color::RED);
-        Rect(5, 7).Fill(x - 4, y + 3);
+        DRAW_SMALL;
     }
 
     if (voltage > 4.4f && pinCHRG.IsLow())
