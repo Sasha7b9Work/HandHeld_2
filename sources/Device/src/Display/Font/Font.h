@@ -8,11 +8,10 @@ struct TypeFont
 {
     enum E
     {
-#ifndef MODEL7789
+#ifdef MODEL7735
         _5,
         _7,
-#endif
-#ifdef MODEL7789
+#else
         Small,
         Main,
 #endif

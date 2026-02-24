@@ -12,9 +12,7 @@ namespace Display
 #ifdef MODEL7735
     static const int WIDTH = 160;
     static const int HEIGHT = 80;
-#endif
-
-#ifdef MODEL7789
+#else
     static const int WIDTH = 320;
     static const int HEIGHT = 240;
 #endif

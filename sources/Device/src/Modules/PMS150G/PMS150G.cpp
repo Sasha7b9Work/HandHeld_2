@@ -24,9 +24,7 @@ void PMS150G::Init()
         exti_init(EXTI_13, EXTI_INTERRUPT, EXTI_TRIG_RISING);
     */
 
-#endif
-
-#ifdef MODEL7789
+#else
 
 //    #pragma message("Function not defines")
 

@@ -141,9 +141,7 @@ namespace Font
 {
 #ifdef MODEL7735
     TypeFont::E type = TypeFont::_7;
-#endif
-
-#ifdef MODEL7789
+#else
     TypeFont::E type = TypeFont::Main;
 #endif
 
@@ -215,9 +213,7 @@ void Font::SetType(TypeFont::E _type)
     {
         dfont = &font8;
     }
-#endif
-
-#ifdef MODEL7789
+#else
     if (_type == TypeFont::Small)
     {
         font = fontGOSTAU16BOLD;
@@ -245,20 +241,7 @@ int Font::GetHeight()
     case TypeFont::_Count:
         break;
     }
-#endif
-
-#ifdef MODEL7735
-    if (type == TypeFont::_5)
-    {
-        return 5;
-    }
-    else if (type == TypeFont::_7)
-    {
-        return 7;
-    }
-#endif
-
-#ifdef MODEL7789
+#else
     if (type == TypeFont::Small || type == TypeFont::Main)
     {
         uint8 result = 0;
@@ -285,9 +268,7 @@ int Font::GetWidth(uint8 symbol)
 {
 #ifdef MODEL7735
     return dfont->symbols[symbol].width;
-#endif
-
-#ifdef MODEL7789
+#else
     if (symbol == 0x20)
     {
         if (type == TypeFont::Small)
@@ -341,9 +322,7 @@ int Char::Write(int x, int y) const
 
         return x + width * Font::size;
     }
-#endif
-
-#ifdef MODEL7789
+#else
     if (Font::type == TypeFont::Small || Font::type == TypeFont::Main)
     {
         int height = Font::GetHeight();

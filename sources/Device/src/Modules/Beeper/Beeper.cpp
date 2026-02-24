@@ -117,9 +117,7 @@ void Beeper::Init()
 
 #ifdef MODEL7735
     pinMUTE.ToHi();
-#endif
-
-#ifdef MODEL7789
+#else
     pinMUTE.ToLow();
 #endif
 
@@ -151,8 +149,7 @@ void Beeper::Play(Melody::E type, uint8 _volume)
 
 #ifdef MODEL7735
     pinMUTE.ToLow();
-#endif
-#ifdef MODEL7789
+#else
     pinMUTE.ToHi();
 #endif
 }
@@ -204,8 +201,7 @@ void Beeper::Stop()
 
 #ifdef MODEL7735
     pinMUTE.ToHi();
-#endif
-#ifdef MODEL7789
+#else
     pinMUTE.ToLow();
 #endif
 }

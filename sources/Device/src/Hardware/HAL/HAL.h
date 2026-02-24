@@ -75,9 +75,7 @@ namespace HAL_ROM
     static const uint NUM_PAGES = 64;
     static const int PAGE_FOR_JOURNAL = 63;
     static const int PAGE_FOR_SETTINGS = 62;
-#endif
-
-#ifdef MODEL7789
+#else
     static const uint SIZE_PAGE = 2048;
     static const uint NUM_PAGES = 128;
     static const int PAGE_FOR_JOURNAL = 127;
