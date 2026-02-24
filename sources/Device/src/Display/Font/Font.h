@@ -13,8 +13,8 @@ struct TypeFont
         _7,
 #endif
 #ifdef MODEL7789
-        GOSTAU16BOLD,
-        GOSTB28B,
+        Small,
+        Main,
 #endif
         _Count
     };
@@ -27,8 +27,8 @@ namespace Font
     void SetMainType();
     void SetSmallType();
 
+    // Размер одного пикселя. Т.е. если 2, то размер символа будет в два раза больше оригинального
     void SetSize(int);
-
     int GetSize();
 
     int GetBit(uint8 symbol, int row, int col);
@@ -38,6 +38,9 @@ namespace Font
     int GetWidth(uint8 symbol);
 
     extern TypeFont::E type;
+
+    // Расстояние между символами в пикселях
+    int LetterSpacing();
 
 #ifdef MODEL7789
     bool RowNotEmpty(uint8 symbol, int row);

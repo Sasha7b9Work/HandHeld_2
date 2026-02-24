@@ -79,7 +79,7 @@ void Page::Draw() const
 #ifdef MODEL7735
                 45
 #else
-                90
+                120
 #endif
                 , Display::WIDTH);
         }

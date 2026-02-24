@@ -144,7 +144,7 @@ namespace Font
 #endif
 
 #ifdef MODEL7789
-    TypeFont::E type = TypeFont::GOSTB28B;
+    TypeFont::E type = TypeFont::Main;
 #endif
 
     static int size = 1;
@@ -167,14 +167,27 @@ int Font::GetSize()
 }
 
 
+int Font::LetterSpacing()
+{
+#ifdef MODEL7735
+    return GetSize();
+#else
+    if (type == TypeFont::Small)
+    {
+        return 2;
+    }
+
+    return 3;
+#endif
+}
+
+
 void Font::SetMainType()
 {
 #ifdef MODEL7735
     SetType(TypeFont::_7);
-#endif
-
-#ifdef MODEL7789
-    SetType(TypeFont::GOSTB28B);
+#else
+    SetType(TypeFont::Main);
 #endif
 }
 
@@ -183,10 +196,8 @@ void Font::SetSmallType()
 {
 #ifdef MODEL7735
     Font::SetType(TypeFont::_5);
-#endif
-
-#ifdef MODEL7789
-    Font::SetType(TypeFont::GOSTAU16BOLD);
+#else
+    Font::SetType(TypeFont::Small);
 #endif
 }
 
@@ -207,11 +218,11 @@ void Font::SetType(TypeFont::E _type)
 #endif
 
 #ifdef MODEL7789
-    if (_type == TypeFont::GOSTAU16BOLD)
+    if (_type == TypeFont::Small)
     {
         font = fontGOSTAU16BOLD;
     }
-    else if (_type == TypeFont::GOSTB28B)
+    else if (_type == TypeFont::Main)
     {
         font = fontGostB48B;
     }
@@ -248,7 +259,7 @@ int Font::GetHeight()
 #endif
 
 #ifdef MODEL7789
-    if (type == TypeFont::GOSTAU16BOLD || type == TypeFont::GOSTB28B)
+    if (type == TypeFont::Small || type == TypeFont::Main)
     {
         uint8 result = 0;
 
@@ -273,35 +284,26 @@ int Font::GetHeight()
 int Font::GetWidth(uint8 symbol)
 {
 #ifdef MODEL7735
-    if (type == TypeFont::_5 || type == TypeFont::_7)
-    {
-        return dfont->symbols[symbol].width;
-    }
+    return dfont->symbols[symbol].width;
 #endif
 
 #ifdef MODEL7789
-    if (type == TypeFont::GOSTAU16BOLD || type == TypeFont::GOSTB28B)
+    if (symbol == 0x20)
     {
-        if (symbol == 0x20)
+        if (type == TypeFont::Small)
         {
-            if (font == fontGOSTAU16BOLD)
-            {
-                return 5;
-            }
+            return 5;
         }
-
-        if (symbol == '1')
+        else if (type == TypeFont::Main)
         {
-            return GetWidth('0');
+            return 10;
         }
-
-        NativeSymbol *sym = HeaderFont::Sefl()->GetSymbol(symbol);
-
-        return sym ? (int)sym->width : 0;
     }
-#endif
 
-    return 10;
+    NativeSymbol *sym = HeaderFont::Sefl()->GetSymbol(symbol);
+
+    return sym ? (int)sym->width : 0;
+#endif
 }
 
 
@@ -315,6 +317,11 @@ int Char::Write(int x, int y, const Color &color) const
 
 int Char::Write(int x, int y) const
 {
+    if (symbol == 0x20)     // Пробел
+    {
+        return x + Font::GetWidth(symbol) * Font::size;
+    }
+
 #ifdef MODEL7735
     if (Font::type == TypeFont::_5 || Font::type == TypeFont::_7)
     {
@@ -337,7 +344,7 @@ int Char::Write(int x, int y) const
 #endif
 
 #ifdef MODEL7789
-    if (Font::type == TypeFont::GOSTAU16BOLD || Font::type == TypeFont::GOSTB28B)
+    if (Font::type == TypeFont::Small || Font::type == TypeFont::Main)
     {
         int height = Font::GetHeight();
         int width = Font::GetWidth(symbol);

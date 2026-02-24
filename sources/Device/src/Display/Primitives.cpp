@@ -161,7 +161,7 @@ int Text<capacity>::Write(int x, int y) const
     while (*pointer)
     {
         x = Char(*pointer++).Write(x, y);
-        x += Font::GetSize(); //-V1026
+        x += Font::LetterSpacing(); //-V1026
     }
 
     return x;
@@ -206,7 +206,7 @@ int Text<capacity>::GetLength() const
     {
         uint8 symbol = (uint8)*pointer++;
         result += Font::GetWidth(symbol) * Font::GetSize(); //-V1026
-        result += Font::GetSize(); //-V1026
+        result += Font::LetterSpacing(); //-V1026
     }
 
     return result;
