@@ -55,13 +55,7 @@ void Page::Draw() const
 
         if (num_words == 1)
         {
-            title.WriteInCenter(0,
-#ifdef MODEL7735
-                30
-#else
-                70
-#endif
-                , Display::WIDTH, Color::GREEN);
+            title.WriteInCenter(0, SU::Y::Center(), Display::WIDTH, Color::GREEN);
         }
         else if(num_words == 2)
         {
