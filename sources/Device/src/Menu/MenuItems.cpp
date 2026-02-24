@@ -94,13 +94,7 @@ void Choice::Draw() const
             if (num_words == 1)
 #endif
             {
-                title.WriteInCenter(0,
-#ifdef MODEL7735
-                    15
-#else
-                    30
-#endif
-                    , Display::WIDTH, Color::GREEN);
+                title.WriteInCenter(0, SU::Y::Up(), Display::WIDTH, Color::GREEN);
             }
 #ifdef MODEL7789
             else
