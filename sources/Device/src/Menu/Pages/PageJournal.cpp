@@ -4,7 +4,7 @@
 #include "Menu/MenuItemDef.h"
 #include "Storage/Storage.h"
 #include "Display/Font/Font.h"
-#include "Display/Display.h"
+#include "Utils/StringUtils.h"
 
 
 namespace PageJournal
@@ -45,8 +45,8 @@ namespace PageJournal
         {
             Font::SetSize(2);
 
-            Text<>("ЖУРНАЛ").WriteInCenter(0, 20, Display::WIDTH, Color::WHITE);
-            Text<>("ПУСТ").WriteInCenter(0, 50, Display::WIDTH);
+            Text<>("ЖУРНАЛ").WriteInCenter(0, SU::Y::Up(), Display::WIDTH, Color::WHITE);
+            Text<>("ПУСТ").WriteInCenter(0, SU::Y::Down(), Display::WIDTH);
 
             Font::SetSize(1);
         }

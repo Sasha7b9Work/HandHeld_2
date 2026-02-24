@@ -101,9 +101,9 @@ void Choice::Draw() const
             {
                 char buffer[32];
 
-                Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, 15, Display::WIDTH, Color::GREEN);
+                Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, SU::Y::Str::Up(), Display::WIDTH, Color::GREEN);
 
-                Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, 80, Display::WIDTH);
+                Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, SU::Y::Str::Center(), Display::WIDTH);
             }
 #endif
         }
@@ -122,9 +122,9 @@ void Choice::Draw() const
             }
 
 #ifdef MODEL7735
-            int y = 45;
+            int y = SU::Y::Down();
 #else
-            int y = (num_words == 1) ? 120 : 160;
+            int y = (num_words == 1) ? SU::Y::Down() : SU::Y::Str::Down();
 #endif
 
             Text<>(text).WriteInCenter(0, y, Display::WIDTH, color);

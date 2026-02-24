@@ -11,6 +11,7 @@ namespace SU
 
     namespace Y
     {
+        // Одно слово рисуем по центру
         static int Center()
         {
 #ifdef MODEL7735
@@ -20,6 +21,7 @@ namespace SU
 #endif
         }
 
+        // Две строки на экране. Координата верхней
         static int Up()
         {
 #ifdef MODEL7735
@@ -29,6 +31,7 @@ namespace SU
 #endif
         }
 
+        // Две строки на экране. Координата нижней
         static int Down()
         {
 #ifdef MODEL7735
@@ -37,5 +40,25 @@ namespace SU
             return 120;
 #endif
         }
+
+#ifdef MODEL7789
+        namespace Str
+        {
+            static int Up()
+            {
+                return 15;
+            }
+
+            static int Center()
+            {
+                return 85;
+            }
+
+            static int Down()
+            {
+                return 160;
+            }
+        }
+#endif
     }
 }
