@@ -96,40 +96,44 @@ void Page::Draw() const
 
 void Choice::Draw() const
 {
-    if (data->item->IsOpened())
-    {
-
-    }
-    else
+    if(!data->item->IsOpened())
     {
         Font::SetSize(2);
 
-        data->item->Title().WriteInCenter(0,
-#ifdef MODEL7735
-            15
-#else
-            30
-#endif
-            , Display::WIDTH, Color::GREEN);
+        int num_words = SU::NumWordsInString(data->item->Title().c_str());
 
-        int index = (int)(*data->value);
-
-        pchar text = data->names[index];
-
-        Color color = Color::WHITE;
-
-        if (data->colors)
+        // Рисуем заголовок
         {
-            color = Color(data->colors[index]);
+            data->item->Title().WriteInCenter(0,
+#ifdef MODEL7735
+                15
+#else
+                30
+#endif
+                , Display::WIDTH, Color::GREEN);
         }
 
-        Text<>(text).WriteInCenter(0,
+        // Рисуем выбор
+        {
+            int index = (int)(*data->value);
+
+            pchar text = data->names[index];
+
+            Color color = Color::WHITE;
+
+            if (data->colors)
+            {
+                color = Color(data->colors[index]);
+            }
+
 #ifdef MODEL7735
-            45
+            int y = 45;
 #else
-            120
+            int y = (num_words == 1) ? 120 : 160;
 #endif
-            , Display::WIDTH, color);
+
+            Text<>(text).WriteInCenter(0, y, Display::WIDTH, color);
+        }
 
         Font::SetSize(1);
     }
