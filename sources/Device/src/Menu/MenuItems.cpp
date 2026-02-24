@@ -61,21 +61,9 @@ void Page::Draw() const
         {
             char buffer[32];
 
-            Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0,
-#ifdef MODEL7735
-                15
-#else
-                30
-#endif
-                , Display::WIDTH, Color::GREEN);
+            Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, SU::Y::Up(), Display::WIDTH, Color::GREEN);
 
-            Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0,
-#ifdef MODEL7735
-                45
-#else
-                120
-#endif
-                , Display::WIDTH);
+            Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, SU::Y::Down(), Display::WIDTH);
         }
 
         Font::SetSize(1);

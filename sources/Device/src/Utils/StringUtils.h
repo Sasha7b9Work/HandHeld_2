@@ -19,5 +19,23 @@ namespace SU
             return 70;
 #endif
         }
+
+        static int Up()
+        {
+#ifdef MODEL7735
+            return 15;
+#else
+            return 30;
+#endif
+        }
+
+        static int Down()
+        {
+#ifdef MODEL7735
+            return 45;
+#else
+            return 120;
+#endif
+        }
     }
 }
