@@ -1,4 +1,4 @@
-﻿// 2024/03/02 13:56:13 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+// 2024/03/02 13:56:13 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Menu/MenuItems.h"
 #include "Menu/Menu.h"
@@ -98,19 +98,38 @@ void Choice::Draw() const
 {
     if(!data->item->IsOpened())
     {
+        Text<> title = data->item->Title();
+
         Font::SetSize(2);
 
+#ifdef MODEL7789
         int num_words = SU::NumWordsInString(data->item->Title().c_str());
+#endif
 
         // Рисуем заголовок
         {
-            data->item->Title().WriteInCenter(0,
-#ifdef MODEL7735
-                15
-#else
-                30
+#ifdef MODEL7789
+            if (num_words == 1)
 #endif
-                , Display::WIDTH, Color::GREEN);
+            {
+                title.WriteInCenter(0,
+#ifdef MODEL7735
+                    15
+#else
+                    30
+#endif
+                    , Display::WIDTH, Color::GREEN);
+            }
+#ifdef MODEL7789
+            else
+            {
+                char buffer[32];
+
+                Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, 15, Display::WIDTH, Color::GREEN);
+
+                Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, 80, Display::WIDTH);
+            }
+#endif
         }
 
         // Рисуем выбор
