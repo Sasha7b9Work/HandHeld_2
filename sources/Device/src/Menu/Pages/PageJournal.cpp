@@ -5,6 +5,7 @@
 #include "Storage/Storage.h"
 #include "Display/Font/Font.h"
 #include "Utils/StringUtils.h"
+#include "Display/Display.h"
 
 
 namespace PageJournal
