@@ -34,7 +34,8 @@ void HAL::Init()
 
 #ifdef MODEL7789
     rcu_periph_clock_enable(RCU_AF);
-    nvic_irq_enable(TIMER2_IRQn, 0, 0);        // Для звука
+    nvic_irq_enable(TIMER2_IRQn, 0, 0);         // Для звука
+    rcu_periph_clock_enable(RCU_DMA0);          // Для записи в дисплей
 #endif
 
     HAL_ADC::Init();

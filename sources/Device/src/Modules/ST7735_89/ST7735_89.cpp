@@ -125,9 +125,11 @@ void ST7735_89::Init()
         spi_is.prescale = SPI_PSC_2;
         spi_is.endian = SPI_ENDIAN_MSB;
         spi_init(SPI0, &spi_is);
-    }
 
-    spi_enable(SPI0);
+        spi_dma_enable(SPI0, SPI_DMA_TRANSMIT);
+
+        spi_enable(SPI0);
+    }
 
     pinON.Init();
     pinDC_RS.Init();
@@ -469,7 +471,7 @@ void ST7735_89::WriteBuffer(int num_part)
 #endif
 
 
-#ifdef MODEL7789
+#ifdef MODEL7789_
 
     SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
 
@@ -495,4 +497,50 @@ void ST7735_89::WriteBuffer(int num_part)
     }
 
 #endif
+
+
+#ifdef MODEL7789
+
+    SetWindow(0, Display::WIDTH, (uint)y0, (uint)y0 + Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT);
+
+    pinDC_RS.ToHi();
+
+    uint16 buffer_dma[Display::WIDTH * 2];
+
+    dma_parameter_struct is;
+    dma_deinit(DMA0, DMA_CH2);
+
+    dma_struct_para_init(&is);
+    is.periph_addr = (uint32_t)&SPI_DATA(SPI0);
+    is.memory_addr = (uint32_t)buffer_dma;
+    is.direction = DMA_MEMORY_TO_PERIPHERAL;
+    is.number = Display::WIDTH * 2;
+    is.periph_inc = DMA_PERIPH_INCREASE_DISABLE;
+    is.memory_inc = DMA_MEMORY_INCREASE_ENABLE;
+    is.periph_width = DMA_PERIPHERAL_WIDTH_8BIT;
+    is.memory_width = DMA_MEMORY_WIDTH_8BIT;
+    is.priority = DMA_PRIORITY_ULTRA_HIGH;
+
+    for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
+    {
+        uint8 *points = Display::Buffer::GetLine(y);
+
+        for (int i = 0; i < Display::WIDTH; i++)
+        {
+            buffer_dma[i] = Color::colors[*points++];
+        }
+
+        dma_init(DMA0, DMA_CH2, &is);
+
+        dma_channel_enable(DMA0, DMA_CH2);
+
+        while (RESET == dma_flag_get(DMA0, DMA_CH2, DMA_FLAG_FTF))
+        {
+        }
+
+        dma_deinit(DMA0, DMA_CH2);
+    }
+
+#endif
+
 }
