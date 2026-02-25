@@ -505,14 +505,14 @@ void ST7735_89::WriteBuffer(int num_part)
 
     pinDC_RS.ToHi();
 
-    uint16 buffer_dma[Display::WIDTH * 2];
+    BitSet16 buffer_dma[Display::WIDTH * 2];
 
     dma_parameter_struct is;
     dma_deinit(DMA0, DMA_CH2);
 
     dma_struct_para_init(&is);
     is.periph_addr = (uint32_t)&SPI_DATA(SPI0);
-    is.memory_addr = (uint32_t)buffer_dma;
+    is.memory_addr = (uint32_t)&buffer_dma[0];
     is.direction = DMA_MEMORY_TO_PERIPHERAL;
     is.number = Display::WIDTH * 2;
     is.periph_inc = DMA_PERIPH_INCREASE_DISABLE;
@@ -521,13 +521,18 @@ void ST7735_89::WriteBuffer(int num_part)
     is.memory_width = DMA_MEMORY_WIDTH_8BIT;
     is.priority = DMA_PRIORITY_ULTRA_HIGH;
 
+    BitSet16 bs;
+
     for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y++)
     {
         uint8 *points = Display::Buffer::GetLine(y);
 
         for (int i = 0; i < Display::WIDTH; i++)
         {
-            buffer_dma[i] = Color::colors[*points++];
+            bs.word = Color::colors[*points++];
+
+            buffer_dma[i].b[0] = bs.b[1];
+            buffer_dma[i].b[1] = bs.b[0];
         }
 
         dma_init(DMA0, DMA_CH2, &is);
