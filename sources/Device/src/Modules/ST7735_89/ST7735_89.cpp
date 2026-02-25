@@ -509,6 +509,21 @@ void ST7735_89::WriteBuffer(int num_part)
 
     static uint16 buffer_dma[SIZE_BUFFER];
 
+    static bool first = true;
+
+    if (first)
+    {
+        first = false;
+    }
+    else
+    {
+        // В первый вызов функции DMA ещё ни разу не вызывался, поэтому ожидать флага окончания передачи
+        // не нужно
+        while (RESET == dma_flag_get(DMA0, DMA_CH2, DMA_FLAG_FTF))
+        {
+        }
+    }
+
     dma_parameter_struct is;
     dma_deinit(DMA0, DMA_CH2);
 
@@ -533,12 +548,6 @@ void ST7735_89::WriteBuffer(int num_part)
     dma_init(DMA0, DMA_CH2, &is);
 
     dma_channel_enable(DMA0, DMA_CH2);
-
-    while (RESET == dma_flag_get(DMA0, DMA_CH2, DMA_FLAG_FTF))
-    {
-    }
-
-    dma_deinit(DMA0, DMA_CH2);
 
 #endif
 

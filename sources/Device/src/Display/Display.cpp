@@ -155,7 +155,7 @@ void Display::Update()
         
         volatile uint time_full = time_begin + time_draw + time_end;
         
-        time_full = time_full;
+         time_full = time_full;
 
         FPS::EndFrame();
     }
