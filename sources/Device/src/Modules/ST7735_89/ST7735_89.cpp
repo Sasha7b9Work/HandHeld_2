@@ -505,43 +505,40 @@ void ST7735_89::WriteBuffer(int num_part)
 
     pinDC_RS.ToHi();
 
-#define NUM_ROWS 1
+#define SIZE_BUFFER (Display::WIDTH * Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT)
 
-    uint16 buffer_dma[Display::WIDTH * 2 * NUM_ROWS];
+    static uint16 buffer_dma[SIZE_BUFFER];
 
     dma_parameter_struct is;
     dma_deinit(DMA0, DMA_CH2);
 
     dma_struct_para_init(&is);
     is.periph_addr = (uint32_t)&SPI_DATA(SPI0);
-    is.memory_addr = (uint32_t)&buffer_dma[0];
+    is.memory_addr = (uint32_t)buffer_dma;
     is.direction = DMA_MEMORY_TO_PERIPHERAL;
-    is.number = Display::WIDTH * 2 * NUM_ROWS;
+    is.number = SIZE_BUFFER * 2;
     is.periph_inc = DMA_PERIPH_INCREASE_DISABLE;
     is.memory_inc = DMA_MEMORY_INCREASE_ENABLE;
     is.periph_width = DMA_PERIPHERAL_WIDTH_8BIT;
     is.memory_width = DMA_MEMORY_WIDTH_8BIT;
     is.priority = DMA_PRIORITY_ULTRA_HIGH;
 
-    for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y += NUM_ROWS)
+    uint8 *points = Display::Buffer::GetLine(0);
+
+    for (int i = 0; i < SIZE_BUFFER; i++)
     {
-        uint8 *points = Display::Buffer::GetLine(y);
-
-        for (int i = 0; i < Display::WIDTH * NUM_ROWS; i++)
-        {
-            buffer_dma[i] = Color::colors[*points++];
-        }
-
-        dma_deinit(DMA0, DMA_CH2);
-
-        dma_init(DMA0, DMA_CH2, &is);
-
-        dma_channel_enable(DMA0, DMA_CH2);
-
-        while (RESET == dma_flag_get(DMA0, DMA_CH2, DMA_FLAG_FTF))
-        {
-        }
+        buffer_dma[i] = Color::colors[*points++];
     }
+
+    dma_init(DMA0, DMA_CH2, &is);
+
+    dma_channel_enable(DMA0, DMA_CH2);
+
+    while (RESET == dma_flag_get(DMA0, DMA_CH2, DMA_FLAG_FTF))
+    {
+    }
+
+    dma_deinit(DMA0, DMA_CH2);
 
 #endif
 
