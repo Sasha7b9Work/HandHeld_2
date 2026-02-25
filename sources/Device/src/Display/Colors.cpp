@@ -104,26 +104,39 @@ Color::E Color::Contrast(E v)
 
 uint16 Color::Make(uint8 r, uint8 g, uint8 b)
 {
+    uint16 result = 0;
+
     if (Display::IsOldType())
     {
         if (gset.inverse)
         {
-            return (uint16)((0x1f - (b)) + ((0x3f - (g)) << 5) + ((0x1f - (r)) << 11));
+            result = (uint16)((0x1f - (b)) + ((0x3f - (g)) << 5) + ((0x1f - (r)) << 11));
         }
         else
         {
-            return (uint16)((b)+((g) << 5) + ((r) << 11));
+            result = (uint16)((b)+((g) << 5) + ((r) << 11));
         }
     }
     else
     {
         if (gset.inverse)
         {
-            return (uint16)((b)+((g) << 5) + ((r) << 11));
+            result = (uint16)((b)+((g) << 5) + ((r) << 11));
         }
         else
         {
-            return (uint16)((0x1f - (b)) + ((0x3f - (g)) << 5) + ((0x1f - (r)) << 11));
+            result = (uint16)((0x1f - (b)) + ((0x3f - (g)) << 5) + ((0x1f - (r)) << 11));
         }
     }
+
+#ifdef MODEL7789
+
+    uint8 byte0 = (uint8)result;
+    uint8 byte1 = (uint8)(result >> 8);
+
+    result = (uint16)((byte0 << 8) | byte1);
+
+#endif
+
+    return result;
 }

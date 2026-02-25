@@ -21,7 +21,7 @@ namespace Display
 {
     namespace Buffer
     {
-        uint8 buffer[SIZE] = { 0 };
+        uint8 buffer[SIZE] __attribute__((aligned(4))) = { 0 };
 
         static uint crc[NUMBER_PARTS_HEIGHT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 

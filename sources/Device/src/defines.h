@@ -67,6 +67,7 @@ union BitSet16
 
 #ifdef WIN32
     #define __asm(x)
+    #define __attribute__(x)
 #endif
 
 #define _GET_BIT(value, bit) (((value) >> (bit)) & 0x01)

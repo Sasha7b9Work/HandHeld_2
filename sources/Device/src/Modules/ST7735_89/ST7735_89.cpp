@@ -507,7 +507,7 @@ void ST7735_89::WriteBuffer(int num_part)
 
 #define NUM_ROWS 1
 
-    BitSet16 buffer_dma[Display::WIDTH * 2 * NUM_ROWS];
+    uint16 buffer_dma[Display::WIDTH * 2 * NUM_ROWS];
 
     dma_parameter_struct is;
     dma_deinit(DMA0, DMA_CH2);
@@ -523,19 +523,16 @@ void ST7735_89::WriteBuffer(int num_part)
     is.memory_width = DMA_MEMORY_WIDTH_8BIT;
     is.priority = DMA_PRIORITY_ULTRA_HIGH;
 
-    BitSet16 bs;
-
     for (int y = 0; y < Display::HEIGHT / Display::NUMBER_PARTS_HEIGHT; y += NUM_ROWS)
     {
         uint8 *points = Display::Buffer::GetLine(y);
 
         for (int i = 0; i < Display::WIDTH * NUM_ROWS; i++)
         {
-            bs.word = Color::colors[*points++];
-
-            buffer_dma[i].b[0] = bs.b[1];
-            buffer_dma[i].b[1] = bs.b[0];
+            buffer_dma[i] = Color::colors[*points++];
         }
+
+        dma_deinit(DMA0, DMA_CH2);
 
         dma_init(DMA0, DMA_CH2, &is);
 
@@ -544,8 +541,6 @@ void ST7735_89::WriteBuffer(int num_part)
         while (RESET == dma_flag_get(DMA0, DMA_CH2, DMA_FLAG_FTF))
         {
         }
-
-        dma_deinit(DMA0, DMA_CH2);
     }
 
 #endif
