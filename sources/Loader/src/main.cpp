@@ -4,13 +4,13 @@
 #include "Hardware/Timer.h"
 #include "Utils/String.h"
 #include "Modules/PAN3060/PAN3060.h"
-#include "system_gd32f30x.c"
 
 #ifdef GD32E230
 	#include <gd32e23x.h>
 #endif
 #ifdef GD32F303
 	#include <gd32f30x.h>
+	#include "system_gd32f30x.c"
 #endif
 
 #define OPERATION_TIMEOUT	300000	//300s = 5 min
@@ -38,7 +38,7 @@ static const uint NUM_PAGES = 54;
 #endif
 #ifdef GD32F303
 static const uint BEGIN_FIRMWARE = 0x8002000;
-static const uint NUM_PAGES = 96;
+static const uint NUM_PAGES = 91;
 #define FLASH_PAGE_SIZE		2048
 #define LED_RED_PORT 			GPIOA
 #define LED_RED_PIN 			GPIO_PIN_9
@@ -94,12 +94,8 @@ int main()
 {
 		TimeMeterMS meter;
 		uint _buffer_offset;
-	
-    HAL::Init();
-    
-#ifdef GD32F303
-#endif
 
+    HAL::Init();
 		//init button 'down' and vibro port
 		#ifdef GD32E230
 		gpio_mode_set(BUTTON_DOWN_PORT, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, BUTTON_DOWN_PIN);
@@ -162,8 +158,6 @@ int main()
 				//wait for first valid packet or timeout
 				while(1)
 				{
-                            JumpToMainApplication();
-                    
 						if(meter.ElapsedTime() > OPERATION_TIMEOUT)
 								Power_off_error();
 
@@ -363,6 +357,7 @@ void TFT_SEND_DATA(unsigned  char o_data)
 
 void TFT_clear(void)
   {
+#ifdef GD32F303
 		uint32_t _buffer = 0xFFFFFFFF;	//white
 		
     TFT_SEND_CMD(0x2a);     //Column address set
@@ -442,6 +437,7 @@ void TFT_clear(void)
 		
 		//switch back to 8MHz IRC
 		system_clock_config();
+#endif
   }
 void TFT_init(void)        
   {
@@ -469,6 +465,7 @@ void TFT_init(void)
 		gpio_init(TFT_SPI_SDA_PORT, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, TFT_SPI_SDA_PIN);
 		#endif
 
+		#ifdef GD32F303
 		spi_parameter_struct spi_is;
     spi_i2s_deinit(SPI0);
     spi_struct_para_init(&spi_is);
@@ -580,4 +577,5 @@ void TFT_init(void)
 	TFT_SEND_CMD(0x11); //Exit Sleep // 退出睡眠模式
 	Timer::Delay(120);
 	TFT_SEND_CMD(0x29); //Display on // 开显示
+	#endif
   }
