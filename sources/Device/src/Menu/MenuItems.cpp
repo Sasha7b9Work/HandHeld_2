@@ -88,7 +88,7 @@ void Choice::Draw() const
         int num_words = SU::NumWordsInString(data->item->Title().c_str());
 #endif
 
-        // –†–∏—Å—É–µ–º –∑–∞–≥–æ–ª–æ–≤–æ–∫
+        // –ËÒÛÂÏ Á‡„ÓÎÓ‚ÓÍ
         {
 #ifdef MODEL7789
             if (num_words == 1)
@@ -108,7 +108,7 @@ void Choice::Draw() const
 #endif
         }
 
-        // –†–∏—Å—É–µ–º –≤—ã–±–æ—Ä
+        // –ËÒÛÂÏ ‚˚·Ó
         {
             int index = (int)(*data->value);
 
@@ -159,7 +159,7 @@ void DateTime::Draw() const
     {
         Font::SetSize(2);
 
-        Text<>("–£–°–¢–ê–ù–û–í–ö–ê").WriteInCenter(0, 10, Display::WIDTH, Color::WHITE);
+        Text<>("”—“¿ÕŒ¬ ¿").WriteInCenter(0, 10, Display::WIDTH, Color::WHITE);
 
         Font::SetSize(1);
 

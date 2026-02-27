@@ -129,14 +129,17 @@ uint16 Color::Make(uint8 r, uint8 g, uint8 b)
         }
     }
 
-#ifdef MODEL7789
-
-    uint8 byte0 = (uint8)result;
-    uint8 byte1 = (uint8)(result >> 8);
-
-    result = (uint16)((byte0 << 8) | byte1);
-
+#ifndef GUI
+    #ifdef MODEL7789
+    
+        uint8 byte0 = (uint8)result;
+        uint8 byte1 = (uint8)(result >> 8);
+    
+        result = (uint16)((byte0 << 8) | byte1);
+    
+    #endif
 #endif
 
     return result;
 }
+
