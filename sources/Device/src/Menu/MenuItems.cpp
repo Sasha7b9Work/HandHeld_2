@@ -84,8 +84,13 @@ void Choice::Draw() const
 
         Font::SetSize(2);
 
+        int index_choice = (int)(*data->value);
+
+        pchar choice = data->names[index_choice];
+
 #ifdef MODEL7789
         int num_words = SU::NumWordsInString(title.c_str());
+        int num_choices = SU::NumWordsInString(choice);
 #endif
 
         // Рисуем заголовок
@@ -94,7 +99,15 @@ void Choice::Draw() const
             if (num_words == 1)
 #endif
             {
-                title.WriteInCenter(0, SU::Y::Up(), Display::WIDTH, Color::GREEN);
+                int y = SU::Y::Up();
+#ifdef MODEL7789
+                if (num_choices == 2)
+                {
+                    y = SU::Y::Str::Up();
+                }
+#endif
+
+                title.WriteInCenter(0, y, Display::WIDTH, Color::GREEN);
             }
 #ifdef MODEL7789
             else
@@ -110,15 +123,11 @@ void Choice::Draw() const
 
         // Рисуем выбор
         {
-            int index = (int)(*data->value);
-
-            pchar text = data->names[index];
-
             Color color = Color::WHITE;
 
             if (data->colors)
             {
-                color = Color(data->colors[index]);
+                color = Color(data->colors[index_choice]);
             }
 
 #ifdef MODEL7735
@@ -127,7 +136,20 @@ void Choice::Draw() const
             int y = (num_words == 1) ? SU::Y::Down() : SU::Y::Str::Down();
 #endif
 
-            Text<>(text).WriteInCenter(0, y, Display::WIDTH, color);
+#ifdef MODEL7735
+            Text<>(choice).WriteInCenter(0, y, Display::WIDTH, color);
+#else
+            if (num_choices == 2 && Text<>(choice).GetLength() > Display::WIDTH)
+            {
+                char buffer[32];
+                Text<>(SU::GetWordFromString(choice, 1, buffer)).WriteInCenter(0, SU::Y::Str::Center(), Display::WIDTH, color);
+                Text<>(SU::GetWordFromString(choice, 2, buffer)).WriteInCenter(0, SU::Y::Str::Down(), Display::WIDTH);
+            }
+            else
+            {
+                Text<>(choice).WriteInCenter(0, y, Display::WIDTH, color);
+            }
+#endif
         }
 
         Font::SetSize(1);

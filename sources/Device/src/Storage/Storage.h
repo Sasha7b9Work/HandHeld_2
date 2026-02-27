@@ -11,11 +11,11 @@ struct Record
     RTCDateTime  time;
     uint8        source;         // ¬ старшем бите - 1/0 - прин€то/неприн€то
     uint8        control_bits;   // —юда записываем ноль, чтобы убедитьс€, что запись прошла успешно. Ќе участвует в вычислении CRC
-    uint         CalculateCRC() const;
-    const uint8 *Begin() const;
-    const uint8 *End() const;
-    bool         IsEmpty() const;
-    bool         IsValidData() const;
+//    uint         CalculateCRC() const;
+//    const uint8 *Begin() const;
+//    const uint8 *End() const;
+//    bool         IsEmpty() const;
+//    bool         IsValidData() const;
 };
 
 

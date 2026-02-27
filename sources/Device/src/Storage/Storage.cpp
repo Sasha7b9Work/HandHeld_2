@@ -66,6 +66,26 @@ void Storage::Append(const RTCDateTime &time, Source::E source, bool receive)
 }
 
 
+#ifndef WIN32
+Record *Storage::Get(int number)
+{
+    return &records[number];
+}
+#else
+Record *Storage::Get(int number)
+{
+    static Record record;
+    record.number = number;
+    record.time = PCF8563::GetDateTime();
+    record.source = number & 0x03;
+    record.source |= 0x80;
+//    record.crc = record.CalculateCRC();
+    return &record;
+}
+#endif
+
+
+#ifndef WIN32
 int Storage::GetCountRecords()
 {
     int result = 0;
@@ -80,9 +100,10 @@ int Storage::GetCountRecords()
 
     return result;
 }
-
-
-Record *Storage::Get(int number)
+#else
+int Storage::GetCountRecords()
 {
-    return &records[number];
+    return 5;
 }
+#endif
+
