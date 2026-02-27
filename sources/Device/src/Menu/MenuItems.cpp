@@ -85,7 +85,7 @@ void Choice::Draw() const
         Font::SetSize(2);
 
 #ifdef MODEL7789
-        int num_words = SU::NumWordsInString(data->item->Title().c_str());
+        int num_words = SU::NumWordsInString(title.c_str());
 #endif
 
         // –ËÒÛÂÏ Á‡„ÓÎÓ‚ÓÍ
@@ -137,8 +137,13 @@ void Choice::Draw() const
 
 void DateTime::DrawField(int x, int y, Text<> &text, bool selected) const
 {
+#ifdef MODEL7735
     const int width = 42;
     const int height = 35;
+#else
+    const int width = 70;
+    const int height = 70;
+#endif
 
     Rect(width, height).Draw(x, y, selected ? Color::BLACK : Color::WHITE);
     Rect(width - 2, height - 2).Fill(x + 1, y + 1, selected ? Color::WHITE : Color::BLACK);
@@ -148,7 +153,14 @@ void DateTime::DrawField(int x, int y, Text<> &text, bool selected) const
     }
 
     Font::SetSize(4);
-    text.Write(x + 3, (y + 3), selected ? Color::BLACK : Color::WHITE);
+
+#ifdef MODEL7735
+    const int dx = 3, dy = 3;
+#else
+    const int dx = 9, dy = -2;
+#endif
+
+    text.Write(x + dx, y + dy, selected ? Color::BLACK : Color::WHITE);
     Font::SetSize(1);
 }
 
@@ -159,7 +171,14 @@ void DateTime::Draw() const
     {
         Font::SetSize(2);
 
-        Text<>("”—“¿ÕŒ¬ ¿").WriteInCenter(0, 10, Display::WIDTH, Color::WHITE);
+        {
+#ifdef MODEL7735
+            const int y = 10;
+#else
+            const int y = 20;
+#endif
+            Text<>("”—“¿ÕŒ¬ ¿").WriteInCenter(0, y, Display::WIDTH, Color::WHITE);
+        }
 
         Font::SetSize(1);
 
@@ -176,6 +195,7 @@ void DateTime::Draw() const
             values[1] = data->date_time->Minute;
         }
 
+#ifdef MODEL7735
         const int y = 32;
 
         int x[3] = { 5, 58, 111 };
@@ -185,6 +205,17 @@ void DateTime::Draw() const
             x[0] = 30;
             x[1] = 80;
         }
+#else
+        const int y = 120;
+
+        int x[3] = { 5, 58, 111 };
+
+        if (data->is_time)
+        {
+            x[0] = 70;
+            x[1] = 180;
+        }
+#endif
 
         for (int i = 0; i < NumFields(); i++)
         {
@@ -197,7 +228,7 @@ void DateTime::Draw() const
     {
         Font::SetSize(2);
 
-        data->item->Title().WriteInCenter(0, 30, Display::WIDTH, Color::GREEN);
+        data->item->Title().WriteInCenter(0, SU::Y::Center(), Display::WIDTH, Color::GREEN);
 
         Font::SetSize(1);
     }
