@@ -18,15 +18,33 @@ namespace PageJournal
     {
         const RTCDateTime time = rec->time;
 
+#ifdef MODEL7735
+
         int x = 0;
 
-        Text<>("%d", num_top_record + 1).Write(x + 5, y + 15);
+        Text<>("%d", rec->number + 1).Write(x + 5, y + 15);
 
         Text<>("%02d/%02d %02d:%02d",
             time.Day, time.Month, time.Hour, time.Minute).Write(x + 55, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
 
         Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).WriteInCenter(x, y + 50, Display::WIDTH);
+#else
+        Font::StoreType();
+        Font::SetSmallType();
 
+        int x = 20;
+
+        Text<>("%d", rec->number + 1).Write(x + 5, y + 15);
+
+        x += 40;
+
+        Text<>("%02d/%02d %02d:%02d",
+            time.Day, time.Month, time.Hour, time.Minute).Write(x, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
+
+        Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).Write(x + 20, y + 37);
+
+        Font::RestoreType();
+#endif
     }
 
     static void DrawRecords()
@@ -36,20 +54,24 @@ namespace PageJournal
             return;
         }
 
-#ifdef MODEL7789
-        Font::StoreType();
-        Font::SetSmallType();
-#endif
-
         Font::SetSize(2);
 
+#ifdef MODEL7735
         DrawRecord(0, Storage::Get(num_top_record));
+#else
+        int drawing_records = 0;
+
+        int y = 0;
+
+        for (int i = num_top_record; i < Storage::GetCountRecords() && drawing_records < 4; i++, drawing_records++)
+        {
+            DrawRecord(y * 55, Storage::Get(i));
+
+            y++;
+        }
+#endif
 
         Font::SetSize(1);
-
-#ifdef MODEL7789
-        Font::RestoreType();
-#endif
     }
 
     static void FuncDraw_History()

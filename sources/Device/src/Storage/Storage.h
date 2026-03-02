@@ -22,6 +22,8 @@ struct Record
 // Здесь будут храниться принятые и непринятые вызовы
 namespace Storage
 {
+    static const uint MAX_RECORDS = 32;
+
     void Init();
 
     void Save();

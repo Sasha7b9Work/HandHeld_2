@@ -7,8 +7,6 @@
 
 namespace Storage
 {
-    static const uint MAX_RECORDS = 32;
-
     static Record records[MAX_RECORDS];
 
     static int num_records = 0;
@@ -66,7 +64,7 @@ void Storage::Append(const RTCDateTime &time, Source::E source, bool receive)
 }
 
 
-#ifndef WIN32
+#ifndef GUI
 Record *Storage::Get(int number)
 {
     return &records[number];
@@ -85,7 +83,7 @@ Record *Storage::Get(int number)
 #endif
 
 
-#ifndef WIN32
+#ifndef GUI
 int Storage::GetCountRecords()
 {
     int result = 0;
@@ -103,7 +101,7 @@ int Storage::GetCountRecords()
 #else
 int Storage::GetCountRecords()
 {
-    return 5;
+    return MAX_RECORDS;
 }
 #endif
 
