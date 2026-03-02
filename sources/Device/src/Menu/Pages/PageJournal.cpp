@@ -1,4 +1,4 @@
-п»ї// 2024/03/07 09:45:23 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+// 2024/03/07 09:45:23 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Menu/Pages/Pages.h"
 #include "Menu/MenuItemDef.h"
@@ -11,7 +11,7 @@
 
 namespace PageJournal
 {
-    static int num_top_record = 0;          // РќРѕРјРµСЂ Р·Р°РїРёСЃРё, РєРѕС‚РѕСЂР°СЏ СЂР°Р·РјРµС‰РµРЅР° РЅР°РІРµСЂС…Сѓ СЌРєСЂР°РЅР°
+    static int num_top_record = 0;          // Номер записи, которая размещена наверху экрана
 
     void FuncDraw_Closed();
 
@@ -72,7 +72,7 @@ namespace PageJournal
         }
 
         {
-            // Р РёСЃСѓРµРј РёРЅРґРёРєР°РєС‚РѕСЂ Р·Р°РїРѕР»РЅРµРЅРёСЏ СЃРїСЂР°РІР°
+            // Рисуем индикактор заполнения справа
 
             const int width = 10;
             const int dy = 10;
@@ -102,8 +102,8 @@ namespace PageJournal
         {
             Font::SetSize(2);
 
-            Text<>("Р–РЈР РќРђР›").WriteInCenter(0, SU::Y::Up(), Display::WIDTH, Color::WHITE);
-            Text<>("РџРЈРЎРў").WriteInCenter(0, SU::Y::Down(), Display::WIDTH);
+            Text<>("ЖУРНАЛ").WriteInCenter(0, SU::Y::Up(), Display::WIDTH, Color::WHITE);
+            Text<>("ПУСТ").WriteInCenter(0, SU::Y::Down(), Display::WIDTH);
 
             Font::SetSize(1);
         }
@@ -144,12 +144,12 @@ namespace PageJournal
     {
         Font::SetSize(2);
 
-        Text<>("%d Р’Р«Р—РћР’РћР’", Storage::GetCountRecords()).Write(10, 35, Color::WHITE);
+        Text<>("%d ВЫЗОВОВ", Storage::GetCountRecords()).Write(10, 35, Color::WHITE);
 
         Font::SetSize(1);
     }
 
-    DEF_PAGE_0(pageHistory, PageMain::self, "Р–РЈР РќРђР›",
+    DEF_PAGE_0(pageHistory, PageMain::self, "ЖУРНАЛ",
         nullptr, // FuncDraw_Closed,
         FuncDraw_History,
         Func_ActionKey
