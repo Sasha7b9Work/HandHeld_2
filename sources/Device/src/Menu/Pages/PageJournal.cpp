@@ -22,7 +22,8 @@ namespace PageJournal
         }
 
 #ifdef MODEL7789
-
+        Font::StoreType();
+        Font::SetSmallType();
 #endif
 
         int x = 0;
@@ -44,6 +45,7 @@ namespace PageJournal
         Font::SetSize(1);
 
 #ifdef MODEL7789
+        Font::RestoreType();
 #endif
     }
 
