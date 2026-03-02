@@ -14,6 +14,21 @@ namespace PageJournal
 
     void FuncDraw_Closed();
 
+    static void DrawRecord(int y, const Record *rec)
+    {
+        const RTCDateTime time = rec->time;
+
+        int x = 0;
+
+        Text<>("%d", num_top_record + 1).Write(x + 5, y + 15);
+
+        Text<>("%02d/%02d %02d:%02d",
+            time.Day, time.Month, time.Hour, time.Minute).Write(x + 55, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
+
+        Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).WriteInCenter(x, y + 50, Display::WIDTH);
+
+    }
+
     static void DrawRecords()
     {
         if (num_top_record >= Storage::GetCountRecords())
@@ -26,21 +41,9 @@ namespace PageJournal
         Font::SetSmallType();
 #endif
 
-        int x = 0;
-
-        const Record *rec = Storage::Get(num_top_record);
-        const RTCDateTime time = rec->time;
-
         Font::SetSize(2);
 
-        int y = 0;
-
-        Text<>("%d", num_top_record + 1).Write(x + 5, y + 15);
-
-        Text<>("%02d/%02d %02d:%02d",
-            time.Day, time.Month, time.Hour, time.Minute).Write(x + 55, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
-
-        Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).WriteInCenter(x, y + 50, Display::WIDTH);
+        DrawRecord(0, Storage::Get(num_top_record));
 
         Font::SetSize(1);
 
