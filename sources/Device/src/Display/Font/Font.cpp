@@ -349,7 +349,7 @@ int Char::Write(int x, int y) const
     {
         if (Font::CurrentType() == TypeFont::Small)
         {
-            x += 1;
+            x += 3;
         }
         else if (Font::CurrentType() == TypeFont::Main)
         {
@@ -397,9 +397,12 @@ int Char::Write(int x, int y) const
 
         x += width * Font::size;
 
-        if (Font::CurrentType() == TypeFont::Main)
+        if (symbol == '1')
         {
-            x += 2;
+            if (Font::CurrentType() == TypeFont::Main)
+            {
+                x += 2;
+            }
         }
 
         return x;
