@@ -10,13 +10,13 @@
 
 namespace PageJournal
 {
-    static int top_record = 0;
+    static int num_top_record = 0;          // Номер записи, которая размещена наверху экрана
 
     void FuncDraw_Closed();
 
-    static void DrawRecord()
+    static void DrawRecords()
     {
-        if (top_record >= Storage::GetCountRecords())
+        if (num_top_record >= Storage::GetCountRecords())
         {
             return;
         }
@@ -28,14 +28,14 @@ namespace PageJournal
 
         int x = 0;
 
-        const Record *rec = Storage::Get(top_record);
+        const Record *rec = Storage::Get(num_top_record);
         const RTCDateTime time = rec->time;
 
         Font::SetSize(2);
 
         int y = 0;
 
-        Text<>("%d", top_record + 1).Write(x + 5, y + 15);
+        Text<>("%d", num_top_record + 1).Write(x + 5, y + 15);
 
         Text<>("%02d/%02d %02d:%02d",
             time.Day, time.Month, time.Hour, time.Minute).Write(x + 55, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
@@ -62,7 +62,7 @@ namespace PageJournal
         }
         else
         {
-            DrawRecord();
+            DrawRecords();
         }
     }
 
@@ -74,20 +74,20 @@ namespace PageJournal
         }
         else if (action.key == Key::Up)
         {
-            top_record--;
+            num_top_record--;
         }
         else if (action.key == Key::Down)
         {
-            top_record++;
+            num_top_record++;
         }
 
-        if (top_record < 0)
+        if (num_top_record < 0)
         {
-            top_record = Storage::GetCountRecords() - 1;
+            num_top_record = Storage::GetCountRecords() - 1;
         }
-        else if (top_record >= Storage::GetCountRecords())
+        else if (num_top_record >= Storage::GetCountRecords())
         {
-            top_record = 0;
+            num_top_record = 0;
         }
 
         return true;
