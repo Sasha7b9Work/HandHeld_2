@@ -6,6 +6,7 @@
 #include "Display/Font/Font.h"
 #include "Utils/StringUtils.h"
 #include "Display/Display.h"
+#include "Display/Primitives.h"
 
 
 namespace PageJournal
@@ -22,10 +23,10 @@ namespace PageJournal
 
         int x = 0;
 
-        Text<>("%d", rec->number + 1).Write(x + 5, y + 15);
+        Text<>("%d", rec->number + 1).Write(x + 5, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
 
         Text<>("%02d/%02d %02d:%02d",
-            time.Day, time.Month, time.Hour, time.Minute).Write(x + 55, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
+            time.Day, time.Month, time.Hour, time.Minute).Write(x + 55, y + 15);
 
         Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).WriteInCenter(x, y + 50, Display::WIDTH);
 #else
@@ -34,12 +35,12 @@ namespace PageJournal
 
         int x = 20;
 
-        Text<>("%d", rec->number + 1).Write(x + 5, y + 15);
+        Text<>("%d", rec->number + 1).Write(x + 5, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
 
         x += 40;
 
         Text<>("%02d/%02d %02d:%02d",
-            time.Day, time.Month, time.Hour, time.Minute).Write(x, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
+            time.Day, time.Month, time.Hour, time.Minute).Write(x, y + 15);
 
         Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).Write(x + 20, y + 37);
 
@@ -68,6 +69,25 @@ namespace PageJournal
             DrawRecord(y * 55, Storage::Get(i));
 
             y++;
+        }
+
+        {
+            // Рисуем индикактор заполнения справа
+
+            const int width = 10;
+            const int dy = 10;
+            const int height = Display::HEIGHT - dy;
+
+            int x0 = Display::WIDTH - width - 10;
+            int y0 = dy / 2;
+
+            Rect(width, height).Draw(x0, y0, Color::GRAY);
+
+            {
+                int h = (int)((float)drawing_records * height / (float)Storage::GetCountRecords() + 0.5f);
+
+                Rect(width + 6, h).Fill(x0 - 3, y0);
+            }
         }
 #endif
 
