@@ -194,6 +194,12 @@ void Font::SetMainType()
 }
 
 
+TypeFont::E Font::CurrentType()
+{
+    return type;
+}
+
+
 void Font::SetSmallType()
 {
 #ifdef MODEL7735
@@ -338,6 +344,19 @@ int Char::Write(int x, int y) const
         return x + width * Font::size;
     }
 #else
+
+    if (symbol == '1')
+    {
+        if (Font::CurrentType() == TypeFont::Small)
+        {
+            x += 1;
+        }
+        else if (Font::CurrentType() == TypeFont::Main)
+        {
+            x += 7;
+        }
+    }
+
     if (Font::type == TypeFont::Small || Font::type == TypeFont::Main)
     {
         int height = Font::GetHeight();
@@ -376,7 +395,14 @@ int Char::Write(int x, int y) const
             }
         }
 
-        return x + width * Font::size;
+        x += width * Font::size;
+
+        if (Font::CurrentType() == TypeFont::Main)
+        {
+            x += 2;
+        }
+
+        return x;
     }
 #endif
 

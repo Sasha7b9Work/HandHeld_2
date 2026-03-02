@@ -25,6 +25,8 @@ namespace Font
     void SetMainType();
     void SetSmallType();
 
+    TypeFont::E CurrentType();
+
     // Сохраняем установленный тип, чтобы восстановить его позднее
     void StoreType();
     // Восстанавливаем ранее сохранённый тип

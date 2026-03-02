@@ -162,25 +162,7 @@ int Text<capacity>::Write(int x, int y) const
     {
         Char symbol(*pointer++);
 
-#ifdef MODEL7789
-
-        if (symbol.symbol == '1')
-        {
-            x += 7;
-        }
-
-#endif
-
         x = symbol.Write(x, y);
-
-#ifdef MODEL7789
-
-        if (symbol.symbol == '1')
-        {
-            x += 2;
-        }
-
-#endif
 
         x += Font::LetterSpacing(); //-V1026
     }
