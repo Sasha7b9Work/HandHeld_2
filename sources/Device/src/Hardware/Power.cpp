@@ -142,7 +142,7 @@ void Power::Draw()
     const int x = 121, y = 0;
     #define DRAW_SMALL Rect(5, 7).Fill(x - 4, y + 3)
 #else
-    const int x = Display::WIDTH - WIDTH, y = 0;
+    const int x = Display::WIDTH - WIDTH - 2, y = 2;
     #define DRAW_SMALL Rect(10, 14).Fill(x - 8, y + 6)
 #endif
 

@@ -86,7 +86,9 @@ namespace PageJournal
             {
                 int h = (int)((float)drawing_records * height / (float)Storage::GetCountRecords() + 0.5f);
 
-                Rect(width + 6, h).Fill(x0 - 3, y0);
+                float part = (float)num_top_record / (float)Storage::GetCountRecords();
+
+                Rect(width + 6, h).Fill(x0 - 3, y0 + part * height);
             }
         }
 #endif
