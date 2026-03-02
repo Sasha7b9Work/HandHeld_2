@@ -1,4 +1,4 @@
-﻿// 2023/04/17 14:03:38 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+// 2023/04/17 14:03:38 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Display/Font/Font.h"
 #include "Display/Display.h"
@@ -140,12 +140,16 @@ static const DFont *dfont = &font8;
 namespace Font
 {
 #ifdef MODEL7735
-    TypeFont::E type = TypeFont::_7;
+    static TypeFont::E type = TypeFont::_7;
 #else
-    TypeFont::E type = TypeFont::Main;
+    static TypeFont::E type = TypeFont::Main;
 #endif
 
+    static TypeFont::E stored_type = TypeFont::Count;
+
     static int size = 1;
+
+    static void SetType(TypeFont::E);
 }
 
 
@@ -200,6 +204,17 @@ void Font::SetSmallType()
 }
 
 
+void Font::StoreType()
+{
+    stored_type = type;
+}
+
+void Font::RestoreType()
+{
+    SetType(stored_type);
+}
+
+
 void Font::SetType(TypeFont::E _type)
 {
     type = _type;
@@ -238,7 +253,7 @@ int Font::GetHeight()
     {
     case TypeFont::_5:      return 5;
     case TypeFont::_7:      return 7;
-    case TypeFont::_Count:
+    case TypeFont::Count:
         break;
     }
 #else

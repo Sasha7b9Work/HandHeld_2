@@ -1,4 +1,4 @@
-﻿// 2023/04/17 13:30:31 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+// 2023/04/17 13:30:31 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Display/Font/FontBig.h"
 #include "Display/Font/FontMid.h"
@@ -15,16 +15,20 @@ struct TypeFont
         Small,
         Main,
 #endif
-        _Count
+        Count
     };
 };
 
 
 namespace Font
 {
-    void SetType(TypeFont::E);
     void SetMainType();
     void SetSmallType();
+
+    // Сохраняем установленный тип, чтобы восстановить его позднее
+    void StoreType();
+    // Восстанавливаем ранее сохранённый тип
+    void RestoreType();
 
     // Размер одного пикселя. Т.е. если 2, то размер символа будет в два раза больше оригинального
     void SetSize(int);
@@ -35,8 +39,6 @@ namespace Font
     int GetHeight();
 
     int GetWidth(uint8 symbol);
-
-    extern TypeFont::E type;
 
     // Расстояние между символами в пикселях
     int LetterSpacing();

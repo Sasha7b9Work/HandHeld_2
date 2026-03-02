@@ -21,6 +21,10 @@ namespace PageJournal
             return;
         }
 
+#ifdef MODEL7789
+
+#endif
+
         int x = 0;
 
         const Record *rec = Storage::Get(top_record);
@@ -38,6 +42,9 @@ namespace PageJournal
         Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).WriteInCenter(x, y + 50, Display::WIDTH);
 
         Font::SetSize(1);
+
+#ifdef MODEL7789
+#endif
     }
 
     static void FuncDraw_History()
