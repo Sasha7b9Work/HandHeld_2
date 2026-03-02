@@ -88,7 +88,7 @@ struct DataDateTime
     const Item *item;
     int8 *const field;          // Активное поле 0 - день, 1 - месяц, 2 - год
     RTCDateTime * const date_time;
-    const bool is_time;
+    const bool is_time;         // Если true, то храним время, иначе - дату
     const bool is_alarm;        // Если true - то настройка будильника
 };
 

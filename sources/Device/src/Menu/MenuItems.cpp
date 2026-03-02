@@ -229,8 +229,10 @@ void DateTime::Draw() const
         }
 #else
         const int y = 120;
+        const int dx = 95;
+        const int x0 = 30;
 
-        int x[3] = { 5, 58, 111 };
+        int x[3] = { x0, x0 + dx, x0 + dx * 2 };
 
         if (data->is_time)
         {
