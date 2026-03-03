@@ -93,14 +93,18 @@ void EXTI3_IRQHandler(void)
 
 void EXTI5_9_IRQHandler(void)
 {
-    CALLBACK_ON_KEY(EXTI_5, Key::Down)
-
     // Получено прерывание от приёмника
     if (SET == exti_interrupt_flag_get(EXTI_8))
     {
         PAN3060::CallbackOnIRQ();
 
         exti_interrupt_flag_clear(EXTI_8);
+    }
+
+    if (SET == exti_interrupt_flag_get(EXTI_5))
+    {
+        Keyboard::CallbackFromInterrupt(Key::Down);
+        exti_interrupt_flag_clear(EXTI_5);
     }
 }
 
