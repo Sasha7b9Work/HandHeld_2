@@ -97,6 +97,7 @@ namespace Keyboard
         bool prev_down;
         uint prev_time;             // Ѕудем обрабатывать кнопку только если прошло более определЄнного времени - антидребезг
         uint time_autorepeat;       // ¬ это врем€ было последнее нажатие. ≈сли 0 - кнопка не нажата
+                                    // ≈сли в старшем бите 1 - уже было одно срабатывание и нужно врем€ автоповтора уменьшить в два раза
     };
 
     static ButtonStruct buttons[Key::Count] =
@@ -196,9 +197,13 @@ void Keyboard::Update()
 
         if (button.time_autorepeat && button.prev_down)
         {
-            if (time - button.time_autorepeat >= 1000)
+            uint time_repeat = (_GET_BIT(button.time_autorepeat, 31)) ? 250     // ≈сли установлен старший бит - уже было одно автосрабатывание и нужно уменьшить врем€
+                : 1000;
+
+            if (time - (button.time_autorepeat & 0x7FFFFFFF) >= time_repeat)
             {
                 button.time_autorepeat = time;
+                _SET_BIT(button.time_autorepeat, 31);
 
                 AppendAction({ (Key::E)key, ActionType::Up });
             }
