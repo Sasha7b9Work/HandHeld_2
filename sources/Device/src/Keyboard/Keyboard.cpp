@@ -197,15 +197,26 @@ void Keyboard::Update()
 
         if (button.time_autorepeat && button.prev_down)
         {
-            uint time_repeat = (_GET_BIT(button.time_autorepeat, 31)) ? 250     // Если установлен старший бит - уже было одно автосрабатывание и нужно уменьшить время
-                : 1000;
+            bool is_down = button.button->IsDown();
 
-            if (time - (button.time_autorepeat & 0x7FFFFFFF) >= time_repeat)
+            if (!is_down)
             {
-                button.time_autorepeat = time;
-                _SET_BIT(button.time_autorepeat, 31);
+                button.prev_down = is_down;
+                button.time_autorepeat = 0;
+                button.prev_time = time;
+            }
+            else
+            {
+                uint time_repeat = (_GET_BIT(button.time_autorepeat, 31)) ? 250     // Если установлен старший бит - уже было одно автосрабатывание и нужно уменьшить время
+                    : 1000;
 
-                AppendAction({ (Key::E)key, ActionType::Up });
+                if (time - (button.time_autorepeat & 0x7FFFFFFF) >= time_repeat)
+                {
+                    button.time_autorepeat = time;
+                    _SET_BIT(button.time_autorepeat, 31);
+
+                    AppendAction({ (Key::E)key, ActionType::Up });
+                }
             }
         }
     }
