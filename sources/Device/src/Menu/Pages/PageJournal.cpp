@@ -88,7 +88,7 @@ namespace PageJournal
 
                 float part = (float)num_top_record / (float)Storage::GetCountRecords();
 
-                Rect(width + 6, h).Fill(x0 - 3, y0 + part * height);
+                Rect(width + 6, h).Fill(x0 - 3, (int)((float)y0 + part * height));
             }
         }
 #endif

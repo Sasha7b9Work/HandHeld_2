@@ -230,7 +230,7 @@ void Frame::OnButtonDownEvent(wxCommandEvent &event)
 
     Action action;
 
-    action.type = ActionType::_Down;
+    action.type = ActionType::Down;
 
     bool execute = false;
 

@@ -17,7 +17,7 @@ namespace SU
 #ifdef MODEL7735
             return 30;
 #else
-            return 70;
+            return 75;
 #endif
         }
 

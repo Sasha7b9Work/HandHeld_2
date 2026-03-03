@@ -20,7 +20,7 @@ struct ActionType
 {
     enum E
     {
-        _Down,
+        Down,
         Up,
         Count
     };
