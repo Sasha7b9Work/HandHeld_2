@@ -8,9 +8,13 @@
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Display/MonochromeBitmap.h"
-#include "Display/Pictures/1.bmp.inc"
 #include "Display/Primitives.h"
 #include "system.h"
+#ifdef MODEL7735
+    #include "Display/Pictures/1.bmp.inc"
+#else
+    #include "Display/Pictures/1_7789.bmp.inc"
+#endif
 
 
 namespace HAL_ADC
@@ -178,6 +182,10 @@ void Power::Draw()
     {
         Color::RED.SetAsCurrent();
 
+#ifdef MODEL7735
         MonochromeBitmap(bmp_zip_1).Draw(x, y, true);
+#else
+        MonochromeBitmap(bmp_zip_1_7789).Draw(x, y, false);
+#endif
     }
 }
