@@ -276,7 +276,7 @@ void Source::Queue::DeleteOld()
                 Remove(i, false);
 
                 //Установить таймаут свечения дисплея после окончания вызова
-                Keyboard::CallbackFromInterrupt();
+                Keyboard::CallbackFromInterrupt(Key::Count);
             }
         }
     }

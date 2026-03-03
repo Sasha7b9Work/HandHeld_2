@@ -152,19 +152,29 @@ void Keyboard::CallbackFromInterrupt(Key::E key)
     {
         uint time = TIME_MS;
 
-        if (time - buttons[key].prev_time > 250)
+        ButtonStruct &button = buttons[key];
+
+        if (time - button.prev_time > 250)
         {
+            bool is_down = button.button->IsDown();
+
+            if (button.prev_down != is_down)
+            {
+                button.prev_down = is_down;
+
 #ifdef MODEL7735
-            AppendAction({ key, ActionType::Up });
-            buttons[key].prev_time = time;
+                AppendAction({ key, ActionType::Up });
+                button.prev_time = time;
 #endif
 #ifdef MODEL7789
-            if (buttons[key].button->IsDown())
-            {
-                AppendAction({ key, ActionType::Up });
-            }
-            buttons[key].prev_time = time;
+
+                if (is_down)
+                {
+                    AppendAction({ key, ActionType::Up });
+                }
+                button.prev_time = time;
 #endif
+            }
         }
     }
 }

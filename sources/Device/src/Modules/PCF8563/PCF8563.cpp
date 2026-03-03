@@ -307,7 +307,7 @@ void PCF8563::Update()
 
             time_alarm = TIME_MS;
 
-            Keyboard::CallbackFromInterrupt();
+            Keyboard::CallbackFromInterrupt(Key::Count);
 
             if (ModeIndication::ConsistSound(gset.alarm.mode_indication))
             {

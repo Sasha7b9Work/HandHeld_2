@@ -101,11 +101,7 @@ void EXTI5_9_IRQHandler(void)
         exti_interrupt_flag_clear(EXTI_8);
     }
 
-    if (SET == exti_interrupt_flag_get(EXTI_5))
-    {
-        Keyboard::CallbackFromInterrupt(Key::Down);
-        exti_interrupt_flag_clear(EXTI_5);
-    }
+    CALLBACK_ON_KEY(EXTI_5, Key::Down);
 }
 
 
