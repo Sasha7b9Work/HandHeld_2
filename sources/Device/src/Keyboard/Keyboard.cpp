@@ -95,15 +95,16 @@ namespace Keyboard
     {
         Button *button;
         bool prev_down;
-        uint prev_time;     // Будем обрабатывать кнопку только если прошло более определённого времени - антидребезг
+        uint prev_time;             // Будем обрабатывать кнопку только если прошло более определённого времени - антидребезг
+        uint time_autorepeat;       // В это время было последнее нажатие. Если 0 - кнопка не нажата
     };
 
     static ButtonStruct buttons[Key::Count] =
     {
-        {&btnMenu, true, 0},
-        {&btnCancel, true, 0},
-        {&btnUp, true, 0},
-        {&btnDown, true, 0}
+        {&btnMenu, true, 0, 0 },
+        {&btnCancel, true, 0, 0 },
+        {&btnUp, true, 0, 0 },
+        {&btnDown, true, 0, 0 }
     };
 
     static const int MAX_ACTIONS = 10;
@@ -171,9 +172,35 @@ void Keyboard::CallbackFromInterrupt(Key::E key)
                 if (is_down)
                 {
                     AppendAction({ key, ActionType::Up });
+                    button.time_autorepeat = time;
+                }
+                else
+                {
+                    button.time_autorepeat = 0;
                 }
                 button.prev_time = time;
 #endif
+            }
+        }
+    }
+}
+
+
+void Keyboard::Update()
+{
+    uint time = TIME_MS;
+
+    for (int key = 0; key < Key::Count; key++)
+    {
+        ButtonStruct &button = buttons[key];
+
+        if (button.time_autorepeat && button.prev_down)
+        {
+            if (time - button.time_autorepeat >= 1000)
+            {
+                button.time_autorepeat = time;
+
+                AppendAction({ (Key::E)key, ActionType::Up });
             }
         }
     }

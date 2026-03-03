@@ -98,6 +98,8 @@ void Device::Update()
     SaveSettings();
 
     Power::Update();
+
+    Keyboard::Update();
 }
 
 

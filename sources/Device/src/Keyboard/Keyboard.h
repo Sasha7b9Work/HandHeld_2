@@ -40,6 +40,8 @@ namespace Keyboard
 {
     void Init();
 
+    void Update();
+
     void CallbackFromInterrupt(Key::E);
 
     bool IsDown(Key::E);
