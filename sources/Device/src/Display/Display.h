@@ -40,7 +40,7 @@ namespace Display
     bool IsOldType();
 
     // Нарисовать одно/много строчный текст на весь экрна (страница меню или вызов)
-    void DrawTitleOnFullScreen(const Text<> &, const Color &);
+    void DrawTitleOnFullScreen(const Text<> &);
 
     namespace Buffer
     {

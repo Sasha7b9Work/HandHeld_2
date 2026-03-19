@@ -5,6 +5,9 @@
 #include "Settings/Settings.h"
 
 
+TimeMeterMS Color::meter_source_flash;
+
+
 uint16 Color::colors[16] =
 {
     0x0000,   // WHITE
@@ -139,6 +142,45 @@ uint16 Color::Make(uint8 r, uint8 g, uint8 b)
     
     #endif
 #endif
+
+    return result;
+}
+
+
+Color Color::Background()
+{
+    Color result = Color::BLACK;
+
+    if (Source::GetCountReceived())
+    {
+        Color color_source = gset.sources[Source::Current()].color;
+
+        if ((meter_source_flash.ElapsedTime() / 1000) % 2)
+        {
+            result = color_source;
+        }
+        else
+        {
+            result = Color::Contrast(color_source.value);
+        }
+    }
+    else
+    {
+        meter_source_flash.Reset();
+    }
+
+    return result;
+}
+
+
+Color Color::Draw()
+{
+    Color result = Color::GREEN;
+
+    if (Source::GetCountReceived())
+    {
+        result = Color::Contrast(Background().value);
+    }
 
     return result;
 }

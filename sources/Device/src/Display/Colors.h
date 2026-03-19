@@ -1,5 +1,6 @@
 // 2024/03/02 09:35:57 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
+#include "Hardware/Timer.h"
 
 
 struct Color
@@ -54,6 +55,10 @@ struct Color
         return  (((color) >> 11) & 0x1f);
     }
 
+    // Во время действующего приёма эти цвета изменяются. Поэтому вычисляются здесь
+    static Color Background();
+    static Color Draw();
+
     static uint8 GetGreen(uint color)
     {
         return (((color) >> 5) & 0x3f);
@@ -63,4 +68,8 @@ struct Color
     {
         return ((color) & 0x1f);
     }
+
+private:
+
+    static TimeMeterMS meter_source_flash;  // Используется для изменения цвета при приёме
 };

@@ -126,7 +126,6 @@ void Beeper::Init()
 
 void Beeper::Play(Melody::E type, uint8 _volume)
 {
-    return;
     if (is_running)
     {
         return;
