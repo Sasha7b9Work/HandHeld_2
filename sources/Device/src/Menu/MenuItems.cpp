@@ -47,26 +47,7 @@ void Page::Draw() const
     }
     else
     {
-        Font::SetSize(2);
-
-        Text<> title = data->item->Title();
-
-        int num_words = SU::NumWordsInString(title.c_str());
-
-        if (num_words == 1)
-        {
-            title.WriteInCenter(0, SU::Y::Center(), Display::WIDTH, Color::GREEN);
-        }
-        else if(num_words == 2)
-        {
-            char buffer[32];
-
-            Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, SU::Y::Up(), Display::WIDTH, Color::GREEN);
-
-            Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, SU::Y::Down(), Display::WIDTH);
-        }
-
-        Font::SetSize(1);
+        Display::DrawTitleOnFullScreen(data->item->Title());
 
         if (data->func_draw_closed)
         {

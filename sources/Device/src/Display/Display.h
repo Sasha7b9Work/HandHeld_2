@@ -2,6 +2,7 @@
 #pragma once
 #include "Display/Colors.h"
 #include "Display/Font/Font.h"
+#include "Display/Text.h"
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
@@ -37,6 +38,9 @@ namespace Display
     uint TimeEnabled();
 
     bool IsOldType();
+
+    // Нарисовать одно/много строчный текст на весь экрна (страница меню или вызов)
+    void DrawTitleOnFullScreen(const Text<> &);
 
     namespace Buffer
     {

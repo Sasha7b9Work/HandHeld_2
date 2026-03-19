@@ -56,6 +56,8 @@ void Device::Init()
     PMS150G::Init();
 
     LED::ShortWhiteBlink();
+
+    Source::Receive(Source::DoorBell);
 }
 
 
