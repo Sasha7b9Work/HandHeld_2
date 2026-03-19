@@ -47,7 +47,7 @@ void Page::Draw() const
     }
     else
     {
-        Display::DrawTitleOnFullScreen(data->item->Title());
+        Display::DrawTitleOnFullScreen(data->item->Title(), Color::GREEN);
 
         if (data->func_draw_closed)
         {

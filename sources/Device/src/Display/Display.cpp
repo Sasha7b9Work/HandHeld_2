@@ -280,28 +280,7 @@ void Display::DrawScene()
             }
         }
 
-//        Font::SetSize(2);
-//
-//        pchar name = Source::Name(Source::Current());
-//
-//        int num_words = SU::NumWordsInString(name);
-//
-//        if (num_words == 1)
-//        {
-//            Text<>(name).WriteInCenter(0, y, Display::WIDTH);
-//        }
-//        else if (num_words == 2)
-//        {
-//            char buffer[32];
-//
-//            Text<>(SU::GetWordFromString(name, 1, buffer)).WriteInCenter(0, y - 10, Display::WIDTH);
-//
-//            Text<>(SU::GetWordFromString(name, 2, buffer)).WriteInCenter(0, y + 15, Display::WIDTH);
-//        }
-//
-//        Font::SetSize(1);
-
-        Display::DrawTitleOnFullScreen(Text<>(Source::Name(Source::Current())));
+        Display::DrawTitleOnFullScreen(Text<>(Source::Name(Source::Current())), Color::GREEN);
     }
     else
     {
@@ -330,7 +309,7 @@ void Display::DrawScene()
 }
 
 
-void Display::DrawTitleOnFullScreen(const Text<> &title)
+void Display::DrawTitleOnFullScreen(const Text<> &title, const Color &color)
 {
     Font::SetSize(2);
 
@@ -338,13 +317,13 @@ void Display::DrawTitleOnFullScreen(const Text<> &title)
 
     if (num_words == 1)
     {
-        title.WriteInCenter(0, SU::Y::Center(), Display::WIDTH, Color::GREEN);
+        title.WriteInCenter(0, SU::Y::Center(), Display::WIDTH, color);
     }
     else if (num_words == 2)
     {
         char buffer[32];
 
-        Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, SU::Y::Up(), Display::WIDTH, Color::GREEN);
+        Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, SU::Y::Up(), Display::WIDTH, color);
 
         Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, SU::Y::Down(), Display::WIDTH);
     }
