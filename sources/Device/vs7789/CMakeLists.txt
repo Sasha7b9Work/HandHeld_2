@@ -10,9 +10,12 @@ include_directories(
     ../../common/VS_KEIL
     ../src/Hardware/HAL
     ../src/Hardware/HAL/GD303
+    ../src/Hardware/HAL/GD23
     ../src
     ../../common/GD32F30x_Firmware_Library/Firmware/CMSIS/GD/GD32F30x/Include
     ../../common/GD32F30x_Firmware_Library/Firmware/GD32F30x_standard_peripheral/Include
+#    ../../common/GD32E23x_Firmware_Library/Firmware/CMSIS/GD/GD32E23x/Include
+#    ../../common/GD32E23x_Firmware_Library/Firmware/GD32E23x_standard_peripheral/Include
 )
 
 add_definitions(-DGD32F30X_HD -DMODEL7789)
