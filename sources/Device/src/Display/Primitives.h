@@ -37,6 +37,7 @@ struct Rect
     Rect(int w, int h) : width(w), height(h)
     {
     }
+    void Draw(int x, int y) const;
     void Draw(int x, int y, const Color &) const;
     void Fill(int x, int y) const;
     void Fill(int x, int y, const Color &) const;

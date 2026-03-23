@@ -260,7 +260,7 @@ void Display::DrawScene()
         {
             if (Source::IsReceived((Source::E)i))
             {
-                Source((Source::E)i).DrawIcon(11 + i * 30, 8);
+                Source((Source::E)i).DrawIcon(i);
             }
         }
 

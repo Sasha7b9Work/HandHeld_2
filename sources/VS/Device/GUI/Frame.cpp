@@ -8,6 +8,7 @@
 #include "Settings/Source.h"
 #include "GUI/Controls/Painter.h"
 #include "GUI/Controls/PainterVibrator.h"
+#include "GUI/Controls/PainterMelody.h"
 #include "Hardware/Timer.h"
 #include "Display/Display.h"
 #include "Modules/ST7735_89/ST7735_89.h"
@@ -179,6 +180,8 @@ Frame::Frame(const wxString &title)
     PainterVibrator::Create(this, Painter::size_indicator);
 
     PainterVibrator::self->SetPosition({ 550, 120 });
+
+    PainterMelody::Create(this, Painter::size_indicator);
 
     timer.StartOnce(25);
 }

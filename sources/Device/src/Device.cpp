@@ -56,6 +56,12 @@ void Device::Init()
     PMS150G::Init();
 
     LED::ShortWhiteBlink();
+
+    Source::Receive(Source::DoorBell);
+    Source::Receive(Source::Mobile);
+    Source::Receive(Source::PhoneHome);
+    Source::Receive(Source::Intercom);
+    Source::Receive(Source::Microphone);
 }
 
 

@@ -87,9 +87,9 @@ int Source::Queue::size = 0;
 
 Source::Queue::Time Source::Queue::time_recv[Source::Count];
 
-void Source::DrawIcon(int x, int y, const Color &color) const
+void Source::DrawIcon(int pos_on_display) const
 {
-    sourceIcons[value]->Draw(x, y, color);
+    sourceIcons[value]->Draw(pos_on_display);
 }
 
 

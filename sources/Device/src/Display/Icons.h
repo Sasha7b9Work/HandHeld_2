@@ -5,37 +5,39 @@
 
 struct Icon
 {
-    virtual void Draw(int x, int y, const Color &) const;
+    void Draw(int pos_on_display) const;
+
+    virtual void Draw(int x, int y) const = 0;
 };
 
 
 struct IconSourceDoorBell : public Icon
 {
-    virtual void Draw(int x, int y, const Color &) const override;
+    virtual void Draw(int x, int y) const override;
 };
 
 
 struct IconSourceMobile : public Icon
 {
-    virtual void Draw(int x, int y, const Color &) const override;
+    virtual void Draw(int x, int y) const override;
 };
 
 
 struct IconSourcePhone : public Icon
 {
-    virtual void Draw(int x, int y, const Color &) const override;
+    virtual void Draw(int x, int y) const override;
 };
 
 
 struct IconSourceIntercom : public Icon
 {
-    virtual void Draw(int x, int y, const Color &) const override;
+    virtual void Draw(int x, int y) const override;
 };
 
 
 struct IconSourceSensor : public Icon
 {
-    virtual void Draw(int x, int y, const Color &) const override;
+    virtual void Draw(int x, int y) const override;
 };
 
 

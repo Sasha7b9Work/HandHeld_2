@@ -20,7 +20,7 @@ struct Source
     Source(E v) : value(v) { }
 
     // Нарисовать иконку для оповещения
-    void DrawIcon(int x, int y, const Color &color = Color::NUMBER) const;
+    void DrawIcon(int pos_on_display) const;
 
     // Вызывается при получении сигнала
     static void Receive(E);

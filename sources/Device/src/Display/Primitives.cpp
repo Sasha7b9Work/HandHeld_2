@@ -106,6 +106,12 @@ void Rect::Draw(int x, int y, const Color &color) const
 {
     color.SetAsCurrent();
 
+    Draw(x, y);
+}
+
+
+void Rect::Draw(int x, int y) const
+{
     HLine(width).Draw(x, y);
     HLine(width).Draw(x, y + height - 1);
     VLine(height).Draw(x, y);

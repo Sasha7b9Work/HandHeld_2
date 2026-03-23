@@ -23,49 +23,44 @@ Icon *sourceIcons[Source::Count] =
 };
 
 
-void Icon::Draw(int x, int y, const Color &color) const
+void Icon::Draw(int pos_on_display) const
 {
-    int size = 17;
+    const int size = 17;
 
-    Rect(size, size).Draw(x, y, color);
+    int x = 11 + pos_on_display * 30;
+    int y = 8;
+
+    Rect(size, size).Draw(x, y);
+
+    Draw(x, y);
 }
 
 
-void IconSourceDoorBell::Draw(int x, int y, const Color &color) const
+void IconSourceDoorBell::Draw(int x, int y) const
 {
-    Icon::Draw(x, y, color);
-
-    Text<>("«‚").Write(x + 3, y + 4, color);
+    Text<>("«‚").Write(x + 3, y + 4);
 }
 
 
-void IconSourceMobile::Draw(int x, int y, const Color &color) const
+void IconSourceMobile::Draw(int x, int y) const
 {
-    Icon::Draw(x, y, color);
-
-    Text<>("“Ï").Write(x + 3, y + 4, color);
+    Text<>("“Ï").Write(x + 3, y + 4);
 }
 
 
-void IconSourcePhone::Draw(int x, int y, const Color &color) const
+void IconSourcePhone::Draw(int x, int y) const
 {
-    Icon::Draw(x, y, color);
-
-    Text<>("“‰").Write(x + 3, y + 4, color);
+    Text<>("“‰").Write(x + 3, y + 4);
 }
 
 
-void IconSourceIntercom::Draw(int x, int y, const Color &color) const
+void IconSourceIntercom::Draw(int x, int y) const
 {
-    Icon::Draw(x, y, color);
-
-    Text<>("ƒÏ").Write(x + 3, y + 4, color);
+    Text<>("ƒÏ").Write(x + 3, y + 4);
 }
 
 
-void IconSourceSensor::Draw(int x, int y, const Color &color) const
+void IconSourceSensor::Draw(int x, int y) const
 {
-    Icon::Draw(x, y, color);
-
-    Text<>("¿Í").Write(x + 3, y + 4, color);
+    Text<>("¿Í").Write(x + 3, y + 4);
 }
