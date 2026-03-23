@@ -254,6 +254,12 @@ void Display::DrawScene()
     }
     else if (Source::GetCountReceived())
     {
+#ifdef MODEL7789
+        int offset_y = Source::GetCountReceived() > 1 ? 40 : 0;
+#else
+        int offset_y = Source::GetCountReceived() > 1 ? 10 : 0;
+#endif
+
         Color::Draw().SetAsCurrent();
 
         for (int i = 0; i < Source::Count; i++)
@@ -264,7 +270,7 @@ void Display::DrawScene()
             }
         }
 
-        Display::DrawTitleOnFullScreen(Text<>(Source::Name(Source::Current())));
+        Display::DrawTitleOnFullScreen(Text<>(Source::Name(Source::Current())), offset_y);
     }
     else
     {
@@ -293,7 +299,7 @@ void Display::DrawScene()
 }
 
 
-void Display::DrawTitleOnFullScreen(const Text<> &title)
+void Display::DrawTitleOnFullScreen(const Text<> &title, int offset_y)
 {
     Font::SetSize(2);
 
@@ -301,15 +307,15 @@ void Display::DrawTitleOnFullScreen(const Text<> &title)
 
     if (num_words == 1)
     {
-        title.WriteInCenter(0, SU::Y::Center(), Display::WIDTH);
+        title.WriteInCenter(0, SU::Y::Center() + offset_y, Display::WIDTH);
     }
     else if (num_words == 2)
     {
         char buffer[32];
 
-        Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, SU::Y::Up(), Display::WIDTH);
+        Text<>(SU::GetWordFromString(title.c_str(), 1, buffer)).WriteInCenter(0, SU::Y::Up() + offset_y, Display::WIDTH);
 
-        Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, SU::Y::Down(), Display::WIDTH);
+        Text<>(SU::GetWordFromString(title.c_str(), 2, buffer)).WriteInCenter(0, SU::Y::Down() + offset_y, Display::WIDTH);
     }
 
     Font::SetSize(1);

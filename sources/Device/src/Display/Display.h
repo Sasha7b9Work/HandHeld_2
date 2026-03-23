@@ -40,7 +40,8 @@ namespace Display
     bool IsOldType();
 
     // Нарисовать одно/много строчный текст на весь экрна (страница меню или вызов)
-    void DrawTitleOnFullScreen(const Text<> &);
+    // offset_y - смещение по y относительно дефолтного (применяется при индикации притятых вызовов, если вверху рисуются иконки)
+    void DrawTitleOnFullScreen(const Text<> &, int offset_y);
 
     namespace Buffer
     {
