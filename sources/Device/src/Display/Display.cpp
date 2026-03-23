@@ -262,11 +262,14 @@ void Display::DrawScene()
 
         Color::Draw().SetAsCurrent();
 
-        for (int i = 0; i < Source::Count; i++)
+        if (Source::GetCountReceived() > 1)
         {
-            if (Source::IsReceived((Source::E)i))
+            for (int i = 0; i < Source::Count; i++)
             {
-                Source((Source::E)i).DrawIcon(i);
+                if (Source::IsReceived((Source::E)i))
+                {
+                    Source((Source::E)i).DrawIcon(i);
+                }
             }
         }
 

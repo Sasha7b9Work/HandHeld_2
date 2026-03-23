@@ -25,10 +25,16 @@ Icon *sourceIcons[Source::Count] =
 
 void Icon::Draw(int pos_on_display) const
 {
+#ifdef MODEL7789
+    const int size = 46;
+    const int dX = 15;
+    int x = 11 + pos_on_display * (size + dX);
+    int y = 11;
+#else
     const int size = 17;
-
     int x = 11 + pos_on_display * 30;
     int y = 8;
+#endif
 
     Rect(size, size).Draw(x, y);
 
