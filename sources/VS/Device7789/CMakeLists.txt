@@ -1,6 +1,6 @@
 # (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 
-project (Device)
+project (Device7789)
 
 set(CMAKE_UNITY_BUILD ON)
 
