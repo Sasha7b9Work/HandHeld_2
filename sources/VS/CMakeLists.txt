@@ -9,4 +9,5 @@ set (TARGET_NAME HandHels-GUI)
 
 set(CMAKE_UNITY_BUILD ON)
 
+add_subdirectory(Device7735)
 add_subdirectory(Device7789)
