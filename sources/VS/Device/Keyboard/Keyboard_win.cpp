@@ -67,3 +67,9 @@ void Keyboard::CallbackFromInterrupt(Key::E /* = Key::Count */)
 {
 
 }
+
+
+void Keyboard::Update()
+{
+
+}
