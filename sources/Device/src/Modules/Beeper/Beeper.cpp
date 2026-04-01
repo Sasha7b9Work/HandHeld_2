@@ -5,6 +5,7 @@
 #include "Modules/PCF8563/PCF8563.h"
 #include "Settings/Settings.h"
 #include "Hardware/HAL/HAL_PINS.h"
+#include "Hardware/HAL/HAL.h"
 #include <cmath>
 #ifdef GUI
     #include "GUI/Controls/PainterMelody.h"
@@ -169,7 +170,6 @@ void Sound::Start()
 
 void Beeper::Update()
 {
-#ifdef SOUND_ENABELD
 
 #ifdef GUI
 
@@ -177,17 +177,18 @@ void Beeper::Update()
 
 #else
 
-    if (need_running)
+    if (!HAL::IsDebugBoard())
     {
-        if (TIME_MS >= time_start)
+        if (need_running)
         {
-            Sound::Start();
+            if (TIME_MS >= time_start)
+            {
+                Sound::Start();
 
-            need_running = false;
+                need_running = false;
+            }
         }
     }
-
-#endif
 
 #endif
 }

@@ -2,6 +2,8 @@
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/HAL/systick.h"
+#include "Utils/Math.h"
+#include <cstring>
 #include "system.h"
 
 
@@ -9,6 +11,8 @@ namespace HAL
 {
     // Сделать все порты выходами и записать в них ноль
     static void AllPinsToOutput();
+
+    static uint GetUID();
 }
 
 
@@ -120,4 +124,31 @@ void syscfg_exti_line_clear(uint8 exti_pin)
 }
 
 #endif
+
+
+bool HAL::IsDebugBoard()
+{
+    volatile uint uid = GetUID();
+    
+    return uid == 0xAB4EF711;
+}
+
+
+uint HAL::GetUID()
+{
+    uint address =
+#ifdef MODEL7789
+        0x1FFFF7E8;
+#else
+        0x1FFFF7AC;
+#endif
+
+    uint *pointer = (uint *)address;
+
+    uint8 buffer[12];
+
+    std::memcpy(buffer, pointer, 12);
+
+    return Math::CalculateCRC32(buffer, 12);
+}
 

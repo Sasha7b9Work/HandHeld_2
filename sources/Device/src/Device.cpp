@@ -57,11 +57,14 @@ void Device::Init()
 
     LED::ShortWhiteBlink();
 
-    Source::Receive(Source::DoorBell);
-    Source::Receive(Source::Mobile);
-    Source::Receive(Source::PhoneHome);
-    Source::Receive(Source::Intercom);
-    Source::Receive(Source::Microphone);
+    if (HAL::IsDebugBoard())
+    {
+        Source::Receive(Source::DoorBell);
+        Source::Receive(Source::Mobile);
+        Source::Receive(Source::PhoneHome);
+        Source::Receive(Source::Intercom);
+        Source::Receive(Source::Microphone);
+    }
 }
 
 

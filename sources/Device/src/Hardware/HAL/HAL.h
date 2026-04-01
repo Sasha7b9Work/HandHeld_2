@@ -45,6 +45,8 @@ namespace HAL
     void Init();
 
     void DeInit();
+
+    bool IsDebugBoard();
 }
 
 
