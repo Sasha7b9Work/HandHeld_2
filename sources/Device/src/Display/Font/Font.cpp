@@ -4,7 +4,6 @@
 #include "Display/Display.h"
 #include "Display/Font/fontGostAU16B.inc"
 #include "Display/Font/fontGostB28B.inc"
-//#include "Display/Font/fontGostB36B.inc"
 #include "Display/Font/fontGostB48B.inc"
 #include "Display/Text.h"
 #include "Display/Primitives.h"

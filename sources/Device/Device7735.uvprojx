@@ -876,6 +876,21 @@
               <FileType>5</FileType>
               <FilePath>.\src\Display\Font\font8.inc</FilePath>
             </File>
+            <File>
+              <FileName>fontGostAU16B.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\fontGostAU16B.inc</FilePath>
+            </File>
+            <File>
+              <FileName>fontGostB28B.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\fontGostB28B.inc</FilePath>
+            </File>
+            <File>
+              <FileName>fontGostB48B.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\fontGostB48B.inc</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2033,6 +2048,21 @@
               <FileName>font8.inc</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\Display\Font\font8.inc</FilePath>
+            </File>
+            <File>
+              <FileName>fontGostAU16B.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\fontGostAU16B.inc</FilePath>
+            </File>
+            <File>
+              <FileName>fontGostB28B.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\fontGostB28B.inc</FilePath>
+            </File>
+            <File>
+              <FileName>fontGostB48B.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Display\Font\fontGostB48B.inc</FilePath>
             </File>
           </Files>
         </Group>
