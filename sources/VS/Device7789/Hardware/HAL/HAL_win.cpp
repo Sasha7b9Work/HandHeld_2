@@ -18,14 +18,13 @@ void ModeClock::LeaveSleepMode()
 }
 
 
-//void ModeClock::LeaveDeepSleep()
-//{
-//
-//}
-
-
 void HAL::Init()
 {
     HAL_ROM::Init();
 }
 
+
+bool HAL::IsDebugBoard()
+{
+    return true;
+}
