@@ -3,7 +3,8 @@
 #include "Display/Font/Font.h"
 #include "Display/Display.h"
 #include "Display/Font/fontGostAU16B.inc"
-#include "Display/Font/fontGostB36B.inc"
+#include "Display/Font/fontGostB28B.inc"
+//#include "Display/Font/fontGostB36B.inc"
 #include "Display/Font/fontGostB48B.inc"
 #include "Display/Text.h"
 #include "Display/Primitives.h"
@@ -256,7 +257,7 @@ void Font::SetType(TypeFont::E _type)
     }
     else if (_type == TypeFont::Middle)
     {
-        font = fontGostB36B;
+        font = fontGostB28B;
     }
 #endif
 }

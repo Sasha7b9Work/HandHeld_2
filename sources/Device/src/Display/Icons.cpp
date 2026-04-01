@@ -39,7 +39,7 @@ void Icon::Draw(int pos_on_display) const
     Rect(size, size).Draw(x, y);
 
 #ifdef MODEL7789
-    y -= 1;
+    y += 6;
 #endif
 
     Draw(x, y);
@@ -48,18 +48,30 @@ void Icon::Draw(int pos_on_display) const
 
 void IconSourceDoorBell::Draw(int x, int y) const
 {
+#ifdef MODEL7789
+    x += 5;
+#endif
+
     Text<>("«‚").Write(x + 3, y + 4);
 }
 
 
 void IconSourceMobile::Draw(int x, int y) const
 {
+#ifdef MODEL7789
+    x += 1;
+#endif
+
     Text<>("“Ï").Write(x + 3, y + 4);
 }
 
 
 void IconSourcePhone::Draw(int x, int y) const
 {
+#ifdef MODEL7789
+    x += 2;
+#endif
+
     Text<>("“‰").Write(x + 3, y + 4);
 }
 
@@ -72,5 +84,9 @@ void IconSourceIntercom::Draw(int x, int y) const
 
 void IconSourceSensor::Draw(int x, int y) const
 {
+#ifdef MODEL7789
+    x += 3;
+#endif
+
     Text<>("¿Í").Write(x + 3, y + 4);
 }

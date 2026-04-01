@@ -21,7 +21,7 @@ include_directories(
 
 link_directories(../../generated/ThirdParty/lib/vc_dll)
 
-add_definitions(-DGD32F30X_HD -DWXUSINGDLL -DGUI -DDEVICE -DMODEL7789)
+add_definitions(-DGD32F30X_HD -DWXUSINGDLL -DGUI -DDEVICE -DMODEL7735)
 
 if(WIN32)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
