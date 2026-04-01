@@ -2,7 +2,8 @@
 #include "defines.h"
 #include "Display/Font/Font.h"
 #include "Display/Display.h"
-#include "Display/Font/fontGOSTAU16BOLD.inc"
+#include "Display/Font/fontGostAU16B.inc"
+#include "Display/Font/fontGostB36B.inc"
 #include "Display/Font/fontGostB48B.inc"
 #include "Display/Text.h"
 #include "Display/Primitives.h"
@@ -145,7 +146,8 @@ namespace Font
     static TypeFont::E type = TypeFont::Main;
 #endif
 
-    static TypeFont::E stored_type = TypeFont::Count;
+    static TypeFont::E stored_types[5] = { TypeFont::Count };
+    static int num_stored_types = 0;
 
     static int size = 1;
 
@@ -212,12 +214,12 @@ void Font::SetSmallType()
 
 void Font::StoreType()
 {
-    stored_type = type;
+    stored_types[num_stored_types++] = type;
 }
 
 void Font::RestoreType()
 {
-    SetType(stored_type);
+    SetType(stored_types[--num_stored_types]);
 }
 
 
@@ -237,7 +239,7 @@ void Font::SetType(TypeFont::E _type)
 #else
     if (_type == TypeFont::Small)
     {
-        font = fontGOSTAU16BOLD;
+        font = fontGostAU16B;
     }
     else if (_type == TypeFont::Main)
     {

@@ -9,7 +9,7 @@
     Offset x - -1
     Offset y - -5
 */
-const unsigned char fontGOSTAU16BOLD[3577] =
+const unsigned char fontGostAU16B[3577] =
 {
 /* 0x00 */   0x00, 0x00,
 /* 0x01 */   0x00, 0x00,

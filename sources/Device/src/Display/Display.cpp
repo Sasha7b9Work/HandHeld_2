@@ -15,6 +15,7 @@
 #include "Display/Text.h"
 #include "Utils/FPS.h"
 #include "Display/Primitives.h"
+#include "Display/Font/Font.h"
 
 
 namespace Display
@@ -264,6 +265,9 @@ void Display::DrawScene()
 
         if (Source::GetCountReceived() > 1)
         {
+            Font::StoreType();
+            Font::SetSmallType();
+
             for (int i = 0; i < Source::Count; i++)
             {
                 if (Source::IsReceived((Source::E)i))
@@ -271,6 +275,8 @@ void Display::DrawScene()
                     Source((Source::E)i).DrawIcon(i);
                 }
             }
+
+            Font::RestoreType();
         }
 
         Display::DrawTitleOnFullScreen(Text<>(Source::Name(Source::Current())), offset_y);
