@@ -37,6 +37,11 @@ OF SUCH DAMAGE.
 
 #include "gd32f30x.h"
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wpadded"
+#endif
+
 /* DMA definitions */
 #define DMA0                            (DMA_BASE)               /*!< DMA0 base address */
 #define DMA1                            (DMA_BASE + 0x0400U)     /*!< DMA1 base address */
@@ -278,5 +283,9 @@ void dma_interrupt_flag_clear(uint32_t dma_periph, dma_channel_enum channelx, ui
 void dma_interrupt_enable(uint32_t dma_periph, dma_channel_enum channelx, uint32_t source);
 /* disable DMA interrupt */
 void dma_interrupt_disable(uint32_t dma_periph, dma_channel_enum channelx, uint32_t source);
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic pop
+#endif
 
 #endif /* GD32F30X_DMA_H */

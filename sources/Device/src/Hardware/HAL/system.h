@@ -3,6 +3,7 @@
 #ifdef MODEL7789
 
 #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
     #pragma clang diagnostic ignored "-Wdeprecated-register"
     #pragma clang diagnostic ignored "-Wsign-conversion"
@@ -11,6 +12,11 @@
 #endif
 
     #include "gd32f30x.h"
+    
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic pop
+#endif
+
 #endif
 
 #ifdef MODEL7735

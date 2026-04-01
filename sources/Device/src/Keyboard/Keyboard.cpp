@@ -7,6 +7,11 @@
 #include "system.h"
 
 
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic ignored "-Wsign-conversion"
+#endif
+
+
 namespace Keyboard
 {
     struct Button

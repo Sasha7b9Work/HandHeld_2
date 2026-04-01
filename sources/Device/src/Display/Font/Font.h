@@ -7,11 +7,11 @@ struct TypeFont
     enum E
     {
 #ifdef MODEL7735
-        _5,
-        _7,
+        _5,         // SmallType    font5.inc
+        _7,         // MainType     font8.inc
 #else
-        Small,
-        Main,
+        Small,      // SmallType    fontGOSTAU16BOLD.inc
+        Main,       // MainType     fontGostB48B.inc
 #endif
         Count
     };
@@ -20,8 +20,8 @@ struct TypeFont
 
 namespace Font
 {
-    void SetMainType();
     void SetSmallType();
+    void SetMainType();
 
     TypeFont::E CurrentType();
 

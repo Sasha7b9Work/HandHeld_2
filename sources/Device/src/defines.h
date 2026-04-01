@@ -32,6 +32,8 @@
     #pragma clang diagnostic ignored "-Wdeprecated-register"
     #pragma clang diagnostic ignored "-Wmissing-prototypes"
     #pragma clang diagnostic ignored "-Wmissing-variable-declarations"
+    #pragma clang diagnostic ignored "-Wshift-sign-overflow"
+    #pragma clang diagnostic ignored "-Wweak-vtables"
 #endif
 
 

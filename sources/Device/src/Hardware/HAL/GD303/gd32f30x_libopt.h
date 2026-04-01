@@ -36,8 +36,8 @@ OF SUCH DAMAGE.
 #define GD32E23X_LIBOPT_H
 
 #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wold-style-cast"
-#else
 #endif
 
 #include "gd32f30x_adc.h"
@@ -59,5 +59,10 @@ OF SUCH DAMAGE.
 #include "gd32f30x_wwdgt.h"
 #include "gd32f30x_misc.h"
 //#include "gd32f30x_cmp.h"
+
+#if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #pragma clang diagnostic pop
+#endif
+
 
 #endif /* GD32E23X_LIBOPT_H */
