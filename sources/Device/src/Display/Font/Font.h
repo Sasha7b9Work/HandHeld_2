@@ -1,7 +1,5 @@
 // 2023/04/17 13:30:31 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Display/Font/FontBig.h"
-#include "Display/Font/FontMid.h"
 
 
 struct TypeFont
