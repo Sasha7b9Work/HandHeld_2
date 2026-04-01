@@ -12,6 +12,7 @@ struct TypeFont
 #else
         Small,      // SmallType    fontGOSTAU16BOLD.inc
         Main,       // MainType     fontGostB48B.inc
+        Middle,     // MiddleType
 #endif
         Count
     };
@@ -22,6 +23,7 @@ namespace Font
 {
     void SetSmallType();
     void SetMainType();
+    void SetMiddleType();
 
     TypeFont::E CurrentType();
 

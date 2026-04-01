@@ -196,6 +196,15 @@ void Font::SetMainType()
 }
 
 
+void Font::SetMiddleType()
+{
+#ifdef MODEL7735
+#else
+    SetType(TypeFont::Middle);
+#endif
+}
+
+
 TypeFont::E Font::CurrentType()
 {
     return type;
@@ -245,6 +254,10 @@ void Font::SetType(TypeFont::E _type)
     {
         font = fontGostB48B;
     }
+    else if (_type == TypeFont::Middle)
+    {
+        font = fontGostB36B;
+    }
 #endif
 }
 
@@ -265,7 +278,7 @@ int Font::GetHeight()
         break;
     }
 #else
-    if (type == TypeFont::Small || type == TypeFont::Main)
+    if (type == TypeFont::Small || type == TypeFont::Main || type == TypeFont::Middle)
     {
         uint8 result = 0;
 
@@ -359,7 +372,7 @@ int Char::Write(int x, int y) const
         }
     }
 
-    if (Font::type == TypeFont::Small || Font::type == TypeFont::Main)
+    if (Font::type == TypeFont::Small || Font::type == TypeFont::Main || Font::type == TypeFont::Middle)
     {
         int height = Font::GetHeight();
         int width = Font::GetWidth(symbol);

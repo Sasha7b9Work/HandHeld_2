@@ -266,7 +266,7 @@ void Display::DrawScene()
         if (Source::GetCountReceived() > 1)
         {
             Font::StoreType();
-            Font::SetSmallType();
+            Font::SetMiddleType();
 
             for (int i = 0; i < Source::Count; i++)
             {

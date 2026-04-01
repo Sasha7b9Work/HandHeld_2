@@ -39,7 +39,7 @@ void Icon::Draw(int pos_on_display) const
     Rect(size, size).Draw(x, y);
 
 #ifdef MODEL7789
-    y -= 12;
+    y -= 1;
 #endif
 
     Draw(x, y);
