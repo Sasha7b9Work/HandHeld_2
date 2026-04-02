@@ -722,14 +722,9 @@
           <GroupName>Hardware/HAL</GroupName>
           <Files>
             <File>
-              <FileName>systick.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\systick.h</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_PINS.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_PINS.h</FilePath>
+              <FileName>HAL.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL.h</FileName>
@@ -737,9 +732,29 @@
               <FilePath>.\src\Hardware\HAL\HAL.h</FilePath>
             </File>
             <File>
-              <FileName>systick.cpp</FileName>
+              <FileName>HAL_ADC.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_CLOCK.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_CLOCK.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_I2C.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_I2C.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_PINS.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_PINS.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_PINS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_PINS.h</FilePath>
             </File>
             <File>
               <FileName>system.h</FileName>
@@ -747,14 +762,14 @@
               <FilePath>.\src\Hardware\HAL\system.h</FilePath>
             </File>
             <File>
-              <FileName>HAL_CLOCK_23.cpp</FileName>
+              <FileName>systick.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\GD23\HAL_CLOCK_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_ROM_23.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\GD23\HAL_ROM_23.cpp</FilePath>
+              <FileName>systick.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\systick.h</FilePath>
             </File>
             <File>
               <FileName>gd32e23x_it.cpp</FileName>
@@ -772,24 +787,14 @@
               <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_libopt.h</FilePath>
             </File>
             <File>
-              <FileName>HAL.cpp</FileName>
+              <FileName>HAL_CLOCK_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_CLOCK_23.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_ADC.cpp</FileName>
+              <FileName>HAL_ROM_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_I2C.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_I2C.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_PINS.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_PINS.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_ROM_23.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -1895,14 +1900,9 @@
           <GroupName>Hardware/HAL</GroupName>
           <Files>
             <File>
-              <FileName>systick.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\systick.h</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_PINS.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_PINS.h</FilePath>
+              <FileName>HAL.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL.h</FileName>
@@ -1910,9 +1910,29 @@
               <FilePath>.\src\Hardware\HAL\HAL.h</FilePath>
             </File>
             <File>
-              <FileName>systick.cpp</FileName>
+              <FileName>HAL_ADC.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_CLOCK.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_CLOCK.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_I2C.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_I2C.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_PINS.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_PINS.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_PINS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\HAL_PINS.h</FilePath>
             </File>
             <File>
               <FileName>system.h</FileName>
@@ -1920,14 +1940,14 @@
               <FilePath>.\src\Hardware\HAL\system.h</FilePath>
             </File>
             <File>
-              <FileName>HAL_CLOCK_23.cpp</FileName>
+              <FileName>systick.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\GD23\HAL_CLOCK_23.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\systick.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_ROM_23.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\GD23\HAL_ROM_23.cpp</FilePath>
+              <FileName>systick.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\src\Hardware\HAL\systick.h</FilePath>
             </File>
             <File>
               <FileName>gd32e23x_it.cpp</FileName>
@@ -1945,24 +1965,14 @@
               <FilePath>.\src\Hardware\HAL\GD23\gd32e23x_libopt.h</FilePath>
             </File>
             <File>
-              <FileName>HAL.cpp</FileName>
+              <FileName>HAL_CLOCK_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_CLOCK_23.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_ADC.cpp</FileName>
+              <FileName>HAL_ROM_23.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_ADC.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_I2C.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_I2C.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_PINS.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\Hardware\HAL\HAL_PINS.cpp</FilePath>
+              <FilePath>.\src\Hardware\HAL\GD23\HAL_ROM_23.cpp</FilePath>
             </File>
           </Files>
         </Group>

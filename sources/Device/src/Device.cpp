@@ -74,13 +74,11 @@ void Device::Update()
         Source::GetCountReceived() == 0 &&
         !PCF8563::IsAlarmed())
     {
-#ifndef MODEL7789
         ModeClock::Set(ModeClock::Sleep);
 
         ModeClock::LeaveSleepMode();
 
         Power::MeasVoltage();
-#endif
     }
 
     ModeClock::Set(ModeClock::Hi);

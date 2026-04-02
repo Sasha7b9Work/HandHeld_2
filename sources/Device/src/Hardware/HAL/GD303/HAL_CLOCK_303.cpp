@@ -3,13 +3,7 @@
 #include "Hardware/HAL/HAL.h"
 
 
-void ModeClock::Set(E /*v*/)
-{
-
-}
-
-
-void ModeClock::LeaveSleepMode()
+void ModeClock::Set(E v)
 {
 
 }
