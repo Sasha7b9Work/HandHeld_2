@@ -11,7 +11,45 @@ ModeClock::E ModeClock::current = ModeClock::Low;
 
 namespace HAL_CLOCK
 {
-    bool in_sleep_mode = false;
+    extern void SetSleepMode();
+    extern void SetLow();
+    extern void SetHi();
+
+    static bool in_sleep_mode = false;
+}
+
+
+void ModeClock::Set(E v)
+{
+    if (v == ModeClock::Sleep)
+    {
+        if (!ModeClock::IsSleep())
+        {
+            current = ModeClock::Sleep;
+
+            HAL_CLOCK::in_sleep_mode = true;
+
+            HAL_CLOCK::SetSleepMode();
+        }
+    }
+    else if (v == ModeClock::Low)
+    {
+        if (!ModeClock::IsLow())
+        {
+            current = ModeClock::Low;
+
+            HAL_CLOCK::SetLow();
+        }
+    }
+    else if (v == ModeClock::Hi)
+    {
+        if (!ModeClock::IsHi())
+        {
+            current = ModeClock::Hi;
+
+            HAL_CLOCK::SetHi();
+        }
+    }
 }
 
 
@@ -25,9 +63,9 @@ void ModeClock::LeaveSleepMode()
         {
             ModeClock::Set(Source::ExistReceived() ? ModeClock::Hi : ModeClock::Low);
         }
-        //        else                                            // А здесь проснулись от приёмника
-        //        {
-        //            PAN3060::InitOn90ms();
-        //        }
+//        else                                            // А здесь проснулись от приёмника
+//        {
+//            PAN3060::InitOn90ms();
+//        }
     }
 }

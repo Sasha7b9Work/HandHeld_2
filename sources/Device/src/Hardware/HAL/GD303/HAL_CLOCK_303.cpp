@@ -3,7 +3,9 @@
 #include "Hardware/HAL/HAL.h"
 
 
-void ModeClock::Set(E v)
+namespace HAL_CLOCK
 {
-
+    void SetSleepMode();
+    void SetLow();
+    void SetHi();
 }

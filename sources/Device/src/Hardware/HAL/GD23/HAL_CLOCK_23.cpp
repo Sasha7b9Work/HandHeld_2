@@ -10,59 +10,23 @@
 
 namespace HAL_CLOCK
 {
-    static void SetSleepMode();
-    static void SetLow();
-    static void SetHi();
-
-    extern bool in_sleep_mode;
+    void SetSleepMode();
+    void SetLow();
+    void SetHi();
 }
 
 
-void ModeClock::Set(E v)
-{
-    if (v == ModeClock::Sleep)
-    {
-        if (!ModeClock::IsSleep())
-        {
-            current = ModeClock::Sleep;
-
-            HAL_CLOCK::in_sleep_mode = true;
-
-            HAL_CLOCK::SetSleepMode();
-        }
-    }
-    else if (v == ModeClock::Low)
-    {
-        if (!ModeClock::IsLow())
-        {
-            current = ModeClock::Low;
-
-            HAL_CLOCK::SetLow();
-        }
-    }
-    else if (v == ModeClock::Hi)
-    {
-        if (!ModeClock::IsHi())
-        {
-            current = ModeClock::Hi;
-
-            HAL_CLOCK::SetHi();
-        }
-    }
-}
-
-
-#define RCU_MODIFY(__delay)     do{                                     \
-                                    volatile uint32_t i;                \
-                                    if(0 != __delay){                   \
-                                        RCU_CFG0 |= RCU_AHB_CKSYS_DIV2; \
-                                        for(i=0; i<__delay; i++){       \
-                                        }                               \
-                                        RCU_CFG0 |= RCU_AHB_CKSYS_DIV4; \
-                                        for(i=0; i<__delay; i++){       \
-                                        }                               \
-                                    }                                   \
-                                }while(0)
+//#define RCU_MODIFY(__delay)     do{                                     \
+//                                    volatile uint32_t i;                \
+//                                    if(0 != __delay){                   \
+//                                        RCU_CFG0 |= RCU_AHB_CKSYS_DIV2; \
+//                                        for(i=0; i<__delay; i++){       \
+//                                        }                               \
+//                                        RCU_CFG0 |= RCU_AHB_CKSYS_DIV4; \
+//                                        for(i=0; i<__delay; i++){       \
+//                                        }                               \
+//                                    }                                   \
+//                                }while(0)
 
 
 
