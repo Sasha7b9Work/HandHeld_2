@@ -2,9 +2,7 @@
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/HAL/systick.h"
-#include "Modules/PAN3060/PAN3060.h"
 #include "Display/Display.h"
-#include "Keyboard/Keyboard.h"
 #include <gd32e23x.h>
 
 

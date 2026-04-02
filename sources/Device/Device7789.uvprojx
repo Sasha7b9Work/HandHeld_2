@@ -440,6 +440,11 @@
               <FileType>1</FileType>
               <FilePath>..\common\GD32F30x_Firmware_Library\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_dma.c</FilePath>
             </File>
+            <File>
+              <FileName>gd32f30x_pmu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\common\GD32F30x_Firmware_Library\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_pmu.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1543,6 +1548,11 @@
               <FileName>gd32f30x_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\common\GD32F30x_Firmware_Library\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>gd32f30x_pmu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\common\GD32F30x_Firmware_Library\Firmware\GD32F30x_standard_peripheral\Source\gd32f30x_pmu.c</FilePath>
             </File>
           </Files>
         </Group>
