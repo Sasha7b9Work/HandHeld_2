@@ -30,19 +30,43 @@ void HAL_CLOCK::SetLow()
 {
     SystemCoreClock = 8000000;
 
+    uint32_t timeout = 0U;
+    uint32_t stab_flag = 0U;
+    volatile uint32_t reg_temp;
+
+    /* enable IRC8M */
+    RCU_CTL |= RCU_CTL_IRC8MEN;
+
+    /* wait until IRC8M is stable or the startup time is longer than IRC8M_STARTUP_TIMEOUT */
+    do
+    {
+        timeout++;
+        stab_flag = (RCU_CTL & RCU_CTL_IRC8MSTB);
+    } while ((0U == stab_flag) && (IRC8M_STARTUP_TIMEOUT != timeout));
+
+    /* if fail */
+    if (0U == (RCU_CTL & RCU_CTL_IRC8MSTB))
+    {
+        while (1)
+        {
+        }
+    }
+
     /* AHB = SYSCLK */
     RCU_CFG0 |= RCU_AHB_CKSYS_DIV1;
-    /* APB2 = AHB */
+    /* APB2 = AHB/1 */
     RCU_CFG0 |= RCU_APB2_CKAHB_DIV1;
-    /* APB1 = AHB */
-    RCU_CFG0 |= RCU_APB1_CKAHB_DIV1;
+    /* APB1 = AHB/2 */
+    RCU_CFG0 |= RCU_APB1_CKAHB_DIV2;
 
+    reg_temp = RCU_CFG0;
     /* select IRC8M as system clock */
-    RCU_CFG0 &= ~RCU_CFG0_SCS;
-    RCU_CFG0 |= RCU_CKSYSSRC_IRC8M;
+    reg_temp &= ~RCU_CFG0_SCS;
+    reg_temp |= RCU_CKSYSSRC_IRC8M;
+    RCU_CFG0 = reg_temp;
 
     /* wait until IRC8M is selected as system clock */
-    while (RCU_SCSS_IRC8M != (RCU_CFG0 & RCU_CFG0_SCSS))
+    while (0U != (RCU_CFG0 & RCU_SCSS_IRC8M))
     {
     }
 
