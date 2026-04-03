@@ -11,7 +11,7 @@
 
 namespace Timer
 {
-    void Init();
+//    void Init();
 
     void Delay(uint timeMS);
 
@@ -19,12 +19,12 @@ namespace Timer
 }
 
 
-namespace TimerUS
-{
-    void Reset();
-
-    uint ElaplsedTime();
-}
+//namespace TimerUS
+//{
+//    void Reset();
+//
+//    uint ElaplsedTime();
+//}
 
 
 struct TimeMeterMS

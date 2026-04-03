@@ -8,32 +8,32 @@
 uint timer_counter = 0;
 
 
-void Timer::Init()
-{
-#ifdef MODEL7735
-    rcu_periph_clock_enable(RCU_TIMER13);
-    timer_deinit(TIMER13);                          // Будем использовать для подсчёта микросекунд
-
-    timer_parameter_struct timer_initpara =
-    {
-        (uint16)((SystemCoreClock / 1000000) - 1),
-        TIMER_COUNTER_EDGE,
-        TIMER_COUNTER_UP,
-        TIMER_CKDIV_DIV1,
-        uint(-1) - 1,
-        0
-    };
-
-    timer_init(TIMER13, &timer_initpara);
-
-#endif
-
-#ifdef MODEL7789
-
-    #pragma message("Function Timer::Init not defined")
-
-#endif
-}
+//void Timer::Init()
+//{
+//#ifdef MODEL7735
+//    rcu_periph_clock_enable(RCU_TIMER13);
+//    timer_deinit(TIMER13);                          // Будем использовать для подсчёта микросекунд
+//
+//    timer_parameter_struct timer_initpara =
+//    {
+//        (uint16)((SystemCoreClock / 1000000) - 1),
+//        TIMER_COUNTER_EDGE,
+//        TIMER_COUNTER_UP,
+//        TIMER_CKDIV_DIV1,
+//        uint(-1) - 1,
+//        0
+//    };
+//
+//    timer_init(TIMER13, &timer_initpara);
+//
+//#endif
+//
+//#ifdef MODEL7789
+//
+//    #pragma message("Function Timer::Init not defined")
+//
+//#endif
+//}
 
 
 void Timer::Delay(uint timeMS)
@@ -80,14 +80,14 @@ void TimeMeterMS::Resume()
 }
 
 
-uint TimerUS::ElaplsedTime()
-{
-    return TIMER_CNT(TIMER13);
-}
+//uint TimerUS::ElaplsedTime()
+//{
+//    return TIMER_CNT(TIMER13);
+//}
 
 
-void TimerUS::Reset()
-{
-    TIMER_CNT(TIMER13) = 0;
-    TIMER_CTL0(TIMER13) |= (uint32_t)TIMER_CTL0_CEN;
-}
+//void TimerUS::Reset()
+//{
+//    TIMER_CNT(TIMER13) = 0;
+//    TIMER_CTL0(TIMER13) |= (uint32_t)TIMER_CTL0_CEN;
+//}

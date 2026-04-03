@@ -37,8 +37,6 @@ void Device::Init()
 
     PCF8563::Init();
 
-    Timer::Init();
-
     Keyboard::Init();
 
     Menu::Init();
