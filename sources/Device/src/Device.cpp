@@ -27,6 +27,11 @@ void Device::Init()
 {
     HAL::Init();
 
+    if (HAL::IsDebugBoard())
+    {
+        Timer::Delay(2000);
+    }
+
     ST7735_89::BeforeInit();
 
     gset.Load();
