@@ -100,8 +100,10 @@ void EXTI5_9_IRQHandler(void)
 
         exti_interrupt_flag_clear(EXTI_8);
     }
-
-    CALLBACK_ON_KEY(EXTI_5, Key::Down)
+    else
+    {
+        CALLBACK_ON_KEY(EXTI_5, Key::Down)      // 
+    }
 }
 
 

@@ -93,6 +93,7 @@ namespace Keyboard
     static Button btnCancel(GPIOA, GPIO_PIN_15, EXTI10_15_IRQn, EXTI_15);
     static Button btnUp(GPIOA, GPIO_PIN_12, EXTI10_15_IRQn, EXTI_12);
     static Button btnDown(GPIOB, GPIO_PIN_5, EXTI5_9_IRQn, EXTI_5);
+//    static Button btnDown(GPIOA, GPIO_PIN_12, EXTI10_15_IRQn, EXTI_12);
 
 #endif
 

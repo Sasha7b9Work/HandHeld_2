@@ -28,6 +28,8 @@ void HAL_CLOCK::SetSleepMode()
 
 void HAL_CLOCK::SetLow()
 {
+    return;
+
     SystemCoreClock = 8000000;
 
     uint32_t timeout = 0U;
@@ -78,6 +80,8 @@ void HAL_CLOCK::SetLow()
 
 void HAL_CLOCK::SetHi()
 {
+    return;
+
     SystemCoreClock = 120000000;
 
     uint32_t timeout = 0U;

@@ -60,22 +60,26 @@ void Device::Init()
 
     LED::ShortWhiteBlink();
 
-    if (HAL::IsDebugBoard())
-    {
-        Source::Receive(Source::DoorBell);
-        Source::Receive(Source::Mobile);
-        Source::Receive(Source::PhoneHome);
-        Source::Receive(Source::Intercom);
-        Source::Receive(Source::Microphone);
-    }
+//    if (HAL::IsDebugBoard())
+//    {
+//        Source::Receive(Source::DoorBell);
+//        Source::Receive(Source::Mobile);
+//        Source::Receive(Source::PhoneHome);
+//        Source::Receive(Source::Intercom);
+//        Source::Receive(Source::Microphone);
+//    }
 }
 
 
 void Device::Update()
 {
-    if (Keyboard::ToMoreTime() &&
-        Source::GetCountReceived() == 0 &&
-        !PCF8563::IsAlarmed())
+    bool keyboard = Keyboard::ToMoreTime();
+    int count = Source::GetCountReceived();
+    bool pcf8563 = PCF8563::IsAlarmed();
+
+    if (keyboard &&
+        count == 0 &&
+        !pcf8563)
     {
         ModeClock::Set(ModeClock::Sleep);
 
