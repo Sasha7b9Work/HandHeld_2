@@ -4,9 +4,9 @@
 #include "option.h"
 
 
-#define VERSION_BUILD 681
+#define VERSION_BUILD 682
 
-#define DATE_BUILD "2026-04-05 11:04:47"
+#define DATE_BUILD "2026-04-05 11:05:01"
 
 
 // Врем гашения дисплея после последней кнопки
