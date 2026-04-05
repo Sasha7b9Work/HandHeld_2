@@ -190,6 +190,7 @@ void Power::Draw()
         return;
     }
 
+#ifdef NEED_TO_CHANGE_VOLTAGE_MEASUREMENTS
     Font::StoreType();
 
     Font::SetSmallType();
@@ -199,6 +200,7 @@ void Power::Draw()
     Text<>("%.2f Â", (double)MeasVoltage()).Write(0, 0);
 
     Font::RestoreType();
+#endif
 
     static const int WIDTH = 38, HEIGHT = 14;
     const int x = 121, y = 0;
