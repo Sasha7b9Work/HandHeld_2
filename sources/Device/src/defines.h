@@ -4,9 +4,9 @@
 // При включённой опции на оталдочной плате (HAL::IsDebugBoard() == true) тоже будет работать контроль напряжения
 //#define POWER_CONTROL_ENABLED
 
-#define VERSION_BUILD 685
+#define VERSION_BUILD 686
 
-#define DATE_BUILD "2026-04-05 11:50:31"
+#define DATE_BUILD "2026-04-05 11:59:23"
 
 // Врем гашения дисплея после последней кнопки
 #define TIME_BLANK_DISPLAY  20000

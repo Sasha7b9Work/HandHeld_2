@@ -40,6 +40,7 @@ namespace Power
 
     static float voltage = 0.0f;
 
+    //  онтролировать ли напр€жение питани€ (при подключенном отладчике напр€жение питани€ определ€етс€ неправильно)
     static bool PowerControlEnabled()
     {
         if (HAL::IsDebugBoard())

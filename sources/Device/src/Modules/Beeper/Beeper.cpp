@@ -177,16 +177,13 @@ void Beeper::Update()
 
 #else
 
-    if (!HAL::IsDebugBoard())
+    if (need_running)
     {
-        if (need_running)
+        if (TIME_MS >= time_start)
         {
-            if (TIME_MS >= time_start)
-            {
-                Sound::Start();
+            Sound::Start();
 
-                need_running = false;
-            }
+            need_running = false;
         }
     }
 

@@ -27,6 +27,7 @@ void Device::Init()
 {
     HAL::Init();
 
+    // Это надо, чтобы была возможность подлкючиться, если вдруг будет залетать в какой-то спящий режим, из которого отладчик не выводит
     if (HAL::IsDebugBoard())
     {
         Timer::Delay(2000);
@@ -59,15 +60,6 @@ void Device::Init()
     PMS150G::Init();
 
     LED::ShortWhiteBlink();
-
-//    if (HAL::IsDebugBoard())
-//    {
-//        Source::Receive(Source::DoorBell);
-//        Source::Receive(Source::Mobile);
-//        Source::Receive(Source::PhoneHome);
-//        Source::Receive(Source::Intercom);
-//        Source::Receive(Source::Microphone);
-//    }
 }
 
 
