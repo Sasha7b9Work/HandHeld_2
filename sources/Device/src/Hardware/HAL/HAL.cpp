@@ -50,6 +50,8 @@ void HAL::Init()
 
 void HAL::DeInit()
 {
+    rcu_periph_clock_disable(RCU_GPIOA);
+
 #ifdef MODEL7735
     rcu_periph_clock_disable(RCU_CFGCMP);
     rcu_periph_clock_disable(RCU_ADC);
@@ -61,7 +63,8 @@ void HAL::DeInit()
 
     rcu_periph_clock_disable(RCU_TIMER2);
     rcu_periph_clock_disable(RCU_SPI0);
-//    rcu_periph_clock_disable(RCU_SPI1);
+//    rcu_periph_clock_disable(RCU_SPI1);       // Если отключить, то не выходит из сна по прёмнику и кнопкам
+
 }
 
 
