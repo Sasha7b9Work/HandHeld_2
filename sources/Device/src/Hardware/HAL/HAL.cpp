@@ -10,7 +10,7 @@
 namespace HAL
 {
     // Сделать все порты выходами и записать в них ноль
-    static void AllPinsToOutput();
+    void AllPinsToOutput();
 
     static uint GetUID();
 }

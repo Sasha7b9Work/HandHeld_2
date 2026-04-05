@@ -512,11 +512,6 @@
               </FileOption>
             </File>
             <File>
-              <FileName>defines.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\defines.cpp</FilePath>
-            </File>
-            <File>
               <FileName>readme.txt</FileName>
               <FileType>5</FileType>
               <FilePath>.\src\readme.txt</FilePath>
@@ -1568,11 +1563,6 @@
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\src\main.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>defines.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\src\defines.cpp</FilePath>
             </File>
             <File>
               <FileName>readme.txt</FileName>
