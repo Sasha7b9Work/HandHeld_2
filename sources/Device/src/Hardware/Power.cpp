@@ -23,14 +23,17 @@ namespace HAL_ADC
 }
 
 
+namespace Display
+{
+    namespace Buffer
+    {
+        extern int current_part;
+    }
+}
+
+
 namespace Power
 {
-#ifdef MODEL7735
-    static const int WIDTH = 38, HEIGHT = 14;
-#else
-    static const int WIDTH = 80, HEIGHT = 28;
-#endif
-
     static PinIn pinCHRG(GPIOB, GPIO_PIN_3);
 
     static void PowerDown();
@@ -143,11 +146,21 @@ void Power::Update()
 void Power::Draw()
 {
 #ifdef MODEL7735
+    if (Display::Buffer::current_part > 1)
+    {
+        return;
+    }
+    static const int WIDTH = 38, HEIGHT = 14;
     const int x = 121, y = 0;
     #define DRAW_SMALL Rect(5, 7).Fill(x - 4, y + 3)
 #else
+    if (Display::Buffer::current_part > 0)
+    {
+        return;
+    }
+    static const int WIDTH = 80, HEIGHT = 28;
     const int x = Display::WIDTH - WIDTH - 2, y = 2;
-    #define DRAW_SMALL Rect(10, 14).Fill(x - 8, y + 6)
+    #define DRAW_SMALL Rect(10, 14).Fill(x - 9, y + 6)
 #endif
 
     Color color = Color::GREEN;
@@ -175,7 +188,6 @@ void Power::Draw()
     else if (voltage > 3.5f)        // Пустая батарея
     {
         Rect(WIDTH, HEIGHT).Draw(x, y, Color::RED);
-        DRAW_SMALL;
     }
 
     if (voltage > 4.4f && pinCHRG.IsLow())

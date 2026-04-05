@@ -4,12 +4,6 @@
 #include <time.h>
 
 
-void Timer::Init()
-{
-
-}
-
-
 void TimeMeterMS::Reset()
 {
     time_reset = Timer::CurrentTime();

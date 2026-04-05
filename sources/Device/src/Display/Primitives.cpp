@@ -151,7 +151,7 @@ void RTCDateTime::DrawTime(const Color &color) const
 void RTCDateTime::DrawDate(const Color &color) const
 {
 #ifdef MODEL7735
-    const int y = 66;
+    const int y = 65;
 #else
     const int y = 130;
 #endif

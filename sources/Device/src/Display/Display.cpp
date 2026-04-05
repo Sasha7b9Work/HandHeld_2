@@ -283,10 +283,7 @@ void Display::DrawScene()
 
             Font::SetSize(1);
 
-            if (Buffer::current_part == 0)
-            {
-                Power::Draw();
-            }
+            Power::Draw();
         }
     }
 }
