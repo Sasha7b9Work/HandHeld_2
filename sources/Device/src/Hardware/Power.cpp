@@ -175,7 +175,18 @@ void Power::PowerDown()
 
 void Power::Update()
 {
+    static int counter = 0;
+
     if (MeasVoltage() <= 3.5f)
+    {
+        counter++;
+    }
+    else
+    {
+        counter = 0;
+    }
+
+    if (counter > 5)
     {
         Disable();
     }
