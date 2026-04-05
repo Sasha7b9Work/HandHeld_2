@@ -31,12 +31,19 @@ void HAL_CLOCK::SetSleepMode()
 
     rcu_periph_clock_enable(RCU_PMU);
 
+    // Для ислючения резких скачков питания
     rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV2);
     _soft_delay_(0x80);
     rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV4);
     _soft_delay_(0x80);
 
     pmu_to_deepsleepmode(PMU_LDO_LOWPOWER, WFI_CMD);
+
+    // Восстанавливаем ранее установленные значения
+    rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV2);
+    _soft_delay_(0x80);
+    rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV1);
+    _soft_delay_(0x80);
 }
 
 
