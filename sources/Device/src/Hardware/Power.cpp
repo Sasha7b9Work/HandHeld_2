@@ -64,9 +64,14 @@ namespace Power
 }
 
 
-float Power::MeasVoltage()
+float Power::MeasVoltage(bool after_sleep)
 {
     static float voltage = 10.0f;
+
+    if (after_sleep)
+    {
+        voltage = 10.0f;
+    }
 
     static TimeMeterMS meter;
 
@@ -104,13 +109,13 @@ void Power::Init()
         return;
     }
 
-    if (MeasVoltage() < 3.0f)
+    if (MeasVoltage(false) < 3.0f)
     {
         PCF8563::AlarmFlagEnable(false);
 
         PowerDown();
     }
-    else if (MeasVoltage() < 3.5f)
+    else if (MeasVoltage(false) < 3.5f)
     {
         PCF8563::AlarmFlagEnable(false);
 
@@ -177,7 +182,7 @@ void Power::Update()
 {
     static int counter = 0;
 
-    if (MeasVoltage() <= 3.5f)
+    if (MeasVoltage(false) <= 3.5f)
     {
         counter++;
     }
@@ -208,7 +213,7 @@ void Power::Draw()
 
     Color::WHITE.SetAsCurrent();
 
-    Text<>("%.2f В", (double)MeasVoltage()).Write(0, 0);
+    Text<>("%.2f В", (double)MeasVoltage(false)).Write(0, 0);
 
     Font::RestoreType();
 #endif
@@ -232,28 +237,28 @@ void Power::Draw()
 
     DRAW_SMALL;
 
-    if (MeasVoltage() > 3.9f)        // Полный заряд
+    if (MeasVoltage(false) > 3.9f)        // Полный заряд
     {
         Rect(WIDTH, HEIGHT).Fill(x, y);
     }
-    else if (MeasVoltage() > 3.8f)        // Две трети заряда
+    else if (MeasVoltage(false) > 3.8f)        // Две трети заряда
     {
         int width = WIDTH * 2 / 3;
 
         Rect(width, HEIGHT).Fill(x + WIDTH - width, y);
     }
-    else if (MeasVoltage() > 3.7f)        // Одна треть заряда
+    else if (MeasVoltage(false) > 3.7f)        // Одна треть заряда
     {
         int width = WIDTH / 3;
 
         Rect(width, HEIGHT).Fill(x + WIDTH - width, y, Color::YELLOW);
     }
-    else if (MeasVoltage() > 3.5f)        // Пустая батарея
+    else if (MeasVoltage(false) > 3.5f)        // Пустая батарея
     {
         Rect(WIDTH, HEIGHT).Draw(x, y, Color::RED);
     }
 
-    if (MeasVoltage() > 4.4f && pinCHRG.IsLow())
+    if (MeasVoltage(false) > 4.4f && pinCHRG.IsLow())
     {
         Color::RED.SetAsCurrent();
 
