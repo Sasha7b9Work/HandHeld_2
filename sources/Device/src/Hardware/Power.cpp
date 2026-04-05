@@ -45,10 +45,10 @@ namespace Power
     {
         if (HAL::IsDebugBoard())
         {
-#ifdef POWER_CONTROL_ENABLED
-            return true;
-#else
+#ifdef POWER_CONTROL_DISABLE
             return false;
+#else
+            return true;
 #endif
         }
 

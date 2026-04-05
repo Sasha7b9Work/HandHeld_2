@@ -1,12 +1,12 @@
 // 2024/03/02 09:33:12 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 
-// При включённой опции на оталдочной плате (HAL::IsDebugBoard() == true) тоже будет работать контроль напряжения
-//#define POWER_CONTROL_ENABLED
+// Отключить контроль напряжения на отладочной плате
+//#define POWER_CONTROL_DISABLE
 
-#define VERSION_BUILD 686
+#define VERSION_BUILD 687
 
-#define DATE_BUILD "2026-04-05 11:59:23"
+#define DATE_BUILD "2026-04-05 12:23:58"
 
 // Врем гашения дисплея после последней кнопки
 #define TIME_BLANK_DISPLAY  20000
@@ -21,7 +21,7 @@
     #pragma warning(disable:4459)
         #include "wx/wx.h"
     #pragma warning(pop)
-#endif
+#endif 
 
 
 #if defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
