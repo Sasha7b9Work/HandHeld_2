@@ -2,9 +2,6 @@
 #include "defines.h"
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/Timer.h"
-#include "Hardware/Vibrato.h"
-#include "Modules/LED/LED.h"
-#include "Modules/Beeper/Beeper.h"
 #include "system.h"
 
 
@@ -16,7 +13,7 @@ namespace HAL_ADC
 
     // Эта функция не вынесена в общий доступ потому, что её нельзя вызывать когда попало - надо вызывать только когда потребление не
     // сильно высоко, чтобы ёмкость замерить более-менее адекватно
-    float GetVoltage(bool force);
+    float GetVoltage();
 }
 
 
@@ -83,36 +80,31 @@ void HAL_ADC::Init()
 }
 
 
-float HAL_ADC::GetVoltage(bool force)
+float HAL_ADC::GetVoltage()
 {
     static float voltage = 5.0f;
 
-    static TimeMeterMS meter;
-
-    if ((!LED::IsFired() && !Vibrato::IsRunning() && !Beeper::IsRunning() && meter.ElapsedTime() > 1000) || force)
-    {
-        meter.Reset();
-
 #ifdef MODEL7735
-        adc_flag_clear(ADC_FLAG_EOC);
+    adc_flag_clear(ADC_FLAG_EOC);
 
-        while (SET != adc_flag_get(ADC_FLAG_EOC)) {}
+    while (SET != adc_flag_get(ADC_FLAG_EOC))
+    {
+    }
 
-        voltage = ConversionRawToVoltageBattery(ADC_RDATA);
+    voltage = ConversionRawToVoltageBattery(ADC_RDATA);
 #endif
 
 #ifdef MODEL7789
-        adc_software_trigger_enable(ADC0, ADC_REGULAR_CHANNEL);
+    adc_software_trigger_enable(ADC0, ADC_REGULAR_CHANNEL);
 
-        while (SET != adc_flag_get(ADC0, ADC_FLAG_EOC)) { }
-
-        adc_flag_clear(ADC0, ADC_FLAG_EOC);
-
-        voltage = ConversionRawToVoltageBattery(ADC_RDATA(ADC0));
-#endif
-
-
+    while (SET != adc_flag_get(ADC0, ADC_FLAG_EOC))
+    {
     }
+
+    adc_flag_clear(ADC0, ADC_FLAG_EOC);
+
+    voltage = ConversionRawToVoltageBattery(ADC_RDATA(ADC0));
+#endif
 
     return voltage;
 }

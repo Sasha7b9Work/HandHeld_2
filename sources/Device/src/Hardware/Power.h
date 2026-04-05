@@ -13,7 +13,7 @@ namespace Power
     void Draw();
 
     // Замерить значение напряжения
-    void MeasVoltage();
+    float MeasVoltage();
 
     // Время между замерами напряжения
     extern uint time_control_ms;

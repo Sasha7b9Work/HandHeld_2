@@ -76,8 +76,6 @@ void Device::Update()
         ModeClock::Set(ModeClock::Sleep);
 
         ModeClock::LeaveSleepMode();
-
-        Power::MeasVoltage();
     }
 
     ModeClock::Set(ModeClock::Hi);

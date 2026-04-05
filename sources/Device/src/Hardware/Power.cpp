@@ -9,6 +9,9 @@
 #include "Hardware/HAL/HAL_PINS.h"
 #include "Display/MonochromeBitmap.h"
 #include "Display/Primitives.h"
+#include "Modules/LED/LED.h"
+#include "Hardware/Vibrato.h"
+#include "Modules/Beeper/Beeper.h"
 #include "system.h"
 #ifdef MODEL7735
     #include "Display/Pictures/1.bmp.inc"
@@ -19,7 +22,7 @@
 
 namespace HAL_ADC
 {
-    extern float GetVoltage(bool force);
+    extern float GetVoltage();
 }
 
 
@@ -37,8 +40,6 @@ namespace Power
     static PinIn pinCHRG(GPIOB, GPIO_PIN_3);
 
     static void PowerDown();
-
-    static float voltage = 0.0f;
 
 #ifdef NEED_TO_CHANGE_VOLTAGE_MEASUREMENTS
     uint time_control_ms = 1000;
@@ -63,17 +64,34 @@ namespace Power
 }
 
 
-void Power::MeasVoltage()
+float Power::MeasVoltage()
 {
-    float sum = 0.0f;
-    int num_meas = 10;
+    static float voltage = 10.0f;
 
-    for (int i = 0; i < num_meas; i++)
+    static TimeMeterMS meter;
+
+    if (meter.ElapsedTime() > time_control_ms || voltage > 9.0f)
     {
-        sum += HAL_ADC::GetVoltage(false);
+        if (!LED::IsFired() &&
+            !Vibrato::IsRunning() &&
+            !Beeper::IsRunning() &&
+            Source::GetCountReceived() == 0)
+        {
+            meter.Reset();
+
+            float sum = 0.0f;
+            const int num_meas = 10;
+
+            for (int i = 0; i < num_meas; i++)
+            {
+                sum += HAL_ADC::GetVoltage();
+            }
+
+            voltage = sum / (float)num_meas;
+        }
     }
 
-    voltage = sum / (float)num_meas;
+    return (voltage > 8.0f) ? 5.0f : voltage;
 }
 
 
@@ -81,20 +99,18 @@ void Power::Init()
 {
     pinCHRG.Init();
 
-    MeasVoltage();
-
     if (!PowerControlEnabled())
     {
         return;
     }
 
-    if (voltage < 3.0f)
+    if (MeasVoltage() < 3.0f)
     {
         PCF8563::AlarmFlagEnable(false);
 
         PowerDown();
     }
-    else if (voltage < 3.5f)
+    else if (MeasVoltage() < 3.5f)
     {
         PCF8563::AlarmFlagEnable(false);
 
@@ -159,18 +175,7 @@ void Power::PowerDown()
 
 void Power::Update()
 {
-    static TimeMeterMS meter;
-
-    if (meter.ElapsedTime() > time_control_ms)
-    {
-        if (Source::GetCountReceived() == 0)
-        {
-            MeasVoltage();
-            meter.Reset();
-        }
-    }
-
-    if (voltage <= 3.5f)
+    if (MeasVoltage() <= 3.5f)
     {
         Disable();
     }
@@ -191,7 +196,7 @@ void Power::Draw()
 
     Color::WHITE.SetAsCurrent();
 
-    Text<>("%.2f В", (double)voltage).Write(0, 0);
+    Text<>("%.2f В", (double)MeasVoltage()).Write(0, 0);
 
     Font::RestoreType();
 
@@ -214,28 +219,28 @@ void Power::Draw()
 
     DRAW_SMALL;
 
-    if (voltage > 3.9f)        // Полный заряд
+    if (MeasVoltage() > 3.9f)        // Полный заряд
     {
         Rect(WIDTH, HEIGHT).Fill(x, y);
     }
-    else if (voltage > 3.8f)        // Две трети заряда
+    else if (MeasVoltage() > 3.8f)        // Две трети заряда
     {
         int width = WIDTH * 2 / 3;
 
         Rect(width, HEIGHT).Fill(x + WIDTH - width, y);
     }
-    else if (voltage > 3.7f)        // Одна треть заряда
+    else if (MeasVoltage() > 3.7f)        // Одна треть заряда
     {
         int width = WIDTH / 3;
 
         Rect(width, HEIGHT).Fill(x + WIDTH - width, y, Color::YELLOW);
     }
-    else if (voltage > 3.5f)        // Пустая батарея
+    else if (MeasVoltage() > 3.5f)        // Пустая батарея
     {
         Rect(WIDTH, HEIGHT).Draw(x, y, Color::RED);
     }
 
-    if (voltage > 4.4f && pinCHRG.IsLow())
+    if (MeasVoltage() > 4.4f && pinCHRG.IsLow())
     {
         Color::RED.SetAsCurrent();
 
