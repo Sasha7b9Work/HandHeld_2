@@ -5,9 +5,9 @@
 // При отладке нужно отключать, чтобы не мешало работе с отладчиком (выводит НИЗКОЕ НАПРЯЖЕНИЕ)
 #define POWER_CONTROL_ENABLED
 
-#define VERSION_BUILD 683
+#define VERSION_BUILD 684
 
-#define DATE_BUILD "2026-04-05 11:06:43"
+#define DATE_BUILD "2026-04-05 11:06:47"
 
 
 // Врем гашения дисплея после последней кнопки
