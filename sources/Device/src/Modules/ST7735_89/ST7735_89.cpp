@@ -47,6 +47,15 @@ namespace ST7735_89
 }
 
 
+void ST7735_89::EnablePins()
+{
+    pinDC_RS.Init();
+    pinRES.Init();
+    pinBKG.Init();
+    pinON.Init();
+}
+
+
 void ST7735_89::Enable()
 {
     if (is_enabled)

@@ -3,6 +3,7 @@
 #include "Hardware/HAL/HAL.h"
 #include "Hardware/HAL/systick.h"
 #include "Utils/Math.h"
+#include "Modules/ST7735_89/ST7735_89.h"
 #include <cstring>
 #include "system.h"
 
@@ -10,11 +11,12 @@
 namespace HAL
 {
     // Сделать все порты выходами и записать в них ноль
-    void AllPinsToOutput();
+    static void AllPinsDisable();
+
+    static void AllPinsEnable();
 
     static uint GetUID();
 }
-
 
 void HAL::Init()
 {
@@ -23,8 +25,6 @@ void HAL::Init()
     rcu_periph_clock_enable(RCU_GPIOA); 
     rcu_periph_clock_enable(RCU_GPIOB);
     rcu_periph_clock_enable(RCU_GPIOF);
-
-//    AllPinsToOutput();
 
     rcu_periph_clock_enable(RCU_SPI0);          // Дислпей
     rcu_periph_clock_enable(RCU_SPI1);          // PAN3060
@@ -45,11 +45,15 @@ void HAL::Init()
     HAL_ADC::Init();
 
     HAL_I2C::Init();
+
+    AllPinsEnable();
 }
 
 
 void HAL::DeInit()
 {
+    AllPinsDisable();
+
     rcu_periph_clock_disable(RCU_GPIOA);
 //    rcu_periph_clock_disable(RCU_GPIOB);        // Не выходит по сигналу приёмника
     rcu_periph_clock_disable(RCU_GPIOF);
@@ -66,40 +70,90 @@ void HAL::DeInit()
     rcu_periph_clock_disable(RCU_TIMER2);
     rcu_periph_clock_disable(RCU_SPI0);
 //    rcu_periph_clock_disable(RCU_SPI1);       // Если отключить, то не выходит из сна по прёмнику и кнопкам
-
 }
 
 
-void HAL::AllPinsToOutput()
+void HAL::AllPinsEnable()
 {
-#define MASK_PINS_A (GPIO_PIN_ALL & ~(GPIO_PIN_13 | GPIO_PIN_14))
+    ST7735_89::EnablePins();
 
 #ifdef MODEL7735
+#endif
 
-    gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLDOWN, MASK_PINS_A);
-    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_2MHZ, MASK_PINS_A);
-    GPIO_BC(GPIOA) = MASK_PINS_A;
+#ifdef MODEL7789
+#endif
+}
 
-    gpio_mode_set(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLDOWN, GPIO_PIN_ALL);
-    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_2MHZ, GPIO_PIN_ALL);
-    GPIO_BC(GPIOB) = GPIO_PIN_ALL;
 
-    gpio_mode_set(GPIOF, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLDOWN, GPIO_PIN_ALL);
-    gpio_output_options_set(GPIOF, GPIO_OTYPE_PP, GPIO_OSPEED_2MHZ, GPIO_PIN_ALL);
-    GPIO_BC(GPIOF) = GPIO_PIN_ALL;
+void HAL::AllPinsDisable()
+{
+#ifdef MODEL7735
+
+    const uint mask_a =
+        GPIO_PIN_0 |    // I2C_SCL  часы
+        GPIO_PIN_1 |    // I2C_SDA  часы
+        GPIO_PIN_2 |    // ADC
+//        GPIO_PIN_3 |    // SW_RGHT
+//        GPIO_PIN_4 |    // TFT_BKG
+//        GPIO_PIN_5 |    // TFT_SCL
+        GPIO_PIN_6 |    // n/a
+//        GPIO_PIN_7 |    // TFT_SDA
+//        GPIO_PIN_8 |    // IRQ
+        GPIO_PIN_9 |    // LEDR
+        GPIO_PIN_10 |   // LEDG
+        GPIO_PIN_11;   // LEDB
+//        GPIO_PIN_12 |   // SW_UP
+//        GPIO_PIN_13 |   // SWDIO
+//        GPIO_PIN_14 |   // SWCLK
+//        GPIO_PIN_15;    // SWLEFT
+
+    gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLDOWN, mask_a);
+    gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_2MHZ, mask_a);
+    GPIO_BC(GPIOA) = mask_a;
+
+    const uint mask_b =
+        GPIO_PIN_0 |    // SOUND
+        GPIO_PIN_1 |    // MUTE SOUND
+//        GPIO_PIN_2 |    // TFT_ON
+//        GPIO_PIN_3 |    // CHRG_CPU
+        GPIO_PIN_4 |    // VIBRO
+//        GPIO_PIN_5 |    // SW_DWN
+        GPIO_PIN_6 |    // n/a
+        GPIO_PIN_7 |    // n/a
+        GPIO_PIN_8 |    // n/a
+        GPIO_PIN_9;    // n/a
+//        GPIO_PIN_10 |   // TFT_RES
+//        GPIO_PIN_11;    // TFT_RS
+//        GPIO_PIN_12 |   // NSS      PA3060
+//        GPIO_PIN_13 |   // SCK      PA3060
+//        GPIO_PIN_14 |   // MISO     PA3060
+//        GPIO_PIN_15;    // MOSI     PA3060
+
+    gpio_mode_set(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLDOWN, mask_b);
+    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_2MHZ, mask_b);
+    GPIO_BC(GPIOB) = mask_b;
+
+    const uint mask_f =
+        GPIO_PIN_6 |    // n/a
+        GPIO_PIN_7;     // n/a
+
+    gpio_mode_set(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_PULLDOWN, mask_f);
+    gpio_output_options_set(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_2MHZ, mask_f);
+    GPIO_BC(GPIOB) = mask_f;
+
 #endif
 
 #ifdef MODEL7789
 
-    // PIN13, PIN14 - Отладчик
-    gpio_init(GPIOA, GPIO_MODE_OUT_PP, GPIO_OSPEED_2MHZ, MASK_PINS_A);
-    GPIO_BC(GPIOA) = MASK_PINS_A;
+//    // PIN13, PIN14 - Отладчик
+//    gpio_init(GPIOA, GPIO_MODE_OUT_PP, GPIO_OSPEED_2MHZ, MASK_PINS_A);
+//    GPIO_BC(GPIOA) = MASK_PINS_A;
 
-    gpio_init(GPIOB, GPIO_MODE_OUT_PP, GPIO_OSPEED_2MHZ, GPIO_PIN_ALL);
-    GPIO_BC(GPIOB) = GPIO_PIN_ALL;
+//    gpio_init(GPIOB, GPIO_MODE_OUT_PP, GPIO_OSPEED_2MHZ, GPIO_PIN_ALL);
+//    GPIO_BC(GPIOB) = GPIO_PIN_ALL;
 
-    gpio_init(GPIOF, GPIO_MODE_OUT_PP, GPIO_OSPEED_2MHZ, GPIO_PIN_ALL);
-    GPIO_BC(GPIOF) = GPIO_PIN_ALL;
+//    gpio_init(GPIOF, GPIO_MODE_OUT_PP, GPIO_OSPEED_2MHZ, GPIO_PIN_ALL);
+//    GPIO_BC(GPIOF) = GPIO_PIN_ALL;
 
 #endif
 }

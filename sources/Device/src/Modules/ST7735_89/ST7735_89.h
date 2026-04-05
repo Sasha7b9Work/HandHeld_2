@@ -18,4 +18,7 @@ namespace ST7735_89
     bool IsEnabled();
 
     uint TimeEnabled();
+
+    // Вызывается по выходу из спящего режима
+    void EnablePins();
 }

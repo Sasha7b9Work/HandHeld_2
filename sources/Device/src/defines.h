@@ -7,12 +7,12 @@
 // Отключить контроль напряжения на отладочной плате
 //#define POWER_CONTROL_DISABLE
 
-#define VERSION_BUILD 698
+#define VERSION_BUILD 699
 
-#define DATE_BUILD "2026-04-05 17:52:00"
+#define DATE_BUILD "2026-04-05 18:33:58"
 
 // Врем гашения дисплея после последней кнопки
-#define TIME_BLANK_DISPLAY  2000
+#define TIME_BLANK_DISPLAY  20000
 
 // Время индикации будильника
 #define TIME_SHOW_ALARM     60000
@@ -35,7 +35,7 @@
     #pragma clang diagnostic ignored "-Winvalid-source-encoding"
     #pragma clang diagnostic ignored "-Wc++98-compat"
     #pragma clang diagnostic ignored "-Wformat-nonliteral"
-    #pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+    #pragma clang diagnostic ignored "-Wc++98-compat-pedantic" 
     #pragma clang diagnostic ignored "-Wnon-virtual-dtor"
     #pragma clang diagnostic ignored "-Wundefined-func-template"
     #pragma clang diagnostic ignored "-Wdeprecated-register"
