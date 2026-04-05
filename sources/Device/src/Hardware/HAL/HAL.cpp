@@ -132,7 +132,8 @@ bool HAL::IsDebugBoard()
     
     return uid == 0xAB4EF711 ||     // 7789
         uid == 0x3B279A51 ||        // 7735
-        uid == 0x1203D5E3;          // 7735
+        uid == 0x1203D5E3 ||        // 7735
+        uid == 0x5D9A3324;          // 7735
 }
 
 

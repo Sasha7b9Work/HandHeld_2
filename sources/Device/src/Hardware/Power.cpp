@@ -40,6 +40,12 @@ namespace Power
 
     static float voltage = 0.0f;
 
+#ifdef NEED_TO_CHANGE_VOLTAGE_MEASUREMENTS
+    uint time_control_ms = 1000;
+#else
+    uint time_control_ms = 60000;
+#endif
+
     // Контролировать ли напряжение питания (при подключенном отладчике напряжение питания определяется неправильно)
     static bool PowerControlEnabled()
     {
@@ -75,12 +81,12 @@ void Power::Init()
 {
     pinCHRG.Init();
 
+    MeasVoltage();
+
     if (!PowerControlEnabled())
     {
         return;
     }
-
-    MeasVoltage();
 
     if (voltage < 3.0f)
     {
@@ -117,6 +123,11 @@ void Power::Init()
 
 void Power::Disable()
 {
+    if (!PowerControlEnabled())
+    {
+        return;
+    }
+
     while (Source::GetCountReceived())
     {
         Source::CancelFirst();
@@ -148,12 +159,20 @@ void Power::PowerDown()
 
 void Power::Update()
 {
-    if (PowerControlEnabled())
+    static TimeMeterMS meter;
+
+    if (meter.ElapsedTime() > time_control_ms)
     {
-        if (voltage <= 3.5f)
+        if (Source::GetCountReceived() == 0)
         {
-            Disable();
+            MeasVoltage();
+            meter.Reset();
         }
+    }
+
+    if (voltage <= 3.5f)
+    {
+        Disable();
     }
 }
 
@@ -165,6 +184,17 @@ void Power::Draw()
     {
         return;
     }
+
+    Font::StoreType();
+
+    Font::SetSmallType();
+
+    Color::WHITE.SetAsCurrent();
+
+    Text<>("%.2f В", (double)voltage).Write(0, 0);
+
+    Font::RestoreType();
+
     static const int WIDTH = 38, HEIGHT = 14;
     const int x = 121, y = 0;
     #define DRAW_SMALL Rect(5, 7).Fill(x - 4, y + 3)

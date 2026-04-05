@@ -1,12 +1,15 @@
 // 2024/03/02 09:33:12 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 
+// Ручное изменение промежутка между измерениями напряжения
+//#define NEED_TO_CHANGE_VOLTAGE_MEASUREMENTS
+
 // Отключить контроль напряжения на отладочной плате
 //#define POWER_CONTROL_DISABLE
 
-#define VERSION_BUILD 687
+#define VERSION_BUILD 688
 
-#define DATE_BUILD "2026-04-05 12:23:58"
+#define DATE_BUILD "2026-04-05 14:34:08"
 
 // Врем гашения дисплея после последней кнопки
 #define TIME_BLANK_DISPLAY  20000

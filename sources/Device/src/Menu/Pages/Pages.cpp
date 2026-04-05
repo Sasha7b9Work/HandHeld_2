@@ -4,6 +4,7 @@
 #include "Menu/MenuItems.h"
 #include "Menu/MenuItemDef.h"
 #include "Display/Display.h"
+#include "Hardware/Power.h"
 
 
 namespace PageDoorBell
@@ -99,6 +100,54 @@ namespace PageMain
     );
 
 
+    static uint8 index_time_voltage = 0;
+
+    static void FuncOnChangeTimeVoltage()
+    {
+        static const uint num[5] =
+        {
+            1,
+            2,
+            5,
+            10,
+            60
+        };
+
+        Power::time_control_ms = num[index_time_voltage] * 1000;
+    }
+
+
+    DEF_CHOICE_5(choiceTimeVoltage, self, "T напряжения", &index_time_voltage,
+        "1",
+        "2",
+        "5",
+        "10",
+        "60",
+        FuncOnChangeTimeVoltage
+    );
+
+#ifdef NEED_TO_CHANGE_VOLTAGE_MEASUREMENTS
+
+    DEF_PAGE_12(pageMain, nullptr, "МЕНЮ",
+        PageAlarm::self,
+        PageWatch::self,
+        PageDoorBell::self,
+        PageMobile::self,
+        PageHomePhone::self,
+        PageIntercom::self,
+        PageMicrophone::self,
+        PageJournal::self,
+        &choiceTimeIndication,
+        &choiceVolume,
+        &choiceInverse,
+        &choiceTimeVoltage,
+        nullptr,
+        nullptr,
+        nullptr
+    );
+
+#else
+
     DEF_PAGE_11(pageMain, nullptr, "МЕНЮ",
         PageAlarm::self,
         PageWatch::self,
@@ -115,6 +164,8 @@ namespace PageMain
         nullptr,
         nullptr
     );
+
+#endif
 
     const Item *const self = &pageMain;
 }
