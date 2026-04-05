@@ -133,30 +133,14 @@ void Display::Update()
 
     if (PCF8563::IsAlarmed() || Source::GetCountReceived() || !Keyboard::ToMoreTime())
     {
-        TimeMeterMS timer;
-
-        uint time_begin = 0;
-        uint time_draw = 0;
-        uint time_end = 0;
-
         FPS::BeginFrame();
 
         for (Buffer::current_part = 0; Buffer::current_part < NUMBER_PARTS_HEIGHT; Buffer::current_part++)
         {
-            timer.Reset();
             BeginScene();
-            time_begin += timer.ElapsedTime();
-            timer.Reset();
             DrawScene();
-            time_draw += timer.ElapsedTime();
-            timer.Reset();
             EndScene();
-            time_end += timer.ElapsedTime();
         }
-        
-        volatile uint time_full = time_begin + time_draw + time_end;
-        
-         time_full = time_full;
 
         FPS::EndFrame();
     }
