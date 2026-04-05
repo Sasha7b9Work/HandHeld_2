@@ -130,7 +130,8 @@ bool HAL::IsDebugBoard()
 {
     volatile uint uid = GetUID();
     
-    return uid == 0xAB4EF711;
+    return uid == 0xAB4EF711 ||         // 7789
+        uid == 0x3B279A51;              // 7735
 }
 
 

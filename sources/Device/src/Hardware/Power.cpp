@@ -39,6 +39,20 @@ namespace Power
     static void PowerDown();
 
     static float voltage = 0.0f;
+
+    static bool PowerControlEnabled()
+    {
+        if (HAL::IsDebugBoard())
+        {
+#ifdef POWER_CONTROL_ENABLED
+            return true;
+#else
+            return false;
+#endif
+        }
+
+        return true;
+    }
 }
 
 
@@ -60,7 +74,10 @@ void Power::Init()
 {
     pinCHRG.Init();
 
-#ifdef POWER_CONTROL_ENABLED
+    if (!PowerControlEnabled())
+    {
+        return;
+    }
 
     MeasVoltage();
 
@@ -94,8 +111,6 @@ void Power::Init()
     }
 
     Timer::Delay(100);          // Антидребезг
-
-#endif
 }
 
 
@@ -132,14 +147,13 @@ void Power::PowerDown()
 
 void Power::Update()
 {
-#ifdef POWER_CONTROL_ENABLED
-
-    if (voltage <= 3.5f)
+    if (PowerControlEnabled())
     {
-        Disable();
+        if (voltage <= 3.5f)
+        {
+            Disable();
+        }
     }
-
-#endif
 }
 
 

@@ -1,14 +1,12 @@
 // 2024/03/02 09:33:12 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 
-// В рабочей прошивке нужно раскомментировать, чтобы была обработка напряжения аккумулятора
-// При отладке нужно отключать, чтобы не мешало работе с отладчиком (выводит НИЗКОЕ НАПРЯЖЕНИЕ)
-#define POWER_CONTROL_ENABLED
+// При включённой опции на оталдочной плате (HAL::IsDebugBoard() == true) тоже будет работать контроль напряжения
+//#define POWER_CONTROL_ENABLED
 
-#define VERSION_BUILD 684
+#define VERSION_BUILD 685
 
-#define DATE_BUILD "2026-04-05 11:06:47"
-
+#define DATE_BUILD "2026-04-05 11:50:31"
 
 // Врем гашения дисплея после последней кнопки
 #define TIME_BLANK_DISPLAY  20000
