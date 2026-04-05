@@ -27,6 +27,8 @@ void HAL_CLOCK::SetSleepMode()
 {
     Display::PrepareToSleep();
 
+    HAL::DeInit();
+
     rcu_periph_clock_enable(RCU_PMU);
 
     rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV2);

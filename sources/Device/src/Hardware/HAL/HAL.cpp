@@ -55,6 +55,9 @@ void HAL::DeInit()
     rcu_periph_clock_disable(RCU_ADC);
 #endif
 
+#ifdef MODEL7789
+    rcu_periph_clock_disable(RCU_ADC0);
+#endif
     rcu_periph_clock_disable(RCU_TIMER2);
 }
 
