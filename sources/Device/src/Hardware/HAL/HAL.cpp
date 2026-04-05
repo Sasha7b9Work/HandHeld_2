@@ -51,6 +51,8 @@ void HAL::Init()
 void HAL::DeInit()
 {
     rcu_periph_clock_disable(RCU_GPIOA);
+//    rcu_periph_clock_disable(RCU_GPIOB);        // Не выходит по сигналу приёмника
+    rcu_periph_clock_disable(RCU_GPIOF);
 
 #ifdef MODEL7735
     rcu_periph_clock_disable(RCU_CFGCMP);
