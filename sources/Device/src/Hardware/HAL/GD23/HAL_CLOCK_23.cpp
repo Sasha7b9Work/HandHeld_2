@@ -14,18 +14,13 @@ namespace HAL_CLOCK
 }
 
 
-//#define RCU_MODIFY(__delay)     do{                                     \
-//                                    volatile uint32_t i;                \
-//                                    if(0 != __delay){                   \
-//                                        RCU_CFG0 |= RCU_AHB_CKSYS_DIV2; \
-//                                        for(i=0; i<__delay; i++){       \
-//                                        }                               \
-//                                        RCU_CFG0 |= RCU_AHB_CKSYS_DIV4; \
-//                                        for(i=0; i<__delay; i++){       \
-//                                        }                               \
-//                                    }                                   \
-//                                }while(0)
-
+static void _soft_delay_(uint32_t time)
+{
+    volatile uint32_t i;
+    for (i = 0; i < time * 10; i++)
+    {
+    }
+}
 
 
 void HAL_CLOCK::SetSleepMode()
@@ -34,7 +29,10 @@ void HAL_CLOCK::SetSleepMode()
 
     rcu_periph_clock_enable(RCU_PMU);
 
-    RCU_CTL0 &= ~RCU_CTL0_PLLEN;
+    rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV2);
+    _soft_delay_(0x80);
+    rcu_ahb_clock_config(RCU_AHB_CKSYS_DIV4);
+    _soft_delay_(0x80);
 
     pmu_to_deepsleepmode(PMU_LDO_LOWPOWER, WFI_CMD);
 }

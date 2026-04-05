@@ -14,6 +14,15 @@ namespace HAL_CLOCK
 }
 
 
+//static void _soft_delay_(uint32_t time)
+//{
+//    volatile uint32_t i;
+//    for (i = 0; i < time * 10; i++)
+//    {
+//    }
+//}
+
+
 void HAL_CLOCK::SetSleepMode()
 {
     Display::PrepareToSleep();
