@@ -1,12 +1,13 @@
 // 2024/03/02 09:33:12 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 
-#include "option.h"
+// В рабочей прошивке нужно раскомментировать, чтобы была обработка напряжения аккумулятора
+// При отладке нужно отключать, чтобы не мешало работе с отладчиком (выводит НИЗКОЕ НАПРЯЖЕНИЕ)
+#define POWER_CONTROL_ENABLED
 
+#define VERSION_BUILD 683
 
-#define VERSION_BUILD 682
-
-#define DATE_BUILD "2026-04-05 11:05:01"
+#define DATE_BUILD "2026-04-05 11:06:43"
 
 
 // Врем гашения дисплея после последней кнопки
@@ -16,6 +17,7 @@
 #define TIME_SHOW_ALARM     60000
 
 #ifdef GUI
+    #define ENABLE_EMULATOR
     #define WIN32_LEAN_AND_MEAN
     #pragma warning(push)
     #pragma warning(disable:4459)
