@@ -5,13 +5,8 @@
 
 namespace HAL_ADC
 {
-    // Эта функция не вынесена в общий доступ потому, что её нельзя вызывать когда попало - надо вызывать только когда потребление не
-    // сильно высоко, чтобы ёмкость замерить более-менее адекватно
-    float GetVoltage(bool force);
-}
-
-
-float HAL_ADC::GetVoltage(bool)
-{
-    return 5.0f;
+    float GetVoltage()
+    {
+        return 5.0f;
+    }
 }

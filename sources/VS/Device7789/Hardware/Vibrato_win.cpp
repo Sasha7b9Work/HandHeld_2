@@ -25,3 +25,9 @@ void Vibrato::Update()
 {
 
 }
+
+
+bool Vibrato::IsRunning()
+{
+    return false;
+}
