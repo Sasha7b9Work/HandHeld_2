@@ -79,8 +79,7 @@ float Power::MeasVoltage(bool after_sleep)
     {
         if (!LED::IsFired() &&
             !Vibrato::IsRunning() &&
-            !Beeper::IsRunning() &&
-            Source::GetCountReceived() == 0)
+            !Beeper::IsRunning())
         {
             meter.Reset();
 
