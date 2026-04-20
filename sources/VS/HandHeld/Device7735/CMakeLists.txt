@@ -20,7 +20,7 @@ include_directories(
     ../../../common/GD32F30x_Firmware_Library/Firmware/CMSIS/GD/GD32F30x/Include
 )
 
-link_directories(../../generated/ThirdParty/lib/vc_dll)
+link_directories(../../../generated/ThirdParty/lib/vc_dll)
 
 add_definitions(-DGD32F30X_HD -DWXUSINGDLL -DGUI -DDEVICE -DMODEL7735)
 
@@ -139,5 +139,5 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} wxbase33ud wxmsw33ud_core Ws2_32)
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\..\\ThirdParty\\lib\\vc_dll\\wxbase331ud_vc_custom.dll $(OutputPath) /Y)
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\..\\ThirdParty\\lib\\vc_dll\\wxmsw331ud_core_vc_custom.dll $(OutputPath) /Y)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\..\\..\\ThirdParty\\lib\\vc_dll\\wxbase331ud_vc_custom.dll $(OutputPath) /Y)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\..\\..\\ThirdParty\\lib\\vc_dll\\wxmsw331ud_core_vc_custom.dll $(OutputPath) /Y)

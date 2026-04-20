@@ -2,7 +2,7 @@
 
 project (Device7789)
 
-set(CMAKE_UNITY_BUILD OFF)
+set(CMAKE_UNITY_BUILD ON)
 
 set(CMAKE_UNITY_BUILD_BATCH_SIZE 16)
 
@@ -20,7 +20,7 @@ include_directories(
     ../../../common/GD32F30x_Firmware_Library/Firmware/CMSIS/GD/GD32F30x/Include
 )
 
-link_directories(../../generated/ThirdParty/lib/vc_dll)
+link_directories(../../../generated/ThirdParty/lib/vc_dll)
 
 add_definitions(-DGD32F30X_HD -DWXUSINGDLL -DGUI -DDEVICE -DMODEL7789)
 
