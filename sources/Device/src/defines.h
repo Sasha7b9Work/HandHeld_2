@@ -7,9 +7,9 @@
 // Отключить контроль напряжения на отладочной плате
 //#define POWER_CONTROL_DISABLE
 
-#define VERSION_BUILD 703
+#define VERSION_BUILD 704
 
-#define DATE_BUILD "2026-04-20 07:32:53"
+#define DATE_BUILD "2026-04-20 07:43:45"
 
 // Врем гашения дисплея после последней кнопки
 #define TIME_BLANK_DISPLAY  20000
