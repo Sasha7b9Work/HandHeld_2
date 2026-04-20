@@ -37,6 +37,8 @@ void Device::Init()
 
     gset.Load();
 
+    LED::Init();
+
     Power::Init();
 
     Display::Init();
@@ -46,8 +48,6 @@ void Device::Init()
     Keyboard::Init();
 
     Menu::Init();
-
-    LED::Init();
 
     Vibrato::Init();
 
