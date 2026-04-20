@@ -7,7 +7,6 @@
 
 
 template int Text<64>::Write(int x, int y, const Color &) const;
-template int Text<64>::Write(int x, int y) const;
 template void Text<64>::WriteInCenter(int x, int y, int width, const Color &) const;
 template void Text<64>::WriteInCenter(int x, int y, int width) const;
 template int Text<64>::GetLength() const;
@@ -160,8 +159,13 @@ void RTCDateTime::DrawDate(const Color &color) const
 }
 
 template<int capacity>
-int Text<capacity>::Write(int x, int y) const
+int Text<capacity>::Write(int x, int y, const Color &color) const
 {
+    if (color.value != Color::Count)
+    {
+        color.SetAsCurrent();
+    }
+
     pchar pointer = text;
 
     while (*pointer)
@@ -176,13 +180,6 @@ int Text<capacity>::Write(int x, int y) const
     return x;
 }
 
-
-template<int capacity>
-int Text<capacity>::Write(int x, int y, const Color &color) const
-{
-    color.SetAsCurrent();
-    return Write(x, y);
-}
 
 template<int capacity>
 void Text<capacity>::WriteInCenter(int x, int y, int width, const Color &color) const

@@ -27,8 +27,8 @@ struct Text
         std::vsprintf(text, format, args);
         va_end(args);
     }
-    int Write(int x, int y) const;
-    int Write(int x, int y, const Color &) const;
+
+    int Write(int x, int y, const Color & = Color::NUMBER) const;
     void WriteInCenter(int x, int y, int width) const;
     void WriteInCenter(int x, int y, int width, const Color &) const;
     int GetLength() const;
