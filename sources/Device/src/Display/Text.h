@@ -28,7 +28,7 @@ struct Text
         va_end(args);
     }
 
-    int Write(int x, int y, const Color & = Color::NUMBER) const;
+    int _Write(int x, int y, const Color & = Color::NUMBER) const;
     void WriteInCenter(int x, int y, int width, const Color & = Color::NUMBER) const;
     int GetLength() const;
     char *c_str()

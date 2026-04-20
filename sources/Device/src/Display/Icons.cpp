@@ -52,7 +52,7 @@ void IconSourceDoorBell::Draw(int x, int y) const
     x += 5;
 #endif
 
-    Text<>("Чт").Write(x + 3, y + 4);
+    Text<>("Чт")._Write(x + 3, y + 4);
 }
 
 
@@ -62,7 +62,7 @@ void IconSourceMobile::Draw(int x, int y) const
     x += 1;
 #endif
 
-    Text<>("вь").Write(x + 3, y + 4);
+    Text<>("вь")._Write(x + 3, y + 4);
 }
 
 

@@ -165,7 +165,7 @@ void DateTime::DrawField(int x, int y, Text<> &text, bool selected) const
     const int dx = 9, dy = -2;
 #endif
 
-    text.Write(x + dx, y + dy, selected ? Color::BLACK : Color::WHITE);
+    text._Write(x + dx, y + dy, selected ? Color::BLACK : Color::WHITE);
     Font::SetSize(1);
 }
 

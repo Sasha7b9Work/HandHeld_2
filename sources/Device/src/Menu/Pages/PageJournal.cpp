@@ -35,14 +35,14 @@ namespace PageJournal
 
         int x = 20;
 
-        Text<>("%d", rec->number + 1).Write(x + 5, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
+        Text<>("%d", rec->number + 1)._Write(x + 5, y + 15, (rec->source & 0x80) ? Color::GREEN : Color::RED);
 
         x += 40;
 
         Text<>("%02d/%02d %02d:%02d",
-            time.Day, time.Month, time.Hour, time.Minute).Write(x, y + 15);
+            time.Day, time.Month, time.Hour, time.Minute)._Write(x, y + 15);
 
-        Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F))).Write(x + 20, y + 37);
+        Text<>(Source::NameSmall((Source::E)(rec->source & 0x7F)))._Write(x + 20, y + 37);
 
         Font::RestoreType();
 #endif
@@ -144,7 +144,7 @@ namespace PageJournal
     {
         Font::SetSize(2);
 
-        Text<>("%d ÂÛÇÎÂÎÂ", Storage::GetCountRecords()).Write(10, 35, Color::WHITE);
+        Text<>("%d ÂÛÇÎÂÎÂ", Storage::GetCountRecords())._Write(10, SU::Y::Center(), Color::WHITE);
 
         Font::SetSize(1);
     }
