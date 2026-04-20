@@ -8,7 +8,6 @@
 
 template int Text<64>::Write(int x, int y, const Color &) const;
 template void Text<64>::WriteInCenter(int x, int y, int width, const Color &) const;
-template void Text<64>::WriteInCenter(int x, int y, int width) const;
 template int Text<64>::GetLength() const;
 
 namespace Display
@@ -184,13 +183,11 @@ int Text<capacity>::Write(int x, int y, const Color &color) const
 template<int capacity>
 void Text<capacity>::WriteInCenter(int x, int y, int width, const Color &color) const
 {
-    color.SetAsCurrent();
-    WriteInCenter(x, y, width);
-}
+    if (color.value != Color::Count)
+    {
+        color.SetAsCurrent();
+    }
 
-template<int capacity>
-void Text<capacity>::WriteInCenter(int x, int y, int width) const
-{
     int length = GetLength();
 
     if (length < width)
